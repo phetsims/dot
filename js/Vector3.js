@@ -11,13 +11,13 @@ define( function( require ) {
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
   var clamp = require( 'DOT/clamp' );
-  var Vector2 = function( x, y, z ) {
+  var Vector2 = function( x, y ) {
     Vector2 = require( 'DOT/Vector2' );
-    return new Vector2( x, y, z );
+    return new Vector2( x, y );
   };
-  var Vector4 = function( x, y, z ) {
+  var Vector4 = function( x, y, z, w ) {
     Vector4 = require( 'DOT/Vector4' );
-    return new Vector4( x, y, z );
+    return new Vector4( x, y, z, w );
   };
 
   var Vector3 = function( x, y, z ) {
