@@ -31,7 +31,7 @@ module.exports = function( grunt ) {
           mainConfigFile: "js/config.js",
           out: "dist/debug/require.js",
           name: "config",
-          wrap: false
+          wrap: true
         }
       }
     },
