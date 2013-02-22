@@ -1,7 +1,8 @@
 // Copyright 2002-2012, University of Colorado
 
-var phet = phet || {};
-phet.math = phet.math || {};
+define( function( require ) {
+  throw new Error( 'how to load clamp and toRadians?' )
+} );
 
 phet.math.clamp = function ( value, min, max ) {
   if ( value < min ) {

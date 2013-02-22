@@ -6,12 +6,7 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-// ensure proper namespace
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
 
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
@@ -139,4 +134,4 @@ phet.math = phet.math || {};
 
     console.log( Permutation.permutations( 4 ).toString() );
   };
-})();
+} );

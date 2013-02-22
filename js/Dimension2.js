@@ -6,12 +6,7 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-// ensure proper namespace
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
   
   phet.math.Dimension2 = function ( width, height ) {
@@ -32,4 +27,4 @@ phet.math = phet.math || {};
       return this.width === other.width && this.height === other.height;
     }
   };
-})();
+} );

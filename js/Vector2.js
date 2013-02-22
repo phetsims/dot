@@ -6,12 +6,7 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-// ensure proper namespace
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
 
   phet.math.Vector2 = function ( x, y ) {
@@ -230,4 +225,4 @@ phet.math = phet.math || {};
   Vector2.ZERO = new Immutable( 0, 0 );
   Vector2.X_UNIT = new Immutable( 1, 0 );
   Vector2.Y_UNIT = new Immutable( 0, 1 );
-})();
+} );

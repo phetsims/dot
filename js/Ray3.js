@@ -6,12 +6,7 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-// ensure proper namespace
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
 
   phet.math.Ray3 = function ( pos, dir ) {
@@ -36,4 +31,4 @@ phet.math = phet.math || {};
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };
-})();
+} );

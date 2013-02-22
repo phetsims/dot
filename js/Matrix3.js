@@ -6,11 +6,7 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
   
   phet.math.Matrix3 = function ( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
@@ -488,4 +484,4 @@ phet.math = phet.math || {};
                   Types.IDENTITY );
   Matrix3.IDENTITY.makeImmutable();
 
-})();
+} );

@@ -6,25 +6,18 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-// ensure proper namespace
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
   
-  var Vector2 = phet.math.Vector2;
+  var Vector2 = require( 'DOT/Vector2' );
   
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
-  phet.math.Bounds2 = function( minX, minY, maxX, maxY ) {
+  var Bounds2 = function( minX, minY, maxX, maxY ) {
     this.minX = minX;
     this.minY = minY;
     this.maxX = maxX;
     this.maxY = maxY;
   };
-
-  var Bounds2 = phet.math.Bounds2;
 
   Bounds2.prototype = {
     constructor: Bounds2,
@@ -162,4 +155,6 @@ phet.math = phet.math || {};
   // specific bounds useful for operations
   Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
   Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
-})();
+  
+  return Bounds2;
+} );

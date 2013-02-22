@@ -6,11 +6,7 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
 
   var Matrix4 = phet.math.Matrix4;
@@ -159,4 +155,4 @@ phet.math = phet.math || {};
       );
     }
   };
-})();
+} );

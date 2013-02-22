@@ -8,11 +8,7 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
   
   var Float32Array = phet.Float32Array;
@@ -348,4 +344,4 @@ phet.math = phet.math || {};
   Matrix4.IDENTITY = new Matrix4();
   Matrix4.IDENTITY.makeImmutable();
 
-})();
+} );

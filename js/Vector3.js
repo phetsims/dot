@@ -6,26 +6,23 @@
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-// ensure proper namespace
-var phet = phet || {};
-phet.math = phet.math || {};
-
-// create a new scope
-(function () {
+define( function( require ) {
   "use strict";
+  
+  var assert = require( 'DOT/assert' );
+  var clamp = require( 'DOT/clamp' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var Vector4 = require( 'DOT/Vector4' );
 
-  phet.math.Vector3 = function ( x, y, z ) {
+  var Vector3 = function ( x, y, z ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
     this.z = z || 0;
   };
 
-  // shortcut within the scope
-  var Vector3 = phet.math.Vector3;
-
-  phet.math.Vector3.prototype = {
-    constructor: phet.math.Vector3,
+  Vector3.prototype = {
+    constructor: Vector3,
 
     magnitude: function () {
       return Math.sqrt( this.magnitudeSquared() );
@@ -67,7 +64,7 @@ phet.math = phet.math || {};
 
     times: function( scalar ) {
       // make sure it's not a vector!
-      phet.assert( scalar.dimension === undefined );
+      assert( scalar.dimension === undefined );
       return this.timesScalar( scalar );
     },
 
@@ -100,7 +97,7 @@ phet.math = phet.math || {};
     },
 
     angleBetween: function ( v ) {
-      return Math.acos( phet.math.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+      return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
 
     toString: function () {
@@ -108,11 +105,11 @@ phet.math = phet.math || {};
     },
 
     toVector2: function () {
-      return new phet.math.Vector2( this.x, this.y );
+      return new Vector2( this.x, this.y );
     },
 
     toVector4: function () {
-      return new phet.math.Vector4( this.x, this.y, this.z );
+      return new Vector4( this.x, this.y, this.z );
     },
 
     /*---------------------------------------------------------------------------*
@@ -208,7 +205,7 @@ phet.math = phet.math || {};
   };
   var Immutable = Vector3.Immutable;
 
-  Immutable.prototype = new phet.math.Vector3();
+  Immutable.prototype = new Vector3();
   Immutable.prototype.constructor = Immutable;
 
   // throw errors whenever a mutable method is called on our immutable vector
@@ -237,4 +234,6 @@ phet.math = phet.math || {};
   Vector3.X_UNIT = new Immutable( 1, 0, 0 );
   Vector3.Y_UNIT = new Immutable( 0, 1, 0 );
   Vector3.Z_UNIT = new Immutable( 0, 0, 1 );
-})();
+  
+  return Vector3;
+} );
