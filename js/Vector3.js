@@ -9,7 +9,7 @@
 define( function( require ) {
   "use strict";
   
-  var assert = require( 'ASSERT' )( 'dot' );
+  var assert = require( 'ASSERT/assert' )( 'dot' );
   var clamp = require( 'DOT/clamp' );
   var Vector2 = require( 'DOT/Vector2' );
   var Vector4 = require( 'DOT/Vector4' );
