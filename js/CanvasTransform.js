@@ -11,7 +11,7 @@ define( function( require ) {
 
   var Matrix4 = require( 'DOT/Matrix4' );
   var Transform4 = require( 'DOT/Transform4' );
-  var Property = require( 'COMMON/model/property' );
+  var Property = require( 'DOT/TemporaryProperty' );
 
   var StageCenteringCanvasTransform = function ( canvasSizeProperty, stageSize ) {
     this.canvasSizeProperty = canvasSizeProperty;
