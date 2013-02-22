@@ -4,12 +4,12 @@
   "license": "MIT",
   "dependencies": {
     "grunt": "~0.4.0",
-    "grunt-contrib-requirejs": "~0.3.3",
+    "grunt-contrib-requirejs": "~0.4.0",
     "grunt-contrib-concat": "~0.1.2"
   },
   "devDependencies": {
     "grunt": "~0.4.0",
-    "grunt-contrib-requirejs": "~0.3.4",
+    "grunt-contrib-requirejs": "~0.4.0",
     "grunt-contrib-jshint": "~0.1.1",
     "grunt-contrib-concat": "~0.1.2",
     "grunt-contrib-uglify": "~0.1.1"
