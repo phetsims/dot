@@ -36,7 +36,11 @@ module.exports = function( grunt ) {
           mainConfigFile: "js/config.js",
           out: "dist/debug/dot.js",
           name: "config",
-          wrap: true
+          wrap: {
+            start: "(function() {",
+            end: " window.dot = require( 'main' ); }());"
+          },
+          optimize: 'none'
         }
       }
     },

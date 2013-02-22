@@ -1,6 +1,6 @@
 
 require.config( {
-  deps: [ 'DOT/Ray2' ],
+  deps: [ 'main' ],
 
   paths: {
     DOT: '.',
