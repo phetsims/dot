@@ -13,15 +13,15 @@ module.exports = function( grunt ) {
     },
     
     concat: {
-      "dist/debug/require.js": [
-        "js/vendor/almond.js",
-        "dist/debug/require.js"
+      "dist/debug/dot.js": [
+        "contrib/almond/almond.js",
+        "dist/debug/dot.js"
       ]
     },
     
     uglify: {
-      "dist/release/require.js": [
-        "dist/debug/require.js"
+      "dist/release/dot.js": [
+        "dist/debug/dot.js"
       ]
     },
     
@@ -29,7 +29,7 @@ module.exports = function( grunt ) {
       compile: {
         options: {
           mainConfigFile: "js/config.js",
-          out: "dist/debug/require.js",
+          out: "dist/debug/dot.js",
           name: "config",
           wrap: true
         }

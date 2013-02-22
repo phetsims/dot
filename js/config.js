@@ -1,8 +1,9 @@
 
 require.config( {
-  deps: [],
+  deps: [ 'DOT/Ray2' ],
 
   paths: {
+    DOT: '.',
     ASSERT: '../common/assert/js'
   },
 

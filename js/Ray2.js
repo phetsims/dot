@@ -9,7 +9,7 @@
 define( function( require ) {
   "use strict";
   
-  var debugAssert = require( 'DOT/debugAssert' );
+  var debugAssert = require( 'ASSERT/assert' )( 'dot' );
 
   var Ray2 = function( pos, dir ) {
     this.pos = pos;
