@@ -20,9 +20,14 @@ module.exports = function( grunt ) {
     },
     
     uglify: {
-      "dist/release/dot.js": [
-        "dist/debug/dot.js"
-      ]
+      options: {
+        // source map
+        sourceMap: 'dist/release/dot.min.js.map'
+      },
+      build: {
+        src: 'dist/debug/dot.js',
+        dest: 'dist/release/dot.min.js'
+      }
     },
     
     requirejs: {
