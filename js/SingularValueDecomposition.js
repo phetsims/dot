@@ -12,7 +12,7 @@ define( function( require ) {
   var Matrix = require( 'DOT/Matrix' );
   var Float32Array = require( 'COMMON/Float32Array' );
 
-  var SingularValueDecomposition = function ( matrix ) {
+  var SingularValueDecomposition = function( matrix ) {
     this.matrix = matrix;
 
     var Arg = matrix;
@@ -467,19 +467,19 @@ define( function( require ) {
   SingularValueDecomposition.prototype = {
     constructor: SingularValueDecomposition,
 
-    getU: function () {
+    getU: function() {
       return new Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is Float32Array
     },
 
-    getV: function () {
+    getV: function() {
       return new Matrix( this.n, this.n, this.V, true );
     },
 
-    getSingularValues: function () {
+    getSingularValues: function() {
       return this.s;
     },
 
-    getS: function () {
+    getS: function() {
       var result = new Matrix( this.n, this.n );
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -490,15 +490,15 @@ define( function( require ) {
       return result;
     },
 
-    norm2: function () {
+    norm2: function() {
       return this.s[0];
     },
 
-    cond: function () {
+    cond: function() {
       return this.s[0] / this.s[Math.min( this.m, this.n ) - 1];
     },
 
-    rank: function () {
+    rank: function() {
       // changed to 23 from 52 (bits of mantissa), since we are using floats here!
       var eps = Math.pow( 2.0, -23.0 );
       var tol = Math.max( this.m, this.n ) * this.s[0] * eps;

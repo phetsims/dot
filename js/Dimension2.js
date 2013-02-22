@@ -9,7 +9,7 @@
 define( function( require ) {
   "use strict";
   
-  phet.math.Dimension2 = function ( width, height ) {
+  phet.math.Dimension2 = function( width, height ) {
     this.width = width;
     this.height = height;
   };
@@ -19,11 +19,11 @@ define( function( require ) {
   Dimension2.prototype = {
     constructor: Dimension2,
 
-    toString: function () {
+    toString: function() {
       return "[" + this.width + "w, " + this.height + "h]";
     },
 
-    equals: function ( other ) {
+    equals: function( other ) {
       return this.width === other.width && this.height === other.height;
     }
   };

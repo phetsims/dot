@@ -36,23 +36,23 @@ define( function( require ) {
       this.inverseTransposed = null;
     },
     
-    prepend: function ( matrix ) {
+    prepend: function( matrix ) {
       this.set( matrix.timesMatrix( this.matrix ) );
     },
 
-    append: function ( matrix ) {
+    append: function( matrix ) {
       this.set( this.matrix.timesMatrix( matrix ) );
     },
 
-    prependTransform: function ( transform ) {
+    prependTransform: function( transform ) {
       this.prepend( transform.matrix );
     },
 
-    appendTransform: function ( transform ) {
+    appendTransform: function( transform ) {
       this.append( transform.matrix );
     },
 
-    applyToCanvasContext: function ( context ) {
+    applyToCanvasContext: function( context ) {
       context.setTransform( this.matrix.m00(), this.matrix.m10(), this.matrix.m01(), this.matrix.m11(), this.matrix.m02(), this.matrix.m12() );
     },
     
@@ -85,7 +85,7 @@ define( function( require ) {
       return this.inverseTransposed;
     },
     
-    isIdentity: function () {
+    isIdentity: function() {
       return this.matrix.type === Matrix3.Types.IDENTITY;
     },
 
@@ -94,29 +94,29 @@ define( function( require ) {
      *----------------------------------------------------------------------------*/
 
     // transform a position (includes translation)
-    transformPosition2: function ( vec2 ) {
+    transformPosition2: function( vec2 ) {
       return this.matrix.timesVector2( vec2 );
     },
 
     // transform a vector (exclude translation)
-    transformDelta2: function ( vec2 ) {
+    transformDelta2: function( vec2 ) {
       return this.matrix.timesRelativeVector2( vec2 );
     },
 
     // transform a normal vector (different than a normal vector)
-    transformNormal2: function ( vec2 ) {
+    transformNormal2: function( vec2 ) {
       return this.getInverse().timesTransposeVector2( vec2 );
     },
 
-    transformDeltaX: function ( x ) {
+    transformDeltaX: function( x ) {
       return this.transformDelta2( new Vector2( x, 0 ) ).x;
     },
 
-    transformDeltaY: function ( y ) {
+    transformDeltaY: function( y ) {
       return this.transformDelta2( new Vector2( 0, y ) ).y;
     },
     
-    transformBounds2: function ( bounds2 ) {
+    transformBounds2: function( bounds2 ) {
       return bounds2.transformed( this.matrix );
     },
     
@@ -128,28 +128,28 @@ define( function( require ) {
      * inverse transforms (for Vector2 or scalar)
      *----------------------------------------------------------------------------*/
 
-    inversePosition2: function ( vec2 ) {
+    inversePosition2: function( vec2 ) {
       return this.getInverse().timesVector2( vec2 );
     },
 
-    inverseDelta2: function ( vec2 ) {
+    inverseDelta2: function( vec2 ) {
       // inverse actually has the translation rolled into the other coefficients, so we have to make this longer
       return this.inversePosition2( vec2 ).minus( this.inversePosition2( Vector2.ZERO ) );
     },
 
-    inverseNormal2: function ( vec2 ) {
+    inverseNormal2: function( vec2 ) {
       return this.matrix.timesTransposeVector2( vec2 );
     },
 
-    inverseDeltaX: function ( x ) {
+    inverseDeltaX: function( x ) {
       return this.inverseDelta2( new Vector2( x, 0 ) ).x;
     },
 
-    inverseDeltaY: function ( y ) {
+    inverseDeltaY: function( y ) {
       return this.inverseDelta2( new Vector2( 0, y ) ).y;
     },
     
-    inverseBounds2: function ( bounds2 ) {
+    inverseBounds2: function( bounds2 ) {
       return bounds2.transformed( this.getInverse() );
     },
     

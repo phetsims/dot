@@ -9,7 +9,7 @@
 define( function( require ) {
   "use strict";
   
-  var Property = function ( value ) {
+  var Property = function( value ) {
     this.observers = [];
     this.value = value;
     this.initialValue = value;
@@ -18,18 +18,18 @@ define( function( require ) {
   Property.prototype = {
     constructor: Property,
 
-    addObserver: function ( observer, notifyOnAdd ) {
+    addObserver: function( observer, notifyOnAdd ) {
       this.observers.push( observer );
       if ( notifyOnAdd ) {
         observer.call( undefined, this.value, this.value );
       }
     },
 
-    removeObserver: function ( observer ) {
+    removeObserver: function( observer ) {
       this.observers.splice( this.observers.indexOf( observer ), 1 );
     },
 
-    notifyObservers: function ( oldValue, newValue ) {
+    notifyObservers: function( oldValue, newValue ) {
       for ( var i in this.observers ) {
         if ( this.observers.hasOwnProperty( i ) ) {
           this.observers[i].call( undefined, oldValue, newValue );
@@ -37,15 +37,15 @@ define( function( require ) {
       }
     },
 
-    toString: function () {
+    toString: function() {
       return this.value.toString();
     },
 
-    get: function () {
+    get: function() {
       return this.value;
     },
 
-    set: function ( value ) {
+    set: function( value ) {
       var oldValue = this.value;
       var changed = value === null ? oldValue !== null : (value !== oldValue || (value.equals && value.equals( oldValue )));
 
@@ -56,7 +56,7 @@ define( function( require ) {
       }
     },
 
-    getInitialValue: function () {
+    getInitialValue: function() {
       return this.initialValue;
     }
   };

@@ -11,7 +11,7 @@ define( function( require ) {
   
   var debugAssert = require( 'DOT/debugAssert' );
 
-  var Ray2 = function ( pos, dir ) {
+  var Ray2 = function( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
     
@@ -23,15 +23,15 @@ define( function( require ) {
   Ray2.prototype = {
     constructor: Ray2,
 
-    shifted: function ( distance ) {
+    shifted: function( distance ) {
       return new Ray2( this.pointAtDistance( distance ), this.dir );
     },
 
-    pointAtDistance: function ( distance ) {
+    pointAtDistance: function( distance ) {
       return this.pos.plus( this.dir.timesScalar( distance ) );
     },
 
-    toString: function () {
+    toString: function() {
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };

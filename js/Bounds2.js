@@ -143,11 +143,11 @@ define( function( require ) {
       return this.dilated( -d );
     },
 
-    toString: function () {
+    toString: function() {
       return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
     },
 
-    equals: function ( other ) {
+    equals: function( other ) {
       return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
     }
   };

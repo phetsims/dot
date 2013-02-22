@@ -12,7 +12,7 @@ define( function( require ) {
   var Matrix = require( 'DOT/Matrix' );
   var Float32Array = require( 'COMMON/Float32Array' );
 
-  var LUDecomposition = function ( matrix ) {
+  var LUDecomposition = function( matrix ) {
     var i, j, k;
 
     this.matrix = matrix;
@@ -90,7 +90,7 @@ define( function( require ) {
   LUDecomposition.prototype = {
     constructor: LUDecomposition,
 
-    isNonsingular: function () {
+    isNonsingular: function() {
       for ( var j = 0; j < this.n; j++ ) {
         var index = this.matrix.index( j, j );
         if ( this.LU[index] === 0 ) {
@@ -100,7 +100,7 @@ define( function( require ) {
       return true;
     },
 
-    getL: function () {
+    getL: function() {
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -118,7 +118,7 @@ define( function( require ) {
       return result;
     },
 
-    getU: function () {
+    getU: function() {
       var result = new Matrix( this.n, this.n );
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -133,7 +133,7 @@ define( function( require ) {
       return result;
     },
 
-    getPivot: function () {
+    getPivot: function() {
       var p = new Uint32Array( this.m );
       for ( var i = 0; i < this.m; i++ ) {
         p[i] = this.piv[i];
@@ -141,7 +141,7 @@ define( function( require ) {
       return p;
     },
 
-    getDoublePivot: function () {
+    getDoublePivot: function() {
       var vals = new Float32Array( this.m );
       for ( var i = 0; i < this.m; i++ ) {
         vals[i] = this.piv[i];
@@ -149,7 +149,7 @@ define( function( require ) {
       return vals;
     },
 
-    det: function () {
+    det: function() {
       if ( this.m !== this.n ) {
         throw new Error( "Matrix must be square." );
       }
@@ -160,7 +160,7 @@ define( function( require ) {
       return d;
     },
 
-    solve: function ( matrix ) {
+    solve: function( matrix ) {
       var i, j, k;
       if ( matrix.getRowDimension() !== this.m ) {
         throw new Error( "Matrix row dimensions must agree." );

@@ -13,19 +13,19 @@ define( function( require ) {
   var Transform4 = require( 'DOT/Transform4' );
   var Property = require( 'DOT/TemporaryProperty' );
 
-  var StageCenteringCanvasTransform = function ( canvasSizeProperty, stageSize ) {
+  var StageCenteringCanvasTransform = function( canvasSizeProperty, stageSize ) {
     this.canvasSizeProperty = canvasSizeProperty;
     this.stageSize = stageSize;
     this.transform = new Property( null ); // updated by the listener below
 
     var that = this;
-    canvasSizeProperty.addObserver( function () {
+    canvasSizeProperty.addObserver( function() {
       that.updateTransform();
     }, true );
   };
 
   // due to various scaling intricacies and the default way of constructing a perspective projection matrix
-  StageCenteringCanvasTransform.fieldOfViewYFactor = function ( canvasSize, stageSize ) {
+  StageCenteringCanvasTransform.fieldOfViewYFactor = function( canvasSize, stageSize ) {
     var sx = canvasSize.width / stageSize.width;
     var sy = canvasSize.height / stageSize.height;
     if ( sx === 0 || sy === 0 ) {
@@ -35,7 +35,7 @@ define( function( require ) {
   };
 
   // returns a 4x4 matrix
-  StageCenteringCanvasTransform.compute = function ( canvasSize, stageSize ) {
+  StageCenteringCanvasTransform.compute = function( canvasSize, stageSize ) {
     var sx = canvasSize.width / stageSize.width;
     var sy = canvasSize.height / stageSize.height;
 
@@ -53,11 +53,11 @@ define( function( require ) {
   StageCenteringCanvasTransform.prototype = {
     constructor: StageCenteringCanvasTransform,
 
-    fieldOfViewYFactor: function () {
+    fieldOfViewYFactor: function() {
       return StageCenteringCanvasTransform.fieldOfViewYFactor( this.canvasSizeProperty.get(), this.stageSize );
     },
 
-    updateTransform: function () {
+    updateTransform: function() {
       var matrix4 = StageCenteringCanvasTransform.compute( this.canvasSizeProperty.get(), this.stageSize );
 
       this.transform.set( new Transform4( matrix4 ) );

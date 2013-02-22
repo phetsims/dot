@@ -20,7 +20,7 @@ define( function( require ) {
   var isArray = require( 'DOT/isArray' );
   var assert = require( 'DOT/assert' );
   
-  var Matrix = function ( m, n, filler, fast ) {
+  var Matrix = function( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
 
@@ -74,7 +74,7 @@ define( function( require ) {
   Matrix.prototype = {
     constructor: Matrix,
 
-    copy: function () {
+    copy: function() {
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.size; i++ ) {
         result.entries[i] = this.entries[i];
@@ -82,36 +82,36 @@ define( function( require ) {
       return result;
     },
 
-    getArray: function () {
+    getArray: function() {
       return this.entries;
     },
 
-    getArrayCopy: function () {
+    getArrayCopy: function() {
       return new Float32Array( this.entries );
     },
 
-    getRowDimension: function () {
+    getRowDimension: function() {
       return this.m;
     },
 
-    getColumnDimension: function () {
+    getColumnDimension: function() {
       return this.n;
     },
 
     // TODO: inline this places if we aren't using an inlining compiler! (check performance)
-    index: function ( i, j ) {
+    index: function( i, j ) {
       return i * this.n + j;
     },
 
-    get: function ( i, j ) {
+    get: function( i, j ) {
       return this.entries[this.index( i, j )];
     },
 
-    set: function ( i, j, s ) {
+    set: function( i, j, s ) {
       this.entries[this.index( i, j )] = s;
     },
 
-    getMatrix: function ( i0, i1, j0, j1 ) {
+    getMatrix: function( i0, i1, j0, j1 ) {
       var result = new Matrix( i1 - i0 + 1, j1 - j0 + 1 );
       for ( var i = i0; i <= i1; i++ ) {
         for ( var j = j0; j <= j1; j++ ) {
@@ -122,7 +122,7 @@ define( function( require ) {
     },
 
     // getMatrix (int[] r, int j0, int j1)
-    getArrayRowMatrix: function ( r, j0, j1 ) {
+    getArrayRowMatrix: function( r, j0, j1 ) {
       var result = new Matrix( r.length, j1 - j0 + 1 );
       for ( var i = 0; i < r.length; i++ ) {
         for ( var j = j0; j <= j1; j++ ) {
@@ -132,7 +132,7 @@ define( function( require ) {
       return result;
     },
 
-    transpose: function () {
+    transpose: function() {
       var result = new Matrix( this.n, this.m );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -142,7 +142,7 @@ define( function( require ) {
       return result;
     },
 
-    norm1: function () {
+    norm1: function() {
       var f = 0;
       for ( var j = 0; j < this.n; j++ ) {
         var s = 0;
@@ -154,11 +154,11 @@ define( function( require ) {
       return f;
     },
 
-    norm2: function () {
+    norm2: function() {
       return (new SingularValueDecomposition( this ).norm2());
     },
 
-    normInf: function () {
+    normInf: function() {
       var f = 0;
       for ( var i = 0; i < this.m; i++ ) {
         var s = 0;
@@ -170,7 +170,7 @@ define( function( require ) {
       return f;
     },
 
-    normF: function () {
+    normF: function() {
       var f = 0;
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -180,7 +180,7 @@ define( function( require ) {
       return f;
     },
 
-    uminus: function () {
+    uminus: function() {
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -190,7 +190,7 @@ define( function( require ) {
       return result;
     },
 
-    plus: function ( matrix ) {
+    plus: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
@@ -202,7 +202,7 @@ define( function( require ) {
       return result;
     },
 
-    plusEquals: function ( matrix ) {
+    plusEquals: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
@@ -214,7 +214,7 @@ define( function( require ) {
       return this;
     },
 
-    minus: function ( matrix ) {
+    minus: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
@@ -226,7 +226,7 @@ define( function( require ) {
       return result;
     },
 
-    minusEquals: function ( matrix ) {
+    minusEquals: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -237,7 +237,7 @@ define( function( require ) {
       return this;
     },
 
-    arrayTimes: function ( matrix ) {
+    arrayTimes: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
@@ -249,7 +249,7 @@ define( function( require ) {
       return result;
     },
 
-    arrayTimesEquals: function ( matrix ) {
+    arrayTimesEquals: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -260,7 +260,7 @@ define( function( require ) {
       return this;
     },
 
-    arrayRightDivide: function ( matrix ) {
+    arrayRightDivide: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
@@ -272,7 +272,7 @@ define( function( require ) {
       return result;
     },
 
-    arrayRightDivideEquals: function ( matrix ) {
+    arrayRightDivideEquals: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -283,7 +283,7 @@ define( function( require ) {
       return this;
     },
 
-    arrayLeftDivide: function ( matrix ) {
+    arrayLeftDivide: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
@@ -295,7 +295,7 @@ define( function( require ) {
       return result;
     },
 
-    arrayLeftDivideEquals: function ( matrix ) {
+    arrayLeftDivideEquals: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -306,7 +306,7 @@ define( function( require ) {
       return this;
     },
 
-    times: function ( matrixOrScalar ) {
+    times: function( matrixOrScalar ) {
       var result;
       var i, j, k, s;
       var matrix;
@@ -343,7 +343,7 @@ define( function( require ) {
       }
     },
 
-    timesEquals: function ( s ) {
+    timesEquals: function( s ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
@@ -353,32 +353,32 @@ define( function( require ) {
       return this;
     },
 
-    solve: function ( matrix ) {
+    solve: function( matrix ) {
       return (this.m === this.n ? (new LUDecomposition( this )).solve( matrix ) :
           (new QRDecomposition( this )).solve( matrix ));
     },
 
-    solveTranspose: function ( matrix ) {
+    solveTranspose: function( matrix ) {
       return this.transpose().solve( matrix.transpose() );
     },
 
-    inverse: function () {
+    inverse: function() {
       return this.solve( Matrix.identity( this.m, this.m ) );
     },
 
-    det: function () {
+    det: function() {
       return new LUDecomposition( this ).det();
     },
 
-    rank: function () {
+    rank: function() {
       return new SingularValueDecomposition( this ).rank();
     },
 
-    cond: function () {
+    cond: function() {
       return new SingularValueDecomposition( this ).cond();
     },
 
-    trace: function () {
+    trace: function() {
       var t = 0;
       for ( var i = 0; i < Math.min( this.m, this.n ); i++ ) {
         t += this.entries[ this.index( i, i ) ];
@@ -386,13 +386,13 @@ define( function( require ) {
       return t;
     },
 
-    checkMatrixDimensions: function ( matrix ) {
+    checkMatrixDimensions: function( matrix ) {
       if ( matrix.m !== this.m || matrix.n !== this.n ) {
         throw new Error( "Matrix dimensions must agree." );
       }
     },
 
-    toString: function () {
+    toString: function() {
       var result = "";
       result += "dim: " + this.getRowDimension() + "x" + this.getColumnDimension() + "\n";
       for ( var row = 0; row < this.getRowDimension(); row++ ) {
@@ -405,19 +405,19 @@ define( function( require ) {
     },
 
     // returns a vector that is contained in the specified column
-    extractVector2: function ( column ) {
+    extractVector2: function( column ) {
       assert( this.m === 2 ); // rows should match vector dimension
       return new Vector2( this.get( 0, column ), this.get( 1, column ) );
     },
 
     // returns a vector that is contained in the specified column
-    extractVector3: function ( column ) {
+    extractVector3: function( column ) {
       assert( this.m === 3 ); // rows should match vector dimension
       return new Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
     },
 
     // returns a vector that is contained in the specified column
-    extractVector4: function ( column ) {
+    extractVector4: function( column ) {
       assert( this.m === 4 ); // rows should match vector dimension
       return new Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
     },
@@ -425,7 +425,7 @@ define( function( require ) {
     isMatrix: true
   };
 
-  Matrix.identity = function ( m, n ) {
+  Matrix.identity = function( m, n ) {
     var result = new Matrix( m, n );
     for ( var i = 0; i < m; i++ ) {
       for ( var j = 0; j < n; j++ ) {
@@ -435,19 +435,19 @@ define( function( require ) {
     return result;
   };
 
-  Matrix.rowVector2 = function ( vector ) {
+  Matrix.rowVector2 = function( vector ) {
     return new Matrix( 1, 2, [vector.x, vector.y] );
   };
 
-  Matrix.rowVector3 = function ( vector ) {
+  Matrix.rowVector3 = function( vector ) {
     return new Matrix( 1, 3, [vector.x, vector.y, vector.z] );
   };
 
-  Matrix.rowVector4 = function ( vector ) {
+  Matrix.rowVector4 = function( vector ) {
     return new Matrix( 1, 4, [vector.x, vector.y, vector.z, vector.w] );
   };
 
-  Matrix.rowVector = function ( vector ) {
+  Matrix.rowVector = function( vector ) {
     if ( vector.isVector2 ) {
       return Matrix.rowVector2( vector );
     }
@@ -462,19 +462,19 @@ define( function( require ) {
     }
   };
 
-  Matrix.columnVector2 = function ( vector ) {
+  Matrix.columnVector2 = function( vector ) {
     return new Matrix( 2, 1, [vector.x, vector.y] );
   };
 
-  Matrix.columnVector3 = function ( vector ) {
+  Matrix.columnVector3 = function( vector ) {
     return new Matrix( 3, 1, [vector.x, vector.y, vector.z] );
   };
 
-  Matrix.columnVector4 = function ( vector ) {
+  Matrix.columnVector4 = function( vector ) {
     return new Matrix( 4, 1, [vector.x, vector.y, vector.z, vector.w] );
   };
 
-  Matrix.columnVector = function ( vector ) {
+  Matrix.columnVector = function( vector ) {
     if ( vector.isVector2 ) {
       return Matrix.columnVector2( vector );
     }
@@ -493,7 +493,7 @@ define( function( require ) {
    * Create a Matrix where each column is a vector
    */
 
-  Matrix.fromVectors2 = function ( vectors ) {
+  Matrix.fromVectors2 = function( vectors ) {
     var dimension = 2;
     var n = vectors.length;
     var data = new Float32Array( dimension * n );
@@ -507,7 +507,7 @@ define( function( require ) {
     return new Matrix( dimension, n, data, true );
   };
 
-  Matrix.fromVectors3 = function ( vectors ) {
+  Matrix.fromVectors3 = function( vectors ) {
     var dimension = 3;
     var n = vectors.length;
     var data = new Float32Array( dimension * n );
@@ -522,7 +522,7 @@ define( function( require ) {
     return new Matrix( dimension, n, data, true );
   };
 
-  Matrix.fromVectors4 = function ( vectors ) {
+  Matrix.fromVectors4 = function( vectors ) {
     var dimension = 4;
     var n = vectors.length;
     var data = new Float32Array( dimension * n );

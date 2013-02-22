@@ -13,7 +13,7 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var Matrix4 = require( 'DOT/Matrix4' );
   
-  var Matrix3 = function ( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+  var Matrix3 = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
 
     // entries stored in column-major format
     this.entries = new Array( 9 );
@@ -39,23 +39,23 @@ define( function( require ) {
 
   var Types = Matrix3.Types;
 
-  Matrix3.identity = function () {
+  Matrix3.identity = function() {
     return new Matrix3( 1, 0, 0,
               0, 1, 0,
               0, 0, 1,
               Types.IDENTITY );
   };
 
-  Matrix3.translation = function ( x, y ) {
+  Matrix3.translation = function( x, y ) {
     return new Matrix3( 1, 0, x,
               0, 1, y,
               0, 0, 1,
               Types.TRANSLATION_2D );
   };
 
-  Matrix3.translationFromVector = function ( v ) { return Matrix3.translation( v.x, v.y ); };
+  Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
 
-  Matrix3.scaling = function ( x, y ) {
+  Matrix3.scaling = function( x, y ) {
     // allow using one parameter to scale everything
     y = y === undefined ? x : y;
 
@@ -66,7 +66,7 @@ define( function( require ) {
   };
 
   // axis is a normalized Vector3, angle in radians.
-  Matrix3.rotationAxisAngle = function ( axis, angle ) {
+  Matrix3.rotationAxisAngle = function( axis, angle ) {
     var c = Math.cos( angle );
     var s = Math.sin( angle );
     var C = 1 - c;
@@ -79,7 +79,7 @@ define( function( require ) {
 
   // TODO: add in rotation from quaternion, and from quat + translation
 
-  Matrix3.rotationX = function ( angle ) {
+  Matrix3.rotationX = function( angle ) {
     var c = Math.cos( angle );
     var s = Math.sin( angle );
 
@@ -89,7 +89,7 @@ define( function( require ) {
               Types.OTHER );
   };
 
-  Matrix3.rotationY = function ( angle ) {
+  Matrix3.rotationY = function( angle ) {
     var c = Math.cos( angle );
     var s = Math.sin( angle );
 
@@ -99,7 +99,7 @@ define( function( require ) {
               Types.OTHER );
   };
 
-  Matrix3.rotationZ = function ( angle ) {
+  Matrix3.rotationZ = function( angle ) {
     var c = Math.cos( angle );
     var s = Math.sin( angle );
 
@@ -112,7 +112,7 @@ define( function( require ) {
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
   
-  Matrix3.fromSVGMatrix = function ( svgMatrix ) {
+  Matrix3.fromSVGMatrix = function( svgMatrix ) {
     return new Matrix3( svgMatrix.a, svgMatrix.c, svgMatrix.e,
               svgMatrix.b, svgMatrix.d, svgMatrix.f,
               0, 0, 1,
@@ -120,7 +120,7 @@ define( function( require ) {
   };
 
   // a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-  Matrix3.rotateAToB = function ( a, b ) {
+  Matrix3.rotateAToB = function( a, b ) {
     // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
     var start = a;
     var end = b;
@@ -202,7 +202,7 @@ define( function( require ) {
   Matrix3.prototype = {
     constructor: Matrix3,
 
-    rowMajor: function ( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+    rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
       this.entries[0] = v00;
       this.entries[1] = v10;
       this.entries[2] = v20;
@@ -217,22 +217,22 @@ define( function( require ) {
       this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
     },
 
-    columnMajor: function ( v00, v10, v20, v01, v11, v21, v02, v12, v22, type ) {
+    columnMajor: function( v00, v10, v20, v01, v11, v21, v02, v12, v22, type ) {
       this.rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
     },
 
     // convenience getters. inline usages of these when performance is critical? TODO: test performance of inlining these, with / without closure compiler
-    m00: function () { return this.entries[0]; },
-    m01: function () { return this.entries[3]; },
-    m02: function () { return this.entries[6]; },
-    m10: function () { return this.entries[1]; },
-    m11: function () { return this.entries[4]; },
-    m12: function () { return this.entries[7]; },
-    m20: function () { return this.entries[2]; },
-    m21: function () { return this.entries[5]; },
-    m22: function () { return this.entries[8]; },
+    m00: function() { return this.entries[0]; },
+    m01: function() { return this.entries[3]; },
+    m02: function() { return this.entries[6]; },
+    m10: function() { return this.entries[1]; },
+    m11: function() { return this.entries[4]; },
+    m12: function() { return this.entries[7]; },
+    m20: function() { return this.entries[2]; },
+    m21: function() { return this.entries[5]; },
+    m22: function() { return this.entries[8]; },
 
-    plus: function ( m ) {
+    plus: function( m ) {
       return new Matrix3(
           this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
           this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
@@ -240,7 +240,7 @@ define( function( require ) {
       );
     },
 
-    minus: function ( m ) {
+    minus: function( m ) {
       return new Matrix3(
           this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
           this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
@@ -248,19 +248,19 @@ define( function( require ) {
       );
     },
 
-    transposed: function () {
+    transposed: function() {
       return new Matrix3( this.m00(), this.m10(), this.m20(),
                 this.m01(), this.m11(), this.m21(),
                 this.m02(), this.m12(), this.m22(), ( this.type === Types.IDENTITY || this.type === Types.SCALING ) ? this.type : undefined );
     },
 
-    negated: function () {
+    negated: function() {
       return new Matrix3( -this.m00(), -this.m01(), -this.m02(),
                 -this.m10(), -this.m11(), -this.m12(),
                 -this.m20(), -this.m21(), -this.m22() );
     },
 
-    inverted: function () {
+    inverted: function() {
       // TODO: optimizations for matrix types (like identity)
 
       var det = this.determinant();
@@ -284,7 +284,7 @@ define( function( require ) {
       }
     },
 
-    timesMatrix: function ( m ) {
+    timesMatrix: function( m ) {
       // I * M === M * I === I (the identity)
       if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
         return this.type === Types.IDENTITY ? m : this;
@@ -336,26 +336,26 @@ define( function( require ) {
       return new Vector2( x, y );
     },
 
-    timesVector3: function ( v ) {
+    timesVector3: function( v ) {
       var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
       var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
       var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
       return new Vector3( x, y, z );
     },
 
-    timesTransposeVector2: function ( v ) {
+    timesTransposeVector2: function( v ) {
       var x = this.m00() * v.x + this.m10() * v.y;
       var y = this.m01() * v.x + this.m11() * v.y;
       return new Vector2( x, y );
     },
 
-    timesRelativeVector2: function ( v ) {
+    timesRelativeVector2: function( v ) {
       var x = this.m00() * v.x + this.m10() * v.y;
       var y = this.m01() * v.y + this.m11() * v.y;
       return new Vector2( x, y );
     },
 
-    determinant: function () {
+    determinant: function() {
       return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
     },
     
@@ -363,21 +363,21 @@ define( function( require ) {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
     },
 
-    toString: function () {
+    toString: function() {
       return this.m00() + " " + this.m01() + " " + this.m02() + "\n" +
            this.m10() + " " + this.m11() + " " + this.m12() + "\n" +
            this.m20() + " " + this.m21() + " " + this.m22();
     },
 
-    toMatrix4: function () {
+    toMatrix4: function() {
       return new Matrix4( this.m00(), this.m01(), this.m02(), 0,
                       this.m10(), this.m11(), this.m12(), 0,
                       this.m20(), this.m21(), this.m22(), 0,
                       0, 0, 0, 1 );
     },
 
-    translation: function () { return new Vector2( this.m02(), this.m12() ); },
-    scaling: function () { return new Vector3( this.m00(), this.m11(), this.m22() );},
+    translation: function() { return new Vector2( this.m02(), this.m12() ); },
+    scaling: function() { return new Vector3( this.m00(), this.m11(), this.m22() );},
     
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
     rotation: function() {
@@ -385,13 +385,13 @@ define( function( require ) {
       return Math.atan2( transformedVector.y, transformedVector.x );
     },
     
-    makeImmutable: function () {
-      this.rowMajor = function () {
+    makeImmutable: function() {
+      this.rowMajor = function() {
         throw new Error( "Cannot modify immutable matrix" );
       };
     },
     
-    toSVGMatrix: function () {
+    toSVGMatrix: function() {
       var result = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGMatrix();
       
       // top two rows

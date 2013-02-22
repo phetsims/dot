@@ -12,7 +12,7 @@ define( function( require ) {
   var Matrix = require( 'DOT/Matrix' );
   var Float32Array = require( 'COMMON/Float32Array' );
 
-  var QRDecomposition = function ( matrix ) {
+  var QRDecomposition = function( matrix ) {
     this.matrix = matrix;
 
     // TODO: size!
@@ -64,7 +64,7 @@ define( function( require ) {
   QRDecomposition.prototype = {
     constructor: QRDecomposition,
 
-    isFullRank: function () {
+    isFullRank: function() {
       for ( var j = 0; j < this.n; j++ ) {
         if ( this.Rdiag[j] === 0 ) {
           return false;
@@ -73,7 +73,7 @@ define( function( require ) {
       return true;
     },
 
-    getH: function () {
+    getH: function() {
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -88,7 +88,7 @@ define( function( require ) {
       return result;
     },
 
-    getR: function () {
+    getR: function() {
       var result = new Matrix( this.n, this.n );
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
@@ -106,7 +106,7 @@ define( function( require ) {
       return result;
     },
 
-    getQ: function () {
+    getQ: function() {
       var i, j, k;
       var result = new Matrix( this.m, this.n );
       for ( k = this.n - 1; k >= 0; k-- ) {
@@ -130,7 +130,7 @@ define( function( require ) {
       return result;
     },
 
-    solve: function ( matrix ) {
+    solve: function( matrix ) {
       if ( matrix.getRowDimension() !== this.m ) {
         throw new Error( "Matrix row dimensions must agree." );
       }

@@ -13,7 +13,7 @@ define( function( require ) {
   var clamp = require( 'DOT/clamp' );
   var Vector3 = require( 'DOT/Vector3' );
   
-  var Vector4 = function ( x, y, z, w ) {
+  var Vector4 = function( x, y, z, w ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
@@ -24,15 +24,15 @@ define( function( require ) {
   Vector4.prototype = {
     constructor: Vector4,
 
-    magnitude: function () {
+    magnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
     },
 
-    magnitudeSquared: function () {
+    magnitudeSquared: function() {
       this.dot( this );
     },
 
-    dot: function ( v ) {
+    dot: function( v ) {
       return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
     },
 
@@ -40,7 +40,7 @@ define( function( require ) {
      * Immutables
      *----------------------------------------------------------------------------*/
 
-    normalized: function () {
+    normalized: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
@@ -50,7 +50,7 @@ define( function( require ) {
       }
     },
 
-    timesScalar: function ( scalar ) {
+    timesScalar: function( scalar ) {
       return new Vector4( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
     },
 
@@ -60,43 +60,43 @@ define( function( require ) {
       return this.timesScalar( scalar );
     },
 
-    componentTimes: function ( v ) {
+    componentTimes: function( v ) {
       return new Vector4( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
     },
 
-    plus: function ( v ) {
+    plus: function( v ) {
       return new Vector4( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
     },
 
-    plusScalar: function ( scalar ) {
+    plusScalar: function( scalar ) {
       return new Vector4( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
     },
 
-    minus: function ( v ) {
+    minus: function( v ) {
       return new Vector4( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
     },
 
-    minusScalar: function ( scalar ) {
+    minusScalar: function( scalar ) {
       return new Vector4( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
     },
 
-    dividedScalar: function ( scalar ) {
+    dividedScalar: function( scalar ) {
       return new Vector4( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
     },
 
-    negated: function () {
+    negated: function() {
       return new Vector4( -this.x, -this.y, -this.z, -this.w );
     },
 
-    angleBetween: function ( v ) {
+    angleBetween: function( v ) {
       return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
 
-    toString: function () {
+    toString: function() {
       return "Vector4(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";
     },
 
-    toVector3: function () {
+    toVector3: function() {
       return new Vector3( this.x, this.y, this.z );
     },
 
@@ -104,86 +104,86 @@ define( function( require ) {
      * Mutables
      *----------------------------------------------------------------------------*/
 
-    set: function ( x, y, z, w ) {
+    set: function( x, y, z, w ) {
       this.x = x;
       this.y = y;
       this.z = z;
       this.w = w;
     },
 
-    setX: function ( x ) {
+    setX: function( x ) {
       this.x = x;
     },
 
-    setY: function ( y ) {
+    setY: function( y ) {
       this.y = y;
     },
 
-    setZ: function ( z ) {
+    setZ: function( z ) {
       this.z = z;
     },
 
-    setW: function ( w ) {
+    setW: function( w ) {
       this.w = w;
     },
 
-    copy: function ( v ) {
+    copy: function( v ) {
       this.x = v.x;
       this.y = v.y;
       this.z = v.z;
       this.w = v.w;
     },
 
-    add: function ( v ) {
+    add: function( v ) {
       this.x += v.x;
       this.y += v.y;
       this.z += v.z;
       this.w += v.w;
     },
 
-    addScalar: function ( scalar ) {
+    addScalar: function( scalar ) {
       this.x += scalar;
       this.y += scalar;
       this.z += scalar;
       this.w += scalar;
     },
 
-    subtract: function ( v ) {
+    subtract: function( v ) {
       this.x -= v.x;
       this.y -= v.y;
       this.z -= v.z;
       this.w -= v.w;
     },
 
-    subtractScalar: function ( scalar ) {
+    subtractScalar: function( scalar ) {
       this.x -= scalar;
       this.y -= scalar;
       this.z -= scalar;
       this.w -= scalar;
     },
 
-    componentMultiply: function ( v ) {
+    componentMultiply: function( v ) {
       this.x *= v.x;
       this.y *= v.y;
       this.z *= v.z;
       this.w *= v.w;
     },
 
-    divideScalar: function ( scalar ) {
+    divideScalar: function( scalar ) {
       this.x /= scalar;
       this.y /= scalar;
       this.z /= scalar;
       this.w /= scalar;
     },
 
-    negate: function () {
+    negate: function() {
       this.x = -this.x;
       this.y = -this.y;
       this.z = -this.z;
       this.w = -this.w;
     },
 
-    equals: function ( other, epsilon ) {
+    equals: function( other, epsilon ) {
       if ( !epsilon ) {
         epsilon = 0;
       }
@@ -199,7 +199,7 @@ define( function( require ) {
   /*---------------------------------------------------------------------------*
    * Immutable Vector form
    *----------------------------------------------------------------------------*/
-  Vector4.Immutable = function ( x, y, z, w ) {
+  Vector4.Immutable = function( x, y, z, w ) {
     this.x = x || 0;
     this.y = y || 0;
     this.z = z || 0;
@@ -211,8 +211,8 @@ define( function( require ) {
   Immutable.prototype.constructor = Immutable;
 
   // throw errors whenever a mutable method is called on our immutable vector
-  Immutable.mutableOverrideHelper = function ( mutableFunctionName ) {
-    Immutable.prototype[mutableFunctionName] = function () {
+  Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
+    Immutable.prototype[mutableFunctionName] = function() {
       throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector4" );
     };
   };
