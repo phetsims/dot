@@ -1,0 +1,9 @@
+
+Building / testing with Require.js
+Grunt compilation into standalone form with require.js's wrap, probably with almond?
+Unit tests and linting - create HTML as standard for QUnit and JSHint a la Scenery, but also have it hookable into the build process
+
+
+Output SVGMatrix easily
+Add mutable style, and possibly a flag to see whether something has been modified?
+Investigate math library alternatives, like Numeric JS
