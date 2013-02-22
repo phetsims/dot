@@ -13,25 +13,34 @@ module.exports = function( grunt ) {
     },
     
     concat: {
-      "dist/debug/dot.js": [
-        "contrib/almond/almond.js",
-        "dist/debug/dot.js"
-      ]
+      development: {
+        "dist/debug/dot.js": [
+          "contrib/almond/almond.js",
+          "dist/debug/dot.js"
+        ]
+      },
+      
+      production: {
+        almond: true,
+        
+      }
     },
     
     uglify: {
-      options: {
-        // source map
-        sourceMap: 'dist/release/dot.min.js.map'
-      },
-      build: {
-        src: 'dist/debug/dot.js',
-        dest: 'dist/release/dot.min.js'
+      development: {
+        options: {
+          // source map
+          sourceMap: 'dist/release/dot.min.js.map'
+        },
+        build: {
+          src: 'dist/debug/dot.js',
+          dest: 'dist/release/dot.min.js'
+        }
       }
     },
     
     requirejs: {
-      compile: {
+      development: {
         options: {
           mainConfigFile: "js/config.js",
           out: "dist/debug/dot.js",
@@ -41,6 +50,21 @@ module.exports = function( grunt ) {
             end: " window.dot = require( 'main' ); }());"
           },
           optimize: 'none'
+        }
+      },
+      production: {
+        options: {
+          mainConfigFile: "js/config.js",
+          almond: true,
+          out: "dist/production/dot.min.js",
+          name: "config",
+          optimize: 'uglify2',
+          generateSourceMaps: true,
+          preserveLicenseComments: false,
+          wrap: {
+            start: "(function() {",
+            end: " window.dot = require( 'main' ); }());"
+          }
         }
       }
     },
@@ -71,7 +95,9 @@ module.exports = function( grunt ) {
   } );
   
   // Default task.
-  grunt.registerTask( 'default', [ 'requirejs', 'concat', 'uglify' ] );
+  grunt.registerTask( 'default', [ 'production' ] );
+  grunt.registerTask( 'production', [ 'requirejs:production' ] );
+  grunt.registerTask( 'development', [ 'requirejs:development', 'concat:development', 'uglify:development' ] );
   grunt.loadNpmTasks( 'grunt-contrib-requirejs' );
   grunt.loadNpmTasks( 'grunt-contrib-concat' );
   grunt.loadNpmTasks( 'grunt-contrib-uglify' );
