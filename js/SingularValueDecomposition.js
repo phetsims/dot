@@ -9,7 +9,10 @@
 define( function( require ) {
   "use strict";
   
-  var Matrix = require( 'DOT/Matrix' );
+  var Matrix = function( m, n, filler, fast ) {
+    Matrix = require( 'DOT/Matrix' );
+    return new Matrix( m, n, filler, fast );
+  };
 
   var SingularValueDecomposition = function( matrix ) {
     this.matrix = matrix;

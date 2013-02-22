@@ -10,9 +10,18 @@ define( function( require ) {
   "use strict";
   
   // so we can override it with a different array type
-  var SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );
-  var LUDecomposition = require( 'DOT/LUDecomposition' );
-  var QRDecomposition = require( 'DOT/QRDecomposition' );
+  var SingularValueDecomposition = function( matrix ) {
+    SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );
+    return new SingularValueDecomposition( matrix );
+  };
+  var LUDecomposition = function( matrix ) {
+    LUDecomposition = require( 'DOT/LUDecomposition' );
+    return new LUDecomposition( matrix );
+  };
+  var QRDecomposition = function( matrix ) {
+    QRDecomposition = require( 'DOT/QRDecomposition' );
+    return new QRDecomposition( matrix );
+  };
   var Vector2 = require( 'DOT/Vector2' );
   var Vector3 = require( 'DOT/Vector3' );
   var Vector4 = require( 'DOT/Vector4' );
