@@ -9,7 +9,7 @@
 define( function( require ) {
   "use strict";
   
-  var assert = require( 'DOT/assert' );
+  var assert = require( 'ASSERT' )( 'dot' );
   var rangeInclusive = require( 'DOT/rangeInclusive' );
   var isArray = require( 'DOT/isArray' );
 

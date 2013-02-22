@@ -1,0 +1,3 @@
+[submodule "common/assert"]
+	path = common/assert
+	url = https://github.com/phetsims/assert.git

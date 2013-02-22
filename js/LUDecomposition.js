@@ -10,7 +10,6 @@ define( function( require ) {
   "use strict";
   
   var Matrix = require( 'DOT/Matrix' );
-  var Float32Array = require( 'COMMON/Float32Array' );
 
   var LUDecomposition = function( matrix ) {
     var i, j, k;

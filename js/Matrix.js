@@ -10,7 +10,6 @@ define( function( require ) {
   "use strict";
   
   // so we can override it with a different array type
-  var Float32Array = require( 'COMMON/Float32Array' );
   var SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );
   var LUDecomposition = require( 'DOT/LUDecomposition' );
   var QRDecomposition = require( 'DOT/QRDecomposition' );
@@ -18,7 +17,7 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var Vector4 = require( 'DOT/Vector4' );
   var isArray = require( 'DOT/isArray' );
-  var assert = require( 'DOT/assert' );
+  var assert = require( 'ASSERT' )( 'dot' );
   
   var Matrix = function( m, n, filler, fast ) {
     this.m = m;
