@@ -21,10 +21,8 @@ module.exports = function( grunt ) {
     
     uglify: {
       standalone: {
-        build: {
-          src: [ 'dist/standalone/dot.min.js' ],
-          dest: 'dist/standalone/dot.min.js'
-        }
+        src: [ 'dist/standalone/dot.min.js' ],
+        dest: 'dist/standalone/dot.min.js'
       }
     },
     
