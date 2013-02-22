@@ -9,12 +9,10 @@
 define( function( require ) {
   "use strict";
   
-  phet.math.Dimension2 = function( width, height ) {
+  var Dimension2 = function( width, height ) {
     this.width = width;
     this.height = height;
   };
-
-  var Dimension2 = phet.math.Dimension2;
 
   Dimension2.prototype = {
     constructor: Dimension2,
