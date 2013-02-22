@@ -1,6 +1,9 @@
 
 Building / testing with Require.js
 Grunt compilation into standalone form with require.js's wrap, probably with almond?
+  Wrap outside of almond
+  Looks like we need to use the require.js optimizer to do the minification (hybrid?), wrapping, source map, etc. to do it right.
+    See https://github.com/jrburke/r.js/blob/master/build/example.build.js
   Different targets for debug and release, instead of the 'hardcoded' way right now.
   API export
   Source maps
