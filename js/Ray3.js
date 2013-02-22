@@ -9,12 +9,10 @@
 define( function( require ) {
   "use strict";
 
-  phet.math.Ray3 = function ( pos, dir ) {
+  var Ray3 = function ( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
   };
-
-  var Ray3 = phet.math.Ray3;
 
   Ray3.prototype = {
     constructor: Ray3,
@@ -31,4 +29,6 @@ define( function( require ) {
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };
+  
+  return Ray3;
 } );

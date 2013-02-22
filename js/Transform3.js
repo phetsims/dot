@@ -9,16 +9,15 @@
 define( function( require ) {
   "use strict";
 
-  var Matrix3 = phet.math.Matrix3;
-  var Vector2 = phet.math.Vector2;
+  var assert = require( 'DOT/assert' );
+  var Matrix3 = require( 'DOT/Matrix3' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // takes a 4x4 matrix
-  phet.math.Transform3 = function( matrix ) {
+  var Transform3 = function( matrix ) {
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
     this.set( matrix === undefined ? Matrix3.IDENTITY : matrix );
   };
-
-  var Transform3 = phet.math.Transform3;
 
   Transform3.prototype = {
     constructor: Transform3,
@@ -28,7 +27,7 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     set: function( matrix ) {
-      phet.assert( matrix instanceof phet.math.Matrix3 );
+      assert( matrix instanceof Matrix3 );
       this.matrix = matrix;
       
       // compute these lazily
@@ -158,4 +157,6 @@ define( function( require ) {
       return shape.transformed( this.getInverse() );
     }
   };
+  
+  return Transform3;
 } );

@@ -9,9 +9,18 @@
 define( function( require ) {
   "use strict";
   
-  var Float32Array = phet.Float32Array;
+  // so we can override it with a different array type
+  var Float32Array = require( 'COMMON/Float32Array' );
+  var SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );
+  var LUDecomposition = require( 'DOT/LUDecomposition' );
+  var QRDecomposition = require( 'DOT/QRDecomposition' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var Vector4 = require( 'DOT/Vector4' );
+  var isArray = require( 'DOT/isArray' );
+  var assert = require( 'DOT/assert' );
   
-  phet.math.Matrix = function ( m, n, filler, fast ) {
+  var Matrix = function ( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
 
@@ -30,8 +39,8 @@ define( function( require ) {
       // entries stored in row-major format
       this.entries = new Float32Array( size );
 
-      if ( phet.util.isArray( filler ) ) {
-        phet.assert( filler.length === size );
+      if ( isArray( filler ) ) {
+        assert( filler.length === size );
 
         for ( i = 0; i < size; i++ ) {
           this.entries[i] = filler[i];
@@ -44,8 +53,6 @@ define( function( require ) {
       }
     }
   };
-
-  var Matrix = phet.math.Matrix;
 
   /** sqrt(a^2 + b^2) without under/overflow. **/
   Matrix.hypot = function hypot( a, b ) {
@@ -148,7 +155,7 @@ define( function( require ) {
     },
 
     norm2: function () {
-      return (new phet.math.SingularValueDecomposition( this ).norm2());
+      return (new SingularValueDecomposition( this ).norm2());
     },
 
     normInf: function () {
@@ -347,8 +354,8 @@ define( function( require ) {
     },
 
     solve: function ( matrix ) {
-      return (this.m === this.n ? (new phet.math.LUDecomposition( this )).solve( matrix ) :
-          (new phet.math.QRDecomposition( this )).solve( matrix ));
+      return (this.m === this.n ? (new LUDecomposition( this )).solve( matrix ) :
+          (new QRDecomposition( this )).solve( matrix ));
     },
 
     solveTranspose: function ( matrix ) {
@@ -360,15 +367,15 @@ define( function( require ) {
     },
 
     det: function () {
-      return new phet.math.LUDecomposition( this ).det();
+      return new LUDecomposition( this ).det();
     },
 
     rank: function () {
-      return new phet.math.SingularValueDecomposition( this ).rank();
+      return new SingularValueDecomposition( this ).rank();
     },
 
     cond: function () {
-      return new phet.math.SingularValueDecomposition( this ).cond();
+      return new SingularValueDecomposition( this ).cond();
     },
 
     trace: function () {
@@ -399,20 +406,20 @@ define( function( require ) {
 
     // returns a vector that is contained in the specified column
     extractVector2: function ( column ) {
-      phet.assert( this.m === 2 ); // rows should match vector dimension
-      return new phet.math.Vector2( this.get( 0, column ), this.get( 1, column ) );
+      assert( this.m === 2 ); // rows should match vector dimension
+      return new Vector2( this.get( 0, column ), this.get( 1, column ) );
     },
 
     // returns a vector that is contained in the specified column
     extractVector3: function ( column ) {
-      phet.assert( this.m === 3 ); // rows should match vector dimension
-      return new phet.math.Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
+      assert( this.m === 3 ); // rows should match vector dimension
+      return new Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
     },
 
     // returns a vector that is contained in the specified column
     extractVector4: function ( column ) {
-      phet.assert( this.m === 4 ); // rows should match vector dimension
-      return new phet.math.Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
+      assert( this.m === 4 ); // rows should match vector dimension
+      return new Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
     },
 
     isMatrix: true
@@ -530,5 +537,6 @@ define( function( require ) {
 
     return new Matrix( dimension, n, data, true );
   };
-
+  
+  return Matrix;
 } );

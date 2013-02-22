@@ -9,16 +9,15 @@
 define( function( require ) {
   "use strict";
 
-  var Matrix4 = phet.math.Matrix4;
-  var Vector3 = phet.math.Vector3;
+  var Matrix4 = require( 'DOT/Matrix4' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var Ray3 = require( 'DOT/Ray3' );
 
   // takes a 4x4 matrix
-  phet.math.Transform4 = function ( matrix ) {
+  var Transform4 = function ( matrix ) {
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
     this.set( matrix === undefined ? Matrix4.IDENTITY : matrix );
   };
-
-  var Transform4 = phet.math.Transform4;
 
   Transform4.prototype = {
     constructor: Transform4,
@@ -114,7 +113,7 @@ define( function( require ) {
     },
 
     transformRay: function ( ray ) {
-      return new phet.math.Ray3(
+      return new Ray3(
           this.transformPosition3( ray.pos ),
           this.transformPosition3( ray.pos.plus( ray.dir ) ).minus( this.transformPosition3( ray.pos ) ) );
     },
@@ -149,10 +148,12 @@ define( function( require ) {
     },
 
     inverseRay: function ( ray ) {
-      return new phet.math.Ray3(
+      return new Ray3(
           this.inversePosition3( ray.pos ),
           this.inversePosition3( ray.pos.plus( ray.dir ) ).minus( this.inversePosition3( ray.pos ) )
       );
     }
   };
+  
+  return Transform4;
 } );

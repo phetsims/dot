@@ -8,17 +8,17 @@
 
 define( function( require ) {
   "use strict";
+  
+  var debugAssert = require( 'DOT/debugAssert' );
 
-  phet.math.Ray2 = function ( pos, dir ) {
+  var Ray2 = function ( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
     
-    phet.debugAssert( function() {
+    debugAssert( function() {
       return Math.abs( dir.magnitude() - 1 ) < 0.01;
     } );
   };
-
-  var Ray2 = phet.math.Ray2;
 
   Ray2.prototype = {
     constructor: Ray2,
@@ -35,4 +35,6 @@ define( function( require ) {
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };
+  
+  return Ray2;
 } );

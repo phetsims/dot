@@ -8,22 +8,23 @@
 
 define( function( require ) {
   "use strict";
+  
+  var assert = require( 'DOT/assert' );
+  var clamp = require( 'DOT/clamp' );
+  var Vector3 = require( 'DOT/Vector3' );
 
-  phet.math.Vector2 = function ( x, y ) {
+  var Vector2 = function ( x, y ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
   };
 
-  // shortcut within the scope
-  var Vector2 = phet.math.Vector2;
-
   Vector2.createPolar = function ( magnitude, angle ) {
     return new Vector2( Math.cos( angle ), Math.sin( angle ) ).timesScalar( magnitude );
   };
 
-  phet.math.Vector2.prototype = {
-    constructor: phet.math.Vector2,
+  Vector2.prototype = {
+    constructor: Vector2,
 
     magnitude: function () {
       return Math.sqrt( this.magnitudeSquared() );
@@ -61,7 +62,7 @@ define( function( require ) {
 
     times: function( scalar ) {
       // make sure it's not a vector!
-      phet.assert( scalar.dimension === undefined );
+      assert( scalar.dimension === undefined );
       return this.timesScalar( scalar );
     },
 
@@ -103,7 +104,7 @@ define( function( require ) {
     },
 
     angleBetween: function ( v ) {
-      return Math.acos( phet.math.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+      return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
 
 
@@ -116,7 +117,7 @@ define( function( require ) {
     },
 
     toVector3: function () {
-      return new phet.math.Vector3( this.x, this.y );
+      return new Vector3( this.x, this.y );
     },
 
     /*---------------------------------------------------------------------------*
@@ -198,7 +199,7 @@ define( function( require ) {
   };
   var Immutable = Vector2.Immutable;
 
-  Immutable.prototype = new phet.math.Vector2();
+  Immutable.prototype = new Vector2();
   Immutable.prototype.constructor = Immutable;
 
   // throw errors whenever a mutable method is called on our immutable vector
@@ -225,4 +226,6 @@ define( function( require ) {
   Vector2.ZERO = new Immutable( 0, 0 );
   Vector2.X_UNIT = new Immutable( 1, 0 );
   Vector2.Y_UNIT = new Immutable( 0, 1 );
+  
+  return Vector2;
 } );

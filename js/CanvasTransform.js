@@ -9,20 +9,20 @@
 define( function( require ) {
   "use strict";
 
-  var Matrix4 = phet.math.Matrix4;
+  var Matrix4 = require( 'DOT/Matrix4' );
+  var Transform4 = require( 'DOT/Transform4' );
+  var Property = require( 'COMMON/model/property' );
 
-  phet.math.StageCenteringCanvasTransform = function ( canvasSizeProperty, stageSize ) {
+  var StageCenteringCanvasTransform = function ( canvasSizeProperty, stageSize ) {
     this.canvasSizeProperty = canvasSizeProperty;
     this.stageSize = stageSize;
-    this.transform = new phet.model.Property( null ); // updated by the listener below
+    this.transform = new Property( null ); // updated by the listener below
 
     var that = this;
     canvasSizeProperty.addObserver( function () {
       that.updateTransform();
     }, true );
   };
-
-  var StageCenteringCanvasTransform = phet.math.StageCenteringCanvasTransform;
 
   // due to various scaling intricacies and the default way of constructing a perspective projection matrix
   StageCenteringCanvasTransform.fieldOfViewYFactor = function ( canvasSize, stageSize ) {
@@ -60,7 +60,9 @@ define( function( require ) {
     updateTransform: function () {
       var matrix4 = StageCenteringCanvasTransform.compute( this.canvasSizeProperty.get(), this.stageSize );
 
-      this.transform.set( new phet.math.Transform4( matrix4 ) );
+      this.transform.set( new Transform4( matrix4 ) );
     }
   };
+  
+  return StageCenteringCanvasTransform;
 } );

@@ -9,10 +9,10 @@
 define( function( require ) {
   "use strict";
   
-  var Matrix = phet.math.Matrix;
-  var Float32Array = phet.Float32Array;
+  var Matrix = require( 'DOT/Matrix' );
+  var Float32Array = require( 'COMMON/Float32Array' );
 
-  phet.math.QRDecomposition = function ( matrix ) {
+  var QRDecomposition = function ( matrix ) {
     this.matrix = matrix;
 
     // TODO: size!
@@ -60,8 +60,6 @@ define( function( require ) {
       this.Rdiag[k] = -nrm;
     }
   };
-
-  var QRDecomposition = phet.math.QRDecomposition;
 
   QRDecomposition.prototype = {
     constructor: QRDecomposition,
@@ -174,4 +172,6 @@ define( function( require ) {
       return new Matrix( X, this.n, nx ).getMatrix( 0, this.n - 1, 0, nx - 1 );
     }
   };
+  
+  return QRDecomposition;
 } );

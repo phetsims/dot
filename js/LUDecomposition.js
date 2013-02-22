@@ -9,10 +9,10 @@
 define( function( require ) {
   "use strict";
   
-  var Matrix = phet.math.Matrix;
-  var Float32Array = phet.Float32Array;
+  var Matrix = require( 'DOT/Matrix' );
+  var Float32Array = require( 'COMMON/Float32Array' );
 
-  phet.math.LUDecomposition = function ( matrix ) {
+  var LUDecomposition = function ( matrix ) {
     var i, j, k;
 
     this.matrix = matrix;
@@ -86,8 +86,6 @@ define( function( require ) {
       }
     }
   };
-
-  var LUDecomposition = phet.math.LUDecomposition;
 
   LUDecomposition.prototype = {
     constructor: LUDecomposition,
@@ -198,4 +196,6 @@ define( function( require ) {
       return Xmat;
     }
   };
+  
+  return LUDecomposition;
 } );

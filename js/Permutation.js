@@ -8,18 +8,19 @@
 
 define( function( require ) {
   "use strict";
+  
+  var assert = require( 'DOT/assert' );
+  var rangeInclusive = require( 'DOT/rangeInclusive' );
+  var isArray = require( 'DOT/isArray' );
 
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
-  phet.math.Permutation = function ( indices ) {
+  var Permutation = function( indices ) {
     this.indices = indices;
   };
 
-  // shortcut within the scope
-  var Permutation = phet.math.Permutation;
-
   // An identity permutation with a specific number of elements
-  Permutation.identity = function ( size ) {
-    phet.assert( size >= 0 );
+  Permutation.identity = function( size ) {
+    assert( size >= 0 );
     var indices = new Array( size );
     for ( var i = 0; i < size; i++ ) {
       indices[i] = i;
@@ -28,9 +29,9 @@ define( function( require ) {
   };
 
   // lists all permutations that have a given size
-  Permutation.permutations = function ( size ) {
+  Permutation.permutations = function( size ) {
     var result = [];
-    Permutation.forEachPermutation( phet.util.rangeInclusive( 0, size - 1 ), function ( integers ) {
+    Permutation.forEachPermutation( rangeInclusive( 0, size - 1 ), function( integers ) {
       result.push( new Permutation( integers ) );
     } );
     return result;
@@ -64,19 +65,19 @@ define( function( require ) {
     }
   }
 
-  Permutation.forEachPermutation = function ( array, callback ) {
+  Permutation.forEachPermutation = function( array, callback ) {
     recursiveForEachPermutation( array, [], callback );
   };
 
-  phet.math.Permutation.prototype = {
+  Permutation.prototype = {
     constructor: Permutation,
 
-    size: function () {
+    size: function() {
       return this.indices.length;
     },
 
-    apply: function ( arrayOrInt ) {
-      if ( phet.util.isArray( arrayOrInt ) ) {
+    apply: function( arrayOrInt ) {
+      if ( isArray( arrayOrInt ) ) {
         if ( arrayOrInt.length !== this.size() ) {
           throw new Error( "Permutation length " + this.size() + " not equal to list length " + arrayOrInt.length );
         }
@@ -95,7 +96,7 @@ define( function( require ) {
     },
 
     // The inverse of this permutation
-    inverted: function () {
+    inverted: function() {
       var newPermutation = new Array( this.size() );
       for ( var i = 0; i < this.size(); i++ ) {
         newPermutation[this.indices[i]] = i;
@@ -103,10 +104,10 @@ define( function( require ) {
       return new Permutation( newPermutation );
     },
 
-    withIndicesPermuted: function ( indices ) {
+    withIndicesPermuted: function( indices ) {
       var result = [];
       var that = this;
-      Permutation.forEachPermutation( indices, function ( integers ) {
+      Permutation.forEachPermutation( indices, function( integers ) {
         var oldIndices = that.indices;
         var newPermutation = oldIndices.slice( 0 );
 
@@ -118,8 +119,8 @@ define( function( require ) {
       return result;
     },
 
-    toString: function () {
-      return "P[" + phet.util.mkString( this.indices, ", " ) + "]";
+    toString: function() {
+      return "P[" + this.indices.join( ", " ) + "]";
     }
   };
 
@@ -134,4 +135,6 @@ define( function( require ) {
 
     console.log( Permutation.permutations( 4 ).toString() );
   };
+  
+  return Permutation;
 } );

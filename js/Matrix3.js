@@ -9,7 +9,11 @@
 define( function( require ) {
   "use strict";
   
-  phet.math.Matrix3 = function ( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+  var Vector2 = require( 'DOT/Vector2' );
+  var Vector3 = require( 'DOT/Vector3' );
+  var Matrix4 = require( 'DOT/Matrix4' );
+  
+  var Matrix3 = function ( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
 
     // entries stored in column-major format
     this.entries = new Array( 9 );
@@ -20,7 +24,7 @@ define( function( require ) {
              type );
   };
 
-  phet.math.Matrix3.Types = {
+  Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
     // NOTE: if two matrices with identical types are multiplied, the result should have the same type. if not, changed timesMatrix()!
     // NOTE: on adding a type, exaustively check all type usage
@@ -33,8 +37,6 @@ define( function( require ) {
     // TODO: possibly add rotations
   };
 
-  var Matrix3 = phet.math.Matrix3;
-  var Vector3 = phet.math.Vector3;
   var Types = Matrix3.Types;
 
   Matrix3.identity = function () {
@@ -331,26 +333,26 @@ define( function( require ) {
     timesVector2: function( v ) {
       var x = this.m00() * v.x + this.m01() * v.y + this.m02();
       var y = this.m10() * v.x + this.m11() * v.y + this.m12();
-      return new phet.math.Vector2( x, y );
+      return new Vector2( x, y );
     },
 
     timesVector3: function ( v ) {
       var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
       var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
       var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
-      return new phet.math.Vector3( x, y, z );
+      return new Vector3( x, y, z );
     },
 
     timesTransposeVector2: function ( v ) {
       var x = this.m00() * v.x + this.m10() * v.y;
       var y = this.m01() * v.x + this.m11() * v.y;
-      return new phet.math.Vector2( x, y );
+      return new Vector2( x, y );
     },
 
     timesRelativeVector2: function ( v ) {
       var x = this.m00() * v.x + this.m10() * v.y;
       var y = this.m01() * v.y + this.m11() * v.y;
-      return new phet.math.Vector2( x, y );
+      return new Vector2( x, y );
     },
 
     determinant: function () {
@@ -368,18 +370,18 @@ define( function( require ) {
     },
 
     toMatrix4: function () {
-      return new phet.math.Matrix4( this.m00(), this.m01(), this.m02(), 0,
+      return new Matrix4( this.m00(), this.m01(), this.m02(), 0,
                       this.m10(), this.m11(), this.m12(), 0,
                       this.m20(), this.m21(), this.m22(), 0,
                       0, 0, 0, 1 );
     },
 
-    translation: function () { return new phet.math.Vector2( this.m02(), this.m12() ); },
-    scaling: function () { return new phet.math.Vector3( this.m00(), this.m11(), this.m22() );},
+    translation: function () { return new Vector2( this.m02(), this.m12() ); },
+    scaling: function () { return new Vector3( this.m00(), this.m11(), this.m22() );},
     
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
     rotation: function() {
-      var transformedVector = this.timesVector2( phet.math.Vector2.X_UNIT ).minus( this.timesVector2( phet.math.Vector2.ZERO ) );
+      var transformedVector = this.timesVector2( Vector2.X_UNIT ).minus( this.timesVector2( Vector2.ZERO ) );
       return Math.atan2( transformedVector.y, transformedVector.x );
     },
     
@@ -483,5 +485,6 @@ define( function( require ) {
                   0, 0, 1,
                   Types.IDENTITY );
   Matrix3.IDENTITY.makeImmutable();
-
+  
+  return Matrix3;
 } );

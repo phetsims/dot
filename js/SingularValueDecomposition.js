@@ -9,10 +9,10 @@
 define( function( require ) {
   "use strict";
   
-  var Matrix = phet.math.Matrix;
-  var Float32Array = phet.Float32Array;
+  var Matrix = require( 'DOT/Matrix' );
+  var Float32Array = require( 'COMMON/Float32Array' );
 
-  phet.math.SingularValueDecomposition = function ( matrix ) {
+  var SingularValueDecomposition = function ( matrix ) {
     this.matrix = matrix;
 
     var Arg = matrix;
@@ -463,8 +463,6 @@ define( function( require ) {
       }
     }
   };
-
-  var SingularValueDecomposition = phet.math.SingularValueDecomposition;
 
   SingularValueDecomposition.prototype = {
     constructor: SingularValueDecomposition,
