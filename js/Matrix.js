@@ -9,6 +9,8 @@
 define( function( require ) {
   "use strict";
   
+  var Float32Array = window.Float32Array || Array;
+  
   // so we can override it with a different array type
   var SingularValueDecomposition = function( matrix ) {
     SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );

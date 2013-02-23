@@ -14,6 +14,8 @@ define( function( require ) {
   var Vector3 = require( 'DOT/Vector3' );
   var Vector4 = require( 'DOT/Vector4' );
   
+  var Float32Array = window.Float32Array || Array;
+  
   var Matrix4 = function( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
 
     // entries stored in column-major format

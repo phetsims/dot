@@ -9,6 +9,8 @@
 define( function( require ) {
   "use strict";
   
+  var Float32Array = window.Float32Array || Array;
+  
   var Matrix = function( m, n, filler, fast ) {
     Matrix = require( 'DOT/Matrix' );
     return new Matrix( m, n, filler, fast );
