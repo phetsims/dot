@@ -7,6 +7,7 @@ For build flags: set in require.js
 
 Building / testing with Require.js
 Grunt compilation into standalone form with require.js's wrap, probably with almond?
+  'mangle' off for the standalone/development versions
   Wrap outside of almond
   Looks like we need to use the require.js optimizer to do the minification (hybrid?), wrapping, source map, etc. to do it right.
     See https://github.com/jrburke/r.js/blob/master/build/example.build.js
