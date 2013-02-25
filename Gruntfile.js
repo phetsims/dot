@@ -17,7 +17,7 @@ module.exports = function( grunt ) {
     
     concat: {
       standalone: {
-        src: [ "contrib/almond/almond.js", "dist/standalone/dot.min.js" ],
+        src: [ "contrib/almond/almond.js", "contrib/has/has.js", "dist/standalone/dot.min.js" ],
         dest: "dist/standalone/dot.min.js"
       }
     },
