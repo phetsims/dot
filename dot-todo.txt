@@ -1,4 +1,6 @@
 
+Move things over into a Util object
+
 Has.js? http://requirejs.org/docs/optimization.html#hasjs
 https://github.com/square/es6-module-transpiler
 https://code.google.com/p/traceur-compiler/
