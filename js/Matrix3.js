@@ -261,26 +261,56 @@ define( function( require ) {
     },
 
     inverted: function() {
-      // TODO: optimizations for matrix types (like identity)
-
-      var det = this.determinant();
+      var det;
       
-      if ( det !== 0 ) {
-        return new Matrix3(
-            ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
-            ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
-            ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
-            ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
-            ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
-            ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
-            ( -this.m11() * this.m20() + this.m10() * this.m21() ) / det,
-            ( this.m01() * this.m20() - this.m00() * this.m21() ) / det,
-            ( -this.m01() * this.m10() + this.m00() * this.m11() ) / det,
-            this.type // for identity, translation, scaling and affine matrices, the type should be preserved
-        );
-      }
-      else {
-        throw new Error( "Matrix could not be inverted, determinant === 0" );
+      switch ( this.type ) {
+        case Types.IDENTITY:
+          return this;
+        case Types.TRANSLATION_2D:
+          return new Matrix3( 1, 0, -this.m02(),
+                              0, 1, -this.m12(),
+                              0, 0, 1, Types.TRANSLATION_2D );
+        case Types.SCALING:
+          return new Matrix3( 1 / this.m00(), 0, 0,
+                              0, 1 / this.m11(), 0,
+                              0, 0, 1 / this.m22(), Types.SCALING );
+        case Types.AFFINE:
+          det = this.determinant();
+          if ( det !== 0 ) {
+            return new Matrix3(
+              ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
+              ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
+              ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
+              ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
+              ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
+              ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
+              0, 0, 1, Types.AFFINE
+            );
+          } else {
+            throw new Error( "Matrix could not be inverted, determinant === 0" );
+          }
+          break; // because JSHint totally can't tell that this can't be reached
+        case Types.OTHER:
+          det = this.determinant();
+          if ( det !== 0 ) {
+            return new Matrix3(
+              ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
+              ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
+              ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
+              ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
+              ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
+              ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
+              ( -this.m11() * this.m20() + this.m10() * this.m21() ) / det,
+              ( this.m01() * this.m20() - this.m00() * this.m21() ) / det,
+              ( -this.m01() * this.m10() + this.m00() * this.m11() ) / det,
+              Types.OTHER
+            );
+          } else {
+            throw new Error( "Matrix could not be inverted, determinant === 0" );
+          }
+          break; // because JSHint totally can't tell that this can't be reached
+        default:
+          throw new Error( "Matrix3.inverted with unknown type: " + this.type );
       }
     },
 
