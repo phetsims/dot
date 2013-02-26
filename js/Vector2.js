@@ -98,8 +98,7 @@ define( function( require ) {
     },
 
     angle: function() {
-      // TODO: verify this opposite ordering of x and y compared to Java
-      return Math.atan2( this.x, this.y );
+      return Math.atan2( this.y, this.x );
     },
 
     perpendicular: function() {
@@ -112,7 +111,7 @@ define( function( require ) {
 
 
     rotated: function( angle ) {
-      return Vector2.createPolar( this.magnitude(), this.getAngle + angle );
+      return Vector2.createPolar( this.magnitude(), this.angle() + angle );
     },
 
     toString: function() {
