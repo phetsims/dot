@@ -1,4 +1,6 @@
 
+Nestable unit testing - i.e. test dot unit tests using scenery's libs
+
 Move things over into a Util object
 
 Has.js? http://requirejs.org/docs/optimization.html#hasjs
