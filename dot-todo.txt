@@ -1,4 +1,7 @@
 
+Bugs:
+  Matrix3's scaling() (getter) function is broken if rotations or shears are present
+
 Nestable unit testing - i.e. test dot unit tests using scenery's libs
 
 Move things over into a Util object
