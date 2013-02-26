@@ -100,7 +100,8 @@ define( function( require ) {
     angle: function() {
       return Math.atan2( this.y, this.x );
     },
-
+    
+    // equivalent to a -PI/2 rotation (right hand rotation)
     perpendicular: function() {
       return new Vector2( this.y, -this.x );
     },
