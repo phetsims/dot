@@ -408,7 +408,8 @@ define( function( require ) {
 
     translation: function() { return new Vector2( this.m02(), this.m12() ); },
     scaling: function() {
-      return new Vector2( this.timesVector2( Vector2.X_UNIT ).magnitude(), this.timesVector2( Vector2.Y_UNIT ).magnitude() );
+      var transformedOrigin = this.timesVector2( Vector2.ZERO );
+      return new Vector2( this.timesVector2( Vector2.X_UNIT ).minus( transformedOrigin ).magnitude(), this.timesVector2( Vector2.Y_UNIT ).minus( transformedOrigin ).magnitude() );
     },
     
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
