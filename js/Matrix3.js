@@ -407,7 +407,9 @@ define( function( require ) {
     },
 
     translation: function() { return new Vector2( this.m02(), this.m12() ); },
-    scaling: function() { return new Vector3( this.m00(), this.m11(), this.m22() );},
+    scaling: function() {
+      return new Vector2( this.timesVector2( Vector2.X_UNIT ).magnitude(), this.timesVector2( Vector2.Y_UNIT ).magnitude() );
+    },
     
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
     rotation: function() {
