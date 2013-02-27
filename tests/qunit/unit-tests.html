@@ -8,7 +8,8 @@
   <!-- CDN reference for now, so we don't pull in unneeded deps -->
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   
-  <script src="../../dist/standalone/dot.min.js"></script>
+  <!-- <script src="../../dist/standalone/dot.min.js"></script> -->
+  <script data-main="../../js/config.js" src="../../contrib/require-2.1.4.js"></script>
   <script src="unit-tests.js"></script>
   <script>
     function collapseTests() {
@@ -26,7 +27,12 @@
     } );
   </script>
   <script>
-    runDotTests( '.' );
+    requirejs( [ 'main' ], function( dot ) {
+      window.dot = dot;
+      
+      runDotTests( '.' );
+    } );
+    
   </script>
 </body>
 </html>
