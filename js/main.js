@@ -11,7 +11,6 @@ define( [
   'DOT/QRDecomposition',
   'DOT/Ray2',
   'DOT/Ray3',
-  'DOT/rangeInclusive',
   'DOT/SingularValueDecomposition',
   'DOT/TemporaryProperty',
   'DOT/toRadians',
@@ -33,7 +32,6 @@ define( [
     QRDecomposition,
     Ray2,
     Ray3,
-    rangeInclusive,
     SingularValueDecomposition,
     TemporaryProperty,
     toRadians,
@@ -57,7 +55,6 @@ define( [
     QRDecomposition: QRDecomposition,
     Ray2: Ray2,
     Ray3: Ray3,
-    rangeInclusive: rangeInclusive,
     SingularValueDecomposition: SingularValueDecomposition,
     TemporaryProperty: TemporaryProperty,
     toRadians: toRadians,
@@ -70,7 +67,9 @@ define( [
     
     // utility functions
     isArray: Util.isArray,
-    clamp: Util.clamp
+    clamp: Util.clamp,
+    rangeInclusive: Util.rangeInclusive,
+    rangeExclusive: Util.rangeExclusive
   };
   
   return dot;

@@ -10,7 +10,7 @@ define( function( require ) {
   "use strict";
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
-  var rangeInclusive = require( 'DOT/rangeInclusive' );
+  var rangeInclusive = require( 'DOT/Util' ).rangeInclusive;
   var isArray = require( 'DOT/Util' ).isArray;
 
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]

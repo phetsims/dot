@@ -27,6 +27,23 @@ define( function( require ) {
       else {
         return value;
       }
+    },
+    
+    // Returns an array of integers from A to B (including both A to B)
+    rangeInclusive: function( a, b ) {
+      if ( b < a ) {
+        return [];
+      }
+      var result = new Array( b - a + 1 );
+      for ( var i = a; i <= b; i++ ) {
+        result[i-a] = i;
+      }
+      return result;
+    },
+    
+    // Returns an array of integers between A and B (excluding both A to B)
+    rangeExclusive: function( a, b ) {
+      return Util.rangeInclusive( a + 1, b - 1 );
     }
   };
   
