@@ -1,4 +1,6 @@
 
+window.loadedDotConfig = true;
+
 require.config( {
   deps: [ 'main' ],
 
