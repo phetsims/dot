@@ -9,7 +9,7 @@
 define( function( require ) {
   "use strict";
   
-  var debugAssert = require( 'ASSERT/assert' )( 'dot' );
+  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
 
@@ -17,9 +17,7 @@ define( function( require ) {
     this.pos = pos;
     this.dir = dir;
     
-    debugAssert( function() {
-      return Math.abs( dir.magnitude() - 1 ) < 0.01;
-    } );
+    assert && assert( Math.abs( dir.magnitude() - 1 ) < 0.01 );
   };
   var Ray2 = dot.Ray2;
 

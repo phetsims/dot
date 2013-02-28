@@ -43,7 +43,7 @@ define( function( require ) {
       this.entries = new Float32Array( size );
 
       if ( dot.isArray( filler ) ) {
-        assert( filler.length === size );
+        assert && assert( filler.length === size );
 
         for ( i = 0; i < size; i++ ) {
           this.entries[i] = filler[i];
@@ -410,19 +410,19 @@ define( function( require ) {
 
     // returns a vector that is contained in the specified column
     extractVector2: function( column ) {
-      assert( this.m === 2 ); // rows should match vector dimension
+      assert && assert( this.m === 2 ); // rows should match vector dimension
       return new dot.Vector2( this.get( 0, column ), this.get( 1, column ) );
     },
 
     // returns a vector that is contained in the specified column
     extractVector3: function( column ) {
-      assert( this.m === 3 ); // rows should match vector dimension
+      assert && assert( this.m === 3 ); // rows should match vector dimension
       return new dot.Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
     },
 
     // returns a vector that is contained in the specified column
     extractVector4: function( column ) {
-      assert( this.m === 4 ); // rows should match vector dimension
+      assert && assert( this.m === 4 ); // rows should match vector dimension
       return new dot.Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
     },
 

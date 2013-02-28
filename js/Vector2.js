@@ -66,7 +66,7 @@ define( function( require ) {
 
     times: function( scalar ) {
       // make sure it's not a vector!
-      assert( scalar.dimension === undefined );
+      assert && assert( scalar.dimension === undefined );
       return this.timesScalar( scalar );
     },
 

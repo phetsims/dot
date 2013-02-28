@@ -31,7 +31,7 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     set: function( matrix ) {
-      assert( matrix instanceof dot.Matrix3 );
+      assert && assert( matrix instanceof dot.Matrix3 );
       this.matrix = matrix;
       
       // compute these lazily

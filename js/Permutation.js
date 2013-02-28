@@ -22,7 +22,7 @@ define( function( require ) {
 
   // An identity permutation with a specific number of elements
   Permutation.identity = function( size ) {
-    assert( size >= 0 );
+    assert && assert( size >= 0 );
     var indices = new Array( size );
     for ( var i = 0; i < size; i++ ) {
       indices[i] = i;
