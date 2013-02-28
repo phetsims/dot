@@ -27,7 +27,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var Vector3 = require( 'DOT/Vector3' );
   var Vector4 = require( 'DOT/Vector4' );
-  var isArray = require( 'DOT/isArray' );
+  var isArray = require( 'DOT/Util' ).isArray;
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var Matrix = function( m, n, filler, fast ) {

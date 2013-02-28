@@ -12,7 +12,10 @@ define( function( require ) {
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var Util = {
-    
+    isArray: function( array ) {
+      // yes, this is actually how to do this. see http://stackoverflow.com/questions/4775722/javascript-check-if-object-is-array
+      return Object.prototype.toString.call( array ) === '[object Array]';
+    }
   };
   
   return Util;

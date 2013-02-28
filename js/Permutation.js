@@ -11,7 +11,7 @@ define( function( require ) {
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
   var rangeInclusive = require( 'DOT/rangeInclusive' );
-  var isArray = require( 'DOT/isArray' );
+  var isArray = require( 'DOT/Util' ).isArray;
 
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
   var Permutation = function( indices ) {

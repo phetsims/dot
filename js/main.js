@@ -4,7 +4,6 @@ define( [
   'DOT/CanvasTransform',
   'DOT/clamp',
   'DOT/Dimension2',
-  'DOT/isArray',
   'DOT/LUDecomposition',
   'DOT/Matrix',
   'DOT/Matrix3',
@@ -28,7 +27,6 @@ define( [
     CanvasTransform,
     clamp,
     Dimension2,
-    isArray,
     LUDecomposition,
     Matrix,
     Matrix3,
@@ -54,7 +52,6 @@ define( [
     CanvasTransform: CanvasTransform,
     clamp: clamp,
     Dimension2: Dimension2,
-    isArray: isArray,
     LUDecomposition: LUDecomposition,
     Matrix: Matrix,
     Matrix3: Matrix3,
@@ -72,7 +69,10 @@ define( [
     Util: Util,
     Vector2: Vector2,
     Vector3: Vector3,
-    Vector4: Vector4
+    Vector4: Vector4,
+    
+    // utility functions
+    isArray: Util.isArray
   };
   
   return dot;
