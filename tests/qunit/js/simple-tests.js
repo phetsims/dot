@@ -28,4 +28,12 @@
     approximateEquals( combination.scaling().x, 2, 'rotated x scale' );
     approximateEquals( combination.scaling().y, 2, 'rotated x scale' );
   } );
+  
+  test( 'isArray', function() {
+    ok( dot.isArray( [ 1, 2, 3 ] ) );
+    ok( dot.isArray( [] ) );
+    ok( !dot.isArray( 0 ) );
+    ok( !dot.isArray( {} ) );
+    ok( !dot.isArray( function() {} ) );
+  } );
 })();
