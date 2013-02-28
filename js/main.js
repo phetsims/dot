@@ -19,6 +19,7 @@ define( [
   'DOT/toRadians',
   'DOT/Transform3',
   'DOT/Transform4',
+  'DOT/Util',
   'DOT/Vector2',
   'DOT/Vector3',
   'DOT/Vector4'
@@ -42,6 +43,7 @@ define( [
     toRadians,
     Transform3,
     Transform4,
+    Util,
     Vector2,
     Vector3,
     Vector4
@@ -67,6 +69,7 @@ define( [
     toRadians: toRadians,
     Transform3: Transform3,
     Transform4: Transform4,
+    Util: Util,
     Vector2: Vector2,
     Vector3: Vector3,
     Vector4: Vector4
