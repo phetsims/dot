@@ -14,6 +14,10 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   
   dot.Util = {
+    testAssert: function() {
+      return 'assert.dot: ' + ( assert ? 'true' : 'false' );
+    },
+    
     isArray: function( array ) {
       // yes, this is actually how to do this. see http://stackoverflow.com/questions/4775722/javascript-check-if-object-is-array
       return Object.prototype.toString.call( array ) === '[object Array]';
@@ -59,6 +63,7 @@ define( function( require ) {
   var Util = dot.Util;
   
   // make these available in the main namespace directly (for now)
+  dot.testAssert = Util.testAssert;
   dot.isArray = Util.isArray;
   dot.clamp = Util.clamp;
   dot.rangeInclusive = Util.rangeInclusive;

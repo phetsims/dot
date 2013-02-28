@@ -32,9 +32,9 @@ module.exports = function( grunt ) {
     requirejs: {
       standalone: {
         options: {
-          mainConfigFile: "js/config.js",
+          mainConfigFile: "js/performance-config.js",
           out: "dist/standalone/dot.min.js",
-          name: "config",
+          name: "performance-config",
           optimize: 'uglify2',
           wrap: {
             start: "(function() {",
@@ -44,9 +44,9 @@ module.exports = function( grunt ) {
       },
       production: {
         options: {
-          mainConfigFile: "js/config.js",
+          mainConfigFile: "js/performance-config.js",
           out: "dist/production/dot.min.js",
-          name: "config",
+          name: "performance-config",
           optimize: 'uglify2',
           generateSourceMaps: true,
           preserveLicenseComments: false,

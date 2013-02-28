@@ -7,6 +7,7 @@
   
   <!-- CDN reference for now, so we don't pull in unneeded deps -->
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="../../contrib/has.js"></script>
   
   <!-- <script src="../../dist/standalone/dot.min.js"></script> -->
   <script data-main="../../js/config.js" src="../../contrib/require-2.1.4.js"></script>
@@ -35,6 +36,10 @@
           window.dot = dot;
           
           runDotTests( '.' );
+          
+          if ( console.log ) {
+            console.log( dot.Util.testAssert() );
+          }
         } );
       } else {
         setTimeout( check, 4 );

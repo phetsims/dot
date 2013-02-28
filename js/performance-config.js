@@ -1,7 +1,7 @@
 
 if ( window.has ) {
   window.has.add( 'assert.dot', function( global, document, anElement ) {
-    return true;
+    return false;
   } );
 }
 
