@@ -13,7 +13,6 @@ define( [
   'DOT/Ray3',
   'DOT/SingularValueDecomposition',
   'DOT/TemporaryProperty',
-  'DOT/toRadians',
   'DOT/Transform3',
   'DOT/Transform4',
   'DOT/Util',
@@ -34,7 +33,6 @@ define( [
     Ray3,
     SingularValueDecomposition,
     TemporaryProperty,
-    toRadians,
     Transform3,
     Transform4,
     Util,
@@ -57,7 +55,6 @@ define( [
     Ray3: Ray3,
     SingularValueDecomposition: SingularValueDecomposition,
     TemporaryProperty: TemporaryProperty,
-    toRadians: toRadians,
     Transform3: Transform3,
     Transform4: Transform4,
     Util: Util,
@@ -69,7 +66,9 @@ define( [
     isArray: Util.isArray,
     clamp: Util.clamp,
     rangeInclusive: Util.rangeInclusive,
-    rangeExclusive: Util.rangeExclusive
+    rangeExclusive: Util.rangeExclusive,
+    toRadians: Util.toRadians,
+    toDegrees: Util.toDegrees
   };
   
   return dot;

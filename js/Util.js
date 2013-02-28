@@ -44,6 +44,14 @@ define( function( require ) {
     // Returns an array of integers between A and B (excluding both A to B)
     rangeExclusive: function( a, b ) {
       return Util.rangeInclusive( a + 1, b - 1 );
+    },
+    
+    toRadians: function( degrees ) {
+      return Math.PI * degrees / 180;
+    },
+    
+    toDegrees: function( radians ) {
+      return 180 * radians / Math.PI;
     }
   };
   

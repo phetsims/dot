@@ -62,4 +62,16 @@
     arr = dot.rangeExclusive( 4, 2 );
     equal( arr.length, 0 );
   } );
+  
+  test( 'toRadians', function() {
+    approximateEquals( dot.toRadians( 90 ), Math.PI / 2 );
+    approximateEquals( dot.toRadians( 45 ), Math.PI / 4 );
+    approximateEquals( dot.toRadians( -45 ), -Math.PI / 4 );
+  } );
+  
+  test( 'toDegrees', function() {
+    approximateEquals( 90, dot.toDegrees( Math.PI / 2 ) );
+    approximateEquals( 45, dot.toDegrees( Math.PI / 4 ) );
+    approximateEquals( -45, dot.toDegrees( -Math.PI / 4 ) );
+  } );
 })();
