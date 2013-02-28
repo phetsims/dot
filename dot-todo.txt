@@ -5,23 +5,18 @@ Bugs:
 https://github.com/square/es6-module-transpiler
 https://code.google.com/p/traceur-compiler/
 
-For build flags: set in require.js
-
 Building / testing with Require.js
 Grunt compilation into standalone form with require.js's wrap, probably with almond?
   'mangle' off for the standalone/development versions
   Wrap outside of almond
   Looks like we need to use the require.js optimizer to do the minification (hybrid?), wrapping, source map, etc. to do it right.
     See https://github.com/jrburke/r.js/blob/master/build/example.build.js
-  Different targets for debug and release, instead of the 'hardcoded' way right now.
-  API export
   Source maps
   Line length limit for minified version?
   How to handle / inline images
-Unit tests and linting - create HTML as standard for QUnit and JSHint a la Scenery, but also have it hookable into the build process
 
-
-Move 'common' functions out or just refactor in so we stay without dependencies
-Output SVGMatrix easily
 Add mutable style for matrices, and possibly a flag to see whether something has been modified?
 Investigate math library alternatives, like Numeric JS
+
+Low priority:
+  Linting in unit tests -- pull info from Gruntfile.js (or another source) and somehow get a file listing
