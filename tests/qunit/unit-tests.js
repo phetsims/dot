@@ -8,8 +8,7 @@ function runDotTests( pathToTestBase ) {
     // make sure things aren't cached, just in case
     script.src = pathToTestBase + '/' + src + '?random=' + Math.random().toFixed( 10 );
     
-    var other = document.getElementsByTagName( 'script' )[0];
-    other.parentNode.insertBefore( script, other );
+    document.getElementsByTagName( 'head' )[0].appendChild( script );
   }
   
   loadTestFile( 'js/simple-tests.js' );
