@@ -9,28 +9,21 @@
 define( function( require ) {
   "use strict";
   
-  var Float32Array = window.Float32Array || Array;
-  
-  // so we can override it with a different array type
-  var SingularValueDecomposition = function( matrix ) {
-    SingularValueDecomposition = require( 'DOT/SingularValueDecomposition' );
-    return new SingularValueDecomposition( matrix );
-  };
-  var LUDecomposition = function( matrix ) {
-    LUDecomposition = require( 'DOT/LUDecomposition' );
-    return new LUDecomposition( matrix );
-  };
-  var QRDecomposition = function( matrix ) {
-    QRDecomposition = require( 'DOT/QRDecomposition' );
-    return new QRDecomposition( matrix );
-  };
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var Vector4 = require( 'DOT/Vector4' );
-  var isArray = require( 'DOT/Util' ).isArray;
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
-  var Matrix = function( m, n, filler, fast ) {
+  var dot = require( 'DOT/dot' );
+  
+  var Float32Array = window.Float32Array || Array;
+  
+  require( 'DOT/SingularValueDecomposition' );
+  require( 'DOT/LUDecomposition' );
+  require( 'DOT/QRDecomposition' );
+  require( 'DOT/Vector2' );
+  require( 'DOT/Vector3' );
+  require( 'DOT/Vector4' );
+  require( 'DOT/Util' ); // for isArray
+  
+  dot.Matrix = function( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
 
@@ -49,7 +42,7 @@ define( function( require ) {
       // entries stored in row-major format
       this.entries = new Float32Array( size );
 
-      if ( isArray( filler ) ) {
+      if ( dot.isArray( filler ) ) {
         assert( filler.length === size );
 
         for ( i = 0; i < size; i++ ) {
@@ -63,6 +56,7 @@ define( function( require ) {
       }
     }
   };
+  var Matrix = dot.Matrix;
 
   /** sqrt(a^2 + b^2) without under/overflow. **/
   Matrix.hypot = function hypot( a, b ) {
@@ -165,7 +159,7 @@ define( function( require ) {
     },
 
     norm2: function() {
-      return (new SingularValueDecomposition( this ).norm2());
+      return (new dot.SingularValueDecomposition( this ).norm2());
     },
 
     normInf: function() {
@@ -364,8 +358,8 @@ define( function( require ) {
     },
 
     solve: function( matrix ) {
-      return (this.m === this.n ? (new LUDecomposition( this )).solve( matrix ) :
-          (new QRDecomposition( this )).solve( matrix ));
+      return (this.m === this.n ? (new dot.LUDecomposition( this )).solve( matrix ) :
+          (new dot.QRDecomposition( this )).solve( matrix ));
     },
 
     solveTranspose: function( matrix ) {
@@ -377,15 +371,15 @@ define( function( require ) {
     },
 
     det: function() {
-      return new LUDecomposition( this ).det();
+      return new dot.LUDecomposition( this ).det();
     },
 
     rank: function() {
-      return new SingularValueDecomposition( this ).rank();
+      return new dot.SingularValueDecomposition( this ).rank();
     },
 
     cond: function() {
-      return new SingularValueDecomposition( this ).cond();
+      return new dot.SingularValueDecomposition( this ).cond();
     },
 
     trace: function() {
@@ -417,19 +411,19 @@ define( function( require ) {
     // returns a vector that is contained in the specified column
     extractVector2: function( column ) {
       assert( this.m === 2 ); // rows should match vector dimension
-      return new Vector2( this.get( 0, column ), this.get( 1, column ) );
+      return new dot.Vector2( this.get( 0, column ), this.get( 1, column ) );
     },
 
     // returns a vector that is contained in the specified column
     extractVector3: function( column ) {
       assert( this.m === 3 ); // rows should match vector dimension
-      return new Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
+      return new dot.Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
     },
 
     // returns a vector that is contained in the specified column
     extractVector4: function( column ) {
       assert( this.m === 4 ); // rows should match vector dimension
-      return new Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
+      return new dot.Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
     },
 
     isMatrix: true

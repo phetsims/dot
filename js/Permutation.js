@@ -10,9 +10,11 @@ define( function( require ) {
   "use strict";
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
-  var rangeInclusive = require( 'DOT/Util' ).rangeInclusive;
-  var isArray = require( 'DOT/Util' ).isArray;
-
+  
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Util' ); // for isArray / rangeInclusive
+  
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
   var Permutation = function( indices ) {
     this.indices = indices;
@@ -31,7 +33,7 @@ define( function( require ) {
   // lists all permutations that have a given size
   Permutation.permutations = function( size ) {
     var result = [];
-    Permutation.forEachPermutation( rangeInclusive( 0, size - 1 ), function( integers ) {
+    Permutation.forEachPermutation( dot.rangeInclusive( 0, size - 1 ), function( integers ) {
       result.push( new Permutation( integers ) );
     } );
     return result;
@@ -77,7 +79,7 @@ define( function( require ) {
     },
 
     apply: function( arrayOrInt ) {
-      if ( isArray( arrayOrInt ) ) {
+      if ( dot.isArray( arrayOrInt ) ) {
         if ( arrayOrInt.length !== this.size() ) {
           throw new Error( "Permutation length " + this.size() + " not equal to list length " + arrayOrInt.length );
         }

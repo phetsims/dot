@@ -10,22 +10,20 @@ define( function( require ) {
   "use strict";
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
-  var clamp = require( 'DOT/Util' ).clamp;
-  var Vector2 = function( x, y ) {
-    Vector2 = require( 'DOT/Vector2' );
-    return new Vector2( x, y );
-  };
-  var Vector4 = function( x, y, z, w ) {
-    Vector4 = require( 'DOT/Vector4' );
-    return new Vector4( x, y, z, w );
-  };
+  
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Util' );
+  require( 'DOT/Vector2' );
+  require( 'DOT/Vector4' );
 
-  var Vector3 = function( x, y, z ) {
+  dot.Vector3 = function( x, y, z ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
     this.z = z || 0;
   };
+  var Vector3 = dot.Vector3;
 
   Vector3.prototype = {
     constructor: Vector3,
@@ -103,7 +101,7 @@ define( function( require ) {
     },
 
     angleBetween: function( v ) {
-      return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
 
     toString: function() {
@@ -111,11 +109,11 @@ define( function( require ) {
     },
 
     toVector2: function() {
-      return new Vector2( this.x, this.y );
+      return new dot.Vector2( this.x, this.y );
     },
 
     toVector4: function() {
-      return new Vector4( this.x, this.y, this.z );
+      return new dot.Vector4( this.x, this.y, this.z );
     },
 
     /*---------------------------------------------------------------------------*

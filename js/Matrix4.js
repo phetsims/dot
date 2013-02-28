@@ -11,12 +11,14 @@
 define( function( require ) {
   "use strict";
   
-  var Vector3 = require( 'DOT/Vector3' );
-  var Vector4 = require( 'DOT/Vector4' );
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Vector3' );
+  require( 'DOT/Vector4' );
   
   var Float32Array = window.Float32Array || Array;
   
-  var Matrix4 = function( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
+  dot.Matrix4 = function( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
 
     // entries stored in column-major format
     this.entries = new Float32Array( 16 );
@@ -27,6 +29,7 @@ define( function( require ) {
              v30 || 0, v31 || 0, v32 || 0, v33 === undefined ? 1 : v33,
              type );
   };
+  var Matrix4 = dot.Matrix4;
 
   Matrix4.Types = {
     OTHER: 0, // default
@@ -272,7 +275,7 @@ define( function( require ) {
       var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z + this.m13() * v.w;
       var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z + this.m23() * v.w;
       var w = this.m30() * v.x + this.m31() * v.y + this.m32() * v.z + this.m33() * v.w;
-      return new Vector4( x, y, z, w );
+      return new dot.Vector4( x, y, z, w );
     },
 
     timesVector3: function( v ) {
@@ -284,7 +287,7 @@ define( function( require ) {
       var y = this.m01() * v.x + this.m11() * v.y + this.m21() * v.z + this.m31() * v.w;
       var z = this.m02() * v.x + this.m12() * v.y + this.m22() * v.z + this.m32() * v.w;
       var w = this.m03() * v.x + this.m13() * v.y + this.m23() * v.z + this.m33() * v.w;
-      return new Vector4( x, y, z, w );
+      return new dot.Vector4( x, y, z, w );
     },
 
     timesTransposeVector3: function( v ) {
@@ -295,7 +298,7 @@ define( function( require ) {
       var x = this.m00() * v.x + this.m10() * v.y + this.m20() * v.z;
       var y = this.m01() * v.y + this.m11() * v.y + this.m21() * v.z;
       var z = this.m02() * v.z + this.m12() * v.y + this.m22() * v.z;
-      return new Vector3( x, y, z );
+      return new dot.Vector3( x, y, z );
     },
 
     determinant: function() {
@@ -332,8 +335,8 @@ define( function( require ) {
            this.m30() + " " + this.m31() + " " + this.m32() + " " + this.m33();
     },
 
-    translation: function() { return new Vector3( this.m03(), this.m13(), this.m23() ); },
-    scaling: function() { return new Vector3( this.m00(), this.m11(), this.m22() );},
+    translation: function() { return new dot.Vector3( this.m03(), this.m13(), this.m23() ); },
+    scaling: function() { return new dot.Vector3( this.m00(), this.m11(), this.m22() );},
 
     makeImmutable: function() {
       this.rowMajor = function() {

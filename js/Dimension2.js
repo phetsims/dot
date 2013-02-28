@@ -9,10 +9,13 @@
 define( function( require ) {
   "use strict";
   
-  var Dimension2 = function( width, height ) {
+  var dot = require( 'DOT/dot' );
+  
+  dot.Dimension2 = function( width, height ) {
     this.width = width;
     this.height = height;
   };
+  var Dimension2 = dot.Dimension2;
 
   Dimension2.prototype = {
     constructor: Dimension2,
@@ -25,4 +28,6 @@ define( function( require ) {
       return this.width === other.width && this.height === other.height;
     }
   };
+  
+  return Dimension2;
 } );

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Unit tests for Dot</title>
+  <link rel="stylesheet" href="../../contrib/qunit-1.10.0.css">
+  
+  <!-- CDN reference for now, so we don't pull in unneeded deps -->
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  
+  <script src="../../dist/standalone/dot.min.js"></script>
+  <!-- <script data-main="../../js/config.js" src="../../contrib/require-2.1.4.js"></script> -->
+  <script src="unit-tests.js"></script>
+  <script>
+    function collapseTests() {
+      $( '#qunit-tests .fail ol' ).css( 'display', 'none' );
+    }
+  </script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="../../contrib/qunit-1.10.0.js"></script>
+  <script>
+    QUnit.moduleDone( function( details ) {
+      collapseTests();
+    } );
+  </script>
+  <script>
+    
+    runDotTests( '.' );
+    
+  </script>
+</body>
+</html>

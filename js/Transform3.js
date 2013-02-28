@@ -10,14 +10,18 @@ define( function( require ) {
   "use strict";
 
   var assert = require( 'ASSERT/assert' )( 'dot' );
-  var Matrix3 = require( 'DOT/Matrix3' );
-  var Vector2 = require( 'DOT/Vector2' );
+  
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Matrix3' );
+  require( 'DOT/Vector2' );
 
   // takes a 4x4 matrix
-  var Transform3 = function( matrix ) {
+  dot.Transform3 = function( matrix ) {
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
-    this.set( matrix === undefined ? Matrix3.IDENTITY : matrix );
+    this.set( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
   };
+  var Transform3 = dot.Transform3;
 
   Transform3.prototype = {
     constructor: Transform3,
@@ -27,7 +31,7 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     set: function( matrix ) {
-      assert( matrix instanceof Matrix3 );
+      assert( matrix instanceof dot.Matrix3 );
       this.matrix = matrix;
       
       // compute these lazily
@@ -86,7 +90,7 @@ define( function( require ) {
     },
     
     isIdentity: function() {
-      return this.matrix.type === Matrix3.Types.IDENTITY;
+      return this.matrix.type === dot.Matrix3.Types.IDENTITY;
     },
 
     /*---------------------------------------------------------------------------*
@@ -109,11 +113,11 @@ define( function( require ) {
     },
 
     transformDeltaX: function( x ) {
-      return this.transformDelta2( new Vector2( x, 0 ) ).x;
+      return this.transformDelta2( new dot.Vector2( x, 0 ) ).x;
     },
 
     transformDeltaY: function( y ) {
-      return this.transformDelta2( new Vector2( 0, y ) ).y;
+      return this.transformDelta2( new dot.Vector2( 0, y ) ).y;
     },
     
     transformBounds2: function( bounds2 ) {
@@ -134,7 +138,7 @@ define( function( require ) {
 
     inverseDelta2: function( vec2 ) {
       // inverse actually has the translation rolled into the other coefficients, so we have to make this longer
-      return this.inversePosition2( vec2 ).minus( this.inversePosition2( Vector2.ZERO ) );
+      return this.inversePosition2( vec2 ).minus( this.inversePosition2( dot.Vector2.ZERO ) );
     },
 
     inverseNormal2: function( vec2 ) {
@@ -142,11 +146,11 @@ define( function( require ) {
     },
 
     inverseDeltaX: function( x ) {
-      return this.inverseDelta2( new Vector2( x, 0 ) ).x;
+      return this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
     },
 
     inverseDeltaY: function( y ) {
-      return this.inverseDelta2( new Vector2( 0, y ) ).y;
+      return this.inverseDelta2( new dot.Vector2( 0, y ) ).y;
     },
     
     inverseBounds2: function( bounds2 ) {

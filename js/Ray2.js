@@ -10,8 +10,10 @@ define( function( require ) {
   "use strict";
   
   var debugAssert = require( 'ASSERT/assert' )( 'dot' );
+  
+  var dot = require( 'DOT/dot' );
 
-  var Ray2 = function( pos, dir ) {
+  dot.Ray2 = function( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
     
@@ -19,6 +21,7 @@ define( function( require ) {
       return Math.abs( dir.magnitude() - 1 ) < 0.01;
     } );
   };
+  var Ray2 = dot.Ray2;
 
   Ray2.prototype = {
     constructor: Ray2,

@@ -10,17 +10,18 @@ define( function( require ) {
   "use strict";
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
-  var clamp = require( 'DOT/Util' ).clamp;
-  var Vector3 = function( x, y, z ) {
-    Vector3 = require( 'DOT/Vector3' );
-    return new Vector3( x, y, z );
-  };
+  
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Util' );
+  // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
 
-  var Vector2 = function( x, y ) {
+  dot.Vector2 = function( x, y ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
   };
+  var Vector2 = dot.Vector2;
 
   Vector2.createPolar = function( magnitude, angle ) {
     return new Vector2( Math.cos( angle ), Math.sin( angle ) ).timesScalar( magnitude );
@@ -107,7 +108,7 @@ define( function( require ) {
     },
 
     angleBetween: function( v ) {
-      return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
 
 
@@ -120,7 +121,7 @@ define( function( require ) {
     },
 
     toVector3: function() {
-      return new Vector3( this.x, this.y );
+      return new dot.Vector3( this.x, this.y );
     },
 
     /*---------------------------------------------------------------------------*

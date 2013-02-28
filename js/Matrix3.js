@@ -9,11 +9,13 @@
 define( function( require ) {
   "use strict";
   
-  var Vector2 = require( 'DOT/Vector2' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var Matrix4 = require( 'DOT/Matrix4' );
+  var dot = require( 'DOT/dot' );
   
-  var Matrix3 = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+  require( 'DOT/Vector2' );
+  require( 'DOT/Vector3' );
+  require( 'DOT/Matrix4' );
+  
+  dot.Matrix3 = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
 
     // entries stored in column-major format
     this.entries = new Array( 9 );
@@ -23,6 +25,7 @@ define( function( require ) {
              v20 || 0, v21 || 0, v22 === undefined ? 1 : v22,
              type );
   };
+  var Matrix3 = dot.Matrix3;
 
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
@@ -139,7 +142,7 @@ define( function( require ) {
       /* coefficients for later use */
       var i, j;
 
-      var x = new Vector3(
+      var x = new dot.Vector3(
           ( start.x > 0.0 ) ? start.x : -start.x,
           ( start.y > 0.0 ) ? start.y : -start.y,
           ( start.z > 0.0 ) ? start.z : -start.z
@@ -147,18 +150,18 @@ define( function( require ) {
 
       if ( x.x < x.y ) {
         if ( x.x < x.z ) {
-          x = Vector3.X_UNIT;
+          x = dot.Vector3.X_UNIT;
         }
         else {
-          x = Vector3.Z_UNIT;
+          x = dot.Vector3.Z_UNIT;
         }
       }
       else {
         if ( x.y < x.z ) {
-          x = Vector3.Y_UNIT;
+          x = dot.Vector3.Y_UNIT;
         }
         else {
-          x = Vector3.Z_UNIT;
+          x = dot.Vector3.Z_UNIT;
         }
       }
 
@@ -363,26 +366,26 @@ define( function( require ) {
     timesVector2: function( v ) {
       var x = this.m00() * v.x + this.m01() * v.y + this.m02();
       var y = this.m10() * v.x + this.m11() * v.y + this.m12();
-      return new Vector2( x, y );
+      return new dot.Vector2( x, y );
     },
 
     timesVector3: function( v ) {
       var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
       var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
       var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
-      return new Vector3( x, y, z );
+      return new dot.Vector3( x, y, z );
     },
 
     timesTransposeVector2: function( v ) {
       var x = this.m00() * v.x + this.m10() * v.y;
       var y = this.m01() * v.x + this.m11() * v.y;
-      return new Vector2( x, y );
+      return new dot.Vector2( x, y );
     },
 
     timesRelativeVector2: function( v ) {
       var x = this.m00() * v.x + this.m10() * v.y;
       var y = this.m01() * v.y + this.m11() * v.y;
-      return new Vector2( x, y );
+      return new dot.Vector2( x, y );
     },
 
     determinant: function() {
@@ -400,21 +403,21 @@ define( function( require ) {
     },
 
     toMatrix4: function() {
-      return new Matrix4( this.m00(), this.m01(), this.m02(), 0,
+      return new dot.Matrix4( this.m00(), this.m01(), this.m02(), 0,
                       this.m10(), this.m11(), this.m12(), 0,
                       this.m20(), this.m21(), this.m22(), 0,
                       0, 0, 0, 1 );
     },
 
-    translation: function() { return new Vector2( this.m02(), this.m12() ); },
+    translation: function() { return new dot.Vector2( this.m02(), this.m12() ); },
     scaling: function() {
-      var transformedOrigin = this.timesVector2( Vector2.ZERO );
-      return new Vector2( this.timesVector2( Vector2.X_UNIT ).minus( transformedOrigin ).magnitude(), this.timesVector2( Vector2.Y_UNIT ).minus( transformedOrigin ).magnitude() );
+      var transformedOrigin = this.timesVector2( dot.Vector2.ZERO );
+      return new dot.Vector2( this.timesVector2( dot.Vector2.X_UNIT ).minus( transformedOrigin ).magnitude(), this.timesVector2( dot.Vector2.Y_UNIT ).minus( transformedOrigin ).magnitude() );
     },
     
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
     rotation: function() {
-      var transformedVector = this.timesVector2( Vector2.X_UNIT ).minus( this.timesVector2( Vector2.ZERO ) );
+      var transformedVector = this.timesVector2( dot.Vector2.X_UNIT ).minus( this.timesVector2( dot.Vector2.ZERO ) );
       return Math.atan2( transformedVector.y, transformedVector.x );
     },
     

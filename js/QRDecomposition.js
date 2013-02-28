@@ -9,14 +9,13 @@
 define( function( require ) {
   "use strict";
   
+  var dot = require( 'DOT/dot' );
+  
   var Float32Array = window.Float32Array || Array;
   
-  var Matrix = function( m, n, filler, fast ) {
-    Matrix = require( 'DOT/Matrix' );
-    return new Matrix( m, n, filler, fast );
-  };
+  // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  var QRDecomposition = function( matrix ) {
+  dot.QRDecomposition = function( matrix ) {
     this.matrix = matrix;
 
     // TODO: size!
@@ -36,7 +35,7 @@ define( function( require ) {
       // Compute 2-norm of k-th column without under/overflow.
       var nrm = 0;
       for ( i = k; i < m; i++ ) {
-        nrm = Matrix.hypot( nrm, QR[this.matrix.index( i, k )] );
+        nrm = dot.Matrix.hypot( nrm, QR[this.matrix.index( i, k )] );
       }
 
       if ( nrm !== 0.0 ) {
@@ -64,6 +63,7 @@ define( function( require ) {
       this.Rdiag[k] = -nrm;
     }
   };
+  var QRDecomposition = dot.QRDecomposition;
 
   QRDecomposition.prototype = {
     constructor: QRDecomposition,
@@ -78,7 +78,7 @@ define( function( require ) {
     },
 
     getH: function() {
-      var result = new Matrix( this.m, this.n );
+      var result = new dot.Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i >= j ) {
@@ -93,7 +93,7 @@ define( function( require ) {
     },
 
     getR: function() {
-      var result = new Matrix( this.n, this.n );
+      var result = new dot.Matrix( this.n, this.n );
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i < j ) {
@@ -112,7 +112,7 @@ define( function( require ) {
 
     getQ: function() {
       var i, j, k;
-      var result = new Matrix( this.m, this.n );
+      var result = new dot.Matrix( this.m, this.n );
       for ( k = this.n - 1; k >= 0; k-- ) {
         for ( i = 0; i < this.m; i++ ) {
           result.entries[result.index( i, k )] = 0.0;
@@ -173,7 +173,7 @@ define( function( require ) {
           }
         }
       }
-      return new Matrix( X, this.n, nx ).getMatrix( 0, this.n - 1, 0, nx - 1 );
+      return new dot.Matrix( X, this.n, nx ).getMatrix( 0, this.n - 1, 0, nx - 1 );
     }
   };
   

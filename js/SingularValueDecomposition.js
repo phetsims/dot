@@ -9,14 +9,13 @@
 define( function( require ) {
   "use strict";
   
+  var dot = require( 'DOT/dot' );
+  
   var Float32Array = window.Float32Array || Array;
   
-  var Matrix = function( m, n, filler, fast ) {
-    Matrix = require( 'DOT/Matrix' );
-    return new Matrix( m, n, filler, fast );
-  };
+  // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  var SingularValueDecomposition = function( matrix ) {
+  dot.SingularValueDecomposition = function( matrix ) {
     this.matrix = matrix;
 
     var Arg = matrix;
@@ -54,7 +53,7 @@ define( function( require ) {
     var i, j, k, t, f;
     var cs,sn;
 
-    var hypot = Matrix.hypot;
+    var hypot = dot.Matrix.hypot;
 
     // Reduce A to bidiagonal form, storing the diagonal elements
     // in s and the super-diagonal elements in e.
@@ -467,16 +466,17 @@ define( function( require ) {
       }
     }
   };
+  var SingularValueDecomposition = dot.SingularValueDecomposition;
 
   SingularValueDecomposition.prototype = {
     constructor: SingularValueDecomposition,
 
     getU: function() {
-      return new Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is Float32Array
+      return new dot.Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is Float32Array
     },
 
     getV: function() {
-      return new Matrix( this.n, this.n, this.V, true );
+      return new dot.Matrix( this.n, this.n, this.V, true );
     },
 
     getSingularValues: function() {
@@ -484,7 +484,7 @@ define( function( require ) {
     },
 
     getS: function() {
-      var result = new Matrix( this.n, this.n );
+      var result = new dot.Matrix( this.n, this.n );
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           result.entries[result.index( i, j )] = 0.0;

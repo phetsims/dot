@@ -9,14 +9,13 @@
 define( function( require ) {
   "use strict";
   
+  var dot = require( 'DOT/dot' );
+  
   var Float32Array = window.Float32Array || Array;
   
-  var Matrix = function( m, n, filler, fast ) {
-    Matrix = require( 'DOT/Matrix' );
-    return new Matrix( m, n, filler, fast );
-  };
+  // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  var LUDecomposition = function( matrix ) {
+  dot.LUDecomposition = function( matrix ) {
     var i, j, k;
 
     this.matrix = matrix;
@@ -90,6 +89,7 @@ define( function( require ) {
       }
     }
   };
+  var LUDecomposition = dot.LUDecomposition;
 
   LUDecomposition.prototype = {
     constructor: LUDecomposition,
@@ -105,7 +105,7 @@ define( function( require ) {
     },
 
     getL: function() {
-      var result = new Matrix( this.m, this.n );
+      var result = new dot.Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i > j ) {
@@ -123,7 +123,7 @@ define( function( require ) {
     },
 
     getU: function() {
-      var result = new Matrix( this.n, this.n );
+      var result = new dot.Matrix( this.n, this.n );
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i <= j ) {

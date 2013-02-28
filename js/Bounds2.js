@@ -9,15 +9,18 @@
 define( function( require ) {
   "use strict";
   
-  var Vector2 = require( 'DOT/Vector2' );
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Vector2' );
   
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
-  var Bounds2 = function( minX, minY, maxX, maxY ) {
+  dot.Bounds2 = function( minX, minY, maxX, maxY ) {
     this.minX = minX;
     this.minY = minY;
     this.maxX = maxX;
     this.maxY = maxY;
   };
+  var Bounds2 = dot.Bounds2;
 
   Bounds2.prototype = {
     constructor: Bounds2,
@@ -110,10 +113,10 @@ define( function( require ) {
       var result = Bounds2.NOTHING;
       
       // make sure all 4 corners are inside this transformed bounding box
-      result = result.withPoint( matrix.timesVector2( new Vector2( this.minX, this.minY ) ) );
-      result = result.withPoint( matrix.timesVector2( new Vector2( this.minX, this.maxY ) ) );
-      result = result.withPoint( matrix.timesVector2( new Vector2( this.maxX, this.minY ) ) );
-      result = result.withPoint( matrix.timesVector2( new Vector2( this.maxX, this.maxY ) ) );
+      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.minX, this.minY ) ) );
+      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.minX, this.maxY ) ) );
+      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.maxX, this.minY ) ) );
+      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.maxX, this.maxY ) ) );
       return result;
     },
     

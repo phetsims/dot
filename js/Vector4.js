@@ -10,19 +10,20 @@ define( function( require ) {
   "use strict";
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
-  var clamp = require( 'DOT/Util' ).clamp;
-  var Vector3 = function( x, y, z ) {
-    Vector3 = require( 'DOT/Vector3' );
-    return new Vector3( x, y, z );
-  };
   
-  var Vector4 = function( x, y, z, w ) {
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Util' );
+  // require( 'DOT/Vector3' ); // commented out so Require.js doesn't complain about the circular dependency
+  
+  dot.Vector4 = function( x, y, z, w ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
     this.z = z || 0;
     this.w = w !== undefined ? w : 1; // since w could be zero!
   };
+  var Vector4 = dot.Vector4;
   
   Vector4.prototype = {
     constructor: Vector4,
@@ -92,7 +93,7 @@ define( function( require ) {
     },
 
     angleBetween: function( v ) {
-      return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
 
     toString: function() {
@@ -100,7 +101,7 @@ define( function( require ) {
     },
 
     toVector3: function() {
-      return new Vector3( this.x, this.y, this.z );
+      return new dot.Vector3( this.x, this.y, this.z );
     },
 
     /*---------------------------------------------------------------------------*
