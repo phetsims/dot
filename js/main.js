@@ -2,7 +2,6 @@
 define( [
   'DOT/Bounds2',
   'DOT/CanvasTransform',
-  'DOT/clamp',
   'DOT/Dimension2',
   'DOT/LUDecomposition',
   'DOT/Matrix',
@@ -25,7 +24,6 @@ define( [
   ], function(
     Bounds2,
     CanvasTransform,
-    clamp,
     Dimension2,
     LUDecomposition,
     Matrix,
@@ -50,7 +48,6 @@ define( [
   var dot = {
     Bounds2: Bounds2,
     CanvasTransform: CanvasTransform,
-    clamp: clamp,
     Dimension2: Dimension2,
     LUDecomposition: LUDecomposition,
     Matrix: Matrix,
@@ -72,7 +69,8 @@ define( [
     Vector4: Vector4,
     
     // utility functions
-    isArray: Util.isArray
+    isArray: Util.isArray,
+    clamp: Util.clamp
   };
   
   return dot;

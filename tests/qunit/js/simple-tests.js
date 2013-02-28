@@ -36,4 +36,10 @@
     ok( !dot.isArray( {} ) );
     ok( !dot.isArray( function() {} ) );
   } );
+  
+  test( 'clamp', function() {
+    equal( dot.clamp( 5, 1, 4 ), 4 );
+    equal( dot.clamp( 3, 1, 4 ), 3 );
+    equal( dot.clamp( 0, 1, 4 ), 1 );
+  } );
 })();
