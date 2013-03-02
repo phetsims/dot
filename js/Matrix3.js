@@ -467,36 +467,33 @@ define( function( require ) {
       );
     },
     
-    cssTransform: function() {
-      // TODO: allow more specific CSS transforms to be applied? SVG transform looks compatible with the CSS3 transform
-      
+    sharedTransformStyle: function() {
       // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
-      function cssNumber( number ) {
+      function n( number ) {
         // largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
-        return number.toFixed( 20 );
-      }
-      // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
-      // TODO: do we need 'px' units on the last two (transform) attributes?
-      return 'matrix(' + cssNumber( this.entries[0] ) + ',' + cssNumber( this.entries[1] ) + ',' + cssNumber( this.entries[3] ) + ',' + cssNumber( this.entries[4] ) + ',' + cssNumber( this.entries[6] ) + ',' + cssNumber( this.entries[7] ) + ')';
-    },
-    
-    svgTransform: function() {
-      // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
-      function svgNumber( number ) {
-        // largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
-        return number.toFixed( 20 );
+        return number.toFixed( 20 ) + 'px';
       }
       
       switch( this.type ) {
         case Types.IDENTITY:
           return '';
         case Types.TRANSLATION_2D:
-          return 'translate(' + svgNumber( this.entries[6] ) + ',' + this.entries[7] + ')';
+          return 'translate(' + n( this.entries[6] ) + ',' + this.entries[7] + ')';
         case Types.SCALING:
-          return 'scale(' + svgNumber( this.entries[0] ) + ( this.entries[0] === this.entries[4] ? '' : ',' + svgNumber( this.entries[4] ) ) + ')';
+          return 'scale(' + n( this.entries[0] ) + ( this.entries[0] === this.entries[4] ? '' : ',' + n( this.entries[4] ) ) + ')';
         default:
-          return 'matrix(' + svgNumber( this.entries[0] ) + ',' + svgNumber( this.entries[1] ) + ',' + svgNumber( this.entries[3] ) + ',' + svgNumber( this.entries[4] ) + ',' + svgNumber( this.entries[6] ) + ',' + svgNumber( this.entries[7] ) + ')';
+          return 'matrix(' + n( this.entries[0] ) + ',' + n( this.entries[1] ) + ',' + n( this.entries[3] ) + ',' + n( this.entries[4] ) + ',' + n( this.entries[6] ) + ',' + n( this.entries[7] ) + ')';
       }
+    },
+    
+    // CSS transform style property. See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
+    cssTransform: function() {
+      return this.sharedTransformStyle();
+    },
+    
+    // SVG transform presentation attribute. See http://www.w3.org/TR/SVG/coords.html#TransformAttribute
+    svgTransform: function() {
+      return this.sharedTransformStyle();
     },
     
     cssTransformStyles: function() {
