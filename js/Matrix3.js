@@ -471,7 +471,7 @@ define( function( require ) {
       // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
       function n( number ) {
         // largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
-        return number.toFixed( 20 ) + 'px';
+        return number.toFixed( 20 );
       }
       
       switch( this.type ) {
