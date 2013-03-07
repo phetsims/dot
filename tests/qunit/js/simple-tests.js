@@ -74,4 +74,11 @@
     approximateEquals( 45, dot.toDegrees( Math.PI / 4 ) );
     approximateEquals( -45, dot.toDegrees( -Math.PI / 4 ) );
   } );
+  
+  test( 'distance', function() {
+    approximateEquals( new dot.Vector2( 2, 0 ).distance( dot.Vector2.ZERO ), 2 );
+    approximateEquals( new dot.Vector2( 2, 0 ).distanceSquared( dot.Vector2.ZERO ), 4 );
+    approximateEquals( new dot.Vector2( 4, 7 ).distance( new dot.Vector2( 6, 9 ) ), 2 * Math.sqrt( 2 ) );
+    approximateEquals( new dot.Vector2( 4, 7 ).distanceSquared( new dot.Vector2( 6, 9 ) ), 8 );
+  } );
 })();

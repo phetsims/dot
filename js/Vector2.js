@@ -37,6 +37,16 @@ define( function( require ) {
     magnitudeSquared: function() {
       return this.dot( this );
     },
+    
+    // the distance between this vector (treated as a point) and another point
+    distance: function( point ) {
+      return this.minus( point ).magnitude();
+    },
+    
+    // the squared distance between this vector (treated as a point) and another point
+    distanceSquared: function( point ) {
+      return this.minus( point ).magnitudeSquared();
+    },
 
     dot: function( v ) {
       return this.x * v.x + this.y * v.y;
