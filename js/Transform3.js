@@ -15,6 +15,7 @@ define( function( require ) {
   
   require( 'DOT/Matrix3' );
   require( 'DOT/Vector2' );
+  require( 'DOT/Ray2' );
 
   // takes a 4x4 matrix
   dot.Transform3 = function( matrix ) {
@@ -127,6 +128,10 @@ define( function( require ) {
     transformShape: function( shape ) {
       return shape.transformed( this.matrix );
     },
+    
+    transformRay2: function( ray ) {
+      return new dot.Ray2( this.transformPosition2( ray.pos ), this.transformDelta2( ray.dir ).normalized() );
+    },
 
     /*---------------------------------------------------------------------------*
      * inverse transforms (for Vector2 or scalar)
@@ -159,6 +164,10 @@ define( function( require ) {
     
     inverseShape: function( shape ) {
       return shape.transformed( this.getInverse() );
+    },
+    
+    inverseRay2: function( ray ) {
+      return new dot.Ray2( this.inversePosition2( ray.pos ), this.inverseDelta2( ray.dir ).normalized() );
     }
   };
   
