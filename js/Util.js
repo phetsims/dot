@@ -12,6 +12,7 @@ define( function( require ) {
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
+  // require( 'DOT/Vector2' ); // Require.js doesn't like the circular reference
   
   dot.Util = {
     testAssert: function() {
@@ -58,6 +59,13 @@ define( function( require ) {
     
     toDegrees: function( radians ) {
       return 180 * radians / Math.PI;
+    },
+    
+    lineLineIntersection: function( p1, p2, p3, p4 ) {
+      return new dot.Vector2(
+        ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.x - p4.x ) - ( p1.x - p2.x ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) ),
+        ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) )
+      );
     }
   };
   var Util = dot.Util;
