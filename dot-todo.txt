@@ -1,6 +1,8 @@
 
 Bugs:
 
+Add:
+  Complex
 
 https://github.com/square/es6-module-transpiler
 https://code.google.com/p/traceur-compiler/

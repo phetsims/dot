@@ -67,6 +67,68 @@ define( function( require ) {
         ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.x - p4.x ) - ( p1.x - p2.x ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) ),
         ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) )
       );
+    },
+    
+    // return an array of real roots of ax^2 + bx + c = 0
+    solveQuadraticRootsReal: function( a, b, c ) {
+      var discriminant = b * b - 4 * a * c;
+      if ( discriminant < 0 ) {
+        return [];
+      }
+      var sqrt = Math.sqrt( discriminant );
+      return [
+        ( -b - sqrt ) / ( 2 * a ),
+        ( -b + sqrt ) / ( 2 * a )
+      ];
+    },
+    
+    // return an array of real roots of ax^3 + bx^2 + cx + d = 0
+    solveCubicRootsReal: function( a, b, c, d ) {
+      // TODO: a Complex type!
+      if ( a === 0 ) {
+        return Util.solveQuadraticRootsReal( b, c, d );
+      }
+      if ( d === 0 ) {
+        return Util.solveQuadraticRootsReal( a, b, c );
+      }
+      
+      b /= a;
+      c /= a;
+      d /= a;
+      
+      var s, t;
+      var q = ( 3.0 * c - ( b * b ) ) / 9;
+      var r = ( -(27 * d) + b * (9 * c - 2 * (b * b)) ) / 54;
+      var discriminant = q  * q  * q + r  * r;
+      var b3 = b / 3;
+      
+      if ( discriminant > 0 ) {
+        // a single real root
+        var dsqrt = Math.sqrt( discriminant );
+        return [ Util.cubeRoot( r + dsqrt ) + Util.cubeRoot( r - dsqrt ) - b3 ];
+      }
+      
+      // three real roots
+      if ( discriminant === 0 ) {
+        // contains a double root
+        var rsqrt = Util.cubeRoot( r );
+        var doubleRoot = b3 - rsqrt;
+        return [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
+      } else {
+        // all unique
+        var qX = -q * q * q;
+        qX = Math.acos( r / Math.sqrt( qX ) );
+        var rr = 2 * Math.sqrt( -q );
+        return [
+          -b3 + rr * Math.cos( qX / 3 ),
+          -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
+          -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
+        ];
+      }
+    },
+    
+    cubeRoot: function( x ) {
+      return x >= 0 ? Math.pow( x, 1/3 ) : -Math.pow( -x, 1/3 );
     }
   };
   var Util = dot.Util;
