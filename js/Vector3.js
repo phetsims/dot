@@ -113,6 +113,11 @@ define( function( require ) {
     angleBetween: function( v ) {
       return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
+    
+    // linear interpolation from this (ratio=0) to vector (ratio=1)
+    blend: function( vector, ratio ) {
+      return this.plus( vector.minus( this ).times( ratio ) );
+    },
 
     toString: function() {
       return "Vector3(" + this.x + ", " + this.y + ", " + this.z + ")";

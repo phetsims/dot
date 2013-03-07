@@ -125,6 +125,11 @@ define( function( require ) {
     rotated: function( angle ) {
       return Vector2.createPolar( this.magnitude(), this.angle() + angle );
     },
+    
+    // linear interpolation from this (ratio=0) to vector (ratio=1)
+    blend: function( vector, ratio ) {
+      return this.plus( vector.minus( this ).times( ratio ) );
+    },
 
     toString: function() {
       return "Vector2(" + this.x + ", " + this.y + ")";
