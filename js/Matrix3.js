@@ -523,5 +523,11 @@ define( function( require ) {
                   Types.IDENTITY );
   Matrix3.IDENTITY.makeImmutable();
   
+  Matrix3.printer = {
+    print: function( matrix ) {
+      console.log( matrix.toString() );
+    }
+  };
+  
   return Matrix3;
 } );
