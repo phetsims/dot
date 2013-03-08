@@ -223,6 +223,13 @@ define( function( require ) {
     columnMajor: function( v00, v10, v20, v01, v11, v21, v02, v12, v22, type ) {
       this.rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
     },
+    
+    copy: function() {
+      return new Matrix3( this.m00(), this.m01(), this.m02(),
+                          this.m10(), this.m11(), this.m12(),
+                          this.m20(), this.m21(), this.m22(),
+                          this.type );
+    },
 
     // convenience getters. inline usages of these when performance is critical? TODO: test performance of inlining these, with / without closure compiler
     m00: function() { return this.entries[0]; },

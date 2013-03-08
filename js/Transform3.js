@@ -65,6 +65,22 @@ define( function( require ) {
     * getters
     *----------------------------------------------------------------------------*/
     
+    // uses the same matrices, for use cases where the matrices are considered immutable
+    copy: function() {
+      var transform = new Transform3( this.matrix );
+      transform.inverse = this.inverse;
+      transform.matrixTransposed = this.matrixTransposed;
+      transform.inverseTransposed = this.inverseTransposed;
+    },
+    
+    // copies matrices, for use cases where the matrices are considered mutable
+    deepCopy: function() {
+      var transform = new Transform3( this.matrix.copy() );
+      transform.inverse = this.inverse ? this.inverse.copy() : null;
+      transform.matrixTransposed = this.matrixTransposed ? this.matrixTransposed.copy() : null;
+      transform.inverseTransposed = this.inverseTransposed ? this.inverseTransposed.copy() : null;
+    },
+    
     getMatrix: function() {
       return this.matrix;
     },
