@@ -512,6 +512,10 @@ define( function( require ) {
       
       // notes on triggering hardware acceleration: http://creativejs.com/2011/12/day-2-gpu-accelerate-your-dom-elements/
       return {
+        // force iOS hardware acceleration
+        '-webkit-perspective': 1000,
+        '-webkit-backface-visibility', 'hidden',
+        
         '-webkit-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
         '-moz-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
         '-ms-transform': transformCSS,
