@@ -25,15 +25,29 @@ define( function( require ) {
   Bounds2.prototype = {
     constructor: Bounds2,
     
-    // TODO: consider moving these to ES5 getters. it is weird that we use 'width()'' instead of 'width'
-    // properties of this bounding box
-    width: function() { return this.maxX - this.minX; },
-    height: function() { return this.maxY - this.minY; },
-    x: function() { return this.minX; },
-    y: function() { return this.minY; },
-    centerX: function() { return ( this.maxX + this.minX ) / 2; },
-    centerY: function() { return ( this.maxY + this.minY ) / 2; },
-    isEmpty: function() { return this.width() <= 0 || this.height() <= 0; },
+    /*---------------------------------------------------------------------------*
+    * Properties
+    *----------------------------------------------------------------------------*/
+    
+    getWidth: function() { return this.maxX - this.minX; },
+    get width() { return this.getWidth(); },
+    
+    getHeight: function() { return this.maxY - this.minY; },
+    get height() { return this.getHeight(); },
+    
+    getX: function() { return this.minX; },
+    get x() { return this.getX(); },
+    
+    getY: function() { return this.minY; },
+    get y() { return this.getY(); },
+    
+    getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
+    get centerX() { return this.getCenterX(); },
+    
+    getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
+    get centerY() { return this.getCenterY(); },
+    
+    isEmpty: function() { return this.getWidth() <= 0 || this.getHeight() <= 0; },
     
     // immutable operations (bounding-box style handling, so that the relevant bounds contain everything)
     union: function( other ) {
