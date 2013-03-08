@@ -514,7 +514,7 @@ define( function( require ) {
       return {
         // force iOS hardware acceleration
         '-webkit-perspective': 1000,
-        '-webkit-backface-visibility', 'hidden',
+        '-webkit-backface-visibility': 'hidden',
         
         '-webkit-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
         '-moz-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
