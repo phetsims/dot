@@ -67,6 +67,7 @@ define( function( require ) {
               0, 0, 1,
               Types.SCALING );
   };
+  Matrix3.scale = Matrix3.scaling;
 
   // axis is a normalized Vector3, angle in radians.
   Matrix3.rotationAxisAngle = function( axis, angle ) {

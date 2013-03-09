@@ -13,4 +13,5 @@ function runDotTests( pathToTestBase ) {
   }
   
   loadTestFile( 'js/simple-tests.js' );
+  loadTestFile( 'js/bounds2.js' );
 };
