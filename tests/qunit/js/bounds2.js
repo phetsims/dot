@@ -76,4 +76,10 @@
     approximateBoundsEquals( A().shiftedY( 1.5 ), A().shiftY( 1.5 ), 'shiftedY / shiftY' );
     approximateBoundsEquals( A().shifted( 1.5, 2 ), A().shift( 1.5, 2 ), 'shifted / shift' );
   } );
+  
+  test( 'Bounds transforms', function() {
+    approximateBoundsEquals( A().transformed( dot.Matrix3.translation( 10, 20 ) ), new Bounds2( 10, 20, 12, 23 ), 'translation' );
+    approximateBoundsEquals( A().transformed( dot.Matrix3.rotation2( Math.PI / 2 ) ), new Bounds2( -3, 0, 0, 2 ), 'rotation' );
+    approximateBoundsEquals( A().transformed( dot.Matrix3.scale( 3, 2 ) ), new Bounds2( 0, 0, 6, 6 ), 'scale' );
+  } );
 })();

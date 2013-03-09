@@ -152,17 +152,7 @@ define( function( require ) {
     // transform a bounding box.
     // NOTE that box.transformed( matrix ).transformed( inverse ) may be larger than the original box
     transformed: function( matrix ) {
-      if ( this.isEmpty() ) {
-        return Bounds2.NOTHING;
-      }
-      var result = Bounds2.NOTHING;
-      
-      // make sure all 4 corners are inside this transformed bounding box
-      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.minX, this.minY ) ) );
-      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.minX, this.maxY ) ) );
-      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.maxX, this.minY ) ) );
-      result = result.withPoint( matrix.timesVector2( new dot.Vector2( this.maxX, this.maxY ) ) );
-      return result;
+      return this.copy().transform( matrix );
     },
     
     // returns copy expanded on all sides by length d
@@ -268,13 +258,15 @@ define( function( require ) {
       var maxX = this.maxX;
       var maxY = this.maxY;
       
+      // using mutable vector so we don't create excessive instances of Vector2 during this
       // make sure all 4 corners are inside this transformed bounding box
-      // TODO: GC issue with way too many temporary objects created here
-      return this.setBounds( Bounds2.NOTHING )
-                 .addPoint( matrix.timesVector2( new dot.Vector2( minX, minY ) ) )
-                 .addPoint( matrix.timesVector2( new dot.Vector2( minX, maxY ) ) )
-                 .addPoint( matrix.timesVector2( new dot.Vector2( maxX, minY ) ) )
-                 .addPoint( matrix.timesVector2( new dot.Vector2( maxX, maxY ) ) );
+      var vector = new dot.Vector2();
+      this.setBounds( Bounds2.NOTHING );
+      this.addPoint( matrix.multiplyVector2( vector.set( minX, minY ) ) );
+      this.addPoint( matrix.multiplyVector2( vector.set( minX, maxY ) ) );
+      this.addPoint( matrix.multiplyVector2( vector.set( maxX, minY ) ) );
+      this.addPoint( matrix.multiplyVector2( vector.set( maxX, maxY ) ) );
+      return this;
     },
     
     // expands on all sides by length d
