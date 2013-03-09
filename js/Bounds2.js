@@ -52,10 +52,14 @@ define( function( require ) {
     getMaxX: function() { return this.maxX; },
     getMaxY: function() { return this.maxY; },
     
-    isEmpty: function() { return this.getWidth() <= 0 || this.getHeight() <= 0; },
+    isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0; },
     
     isFinite: function() {
       return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.maxX ) && isFinite( this.maxY );
+    },
+    
+    isValid: function() {
+      return !this.isEmpty() && this.isFinite();
     },
     
     // whether the coordinates are inside the bounding box (or on the boundary)
@@ -73,7 +77,7 @@ define( function( require ) {
       return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY;
     },
     
-    // whether the intersection is non-empty (an interior point must be in both, not just a boundary point)
+    // whether the intersection is non-empty (if they share any part of a boundary, this will be true)
     intersectsBounds: function( bounds ) {
       // TODO: more efficient way of doing this?
       return !this.intersection( bounds ).isEmpty();
