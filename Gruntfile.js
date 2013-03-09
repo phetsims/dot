@@ -44,6 +44,7 @@ module.exports = function( grunt ) {
       },
       production: {
         options: {
+          almond: true,
           mainConfigFile: "js/performance-config.js",
           out: "dist/production/dot.min.js",
           name: "performance-config",
@@ -105,7 +106,7 @@ module.exports = function( grunt ) {
   grunt.registerTask( 'default', [ 'jshint', 'standalone' ] );
   grunt.registerTask( 'production', [ 'requirejs:production' ] );
   grunt.registerTask( 'standalone', [ 'requirejs:standalone', 'concat:standalone', 'uglify:standalone' ] );
-  grunt.loadNpmTasks( 'grunt-contrib-requirejs' );
+  grunt.loadNpmTasks( 'grunt-requirejs' );
   grunt.loadNpmTasks( 'grunt-contrib-concat' );
   grunt.loadNpmTasks( 'grunt-contrib-uglify' );
   grunt.loadNpmTasks( 'grunt-contrib-jshint' );
