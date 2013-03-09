@@ -81,13 +81,13 @@
   } );
   
   test( 'Determinant', function() {
-    approximateEqual( A().determinant(), -0.0717069, 'A' );
-    approximateEqual( B().determinant(), -1.42292, 'B' );
+    approximateEqual( A().getDeterminant(), -0.0717069, 'A' );
+    approximateEqual( B().getDeterminant(), -1.42292, 'B' );
   } );
   
   test( 'Rotation', function() {
     var angle = Math.PI / 6 + 0.2543;
-    approximateEqual( Matrix3.rotation2( angle ).rotation(), angle );
+    approximateEqual( Matrix3.rotation2( angle ).getRotation(), angle );
   } );
   
   test( 'plus / add', function() {

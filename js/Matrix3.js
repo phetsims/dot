@@ -221,8 +221,7 @@ define( function( require ) {
     m21: function() { return this.entries[5]; },
     m22: function() { return this.entries[8]; },
     
-    // TODO: getDeterminant()!
-    determinant: function() {
+    getDeterminant: function() {
       return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
     },
     
@@ -236,20 +235,17 @@ define( function( require ) {
              this.m20() + ' ' + this.m21() + ' ' + this.m22();
     },
     
-    // TODO: getTranslation()
-    translation: function() {
+    getTranslation: function() {
       return new dot.Vector2( this.m02(), this.m12() );
     },
     
-    // TODO: getScale() / getScaling()
-    scaling: function() {
+    getScaleVector: function() {
       var transformedOrigin = this.timesVector2( dot.Vector2.ZERO );
       return new dot.Vector2( this.timesVector2( dot.Vector2.X_UNIT ).minus( transformedOrigin ).magnitude(), this.timesVector2( dot.Vector2.Y_UNIT ).minus( transformedOrigin ).magnitude() );
     },
     
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
-    // TODO: getRotation()!
-    rotation: function() {
+    getRotation: function() {
       var transformedVector = this.timesVector2( dot.Vector2.X_UNIT ).minus( this.timesVector2( dot.Vector2.ZERO ) );
       return Math.atan2( transformedVector.y, transformedVector.x );
     },
@@ -402,7 +398,7 @@ define( function( require ) {
                               0, 1 / this.m11(), 0,
                               0, 0, 1 / this.m22(), Types.SCALING );
         case Types.AFFINE:
-          det = this.determinant();
+          det = this.getDeterminant();
           if ( det !== 0 ) {
             return new Matrix3(
               ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
@@ -418,7 +414,7 @@ define( function( require ) {
           }
           break; // because JSHint totally can't tell that this can't be reached
         case Types.OTHER:
-          det = this.determinant();
+          det = this.getDeterminant();
           if ( det !== 0 ) {
             return new Matrix3(
               ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
@@ -595,7 +591,7 @@ define( function( require ) {
                                 0, 1 / this.m11(), 0,
                                 0, 0, 1 / this.m22(), Types.SCALING );
         case Types.AFFINE:
-          det = this.determinant();
+          det = this.getDeterminant();
           if ( det !== 0 ) {
             return this.rowMajor(
               ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
@@ -611,7 +607,7 @@ define( function( require ) {
           }
           break; // because JSHint totally can't tell that this can't be reached
         case Types.OTHER:
-          det = this.determinant();
+          det = this.getDeterminant();
           if ( det !== 0 ) {
             return this.rowMajor(
               ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,

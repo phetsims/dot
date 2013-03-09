@@ -17,16 +17,16 @@
     var scale2x3y = dot.Matrix3.scaling( 2, 3 );
     
     // the basics, just to make sure it is working
-    equal( scale2.scaling().x, 2, 'normal x scale' );
-    equal( scale2.scaling().y, 2, 'normal y scale' );
+    equal( scale2.getScaleVector().x, 2, 'normal x scale' );
+    equal( scale2.getScaleVector().y, 2, 'normal y scale' );
     
-    equal( scale2x3y.scaling().x, 2, 'normal x scale' );
-    equal( scale2x3y.scaling().y, 3, 'normal y scale' );
+    equal( scale2x3y.getScaleVector().x, 2, 'normal x scale' );
+    equal( scale2x3y.getScaleVector().y, 3, 'normal y scale' );
     
     var combination = rotation.timesMatrix( scale2 ).timesMatrix( translation );
     
-    approximateEquals( combination.scaling().x, 2, 'rotated x scale' );
-    approximateEquals( combination.scaling().y, 2, 'rotated x scale' );
+    approximateEquals( combination.getScaleVector().x, 2, 'rotated x scale' );
+    approximateEquals( combination.getScaleVector().y, 2, 'rotated x scale' );
   } );
   
   test( 'isArray', function() {
