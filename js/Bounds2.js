@@ -49,6 +49,33 @@ define( function( require ) {
     
     isEmpty: function() { return this.getWidth() <= 0 || this.getHeight() <= 0; },
     
+    // whether the point is inside the bounding box
+    containsPoint: function( point ) {
+      return this.minX <= point.x && point.x <= this.maxX && this.minY <= point.y && point.y <= this.maxY;
+    },
+    
+    // whether this bounding box completely contains the argument bounding box
+    containsBounds: function( bounds ) {
+      return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY;
+    },
+    
+    intersectsBounds: function( bounds ) {
+      // TODO: more efficient way of doing this?
+      return !this.intersection( bounds ).isEmpty();
+    },
+    
+    toString: function() {
+      return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
+    },
+
+    equals: function( other ) {
+      return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Immutable operations
+    *----------------------------------------------------------------------------*/
+    
     // immutable operations (bounding-box style handling, so that the relevant bounds contain everything)
     union: function( other ) {
       return new Bounds2(
@@ -103,21 +130,6 @@ define( function( require ) {
       );
     },
     
-    // whether the point is inside the bounding box
-    containsPoint: function( point ) {
-      return this.minX <= point.x && point.x <= this.maxX && this.minY <= point.y && point.y <= this.maxY;
-    },
-    
-    // whether this bounding box completely contains the argument bounding box
-    containsBounds: function( bounds ) {
-      return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY;
-    },
-    
-    intersectsBounds: function( bounds ) {
-      // TODO: more efficient way of doing this?
-      return !this.intersection( bounds ).isEmpty();
-    },
-    
     // transform a bounding box.
     // NOTE that box.transformed( matrix ).transformed( inverse ) may be larger than the original box
     transformed: function( matrix ) {
@@ -158,15 +170,13 @@ define( function( require ) {
     // returns copy contracted on all sides by length d
     eroded: function( d ) {
       return this.dilated( -d );
-    },
-
-    toString: function() {
-      return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
-    },
-
-    equals: function( other ) {
-      return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
     }
+    
+    /*---------------------------------------------------------------------------*
+    * Mutable operations
+    *----------------------------------------------------------------------------*/
+    
+    
   };
   
   // specific bounds useful for operations
