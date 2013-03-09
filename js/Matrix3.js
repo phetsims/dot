@@ -308,6 +308,7 @@ define( function( require ) {
       }
     },
     
+    // returns a parameter object suitable for use with jQuery's .css()
     cssTransformStyles: function() {
       var transformCSS = this.cssTransform();
       
