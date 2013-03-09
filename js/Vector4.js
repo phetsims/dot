@@ -201,8 +201,12 @@ define( function( require ) {
       this.z = -this.z;
       this.w = -this.w;
     },
-
-    equals: function( other, epsilon ) {
+    
+    equals: function( other ) {
+      return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
       if ( !epsilon ) {
         epsilon = 0;
       }

@@ -196,7 +196,11 @@ define( function( require ) {
       this.y = -this.y;
     },
 
-    equals: function( other, epsilon ) {
+    equals: function( other ) {
+      return this.x === other.x && this.y === other.y;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
       if ( !epsilon ) {
         epsilon = 0;
       }
