@@ -3,6 +3,7 @@ Bugs:
 
 Add:
   Complex
+  makeImmutable()?
 
 https://github.com/square/es6-module-transpiler
 https://code.google.com/p/traceur-compiler/
