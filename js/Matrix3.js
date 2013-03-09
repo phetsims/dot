@@ -221,40 +221,44 @@ define( function( require ) {
     m21: function() { return this.entries[5]; },
     m22: function() { return this.entries[8]; },
     
-    getDeterminant: function() {
-      return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
-    },
-    
     isAffine: function() {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
     },
     
-    toString: function() {
-      return this.m00() + ' ' + this.m01() + ' ' + this.m02() + '\n' +
-             this.m10() + ' ' + this.m11() + ' ' + this.m12() + '\n' +
-             this.m20() + ' ' + this.m21() + ' ' + this.m22();
+    getDeterminant: function() {
+      return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
     },
+    get determinant() { return this.getDeterminant(); },
     
     getTranslation: function() {
       return new dot.Vector2( this.m02(), this.m12() );
     },
+    get translation() { return this.getTranslation(); },
     
     getScaleVector: function() {
       var transformedOrigin = this.timesVector2( dot.Vector2.ZERO );
       return new dot.Vector2( this.timesVector2( dot.Vector2.X_UNIT ).minus( transformedOrigin ).magnitude(), this.timesVector2( dot.Vector2.Y_UNIT ).minus( transformedOrigin ).magnitude() );
     },
+    get scaleVector() { return this.getScaleVector(); },
     
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
     getRotation: function() {
       var transformedVector = this.timesVector2( dot.Vector2.X_UNIT ).minus( this.timesVector2( dot.Vector2.ZERO ) );
       return Math.atan2( transformedVector.y, transformedVector.x );
     },
+    get rotation() { return this.getRotation(); },
     
     toMatrix4: function() {
       return new dot.Matrix4( this.m00(), this.m01(), this.m02(), 0,
                               this.m10(), this.m11(), this.m12(), 0,
                               this.m20(), this.m21(), this.m22(), 0,
                               0, 0, 0, 1 );
+    },
+    
+    toString: function() {
+      return this.m00() + ' ' + this.m01() + ' ' + this.m02() + '\n' +
+             this.m10() + ' ' + this.m11() + ' ' + this.m12() + '\n' +
+             this.m20() + ' ' + this.m21() + ' ' + this.m22();
     },
     
     toSVGMatrix: function() {
