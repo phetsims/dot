@@ -67,6 +67,10 @@ define( function( require ) {
       return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) <= epsilon;
     },
     
+    isFinite: function() {
+      return isFinite( this.x ) && isFinite( this.y );
+    },
+    
     /*---------------------------------------------------------------------------*
      * Immutables
      *----------------------------------------------------------------------------*/

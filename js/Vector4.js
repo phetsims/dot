@@ -49,6 +49,10 @@ define( function( require ) {
     dot: function( v ) {
       return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
     },
+    
+    isFinite: function() {
+      return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z ) && isFinite( this.w );
+    },
 
     /*---------------------------------------------------------------------------*
      * Immutables
