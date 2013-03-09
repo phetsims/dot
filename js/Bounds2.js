@@ -87,6 +87,10 @@ define( function( require ) {
     * Immutable operations
     *----------------------------------------------------------------------------*/
     
+    copy: function() {
+      return new Bounds2( this.minX, this.minY, this.maxX, this.maxY );
+    },
+    
     // immutable operations (bounding-box style handling, so that the relevant bounds contain everything)
     union: function( bounds ) {
       return new Bounds2(
