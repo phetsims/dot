@@ -312,7 +312,7 @@ define( function( require ) {
     
     // returns a parameter object suitable for use with jQuery's .css()
     getCSSTransformStyles: function() {
-      var transformCSS = this.cssTransform();
+      var transformCSS = this.getCSSTransform();
       
       // notes on triggering hardware acceleration: http://creativejs.com/2011/12/day-2-gpu-accelerate-your-dom-elements/
       return {
