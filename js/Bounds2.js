@@ -9,12 +9,15 @@
 define( function( require ) {
   "use strict";
   
+  var assert = require( 'ASSERT/assert' )( 'dot' );
+  
   var dot = require( 'DOT/dot' );
   
   require( 'DOT/Vector2' );
   
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
   dot.Bounds2 = function( minX, minY, maxX, maxY ) {
+    assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
     this.minX = minX;
     this.minY = minY;
     this.maxX = maxX;
