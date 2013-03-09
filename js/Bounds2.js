@@ -54,6 +54,10 @@ define( function( require ) {
     
     isEmpty: function() { return this.getWidth() <= 0 || this.getHeight() <= 0; },
     
+    isFinite: function() {
+      return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.maxX ) && isFinite( this.maxY );
+    },
+    
     // whether the coordinates are inside the bounding box (or on the boundary)
     containsCoordinates: function( x, y ) {
       return this.minX <= x && x <= this.maxX && this.minY <= y && y <= this.maxY;
