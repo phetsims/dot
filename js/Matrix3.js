@@ -275,7 +275,7 @@ define( function( require ) {
       return result;
     },
     
-    cssTransform: function() {
+    getCSSTransform: function() {
       // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
       
       // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
@@ -286,8 +286,9 @@ define( function( require ) {
       // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
       return 'matrix(' + cssNumber( this.entries[0] ) + ',' + cssNumber( this.entries[1] ) + ',' + cssNumber( this.entries[3] ) + ',' + cssNumber( this.entries[4] ) + ',' + cssNumber( this.entries[6] ) + ',' + cssNumber( this.entries[7] ) + ')';
     },
+    get cssTransform() { return this.getCSSTransform(); },
     
-    svgTransform: function() {
+    getSVGTransform: function() {
       // SVG transform presentation attribute. See http://www.w3.org/TR/SVG/coords.html#TransformAttribute
       
       // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
@@ -307,9 +308,10 @@ define( function( require ) {
           return 'matrix(' + svgNumber( this.entries[0] ) + ',' + svgNumber( this.entries[1] ) + ',' + svgNumber( this.entries[3] ) + ',' + svgNumber( this.entries[4] ) + ',' + svgNumber( this.entries[6] ) + ',' + svgNumber( this.entries[7] ) + ')';
       }
     },
+    get svgTransform() { return this.getSVGTransform(); },
     
     // returns a parameter object suitable for use with jQuery's .css()
-    cssTransformStyles: function() {
+    getCSSTransformStyles: function() {
       var transformCSS = this.cssTransform();
       
       // notes on triggering hardware acceleration: http://creativejs.com/2011/12/day-2-gpu-accelerate-your-dom-elements/
@@ -327,6 +329,7 @@ define( function( require ) {
         '-ms-transform-origin': 'top left' // TODO: do we need other platform-specific transform-origin styles?
       };
     },
+    get cssTransformStyles() { return this.getCSSTransformStyles(); },
     
     // exact equality
     equals: function( m ) {
