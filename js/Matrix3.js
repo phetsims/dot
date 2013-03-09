@@ -745,7 +745,7 @@ define( function( require ) {
         this.entries[6],
         this.entries[7]
       );
-    },
+    }
   };
 
   // create an immutable
