@@ -5,6 +5,9 @@ Add:
   Complex
   makeImmutable()?
 
+Cleanup:
+  Matrix4 should match Matrix3
+
 https://github.com/square/es6-module-transpiler
 https://code.google.com/p/traceur-compiler/
 
@@ -18,7 +21,6 @@ Grunt compilation into standalone form with require.js's wrap, probably with alm
   Line length limit for minified version?
   How to handle / inline images
 
-Add mutable style for matrices, and possibly a flag to see whether something has been modified?
 Investigate math library alternatives, like Numeric JS
 
 Low priority:
