@@ -8,33 +8,40 @@ module.exports = function( grunt ) {
   grunt.initConfig( {
     pkg: '<json:package.json>',
     
-    concat: {
-      standalone: {
-        src: [ "contrib/almond/almond.js", "contrib/has/has.js", "dist/standalone/dot.min.js" ],
-        dest: "dist/standalone/dot.min.js"
-      }
-    },
-    
-    uglify: {
-      standalone: {
-        src: [ 'dist/standalone/dot.min.js' ],
-        dest: 'dist/standalone/dot.min.js'
-      }
-    },
-    
     requirejs: {
+      // unminified, with has.js
+      development: {
+        options: {
+          almond: true,
+          mainConfigFile: "js/config.js",
+          out: "dist/development/dot.js",
+          name: "config",
+          optimize: 'none',
+          wrap: {
+            startFile: [ "js/wrap-start.frag", "contrib/has.js" ],
+            endFile: [ "js/wrap-end.frag" ]
+          }
+        }
+      },
+      
+      // with has.js
       standalone: {
         options: {
+          almond: true,
           mainConfigFile: "js/production-config.js",
           out: "dist/standalone/dot.min.js",
           name: "production-config",
           optimize: 'uglify2',
+          generateSourceMaps: true,
+          preserveLicenseComments: false,
           wrap: {
-            start: "(function() {",
-            end: " window.dot = require( 'main' ); }());"
+            startFile: [ "js/wrap-start.frag", "contrib/has.js" ],
+            endFile: [ "js/wrap-end.frag" ]
           }
         }
       },
+      
+      // without has.js
       production: {
         options: {
           almond: true,
@@ -45,8 +52,8 @@ module.exports = function( grunt ) {
           generateSourceMaps: true,
           preserveLicenseComments: false,
           wrap: {
-            start: "(function() {",
-            end: " window.dot = require( 'main' ); }());"
+            startFile: [ "js/wrap-start.frag" ],
+            endFile: [ "js/wrap-end.frag" ]
           }
         }
       }
@@ -54,7 +61,7 @@ module.exports = function( grunt ) {
     
     jshint: {
       all: [
-        'Gruntfile.js', 'js/**/*.js'
+        'Gruntfile.js', 'js/**/*.js', 'common/assert/js/**/*.js'
       ],
       // adjust with options from http://www.jshint.com/docs/
       options: {
@@ -96,9 +103,10 @@ module.exports = function( grunt ) {
   } );
   
   // Default task.
-  grunt.registerTask( 'default', [ 'jshint', 'standalone' ] );
+  grunt.registerTask( 'default', [ 'jshint', 'development', 'standalone', 'production' ] );
   grunt.registerTask( 'production', [ 'requirejs:production' ] );
-  grunt.registerTask( 'standalone', [ 'requirejs:standalone', 'concat:standalone', 'uglify:standalone' ] );
+  grunt.registerTask( 'standalone', [ 'requirejs:standalone' ] );
+  grunt.registerTask( 'development', [ 'requirejs:development' ] );
   grunt.loadNpmTasks( 'grunt-requirejs' );
   grunt.loadNpmTasks( 'grunt-contrib-concat' );
   grunt.loadNpmTasks( 'grunt-contrib-uglify' );

@@ -1,0 +1,1 @@
+ window.dot = require( 'main' ); }());
