@@ -8,13 +8,6 @@ module.exports = function( grunt ) {
   grunt.initConfig( {
     pkg: '<json:package.json>',
     
-    lint: {
-      files: [
-       // 'grunt.js',
-       // 'app-easel/*.js'
-      ]
-    },
-    
     concat: {
       standalone: {
         src: [ "contrib/almond/almond.js", "contrib/has/has.js", "dist/standalone/dot.min.js" ],
@@ -32,9 +25,9 @@ module.exports = function( grunt ) {
     requirejs: {
       standalone: {
         options: {
-          mainConfigFile: "js/performance-config.js",
+          mainConfigFile: "js/production-config.js",
           out: "dist/standalone/dot.min.js",
-          name: "performance-config",
+          name: "production-config",
           optimize: 'uglify2',
           wrap: {
             start: "(function() {",
@@ -45,9 +38,9 @@ module.exports = function( grunt ) {
       production: {
         options: {
           almond: true,
-          mainConfigFile: "js/performance-config.js",
+          mainConfigFile: "js/production-config.js",
           out: "dist/production/dot.min.js",
-          name: "performance-config",
+          name: "production-config",
           optimize: 'uglify2',
           generateSourceMaps: true,
           preserveLicenseComments: false,
