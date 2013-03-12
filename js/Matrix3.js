@@ -755,6 +755,18 @@ define( function( require ) {
                                   Types.IDENTITY );
   Matrix3.IDENTITY.makeImmutable();
   
+  Matrix3.X_REFLECTION = new Matrix3( -1, 0, 0,
+                                       0, 1, 0,
+                                       0, 0, 1,
+                                       Types.AFFINE );
+  Matrix3.X_REFLECTION.makeImmutable();
+  
+  Matrix3.Y_REFLECTION = new Matrix3( 1,  0, 0,
+                                      0, -1, 0,
+                                      0,  0, 1,
+                                      Types.AFFINE );
+  Matrix3.Y_REFLECTION.makeImmutable();
+  
   Matrix3.printer = {
     print: function( matrix ) {
       console.log( matrix.toString() );
