@@ -202,4 +202,10 @@
     approximateMatrixEqual( B().timesMatrix( B().inverted() ), Matrix3.IDENTITY, 'B inverse check' );
     approximateMatrixEqual( C().timesMatrix( C().inverted() ), Matrix3.IDENTITY, 'C inverse check' );
   } );
+
+  test( 'Matrix Scaling Tests', function() {
+    var scale = Matrix3.scale( -2, 3 );
+    var scaleVector = scale.getScaleVector();
+    approximateEqual( -2, scaleVector.x, 'Scale should be -2' );
+  } );
 })();
