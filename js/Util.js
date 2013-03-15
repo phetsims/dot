@@ -76,6 +76,8 @@ define( function( require ) {
         return [];
       }
       var sqrt = Math.sqrt( discriminant );
+      // TODO: how to handle if discriminant is 0? give unique root or double it?
+      // TODO: probably just use Complex for the future
       return [
         ( -b - sqrt ) / ( 2 * a ),
         ( -b + sqrt ) / ( 2 * a )
