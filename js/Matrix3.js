@@ -714,8 +714,8 @@ define( function( require ) {
     },
     
     multiplyRelativeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m10() * v.y;
-      var y = this.m01() * v.y + this.m11() * v.y;
+      var x = this.m00() * v.x + this.m01() * v.y;
+      var y = this.m10() * v.y + this.m11() * v.y;
       v.setX( x );
       v.setY( y );
       return v;
