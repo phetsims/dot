@@ -207,7 +207,7 @@
     var scale = Matrix3.scale( -2, 3 );
     var scaleVector = scale.getScaleVector();
     approximateEqual( scaleVector.x, -2, 'Scale X should be -2' );
-    approximateEqual( scaleVector.x, 3, 'Scale Y should be 3' );
+    approximateEqual( scaleVector.y, 3, 'Scale Y should be 3' );
     
     var beforeScale = scale.timesMatrix( Matrix3.rotation2( Math.PI / 2 ) );
     approximateEqual( beforeScale.getScaleVector().x, 3, 'before pi/2 rotation x' );
