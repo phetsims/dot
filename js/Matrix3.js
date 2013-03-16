@@ -235,9 +235,10 @@ define( function( require ) {
     },
     get translation() { return this.getTranslation(); },
     
+    // returns a vector that is equivalent to ( T(1,0).magnitude(), T(0,1).magnitude() ) where T is a relative transform
     getScaleVector: function() {
-      var transformedOrigin = this.timesVector2( dot.Vector2.ZERO );
-      return new dot.Vector2( this.timesVector2( dot.Vector2.X_UNIT ).minus( transformedOrigin ).magnitude(), this.timesVector2( dot.Vector2.Y_UNIT ).minus( transformedOrigin ).magnitude() );
+      return new dot.Vector2( Math.sqrt( this.m00() * this.m00() + this.m10() * this.m10() ),
+                              Math.sqrt( this.m01() * this.m01() + this.m11() * this.m11() ) );
     },
     get scaleVector() { return this.getScaleVector(); },
     

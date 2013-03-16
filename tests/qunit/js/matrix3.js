@@ -206,6 +206,19 @@
   test( 'Matrix Scaling Tests', function() {
     var scale = Matrix3.scale( -2, 3 );
     var scaleVector = scale.getScaleVector();
-    approximateEqual( -2, scaleVector.x, 'Scale should be -2' );
+    approximateEqual( scaleVector.x, -2, 'Scale X should be -2' );
+    approximateEqual( scaleVector.x, 3, 'Scale Y should be 3' );
+    
+    var beforeScale = scale.timesMatrix( Matrix3.rotation2( Math.PI / 2 ) );
+    approximateEqual( beforeScale.getScaleVector().x, 3, 'before pi/2 rotation x' );
+    approximateEqual( beforeScale.getScaleVector().y, 2, 'before pi/2 rotation y' );
+    
+    var afterScale = Matrix3.rotation2( Math.PI / 2 ).timesMatrix( scale );
+    approximateEqual( afterScale.getScaleVector().x, -2, 'after pi/2 rotation x' );
+    approximateEqual( afterScale.getScaleVector().y, -3, 'after pi/2 rotation y' );
+    
+    var rotation = Matrix3.rotation2( 0.35264 );
+    approximateEqual( rotation.getScaleVector().x, 1, 'rotation x' );
+    approximateEqual( rotation.getScaleVector().y, 1, 'rotation x' );
   } );
 })();
