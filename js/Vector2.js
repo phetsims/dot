@@ -79,8 +79,9 @@ define( function( require ) {
       return new Vector2( this.x, this.y );
     },
     
+    // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
     crossScalar: function( v ) {
-      return this.magnitude() * v.magnitude() * Math.sin( this.getAngle() - v.getAngle() );
+      return this.x * v.y  - this.y * v.x;
     },
     
     normalized: function() {
