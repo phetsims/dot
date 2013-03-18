@@ -91,6 +91,8 @@ module.exports = function( grunt ) {
           define: true,
           require: true,
           
+          _: false,
+          
           Uint16Array: false,
           Uint32Array: false,
           document: false,

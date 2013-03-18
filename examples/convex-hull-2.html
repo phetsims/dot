@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <title>Convex Hull 2D</title>
+  
+  <script src="../contrib/lodash.min-1.0.0-rc.3.js"></script>
+  <script src="../dist/standalone/dot.min.js"></script>
+  
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+    }
+    canvas {
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script type="text/javascript">
+    var canvas = document.getElementById( 'canvas' );
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    var context = canvas.getContext( '2d' );
+    
+    var p = function( x, y ) { return new dot.Vector2( x, y ); }
+    var points = [];
+    
+    function drawLabel() {
+      context.fillStyle = '#000';
+      context.font = '20px Arial';
+      context.fillText( 'Convex hull: click to add points', 10, 30 ); 
+    }
+    drawLabel();
+    
+    document.addEventListener( 'mousemove', function( evt ) {
+      context.clearRect( 0, 0, canvas.width, canvas.height );
+      points.push( p( evt.clientX, evt.clientY ) );
+      _.each( points, function( point ) {
+        context.beginPath();
+        context.arc( point.x, point.y, 2, 0, Math.PI * 2, false );
+        context.fillStyle = '#000';
+        context.fill();
+      } );
+      var hull = dot.ConvexHull2.grahamScan( points );
+      context.beginPath();
+      _.each( hull, function( point ) {
+        context.lineTo( point.x, point.y );
+      } );
+      context.closePath();
+      context.fillStyle = 'rgba(0,0,0,0.3)';
+      context.fill();
+      context.strokeStyle = '#000';
+      context.lineWidth = 1;
+      context.stroke();
+      points.pop();
+      
+      drawLabel();
+    } );
+    
+    document.addEventListener( 'mousedown', function( evt ) {
+      points.push( p( evt.clientX, evt.clientY ) );
+    } );
+  </script>
+</body>
+</html>

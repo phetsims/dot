@@ -1,6 +1,8 @@
 
 define( [
+  'DOT/dot',
   'DOT/Bounds2',
+  'DOT/ConvexHull2',
   'DOT/Dimension2',
   'DOT/LUDecomposition',
   'DOT/Matrix',
@@ -16,27 +18,7 @@ define( [
   'DOT/Util',
   'DOT/Vector2',
   'DOT/Vector3',
-  'DOT/Vector4',
-  'DOT/dot'
-  ], function(
-    Bounds2,
-    Dimension2,
-    LUDecomposition,
-    Matrix,
-    Matrix3,
-    Matrix4,
-    Permutation,
-    QRDecomposition,
-    Ray2,
-    Ray3,
-    SingularValueDecomposition,
-    Transform3,
-    Transform4,
-    Util,
-    Vector2,
-    Vector3,
-    Vector4,
-    dot
-  ) {
+  'DOT/Vector4'
+  ], function( dot ) {
   return dot;
 } );
