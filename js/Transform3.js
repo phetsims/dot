@@ -21,6 +21,8 @@ define( function( require ) {
   dot.Transform3 = function( matrix ) {
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
     this.set( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
+    
+    this.listeners = [];
   };
   var Transform3 = dot.Transform3;
 
@@ -39,6 +41,12 @@ define( function( require ) {
       this.inverse = null;
       this.matrixTransposed = null;
       this.inverseTransposed = null;
+      
+      // notify about transform changes
+      var length = this.listeners.length;
+      for ( var i = 0; i < length; i++ ) {
+        this.listeners[i]( matrix );
+      }
     },
     
     prepend: function( matrix ) {
@@ -184,6 +192,20 @@ define( function( require ) {
     
     inverseRay2: function( ray ) {
       return new dot.Ray2( this.inversePosition2( ray.pos ), this.inverseDelta2( ray.dir ).normalized() );
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * listeners
+    *----------------------------------------------------------------------------*/
+    
+    addTransformListener: function( listener ) {
+      assert && assert( !_.contains( this.listeners, listener ) );
+      this.listeners.push( listener );
+    },
+    
+    removeTransformListener: function( listener ) {
+      assert && assert( _.contains( this.listeners, listener ) );
+      this.listeners.splice( _.indexOf( this.listeners, listener ), 1 );
     }
   };
   
