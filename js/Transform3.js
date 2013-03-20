@@ -19,10 +19,10 @@ define( function( require ) {
 
   // takes a 4x4 matrix
   dot.Transform3 = function( matrix ) {
+    this.listeners = [];
+    
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
     this.set( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
-    
-    this.listeners = [];
   };
   var Transform3 = dot.Transform3;
 

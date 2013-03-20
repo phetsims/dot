@@ -81,4 +81,11 @@
     approximateEquals( new dot.Vector2( 4, 7 ).distance( new dot.Vector2( 6, 9 ) ), 2 * Math.sqrt( 2 ) );
     approximateEquals( new dot.Vector2( 4, 7 ).distanceSquared( new dot.Vector2( 6, 9 ) ), 8 );
   } );
+  
+  test( 'transform creation and setting', function() {
+    var t = new dot.Transform3();
+    t.append( dot.Matrix3.rotation2( Math.PI ) );
+    
+    expect( 0 );
+  } );
 })();
