@@ -34,9 +34,17 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     set: function( matrix ) {
-      var oldMatrix = this.matrix;
-      
       assert && assert( matrix instanceof dot.Matrix3 );
+      
+      var oldMatrix = this.matrix;
+      var length = this.listeners.length;
+      var i;
+      
+      // notify listeners before the change
+      for ( i = 0; i < length; i++ ) {
+        this.listeners[i].before( matrix, oldMatrix );
+      }
+      
       this.matrix = matrix;
       
       // compute these lazily
@@ -44,10 +52,9 @@ define( function( require ) {
       this.matrixTransposed = null;
       this.inverseTransposed = null;
       
-      // notify about transform changes
-      var length = this.listeners.length;
-      for ( var i = 0; i < length; i++ ) {
-        this.listeners[i]( matrix, oldMatrix );
+      // notify listeners after the change
+      for ( i = 0; i < length; i++ ) {
+        this.listeners[i].after( matrix, oldMatrix );
       }
     },
     
@@ -200,6 +207,7 @@ define( function( require ) {
     * listeners
     *----------------------------------------------------------------------------*/
     
+    // note: listener.before( matrix, oldMatrix ) will be called before the change, listener.after( matrix, oldMatrix ) will be called after
     addTransformListener: function( listener ) {
       assert && assert( !_.contains( this.listeners, listener ) );
       this.listeners.push( listener );
