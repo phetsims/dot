@@ -34,6 +34,8 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     set: function( matrix ) {
+      var oldMatrix = this.matrix;
+      
       assert && assert( matrix instanceof dot.Matrix3 );
       this.matrix = matrix;
       
@@ -45,7 +47,7 @@ define( function( require ) {
       // notify about transform changes
       var length = this.listeners.length;
       for ( var i = 0; i < length; i++ ) {
-        this.listeners[i]( matrix );
+        this.listeners[i]( matrix, oldMatrix );
       }
     },
     
