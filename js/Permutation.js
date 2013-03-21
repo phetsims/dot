@@ -13,7 +13,7 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
-  var isArray = require( 'CORE/isArray' );
+  var isArray = require( 'PHET_CORE/isArray' );
   require( 'DOT/Util' ); // for rangeInclusive
   
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]

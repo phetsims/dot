@@ -37,7 +37,7 @@
     // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
     function check() {
       if ( window.loadedDotConfig ) {
-        require( [ 'main', 'CORE/main' ], function( dot, core ) {
+        require( [ 'main', 'PHET_CORE/main' ], function( dot, core ) {
           window.dot = dot;
           window.core = core;
           

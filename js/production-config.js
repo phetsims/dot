@@ -8,12 +8,12 @@ if ( window.has ) {
 window.loadedDotConfig = true;
 
 require.config( {
-  deps: [ 'main', 'CORE/main' ],
+  deps: [ 'main', 'PHET_CORE/main' ],
 
   paths: {
     underscore: '../contrib/lodash.min-1.0.0-rc.3',
     DOT: '.',
-    CORE: '../common/phet-core/js',
+    'PHET_CORE': '../common/phet-core/js',
     ASSERT: '../common/assert/js'
   },
   

@@ -15,7 +15,7 @@ define( function( require ) {
   
   var Float32Array = window.Float32Array || Array;
   
-  var isArray = require( 'CORE/isArray' );
+  var isArray = require( 'PHET_CORE/isArray' );
   
   require( 'DOT/SingularValueDecomposition' );
   require( 'DOT/LUDecomposition' );
