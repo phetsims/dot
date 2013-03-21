@@ -8,7 +8,7 @@ if ( window.has ) {
 window.loadedDotConfig = true;
 
 require.config( {
-  deps: [ 'main' ],
+  deps: [ 'main', 'CORE/main' ],
 
   paths: {
     underscore: '../contrib/lodash.min-1.0.0-rc.3',

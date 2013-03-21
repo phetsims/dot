@@ -29,14 +29,6 @@
     approximateEquals( combination.getScaleVector().y, 2, 'rotated x scale' );
   } );
   
-  test( 'isArray', function() {
-    ok( dot.isArray( [ 1, 2, 3 ] ) );
-    ok( dot.isArray( [] ) );
-    ok( !dot.isArray( 0 ) );
-    ok( !dot.isArray( {} ) );
-    ok( !dot.isArray( function() {} ) );
-  } );
-  
   test( 'clamp', function() {
     equal( dot.clamp( 5, 1, 4 ), 4 );
     equal( dot.clamp( 3, 1, 4 ), 3 );

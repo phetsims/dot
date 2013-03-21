@@ -15,6 +15,8 @@
   <!-- <script src="../../dist/standalone/dot.min.js"></script> -->
   <script data-main="../../js/config.js" src="../../contrib/require-2.1.4.js"></script>
   <script src="unit-tests.js"></script>
+  <script src="../../common/phet-core/tests/qunit/unit-tests.js"></script>
+  
   <script>
     function collapseTests() {
       $( '#qunit-tests .fail ol' ).css( 'display', 'none' );
@@ -40,6 +42,7 @@
           window.core = core;
           
           runDotTests( '.' );
+          runPhetCoreTests( '../../common/phet-core/tests/qunit' );
           
           if ( console.log ) {
             console.log( dot.Util.testAssert() );
