@@ -13,7 +13,8 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
-  require( 'DOT/Util' ); // for isArray / rangeInclusive
+  var isArray = require( 'CORE/isArray' );
+  require( 'DOT/Util' ); // for rangeInclusive
   
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
   var Permutation = function( indices ) {
@@ -79,7 +80,7 @@ define( function( require ) {
     },
 
     apply: function( arrayOrInt ) {
-      if ( dot.isArray( arrayOrInt ) ) {
+      if ( isArray( arrayOrInt ) ) {
         if ( arrayOrInt.length !== this.size() ) {
           throw new Error( "Permutation length " + this.size() + " not equal to list length " + arrayOrInt.length );
         }

@@ -15,13 +15,14 @@ define( function( require ) {
   
   var Float32Array = window.Float32Array || Array;
   
+  var isArray = require( 'CORE/isArray' );
+  
   require( 'DOT/SingularValueDecomposition' );
   require( 'DOT/LUDecomposition' );
   require( 'DOT/QRDecomposition' );
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
-  require( 'DOT/Util' ); // for isArray
   
   dot.Matrix = function( m, n, filler, fast ) {
     this.m = m;
@@ -42,7 +43,7 @@ define( function( require ) {
       // entries stored in row-major format
       this.entries = new Float32Array( size );
 
-      if ( dot.isArray( filler ) ) {
+      if ( isArray( filler ) ) {
         assert && assert( filler.length === size );
 
         for ( i = 0; i < size; i++ ) {

@@ -13,6 +13,7 @@ require.config( {
   paths: {
     underscore: '../contrib/lodash.min-1.0.0-rc.3',
     DOT: '.',
+    CORE: '../common/phet-core/js',
     ASSERT: '../common/assert/js'
   },
   
