@@ -1,1 +1,2 @@
+Migrated Range from phetcommon to dot
 Added two-point linear interpolation/evaluation function to DOT/Util
