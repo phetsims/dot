@@ -16,7 +16,7 @@ define( function ( require ) {
 
     this.min = min;
     this.max = max;
-    this.defaultValue = defaultValue || min;
+    this.defaultValue = ( defaultValue === undefined ) ? min : defaultValue;
 
     assert && assert( min <= max );
     assert && assert( ( this.defaultValue >= min ) && ( this.defaultValue <= max ) );
