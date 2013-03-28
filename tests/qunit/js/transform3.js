@@ -5,16 +5,16 @@
   var Matrix3 = dot.Matrix3;
   var Transform3 = dot.Transform3;
   
-  function approximateEqual( a, b, msg ) {
-    ok( Math.abs( a - b ) < epsilon, msg + ' expected: ' + b + ', got: ' + a );
-  }
+  // function approximateEqual( a, b, msg ) {
+  //   ok( Math.abs( a - b ) < epsilon, msg + ' expected: ' + b + ', got: ' + a );
+  // }
   
-  function approximateMatrixEqual( a, b, msg ) {
-    ok( a.equalsEpsilon( b, epsilon ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
-  }
+  // function approximateMatrixEqual( a, b, msg ) {
+  //   ok( a.equalsEpsilon( b, epsilon ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
+  // }
   
   function approximateRayEqual( a, b, msg ) {
-    ok( a.pos.equalsEpsilon( b.pos ) && a.dir.equalsEpsilon( b.dir ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
+    ok( a.pos.equalsEpsilon( b.pos, 0.00001 ) && a.dir.equalsEpsilon( b.dir, 0.00001 ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
   }
   
   test( 'Ray2 transforms', function() {
@@ -31,5 +31,7 @@
     var forwardOffset = transform.transformPosition2( iray.pointAtDistance( 1 ) );
     var forwardPos = transform.transformPosition2( iray.pos );
     ok( ray.dir.equalsEpsilon( forwardOffset.minus( forwardPos ).normalized(), 0.00001 ), 'inverseRay2 ray linearity' );
+    
+    approximateRayEqual( transform.inverseRay2( transform.transformRay2( ray ) ), ray, 'inverse correctness' );
   } );
 })();
