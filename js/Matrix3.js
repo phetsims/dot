@@ -514,6 +514,7 @@ define( function( require ) {
       return new dot.Vector2( x, y );
     },
     
+    // TODO: this operation seems to not work for transformDelta2, should be vetted
     timesRelativeVector2: function( v ) {
       var x = this.m00() * v.x + this.m01() * v.y;
       var y = this.m10() * v.y + this.m11() * v.y;

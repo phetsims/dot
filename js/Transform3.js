@@ -138,7 +138,8 @@ define( function( require ) {
 
     // transform a vector (exclude translation)
     transformDelta2: function( vec2 ) {
-      return this.matrix.timesRelativeVector2( vec2 );
+      // transform actually has the translation rolled into the other coefficients, so we have to make this longer
+      return this.transformPosition2( vec2 ).minus( this.transformPosition2( dot.Vector2.ZERO ) );
     },
 
     // transform a normal vector (different than a normal vector)
