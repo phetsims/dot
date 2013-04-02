@@ -4558,15 +4558,17 @@ define('DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matri
     
     // appends the affine part of this matrix to the Canvas 2D rendering context
     canvasAppendTransform: function( context ) {
-      context.transform(
-        // inlined array entries
-        this.entries[0],
-        this.entries[1],
-        this.entries[3],
-        this.entries[4],
-        this.entries[6],
-        this.entries[7]
-      );
+      if ( this.type !== Types.IDENTITY ) {
+        context.transform(
+          // inlined array entries
+          this.entries[0],
+          this.entries[1],
+          this.entries[3],
+          this.entries[4],
+          this.entries[6],
+          this.entries[7]
+        );
+      }
     }
   };
 
