@@ -44,6 +44,9 @@ define( function( require ) {
     getY: function() { return this.minY; },
     get y() { return this.getY(); },
     
+    getCenter: function() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); },
+    get center() { return this.getCenter(); },
+    
     getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
     get centerX() { return this.getCenterX(); },
     
