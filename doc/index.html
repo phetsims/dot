@@ -278,10 +278,28 @@
         the vector by the magnitude, and will throw an error if the division is by zero.
       </p>
       
+      <h4 id="vector2-componentTimes">componentTimes( <span class="args">v</span> )</h4>
+      <p>
+        Returns a copy of this vector multiplied component-wise by the parameter vector
+        
+        $$ \left[ \begin{array}{ccc} u_x v_x \\ u_y v_y \end{array} \right] $$
+      </p>
+      
+      <h4 id="vector2-times">times( <span class="args">s</span> )</h4>
+      <p>
+        Currently an alias for <a href="#vector2-timesScalar">timesScalar</a>. May also use
+        <a href="#vector2-componentTimes">componentTimes</a> in the future if the argument
+        is a <a href="#vector2">Vector2</a>.
+      </p>
+      
+      <h4 id="vector2-timesScalar">timesScalar( <span class="args">s</span> )</h4>
+      <p>
+        Returns a copy of the vector with each component multiplied times the scalar.
+        
+        $$ \left[ \begin{array}{ccc} s u_x \\ s u_y \end{array} \right] $$
+      </p>
+      
       <!-- 
-      <a class="sublink" href="#vector2-componentTimes">componentTimes</a><br>
-      <a class="sublink" href="#vector2-times">times</a><br>
-      <a class="sublink" href="#vector2-timesScalar">timesScalar</a><br>
       <a class="sublink" href="#vector2-plus">plus</a><br>
       <a class="sublink" href="#vector2-plusScalar">plusScalar</a><br>
       <a class="sublink" href="#vector2-minus">minus</a><br>
