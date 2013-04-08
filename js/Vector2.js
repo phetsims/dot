@@ -64,7 +64,7 @@ define( function( require ) {
       if ( !epsilon ) {
         epsilon = 0;
       }
-      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) <= epsilon;
+      return Math.max( Math.abs( this.x - other.x ), Math.abs( this.y - other.y ) ) <= epsilon;
     },
     
     isFinite: function() {
