@@ -68,6 +68,10 @@ define( function( require ) {
                         Types.SCALING );
   };
   Matrix3.scale = Matrix3.scaling;
+  
+  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) {
+    return new Matrix3( m00, m01, m02, m10, m11, m12, 0, 0, 1, Types.AFFINE );
+  };
 
   // axis is a normalized Vector3, angle in radians.
   Matrix3.rotationAxisAngle = function( axis, angle ) {
