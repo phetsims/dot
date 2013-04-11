@@ -2,6 +2,7 @@
 define( [
   'DOT/dot',
   'DOT/Bounds2',
+  'DOT/Complex',
   'DOT/ConvexHull2',
   'DOT/Dimension2',
   'DOT/LUDecomposition',

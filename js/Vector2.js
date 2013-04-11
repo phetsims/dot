@@ -13,10 +13,11 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
+  var inherit = require( 'PHET_CORE/inherit' );
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
   
-  dot.Vector2 = function( x, y ) {
+  dot.Vector2 = function Vector2( x, y ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
@@ -232,14 +233,12 @@ define( function( require ) {
   /*---------------------------------------------------------------------------*
    * Immutable Vector form
    *----------------------------------------------------------------------------*/
-  Vector2.Immutable = function( x, y ) {
-    this.x = x || 0;
-    this.y = y || 0;
+  Vector2.Immutable = function ImmutableVector2( x, y ) {
+    Vector2.call( this, x, y );
   };
   var Immutable = Vector2.Immutable;
   
-  Immutable.prototype = new Vector2();
-  Immutable.prototype.constructor = Immutable;
+  inherit( Immutable, Vector2 );
   
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
