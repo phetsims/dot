@@ -31,6 +31,27 @@ define( function( require ) {
       }
     },
     
+    // returns a number between [min,max) with the same equivalence class as value mod (max-min)
+    moduloBetweenDown: function( value, min, max ) {
+      assert && assert( max > min, 'max > min required for moduloBetween' );
+      
+      var divisor = max - min;
+      
+      // get a partial result of value-min between [0,divisor)
+      var partial = ( value - min ) % divisor;
+      if ( partial < 0 ) {
+        // since if value-min < 0, the remainder will give us a negative number
+        partial += divisor;
+      }
+      
+      return partial + min; // add back in the minimum value
+    },
+    
+    // returns a number between (min,max] with the same equivalence class as value mod (max-min)
+    moduloBetweenUp: function( value, min, max ) {
+      return -Util.moduloBetweenDown( -value, -max, -min );
+    },
+    
     // Returns an array of integers from A to B (including both A to B)
     rangeInclusive: function( a, b ) {
       if ( b < a ) {
