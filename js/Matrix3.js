@@ -15,10 +15,10 @@ define( function( require ) {
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix4' );
   
-  dot.Matrix3 = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+  dot.Matrix3 = function Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
 
     // entries stored in column-major format
-    this.entries = new Array( 9 );
+    this.entries = new Array( 9 ); // TODO: consider a typed array if possible (double even?) for performance and compatibility with WebGL
 
     this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0,
                    v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
@@ -68,6 +68,10 @@ define( function( require ) {
                         Types.SCALING );
   };
   Matrix3.scale = Matrix3.scaling;
+  
+  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) {
+    return new Matrix3( m00, m01, m02, m10, m11, m12, 0, 0, 1, Types.AFFINE );
+  };
 
   // axis is a normalized Vector3, angle in radians.
   Matrix3.rotationAxisAngle = function( axis, angle ) {

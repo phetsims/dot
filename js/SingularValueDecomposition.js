@@ -15,7 +15,7 @@ define( function( require ) {
   
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.SingularValueDecomposition = function( matrix ) {
+  dot.SingularValueDecomposition = function SingularValueDecomposition( matrix ) {
     this.matrix = matrix;
 
     var Arg = matrix;

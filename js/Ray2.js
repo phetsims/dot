@@ -13,7 +13,7 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
 
-  dot.Ray2 = function( pos, dir ) {
+  dot.Ray2 = function Ray2( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
     

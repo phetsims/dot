@@ -11,7 +11,7 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
-  dot.Dimension2 = function( width, height ) {
+  dot.Dimension2 = function Dimension2( width, height ) {
     this.width = width;
     this.height = height;
   };

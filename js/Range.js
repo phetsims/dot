@@ -12,7 +12,7 @@ define( function ( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  dot.Range = function ( min, max, defaultValue ) {
+  dot.Range = function Range( min, max, defaultValue ) {
 
     this.min = min;
     this.max = max;

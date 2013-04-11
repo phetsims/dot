@@ -1,13 +1,16 @@
 
+Check for performance loss on Vector2 by using this.constructor instead of Vector2
+
 Bugs:
 
 Add:
-  Complex
   makeImmutable()?
   integration with Numeric JS for relevant calls?
 
 Cleanup:
   Matrix4 should match Matrix3
+
+Move over more of phetcommon's math
 
 https://github.com/square/es6-module-transpiler
 https://code.google.com/p/traceur-compiler/

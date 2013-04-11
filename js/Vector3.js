@@ -3,6 +3,8 @@
 /**
  * Basic 3-dimensional vector
  *
+ * TODO: sync with Vector2 changes
+ *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
@@ -17,7 +19,7 @@ define( function( require ) {
   require( 'DOT/Vector2' );
   require( 'DOT/Vector4' );
 
-  dot.Vector3 = function( x, y, z ) {
+  dot.Vector3 = function Vector3( x, y, z ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;

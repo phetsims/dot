@@ -13,18 +13,22 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
+  var inherit = require( 'PHET_CORE/inherit' );
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
   
-  dot.Vector2 = function( x, y ) {
+  dot.Vector2 = function Vector2( x, y ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;
+    
+    assert && assert( typeof this.x === 'number', 'x needs to be a number' );
+    assert && assert( typeof this.y === 'number', 'y needs to be a number' );
   };
   var Vector2 = dot.Vector2;
   
   Vector2.createPolar = function( magnitude, angle ) {
-    return new Vector2( Math.cos( angle ), Math.sin( angle ) ).timesScalar( magnitude );
+    return new Vector2( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
   };
   
   Vector2.prototype = {
@@ -64,7 +68,7 @@ define( function( require ) {
       if ( !epsilon ) {
         epsilon = 0;
       }
-      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) <= epsilon;
+      return Math.max( Math.abs( this.x - other.x ), Math.abs( this.y - other.y ) ) <= epsilon;
     },
     
     isFinite: function() {
@@ -76,7 +80,7 @@ define( function( require ) {
      *----------------------------------------------------------------------------*/
     
     copy: function() {
-      return new Vector2( this.x, this.y );
+      return new this.constructor( this.x, this.y );
     },
     
     // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
@@ -90,12 +94,12 @@ define( function( require ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
       }
       else {
-        return new Vector2( this.x / mag, this.y / mag );
+        return new this.constructor( this.x / mag, this.y / mag );
       }
     },
     
     timesScalar: function( scalar ) {
-      return new Vector2( this.x * scalar, this.y * scalar );
+      return new this.constructor( this.x * scalar, this.y * scalar );
     },
     
     times: function( scalar ) {
@@ -105,31 +109,31 @@ define( function( require ) {
     },
     
     componentTimes: function( v ) {
-      return new Vector2( this.x * v.x, this.y * v.y );
+      return new this.constructor( this.x * v.x, this.y * v.y );
     },
     
     plus: function( v ) {
-      return new Vector2( this.x + v.x, this.y + v.y );
+      return new this.constructor( this.x + v.x, this.y + v.y );
     },
     
     plusScalar: function( scalar ) {
-      return new Vector2( this.x + scalar, this.y + scalar );
+      return new this.constructor( this.x + scalar, this.y + scalar );
     },
     
     minus: function( v ) {
-      return new Vector2( this.x - v.x, this.y - v.y );
+      return new this.constructor( this.x - v.x, this.y - v.y );
     },
     
     minusScalar: function( scalar ) {
-      return new Vector2( this.x - scalar, this.y - scalar );
+      return new this.constructor( this.x - scalar, this.y - scalar );
     },
     
     dividedScalar: function( scalar ) {
-      return new Vector2( this.x / scalar, this.y / scalar );
+      return new this.constructor( this.x / scalar, this.y / scalar );
     },
     
     negated: function() {
-      return new Vector2( -this.x, -this.y );
+      return new this.constructor( -this.x, -this.y );
     },
     
     angle: function() {
@@ -138,7 +142,7 @@ define( function( require ) {
     
     // equivalent to a -PI/2 rotation (right hand rotation)
     perpendicular: function() {
-      return new Vector2( this.y, -this.x );
+      return new this.constructor( this.y, -this.x );
     },
     
     angleBetween: function( v ) {
@@ -146,7 +150,8 @@ define( function( require ) {
     },
     
     rotated: function( angle ) {
-      return Vector2.createPolar( this.magnitude(), this.angle() + angle );
+      var newAngle = this.angle() + angle;
+      return new this.constructor( Math.cos( newAngle ), Math.sin( newAngle ) ).timesScalar( this.getMagnitude() );
     },
       
     // linear interpolation from this (ratio=0) to vector (ratio=1)
@@ -229,14 +234,12 @@ define( function( require ) {
   /*---------------------------------------------------------------------------*
    * Immutable Vector form
    *----------------------------------------------------------------------------*/
-  Vector2.Immutable = function( x, y ) {
-    this.x = x || 0;
-    this.y = y || 0;
+  Vector2.Immutable = function ImmutableVector2( x, y ) {
+    Vector2.call( this, x, y );
   };
   var Immutable = Vector2.Immutable;
   
-  Immutable.prototype = new Vector2();
-  Immutable.prototype.constructor = Immutable;
+  inherit( Immutable, Vector2 );
   
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
