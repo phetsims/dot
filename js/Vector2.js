@@ -28,7 +28,7 @@ define( function( require ) {
   var Vector2 = dot.Vector2;
   
   Vector2.createPolar = function( magnitude, angle ) {
-    return new Vector2( magnitude * Math.cos( phase ), magnitude * Math.sin( phase ) );
+    return new Vector2( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
   };
   
   Vector2.prototype = {
