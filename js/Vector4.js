@@ -3,6 +3,9 @@
 /**
  * Basic 4-dimensional vector
  *
+ * TODO: sync with Vector2 changes
+ * TODO: add quaternion extension
+ *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
@@ -16,7 +19,7 @@ define( function( require ) {
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out so Require.js doesn't complain about the circular dependency
   
-  dot.Vector4 = function( x, y, z, w ) {
+  dot.Vector4 = function Vector4( x, y, z, w ) {
     // allow optional parameters
     this.x = x || 0;
     this.y = y || 0;

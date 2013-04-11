@@ -15,7 +15,7 @@ define( function( require ) {
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix4' );
   
-  dot.Matrix3 = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+  dot.Matrix3 = function Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
 
     // entries stored in column-major format
     this.entries = new Array( 9 ); // TODO: consider a typed array if possible (double even?) for performance and compatibility with WebGL

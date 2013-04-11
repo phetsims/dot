@@ -24,7 +24,7 @@ define( function( require ) {
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
   
-  dot.Matrix = function( m, n, filler, fast ) {
+  dot.Matrix = function Matrix( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
 

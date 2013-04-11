@@ -15,7 +15,7 @@ define( function( require ) {
   
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.QRDecomposition = function( matrix ) {
+  dot.QRDecomposition = function QRDecomposition( matrix ) {
     this.matrix = matrix;
 
     // TODO: size!

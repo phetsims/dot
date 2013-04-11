@@ -16,7 +16,7 @@ define( function( require ) {
   require( 'DOT/Vector2' );
   
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
-  dot.Bounds2 = function( minX, minY, maxX, maxY ) {
+  dot.Bounds2 = function Bounds2( minX, minY, maxX, maxY ) {
     assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
     this.minX = minX;
     this.minY = minY;

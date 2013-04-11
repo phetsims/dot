@@ -2,8 +2,6 @@
 Bugs:
 
 Add:
-  anonymous function names for constructors
-  Complex
   makeImmutable()?
   integration with Numeric JS for relevant calls?
 

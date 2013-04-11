@@ -18,7 +18,7 @@ define( function( require ) {
   require( 'DOT/Ray2' );
 
   // takes a 4x4 matrix
-  dot.Transform3 = function( matrix ) {
+  dot.Transform3 = function Transform3( matrix ) {
     this.listeners = [];
     
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
