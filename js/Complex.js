@@ -36,7 +36,7 @@ define( function( require ) {
   };
   
   Complex.createPolar = function( magnitude, phase ) {
-    return Vector2.createPolar( magnitude, phase );
+    return new Complex( magnitude * Math.cos( phase ), magnitude * Math.sin( phase ) );
   };
   
   // inheriting Vector2 for now since many times we may want to treat the complex number as a vector
@@ -48,11 +48,10 @@ define( function( require ) {
     
     // TODO: remove times() from Vector2? or have it do this for vectors
     times: function( c ) {
-      return this.real * c.real - this.imaginary * c.imaginary, this.real * c.imaginary + this.imaginary * c.real;
+      return new Complex( this.real * c.real - this.imaginary * c.imaginary, this.real * c.imaginary + this.imaginary * c.real );
     },
     
-    // TODO: consider dividedBy as a name instead?
-    divided: function( c ) {
+    dividedBy: function( c ) {
       var cMag = c.magnitudeSquared();
       return new Complex(
         ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
@@ -60,7 +59,8 @@ define( function( require ) {
       );
     },
     
-    canonicalSquareRoot: function() {
+    // TODO: pow()
+    sqrt: function() {
       var mag = this.magnitude();
       return new Complex( Math.sqrt( ( mag + this.real ) / 2 ),
                           ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );

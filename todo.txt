@@ -1,4 +1,6 @@
 
+Check for performance loss on Vector2 by using this.constructor instead of Vector2
+
 Bugs:
 
 Add:

@@ -28,7 +28,7 @@ define( function( require ) {
   var Vector2 = dot.Vector2;
   
   Vector2.createPolar = function( magnitude, angle ) {
-    return new Vector2( Math.cos( angle ), Math.sin( angle ) ).timesScalar( magnitude );
+    return new Vector2( magnitude * Math.cos( phase ), magnitude * Math.sin( phase ) );
   };
   
   Vector2.prototype = {
@@ -80,7 +80,7 @@ define( function( require ) {
      *----------------------------------------------------------------------------*/
     
     copy: function() {
-      return new Vector2( this.x, this.y );
+      return new this.constructor( this.x, this.y );
     },
     
     // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
@@ -94,12 +94,12 @@ define( function( require ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
       }
       else {
-        return new Vector2( this.x / mag, this.y / mag );
+        return new this.constructor( this.x / mag, this.y / mag );
       }
     },
     
     timesScalar: function( scalar ) {
-      return new Vector2( this.x * scalar, this.y * scalar );
+      return new this.constructor( this.x * scalar, this.y * scalar );
     },
     
     times: function( scalar ) {
@@ -109,31 +109,31 @@ define( function( require ) {
     },
     
     componentTimes: function( v ) {
-      return new Vector2( this.x * v.x, this.y * v.y );
+      return new this.constructor( this.x * v.x, this.y * v.y );
     },
     
     plus: function( v ) {
-      return new Vector2( this.x + v.x, this.y + v.y );
+      return new this.constructor( this.x + v.x, this.y + v.y );
     },
     
     plusScalar: function( scalar ) {
-      return new Vector2( this.x + scalar, this.y + scalar );
+      return new this.constructor( this.x + scalar, this.y + scalar );
     },
     
     minus: function( v ) {
-      return new Vector2( this.x - v.x, this.y - v.y );
+      return new this.constructor( this.x - v.x, this.y - v.y );
     },
     
     minusScalar: function( scalar ) {
-      return new Vector2( this.x - scalar, this.y - scalar );
+      return new this.constructor( this.x - scalar, this.y - scalar );
     },
     
     dividedScalar: function( scalar ) {
-      return new Vector2( this.x / scalar, this.y / scalar );
+      return new this.constructor( this.x / scalar, this.y / scalar );
     },
     
     negated: function() {
-      return new Vector2( -this.x, -this.y );
+      return new this.constructor( -this.x, -this.y );
     },
     
     angle: function() {
@@ -142,7 +142,7 @@ define( function( require ) {
     
     // equivalent to a -PI/2 rotation (right hand rotation)
     perpendicular: function() {
-      return new Vector2( this.y, -this.x );
+      return new this.constructor( this.y, -this.x );
     },
     
     angleBetween: function( v ) {
@@ -150,7 +150,8 @@ define( function( require ) {
     },
     
     rotated: function( angle ) {
-      return Vector2.createPolar( this.magnitude(), this.angle() + angle );
+      var newAngle = this.angle() + angle;
+      return new this.constructor( Math.cos( newAngle ), Math.sin( newAngle ) ).timesScalar( this.getMagnitude() );
     },
       
     // linear interpolation from this (ratio=0) to vector (ratio=1)
