@@ -160,10 +160,17 @@ define( function( require ) {
   // make these available in the main namespace directly (for now)
   dot.testAssert = Util.testAssert;
   dot.clamp = Util.clamp;
+  dot.moduloBetweenDown = Util.moduloBetweenDown;
+  dot.moduloBetweenUp = Util.moduloBetweenUp;
   dot.rangeInclusive = Util.rangeInclusive;
   dot.rangeExclusive = Util.rangeExclusive;
   dot.toRadians = Util.toRadians;
   dot.toDegrees = Util.toDegrees;
+  dot.lineLineIntersection = Util.lineLineIntersection;
+  dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
+  dot.solveCubicRootsReal = Util.solveCubicRootsReal;
+  dot.cubeRoot = Util.cubeRoot;
+  dot.linear = Util.linear;
   
   return Util;
 } );
