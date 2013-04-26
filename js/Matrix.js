@@ -1,7 +1,7 @@
 // Copyright 2002-2012, University of Colorado
 
 /**
- * Arbitrary-dimensional matrix, based on Jama
+ * Arbitrary-dimensional matrix, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
@@ -20,6 +20,7 @@ define( function( require ) {
   require( 'DOT/SingularValueDecomposition' );
   require( 'DOT/LUDecomposition' );
   require( 'DOT/QRDecomposition' );
+  require( 'DOT/EigenvalueDecomposition' );
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );

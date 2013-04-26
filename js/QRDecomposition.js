@@ -1,7 +1,7 @@
 // Copyright 2002-2012, University of Colorado
 
 /**
- * QR decomposition, based on Jama
+ * QR decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */

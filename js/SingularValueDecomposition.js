@@ -1,7 +1,7 @@
 // Copyright 2002-2012, University of Colorado
 
 /**
- * SVD decomposition, based on Jama
+ * SVD decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
@@ -222,7 +222,7 @@ define( function( require ) {
             for ( i = k + 1; i < n; i++ ) {
               t += V[i * n + k] * V[i * n + j];
             }
-            t = -t / V[k + 1 * n + k];
+            t = -t / V[(k + 1) * n + k];
             for ( i = k + 1; i < n; i++ ) {
               V[i * n + j] += t * V[i * n + k];
             }
