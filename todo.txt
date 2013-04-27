@@ -4,12 +4,14 @@ Check for performance loss on Vector2 by using this.constructor instead of Vecto
 Bugs:
 
 Add:
+  Combination (like Permutation, can select things out of an array, and ability to list all of them)
   Robust root finding for higher-order polynomials
   makeImmutable()?
   integration with Numeric JS for relevant calls?
 
 Cleanup:
   Matrix4 should match Matrix3
+  And Matrix should match Matrix3 as much as possible?
 
 Move over more of phetcommon's math
 
