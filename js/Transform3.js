@@ -214,6 +214,12 @@ define( function( require ) {
       this.listeners.push( listener );
     },
     
+    // useful for making sure the listener is triggered first
+    prependTransformListener: function( listener ) {
+      assert && assert( !_.contains( this.listeners, listener ) );
+      this.listeners.unshift( listener );
+    },
+    
     removeTransformListener: function( listener ) {
       assert && assert( _.contains( this.listeners, listener ) );
       this.listeners.splice( _.indexOf( this.listeners, listener ), 1 );
