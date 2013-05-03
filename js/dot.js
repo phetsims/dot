@@ -1,7 +1,6 @@
 
 define( function( require ) {
-  // will be filled in by other modules
-  return function dot() {
+  var dot = function dot() {
     switch ( arguments.length ) {
       case 2:
         return new dot.Vector2( arguments[0], arguments[1] );
@@ -13,4 +12,10 @@ define( function( require ) {
         throw new Error( 'dot takes 2-4 arguments' );
     }
   };
+  
+  // TODO: performance: check browser speed to compare how fast this is. We may need to add a 32 option for GL ES.
+  dot.FastArray = window.Float64Array ? window.Float64Array : window.Array;
+  
+  // will be filled in by other modules
+  return dot;
 } );

@@ -11,6 +11,8 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
+  var FastArray = dot.FastArray;
+  
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix4' );
@@ -18,7 +20,7 @@ define( function( require ) {
   dot.Matrix3 = function Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
 
     // entries stored in column-major format
-    this.entries = new Array( 9 ); // TODO: consider a typed array if possible (double even?) for performance and compatibility with WebGL
+    this.entries = new FastArray( 9 ); // TODO: consider a typed array if possible (double even?) for performance and compatibility with WebGL
 
     this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0,
                    v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
