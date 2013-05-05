@@ -97,6 +97,14 @@ define( function( require ) {
       return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
     },
     
+    equalsEpsilon: function( other, epsilon ) {
+      epsilon = epsilon || 0;
+      return Math.abs( this.minX - other.minX ) < epsilon &&
+             Math.abs( this.minY - other.minY ) < epsilon &&
+             Math.abs( this.maxX - other.maxX ) < epsilon &&
+             Math.abs( this.maxY - other.maxY ) < epsilon;
+    },
+    
     /*---------------------------------------------------------------------------*
     * Immutable operations
     *----------------------------------------------------------------------------*/
