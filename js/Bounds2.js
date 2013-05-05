@@ -314,6 +314,10 @@ define( function( require ) {
     }
   };
   
+  Bounds2.rect = function( x, y, width, height ) {
+    return new Bounds2( x, y, x + width, y + height );
+  };
+  
   // specific bounds useful for operations
   Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
   Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
