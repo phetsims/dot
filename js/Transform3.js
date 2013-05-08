@@ -34,6 +34,7 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     set: function( matrix ) {
+      // TODO: performance: don't notify or handle instances where the matrix is detected to be the identity matrix?
       assert && assert( matrix instanceof dot.Matrix3 );
       
       var oldMatrix = this.matrix;
