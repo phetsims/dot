@@ -9,7 +9,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var dot = require( 'DOT/dot' );
   
