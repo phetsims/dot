@@ -1,5 +1,7 @@
 
 define( function( require ) {
+  'use strict';
+  
   var dot = function dot() {
     switch ( arguments.length ) {
       case 2:

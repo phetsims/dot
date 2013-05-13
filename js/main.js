@@ -22,5 +22,6 @@ define( [
   'DOT/Vector3',
   'DOT/Vector4'
   ], function( dot ) {
-  return dot;
+    'use strict';
+    return dot;
 } );

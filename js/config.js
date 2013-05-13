@@ -1,6 +1,8 @@
 
 if ( window.has ) {
   window.has.add( 'assert.dot', function( global, document, anElement ) {
+    'use strict';
+    
     return true;
   } );
 }
