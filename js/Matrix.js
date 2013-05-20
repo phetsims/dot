@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado
 
 /**
  * Arbitrary-dimensional matrix, based on Jama (http://math.nist.gov/javanumerics/jama/)
