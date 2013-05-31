@@ -153,6 +153,16 @@ define( function( require ) {
     //Arguments are in the form x1=>y1, x2=>y2, x3=> ???
     linear: function( x1, y1, x2, y2, x3 ) {
       return (y2 - y1) / (x2 - x1) * (x3 - x1 ) + y1;
+    },
+
+    /**
+     * A predictable implementation of toFixed.
+     * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
+     * because the spec doesn't specify whether to round or floor.
+     */
+    toFixed: function( number, precision ) {
+      var multiplier = Math.pow( 10, precision );
+      return Math.round( number * multiplier ) / multiplier;
     }
   };
   var Util = dot.Util;
