@@ -150,9 +150,9 @@ define( function( require ) {
     },
 
     //Linearly interpolate two points and evaluate the line equation for a third point
-    //Arguments are in the form x1=>y1, x2=>y2, x3=> ???
-    linear: function( x1, y1, x2, y2, x3 ) {
-      return (y2 - y1) / (x2 - x1) * (x3 - x1 ) + y1;
+    //Arguments are in the form a1=b1, a2=>b2, a3=> ???
+    linear: function( a1, b1, a2, b2, a3 ) {
+      return (b2 - b1) / (a2 - a1) * (a3 - a1 ) + b1;
     },
 
     /**
