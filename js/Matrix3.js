@@ -231,6 +231,18 @@ define( function( require ) {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
     },
     
+    isFinite: function() {
+      return isFinite( this.m00() ) &&
+             isFinite( this.m01() ) &&
+             isFinite( this.m02() ) &&
+             isFinite( this.m10() ) &&
+             isFinite( this.m11() ) &&
+             isFinite( this.m12() ) &&
+             isFinite( this.m20() ) &&
+             isFinite( this.m21() ) &&
+             isFinite( this.m22() );
+    },
+    
     getDeterminant: function() {
       return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
     },

@@ -127,6 +127,10 @@ define( function( require ) {
     isIdentity: function() {
       return this.matrix.type === dot.Matrix3.Types.IDENTITY;
     },
+    
+    isFinite: function() {
+      return this.matrix.isFinite();
+    },
 
     /*---------------------------------------------------------------------------*
      * forward transforms (for Vector2 or scalar)
