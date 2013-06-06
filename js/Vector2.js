@@ -239,7 +239,7 @@ define( function( require ) {
   };
   var Immutable = Vector2.Immutable;
   
-  inherit( Immutable, Vector2 );
+  inherit( Vector2, Immutable );
   
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
