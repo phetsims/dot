@@ -50,7 +50,7 @@ define( function( require ) {
     };
     
     return evaluate; // return the evaluation function, so we use sites look like: f(a) f.inverse(b)
-  }
+  };
   
   return dot.LinearFunction;
 } );
