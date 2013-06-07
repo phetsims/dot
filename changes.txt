@@ -1,2 +1,3 @@
+Migrated LinearFunction from beers-law-lab to dot
 Migrated Range from phetcommon to dot
 Added two-point linear interpolation/evaluation function to DOT/Util
