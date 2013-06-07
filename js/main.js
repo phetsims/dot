@@ -6,6 +6,7 @@ define( [
   'DOT/ConvexHull2',
   'DOT/Dimension2',
   'DOT/EigenvalueDecomposition',
+  'DOT/LinearFunction',
   'DOT/LUDecomposition',
   'DOT/Matrix',
   'DOT/Matrix3',
