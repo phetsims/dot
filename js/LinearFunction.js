@@ -5,7 +5,7 @@
  * <p>
  * Example usage:
  * <code>
- * var f = new dot.LinearFunction( 0, 0, 100, 200 );
+ * var f = new dot.LinearFunction( 0, 100, 0, 200 );
  * f( 50 ); // 100
  * f.inverse( 100 ); // 50
  * </code>
@@ -22,18 +22,17 @@ define( function( require ) {
   
   /**
    * @param {Number} a1
-   * @param {Number} b1
    * @param {Number} a2
+   * @param {Number} b1
    * @param {Number} b2
    * @param {Boolean} clamp clamp the result to the provided ranges, false by default
    * @constructor
    */
-  dot.LinearFunction = function LinearFunction( a1, b1, a2, b2, clamp ) {
+  dot.LinearFunction = function LinearFunction( a1, a2, b1, b2, clamp ) {
     
     clamp = _.isUndefined( clamp ) ? false : clamp;
-    
-    // Maps from a to b.
-    var evaluate = function( a3 ) {
+
+    var map = function( a1, a2, b1, b2, a3, clamp ) {
       var b3 = dot.Util.linear( a1, b1, a2, b2, a3 );
       if ( clamp ) {
         var max = Math.max( b1, b2 );
@@ -43,10 +42,14 @@ define( function( require ) {
       return b3;
     };
     
+    // Maps from a to b.
+    var evaluate = function( a3 ) {
+      return map( a1, a2, b1, b2, a3, clamp );
+    };
+
     // Maps from b to a.
     evaluate.inverse = function( b3 ) {
-      var f = new LinearFunction( b1, a1, b2, a2, clamp );
-      return f( b3 );
+      return map( b1, b2, a1, a2, b3, clamp );
     };
     
     return evaluate; // return the evaluation function, so we use sites look like: f(a) f.inverse(b)
