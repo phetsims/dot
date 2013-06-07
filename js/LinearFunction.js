@@ -5,7 +5,7 @@
  * <p>
  * Example usage:
  * <code>
- * var f = new LinearFunction( 0, 100, 0, 200 );
+ * var f = new LinearFunction( 0, 0, 100, 200 );
  * f( 50 ); // 100
  * f.inverse( 100 ); // 50
  * </code>
