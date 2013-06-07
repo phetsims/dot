@@ -43,7 +43,7 @@ define( function( require ) {
 
     // Maps from b to a.
     evaluate.inverse = function( b3 ) {
-      var f = new LinearFunction( b1, a1, b2, a2, clamp )
+      var f = new LinearFunction( b1, a1, b2, a2, clamp );
       return f( b3 );
     };
 
