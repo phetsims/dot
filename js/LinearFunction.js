@@ -33,7 +33,7 @@ define( function( require ) {
     clamp = _.isUndefined( clamp ) ? false : clamp;
 
     var map = function( a1, a2, b1, b2, a3, clamp ) {
-      var b3 = dot.Util.linear( a1, b1, a2, b2, a3 );
+      var b3 = dot.Util.linear( a1, a2, b1, b2, a3 );
       if ( clamp ) {
         var max = Math.max( b1, b2 );
         var min = Math.min( b1, b2 );

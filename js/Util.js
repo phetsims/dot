@@ -151,7 +151,7 @@ define( function( require ) {
 
     // Linearly interpolate two points and evaluate the line equation for a third point
     // f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
-    linear: function( a1, b1, a2, b2, a3 ) {
+    linear: function( a1, a2, b1, b2, a3 ) {
       return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
     },
 
