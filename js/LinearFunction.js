@@ -32,6 +32,11 @@ define( function( require ) {
     
     clamp = _.isUndefined( clamp ) ? false : clamp;
 
+    /*
+     * Linearly interpolate two points and evaluate the line equation for a third point.
+     * f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
+     * Optionally clamp the result to the range [b1,b2].
+     */
     var map = function( a1, a2, b1, b2, a3, clamp ) {
       var b3 = dot.Util.linear( a1, a2, b1, b2, a3 );
       if ( clamp ) {
