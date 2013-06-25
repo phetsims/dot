@@ -103,10 +103,14 @@ define( function( require ) {
     // return an array of real roots of ax^3 + bx^2 + cx + d = 0
     solveCubicRootsReal: function( a, b, c, d ) {
       // TODO: a Complex type!
-      if ( a === 0 ) {
+      
+      //We need to test whether a is several orders of magnitude less than b, c, d
+      var epsilon = 1E7;
+      
+      if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon || Math.abs( d / a ) > epsilon ) {
         return Util.solveQuadraticRootsReal( b, c, d );
       }
-      if ( d === 0 ) {
+      if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
         return Util.solveQuadraticRootsReal( a, b, c );
       }
       
