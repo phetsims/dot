@@ -167,6 +167,10 @@ define( function( require ) {
     toFixed: function( number, precision ) {
       var multiplier = Math.pow( 10, precision );
       return Math.round( number * multiplier ) / multiplier;
+    },
+
+    isInteger: function( number ) {
+      return Math.floor( number ) === number;
     }
   };
   var Util = dot.Util;
