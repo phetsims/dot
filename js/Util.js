@@ -164,8 +164,8 @@ define( function( require ) {
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
      */
-    toFixed: function( number, precision ) {
-      var multiplier = Math.pow( 10, precision );
+    toFixed: function( number, decimalPlaces ) {
+      var multiplier = Math.pow( 10, decimalPlaces );
       return Math.round( number * multiplier ) / multiplier;
     },
 
