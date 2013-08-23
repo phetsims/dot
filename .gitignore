@@ -1,5 +1,5 @@
-dot.iml
-node_modules
-dist
+node_modules/
+dist/
+*.iml
 .DS_Store
 .DS_Store?
