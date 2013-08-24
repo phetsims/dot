@@ -1,5 +1,4 @@
 node_modules/
-build/
 *.iml
 .DS_Store
 .DS_Store?
