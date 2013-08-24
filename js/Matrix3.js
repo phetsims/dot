@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * 3-dimensional Matrix
@@ -11,6 +11,8 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
+  var FastArray = dot.FastArray;
+  
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix4' );
@@ -18,7 +20,7 @@ define( function( require ) {
   dot.Matrix3 = function Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
 
     // entries stored in column-major format
-    this.entries = new Array( 9 ); // TODO: consider a typed array if possible (double even?) for performance and compatibility with WebGL
+    this.entries = new FastArray( 9 ); // TODO: consider a typed array if possible (double even?) for performance and compatibility with WebGL
 
     this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0,
                    v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
@@ -229,6 +231,18 @@ define( function( require ) {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
     },
     
+    isFinite: function() {
+      return isFinite( this.m00() ) &&
+             isFinite( this.m01() ) &&
+             isFinite( this.m02() ) &&
+             isFinite( this.m10() ) &&
+             isFinite( this.m11() ) &&
+             isFinite( this.m12() ) &&
+             isFinite( this.m20() ) &&
+             isFinite( this.m21() ) &&
+             isFinite( this.m22() );
+    },
+    
     getDeterminant: function() {
       return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
     },
@@ -284,12 +298,11 @@ define( function( require ) {
       // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
       
       // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
-      function cssNumber( number ) {
-        // largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
-        return number.toFixed( 20 );
-      }
+      // 20 is the largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
+      
       // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
-      return 'matrix(' + cssNumber( this.entries[0] ) + ',' + cssNumber( this.entries[1] ) + ',' + cssNumber( this.entries[3] ) + ',' + cssNumber( this.entries[4] ) + ',' + cssNumber( this.entries[6] ) + ',' + cssNumber( this.entries[7] ) + ')';
+      // NOTE: the toFixed calls are inlined for performance reasons
+      return 'matrix(' + this.entries[0].toFixed( 20 ) + ',' + this.entries[1].toFixed( 20 ) + ',' + this.entries[3].toFixed( 20 ) + ',' + this.entries[4].toFixed( 20 ) + ',' + this.entries[6].toFixed( 20 ) + ',' + this.entries[7].toFixed( 20 ) + ')';
     },
     get cssTransform() { return this.getCSSTransform(); },
     

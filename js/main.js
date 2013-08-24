@@ -1,10 +1,14 @@
 
+// Copyright 2002-2013, University of Colorado Boulder
+
 define( [
   'DOT/dot',
   'DOT/Bounds2',
   'DOT/Complex',
   'DOT/ConvexHull2',
   'DOT/Dimension2',
+  'DOT/EigenvalueDecomposition',
+  'DOT/LinearFunction',
   'DOT/LUDecomposition',
   'DOT/Matrix',
   'DOT/Matrix3',
@@ -21,5 +25,6 @@ define( [
   'DOT/Vector3',
   'DOT/Vector4'
   ], function( dot ) {
-  return dot;
+    'use strict';
+    return dot;
 } );

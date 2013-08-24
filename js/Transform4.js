@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Forward and inverse transforms with 4x4 matrices, allowing flexibility including affine and perspective transformations.
@@ -7,7 +7,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var dot = require( 'DOT/dot' );
   

@@ -4,8 +4,9 @@
   
   var Bounds2 = dot.Bounds2;
   
+  var epsilon = 0.00000001;
+  
   function approximateBoundsEquals( a, b, msg ) {
-    var epsilon = 0.00000001;
     ok( Math.abs( a.minX - b.minX ) < epsilon, msg + ' minX: expected: ' + b.minX + ', result: ' + a.minX );
     ok( Math.abs( a.minY - b.minY ) < epsilon, msg + ' minY: expected: ' + b.minY + ', result: ' + a.minY );
     ok( Math.abs( a.maxX - b.maxX ) < epsilon, msg + ' maxX: expected: ' + b.maxX + ', result: ' + a.maxX );
@@ -82,5 +83,28 @@
     approximateBoundsEquals( A().transformed( dot.Matrix3.translation( 10, 20 ) ), new Bounds2( 10, 20, 12, 23 ), 'translation' );
     approximateBoundsEquals( A().transformed( dot.Matrix3.rotation2( Math.PI / 2 ) ), new Bounds2( -3, 0, 0, 2 ), 'rotation' );
     approximateBoundsEquals( A().transformed( dot.Matrix3.scale( 3, 2 ) ), new Bounds2( 0, 0, 6, 6 ), 'scale' );
+  } );
+  
+  test( 'Equality', function() {
+    ok( new Bounds2( 0, 1, 2, 3 ).equals( new Bounds2( 0, 1, 2, 3 ) ), 'Without epsilon: regular - reflexive' );
+    ok( new Bounds2( 0, 1, 2, 3 ).equalsEpsilon( new Bounds2( 0, 1, 2, 3 ), epsilon ), 'With epsilon: regular - reflexive' );
+    ok( !new Bounds2( 0, 1, 2, 3 ).equals( new Bounds2( 0, 1, 2, 5 ) ), 'Without epsilon: regular - different' );
+    ok( !new Bounds2( 0, 1, 2, 3 ).equalsEpsilon( new Bounds2( 0, 1, 2, 5 ), epsilon ), 'With epsilon: regular - different' );
+    ok( Bounds2.NOTHING.equals( Bounds2.NOTHING ), 'Without epsilon: Nothing - reflexive' );
+    ok( Bounds2.NOTHING.equalsEpsilon( Bounds2.NOTHING, epsilon ), 'With epsilon: Nothing - reflexive' );
+    ok( Bounds2.NOTHING.equals( Bounds2.NOTHING.copy() ), 'Without epsilon: Nothing - copy - reflexive' );
+    ok( Bounds2.NOTHING.equalsEpsilon( Bounds2.NOTHING.copy(), epsilon ), 'With epsilon: Nothing - copy - reflexive' );
+    ok( Bounds2.EVERYTHING.equals( Bounds2.EVERYTHING ), 'Without epsilon: Everything - reflexive' );
+    ok( Bounds2.EVERYTHING.equalsEpsilon( Bounds2.EVERYTHING, epsilon ), 'With epsilon: Everything - reflexive' );
+    ok( Bounds2.EVERYTHING.equals( Bounds2.EVERYTHING.copy() ), 'Without epsilon: Everything - copy - reflexive' );
+    ok( Bounds2.EVERYTHING.equalsEpsilon( Bounds2.EVERYTHING.copy(), epsilon ), 'With epsilon: Everything - copy - reflexive' );
+    ok( !Bounds2.NOTHING.equals( Bounds2.EVERYTHING ), 'Without epsilon: Nothing !== Everything' );
+    ok( !Bounds2.NOTHING.equalsEpsilon( Bounds2.EVERYTHING, epsilon ), 'With epsilon: Nothing !== Everything' );
+    ok( new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equals( new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ) ), 'Without epsilon: Mixed finite-ness - reflexive' );
+    ok( new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equalsEpsilon( new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ), epsilon ), 'With epsilon: Mixed finite-ness - reflexive' );
+    ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equals( new Bounds2( 0, 0, 5, Number.NEGATIVE_INFINITY ) ), 'Without epsilon: Mixed finite-ness - swapped infinity' );
+    ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equalsEpsilon( new Bounds2( 0, 0, 5, Number.NEGATIVE_INFINITY ), epsilon ), 'With epsilon: Mixed finite-ness - swapped infinity' );
+    ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equals( new Bounds2( 0, 0, 6, Number.POSITIVE_INFINITY ) ), 'Without epsilon: Mixed finite-ness - different finite number' );
+    ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equalsEpsilon( new Bounds2( 0, 0, 6, Number.POSITIVE_INFINITY ), epsilon ), 'With epsilon: Mixed finite-ness - different finite number' );
   } );
 })();

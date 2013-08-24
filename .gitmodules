@@ -1,9 +1,6 @@
 [submodule "common/assert"]
 	path = common/assert
 	url = https://github.com/phetsims/assert.git
-[submodule "contrib/almond"]
-	path = contrib/almond
-	url = https://github.com/jrburke/almond.git
 [submodule "common/phet-core"]
 	path = common/phet-core
 	url = https://github.com/phetsims/phet-core.git

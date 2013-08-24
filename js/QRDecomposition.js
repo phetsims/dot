@@ -1,13 +1,13 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * QR decomposition, based on Jama
+ * QR decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var dot = require( 'DOT/dot' );
   

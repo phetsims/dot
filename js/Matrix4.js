@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * 4-dimensional Matrix
@@ -9,7 +9,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var dot = require( 'DOT/dot' );
   

@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Utility functions for Dot, placed into the dot.X namespace.
@@ -7,7 +7,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
@@ -29,6 +29,27 @@ define( function( require ) {
       else {
         return value;
       }
+    },
+    
+    // returns a number between [min,max) with the same equivalence class as value mod (max-min)
+    moduloBetweenDown: function( value, min, max ) {
+      assert && assert( max > min, 'max > min required for moduloBetween' );
+      
+      var divisor = max - min;
+      
+      // get a partial result of value-min between [0,divisor)
+      var partial = ( value - min ) % divisor;
+      if ( partial < 0 ) {
+        // since if value-min < 0, the remainder will give us a negative number
+        partial += divisor;
+      }
+      
+      return partial + min; // add back in the minimum value
+    },
+    
+    // returns a number between (min,max] with the same equivalence class as value mod (max-min)
+    moduloBetweenUp: function( value, min, max ) {
+      return -Util.moduloBetweenDown( -value, -max, -min );
     },
     
     // Returns an array of integers from A to B (including both A to B)
@@ -82,10 +103,14 @@ define( function( require ) {
     // return an array of real roots of ax^3 + bx^2 + cx + d = 0
     solveCubicRootsReal: function( a, b, c, d ) {
       // TODO: a Complex type!
-      if ( a === 0 ) {
+      
+      //We need to test whether a is several orders of magnitude less than b, c, d
+      var epsilon = 1E7;
+      
+      if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon || Math.abs( d / a ) > epsilon ) {
         return Util.solveQuadraticRootsReal( b, c, d );
       }
-      if ( d === 0 ) {
+      if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
         return Util.solveQuadraticRootsReal( a, b, c );
       }
       
@@ -128,10 +153,24 @@ define( function( require ) {
       return x >= 0 ? Math.pow( x, 1/3 ) : -Math.pow( -x, 1/3 );
     },
 
-    //Linearly interpolate two points and evaluate the line equation for a third point
-    //Arguments are in the form x1=>y1, x2=>y2, x3=> ???
-    linear: function( x1, y1, x2, y2, x3 ) {
-      return (y2 - y1) / (x2 - x1) * (x3 - x1 ) + y1;
+    // Linearly interpolate two points and evaluate the line equation for a third point
+    // f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
+    linear: function( a1, a2, b1, b2, a3 ) {
+      return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
+    },
+
+    /**
+     * A predictable implementation of toFixed.
+     * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
+     * because the spec doesn't specify whether to round or floor.
+     */
+    toFixed: function( number, decimalPlaces ) {
+      var multiplier = Math.pow( 10, decimalPlaces );
+      return Math.round( number * multiplier ) / multiplier;
+    },
+
+    isInteger: function( number ) {
+      return Math.floor( number ) === number;
     }
   };
   var Util = dot.Util;
@@ -139,10 +178,17 @@ define( function( require ) {
   // make these available in the main namespace directly (for now)
   dot.testAssert = Util.testAssert;
   dot.clamp = Util.clamp;
+  dot.moduloBetweenDown = Util.moduloBetweenDown;
+  dot.moduloBetweenUp = Util.moduloBetweenUp;
   dot.rangeInclusive = Util.rangeInclusive;
   dot.rangeExclusive = Util.rangeExclusive;
   dot.toRadians = Util.toRadians;
   dot.toDegrees = Util.toDegrees;
+  dot.lineLineIntersection = Util.lineLineIntersection;
+  dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
+  dot.solveCubicRootsReal = Util.solveCubicRootsReal;
+  dot.cubeRoot = Util.cubeRoot;
+  dot.linear = Util.linear;
   
   return Util;
 } );

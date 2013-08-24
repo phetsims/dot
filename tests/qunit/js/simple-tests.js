@@ -80,4 +80,34 @@
     
     expect( 0 );
   } );
+  
+  test( 'linear map', function() {
+    approximateEquals( dot.Util.linear( 4, 8, 8, 0, 4 ), 8 );
+    approximateEquals( dot.Util.linear( 4, 8, 8, 0, 8 ), 0 );
+    approximateEquals( dot.Util.linear( 4, 8, 8, 0, 6 ), 4 );
+  } );
+  
+  test( 'LinearFunction', function() {
+    var f = new dot.LinearFunction( 4, 8, 8, 0 ); // not clamped
+    
+    approximateEquals( f( 0 ), 16 );
+    approximateEquals( f( 4 ), 8 );
+    approximateEquals( f( 8 ), 0 );
+    approximateEquals( f( 6 ), 4 );
+    approximateEquals( f.inverse( 16 ), 0 );
+    approximateEquals( f.inverse( 8 ), 4 );
+    approximateEquals( f.inverse( 0 ), 8 );
+    approximateEquals( f.inverse( 4 ), 6 );
+    
+    var g = new dot.LinearFunction( 4, 8, 8, 0, true ); // clamped
+    
+    approximateEquals( g( 0 ), 8 );
+    approximateEquals( g( 4 ), 8 );
+    approximateEquals( g( 8 ), 0 );
+    approximateEquals( g( 6 ), 4 );
+    approximateEquals( g.inverse( 16 ), 4 );
+    approximateEquals( g.inverse( 8 ), 4 );
+    approximateEquals( g.inverse( 0 ), 8 );
+    approximateEquals( g.inverse( 4 ), 6 );
+  } );
 })();

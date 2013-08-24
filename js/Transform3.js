@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Forward and inverse transforms with 3x3 matrices
@@ -7,7 +7,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
 
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
@@ -34,6 +34,7 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     set: function( matrix ) {
+      // TODO: performance: don't notify or handle instances where the matrix is detected to be the identity matrix?
       assert && assert( matrix instanceof dot.Matrix3 );
       
       var oldMatrix = this.matrix;
@@ -126,6 +127,10 @@ define( function( require ) {
     isIdentity: function() {
       return this.matrix.type === dot.Matrix3.Types.IDENTITY;
     },
+    
+    isFinite: function() {
+      return this.matrix.isFinite();
+    },
 
     /*---------------------------------------------------------------------------*
      * forward transforms (for Vector2 or scalar)
@@ -212,6 +217,12 @@ define( function( require ) {
     addTransformListener: function( listener ) {
       assert && assert( !_.contains( this.listeners, listener ) );
       this.listeners.push( listener );
+    },
+    
+    // useful for making sure the listener is triggered first
+    prependTransformListener: function( listener ) {
+      assert && assert( !_.contains( this.listeners, listener ) );
+      this.listeners.unshift( listener );
     },
     
     removeTransformListener: function( listener ) {

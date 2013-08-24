@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * A 2D rectangle-shaped bounded area (bounding box)
@@ -7,7 +7,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
@@ -92,9 +92,32 @@ define( function( require ) {
     toString: function() {
       return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
     },
-
+    
     equals: function( other ) {
       return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
+      epsilon = epsilon || 0;
+      var thisFinite = this.isFinite();
+      var otherFinite = other.isFinite();
+      if ( thisFinite && otherFinite ) {
+        // both are finite, so we can use Math.abs() - it would fail with non-finite values like Infinity
+        return Math.abs( this.minX - other.minX ) < epsilon &&
+               Math.abs( this.minY - other.minY ) < epsilon &&
+               Math.abs( this.maxX - other.maxX ) < epsilon &&
+               Math.abs( this.maxY - other.maxY ) < epsilon;
+      } else if ( thisFinite !== otherFinite ) {
+        return false; // one is finite, the other is not. definitely not equal
+      } else if ( this === other ) {
+        return true; // exact same instance, must be equal
+      } else {
+        // epsilon only applies on finite dimensions. due to JS's handling of isFinite(), it's faster to check the sum of both
+        return ( isFinite( this.minX + other.minX ) ? ( Math.abs( this.minX - other.minX ) < epsilon ) : ( this.minX === other.minX ) ) &&
+               ( isFinite( this.minY + other.minY ) ? ( Math.abs( this.minY - other.minY ) < epsilon ) : ( this.minY === other.minY ) ) &&
+               ( isFinite( this.maxX + other.maxX ) ? ( Math.abs( this.maxX - other.maxX ) < epsilon ) : ( this.maxX === other.maxX ) ) &&
+               ( isFinite( this.maxY + other.maxY ) ? ( Math.abs( this.maxY - other.maxY ) < epsilon ) : ( this.maxY === other.maxY ) );
+      }
     },
     
     /*---------------------------------------------------------------------------*
@@ -304,6 +327,10 @@ define( function( require ) {
     shift: function( x, y ) {
       return this.shiftX( x ).shiftY( y );
     }
+  };
+  
+  Bounds2.rect = function( x, y, width, height ) {
+    return new Bounds2( x, y, x + width, y + height );
   };
   
   // specific bounds useful for operations

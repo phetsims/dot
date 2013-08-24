@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Immutable complex number handling
@@ -10,7 +10,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
@@ -43,7 +43,7 @@ define( function( require ) {
   // ideally, we should have Vector2-likeness be a mixin?
   // we also inherit the immutable form since we add 'real' and 'imaginary' properties,
   // without adding extra logic to mutators in Vector2
-  inherit( Complex, Vector2.Immutable, {
+  inherit( Vector2.Immutable, Complex, {
     phase: Vector2.prototype.angle,
     
     // TODO: remove times() from Vector2? or have it do this for vectors

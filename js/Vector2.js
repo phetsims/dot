@@ -1,4 +1,4 @@
-// Copyright 2002-2012, University of Colorado
+// Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Basic 2-dimensional vector
@@ -7,7 +7,7 @@
  */
 
 define( function( require ) {
-  "use strict";
+  'use strict';
   
   var assert = require( 'ASSERT/assert' )( 'dot' );
   
@@ -85,7 +85,7 @@ define( function( require ) {
     
     // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
     crossScalar: function( v ) {
-      return this.x * v.y  - this.y * v.x;
+      return this.x * v.y - this.y * v.x;
     },
     
     normalized: function() {
@@ -151,9 +151,9 @@ define( function( require ) {
     
     rotated: function( angle ) {
       var newAngle = this.angle() + angle;
-      return new this.constructor( Math.cos( newAngle ), Math.sin( newAngle ) ).timesScalar( this.getMagnitude() );
+      return new this.constructor( Math.cos( newAngle ), Math.sin( newAngle ) ).timesScalar( this.magnitude() );
     },
-      
+    
     // linear interpolation from this (ratio=0) to vector (ratio=1)
     blend: function( vector, ratio ) {
       return this.plus( vector.minus( this ).times( ratio ) );
@@ -170,7 +170,7 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Mutables
      *----------------------------------------------------------------------------*/
-     
+    
     set: function( x, y ) {
       this.x = x;
       this.y = y;
@@ -239,7 +239,7 @@ define( function( require ) {
   };
   var Immutable = Vector2.Immutable;
   
-  inherit( Immutable, Vector2 );
+  inherit( Vector2, Immutable );
   
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
