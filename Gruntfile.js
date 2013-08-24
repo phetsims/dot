@@ -15,7 +15,7 @@ module.exports = function( grunt ) {
         options: {
           almond: true,
           mainConfigFile: "js/config.js",
-          out: "dist/development/dot.js",
+          out: "build/development/dot.js",
           name: "config",
           optimize: 'none',
           wrap: {
@@ -30,7 +30,7 @@ module.exports = function( grunt ) {
         options: {
           almond: true,
           mainConfigFile: "js/production-config.js",
-          out: "dist/standalone/dot.min.js",
+          out: "build/standalone/dot.min.js",
           name: "production-config",
           optimize: 'uglify2',
           generateSourceMaps: true,
@@ -47,7 +47,7 @@ module.exports = function( grunt ) {
         options: {
           almond: true,
           mainConfigFile: "js/production-config.js",
-          out: "dist/production/dot.min.js",
+          out: "build/production/dot.min.js",
           name: "production-config",
           optimize: 'uglify2',
           generateSourceMaps: true,
