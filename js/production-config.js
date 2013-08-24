@@ -15,7 +15,7 @@ require.config( {
   deps: [ 'main', 'PHET_CORE/main' ],
 
   paths: {
-    underscore: '../contrib/lodash.min-1.0.0-rc.3',
+    underscore: '../lib/lodash.min-1.0.0-rc.3',
     DOT: '.',
     PHET_CORE: '../common/phet-core/js',
     ASSERT: '../common/assert/js'

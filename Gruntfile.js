@@ -19,7 +19,7 @@ module.exports = function( grunt ) {
           name: "config",
           optimize: 'none',
           wrap: {
-            startFile: [ "js/wrap-start.frag", "contrib/has.js" ],
+            startFile: [ "js/wrap-start.frag", "lib/has.js" ],
             endFile: [ "js/wrap-end.frag" ]
           }
         }
@@ -36,7 +36,7 @@ module.exports = function( grunt ) {
           generateSourceMaps: true,
           preserveLicenseComments: false,
           wrap: {
-            startFile: [ "js/wrap-start.frag", "contrib/has.js" ],
+            startFile: [ "js/wrap-start.frag", "lib/has.js" ],
             endFile: [ "js/wrap-end.frag" ]
           }
         }
