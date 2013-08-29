@@ -156,7 +156,7 @@ define( function( require ) {
     
     // linear interpolation from this (ratio=0) to vector (ratio=1)
     blend: function( vector, ratio ) {
-      return this.plus( vector.minus( this ).times( ratio ) );
+      return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
     },
     
     toString: function() {
