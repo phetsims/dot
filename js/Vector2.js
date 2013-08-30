@@ -43,17 +43,19 @@ define( function( require ) {
     },
     
     magnitudeSquared: function() {
-      return this.dot( this );
+      return this.x * this.x + this.y * this.y;
     },
     
     // the distance between this vector (treated as a point) and another point
     distance: function( point ) {
-      return this.minus( point ).magnitude();
+      return Math.sqrt( this.distanceSquared( point ) );
     },
     
     // the squared distance between this vector (treated as a point) and another point
     distanceSquared: function( point ) {
-      return this.minus( point ).magnitudeSquared();
+      var dx = this.x - point.x;
+      var dy = this.y - point.y;
+      return dx * dx + dy * dy;
     },
     
     dot: function( v ) {
