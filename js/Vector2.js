@@ -155,7 +155,8 @@ define( function( require ) {
     
     rotated: function( angle ) {
       var newAngle = this.angle() + angle;
-      return new Vector2( Math.cos( newAngle ), Math.sin( newAngle ) ).timesScalar( this.magnitude() );
+      var mag = this.magnitude();
+      return new Vector2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
     
     // linear interpolation from this (ratio=0) to vector (ratio=1)
