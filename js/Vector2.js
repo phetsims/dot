@@ -148,7 +148,9 @@ define( function( require ) {
     },
     
     angleBetween: function( v ) {
-      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+      var thisMagnitude = this.magnitude();
+      var vMagnitude = v.magnitude();
+      return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
     },
     
     rotated: function( angle ) {
