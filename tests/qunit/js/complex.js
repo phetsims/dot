@@ -37,8 +37,9 @@
     
     var c = new Complex( 2.5, -7.1 );
     approximateComplexEquals( c.sqrt().times( c.sqrt() ), c );
-    
-    var d = c.plus( c ).sqrt();
+
+    var cc = c.plus( c );
+    var d = new Complex( cc.x, cc.y ).sqrt();
   } );
   
   test( 'Exponentiation', function() {
