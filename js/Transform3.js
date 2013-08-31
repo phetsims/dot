@@ -63,6 +63,11 @@ define( function( require ) {
       this.set( matrix.timesMatrix( this.matrix ) );
     },
 
+    //Simpler case of prepending a translation without having to allocate a matrix for it, see scenery#119
+    prependTranslation: function( x, y ) {
+      this.set( dot.Matrix3.translationTimesMatrix( x, y, this.matrix ) );
+    },
+
     append: function( matrix ) {
       this.set( this.matrix.timesMatrix( matrix ) );
     },
