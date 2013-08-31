@@ -792,7 +792,10 @@ define( function( require ) {
   Matrix3.translationTimesMatrix = function( x, y, m ) {
     var type;
     if ( m.type === Types.IDENTITY || m.type === Types.TRANSLATION_2D ) {
-      type = Types.TRANSLATION_2D;
+      return new Matrix3( 1, 0, m.m02() + x,
+                          0, 1, m.m12() + y,
+                          0, 0, 1,
+                          Types.TRANSLATION_2D );
     } else if ( m.type === Types.OTHER ) {
       type = Types.OTHER;
     } else {
