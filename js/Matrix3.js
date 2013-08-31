@@ -768,7 +768,7 @@ define( function( require ) {
       }
     }
   };
-
+  
   // create an immutable
   Matrix3.IDENTITY = new Matrix3( 1, 0, 0,
                                   0, 1, 0,
@@ -787,32 +787,23 @@ define( function( require ) {
                                       0,  0, 1,
                                       Types.AFFINE );
   Matrix3.Y_REFLECTION.makeImmutable();
-
+  
   //Shortcut for translation times a matrix (without allocating a translation matrix), see scenery#119
-  Matrix3.translationTimesMatrix = function(x,y,m){
-    if ( m.type===Types.TRANSLATION_2D ) {
-      // currently two matrices of the same type will result in the same result type
-      // faster combination of translations
-      return new Matrix3( 1, 0, x + m.m02(),
-        0, 1, y + m.m12(),
-        0, 0, 1, Types.TRANSLATION_2D );
+  Matrix3.translationTimesMatrix = function( x, y, m ) {
+    var type;
+    if ( m.type === Types.IDENTITY || m.type === Types.TRANSLATION_2D ) {
+      type = Types.TRANSLATION_2D;
+    } else if ( m.type === Types.OTHER ) {
+      type = Types.OTHER;
+    } else {
+      type = Types.AFFINE;
     }
-
-    if ( m.type !== Types.OTHER ) {
-      // currently two matrices that are anything but "other" are technically affine, and the result will be affine
-
-      // affine case
-      return new Matrix3( m.m00() , m.m01() , m.m02() + x,
-        m.m10(), m.m11(), m.m12() + y,
-        0, 0, 1, Types.AFFINE );
-    }
-
-    // general case
-    return new Matrix3( m.m00() + x * m.m20(), m.m01() + x * m.m21(), m.m02() + x * m.m22(),
-      m.m10() + y * m.m20(), m.m11() + y * m.m21(), m.m12() + y * m.m22(),
-      m.m20(), m.m21(), m.m22() );
+    return new Matrix3( m.m00(), m.m01(), m.m02() + x,
+                        m.m10(), m.m11(), m.m12() + y,
+                        m.m20(), m.m21(), m.m22(),
+                        type );
   };
-
+  
   Matrix3.printer = {
     print: function( matrix ) {
       console.log( matrix.toString() );
