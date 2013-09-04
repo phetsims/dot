@@ -23,6 +23,8 @@ define( function( require ) {
     
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
     this.set( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
+    
+    phetAllocation && phetAllocation( 'Transform3' );
   };
   var Transform3 = dot.Transform3;
 

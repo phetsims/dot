@@ -4,6 +4,9 @@
 define( function( require ) {
   'use strict';
   
+  // object allocation tracking
+  window.phetAllocation = require( 'PHET_CORE/phetAllocation' );
+  
   var dot = function dot() {
     switch ( arguments.length ) {
       case 2:

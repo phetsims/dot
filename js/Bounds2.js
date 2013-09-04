@@ -22,6 +22,8 @@ define( function( require ) {
     this.minY = minY;
     this.maxX = maxX;
     this.maxY = maxY;
+    
+    phetAllocation && phetAllocation( 'Bounds2' );
   };
   var Bounds2 = dot.Bounds2;
 

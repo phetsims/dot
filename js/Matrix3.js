@@ -26,6 +26,8 @@ define( function( require ) {
                    v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
                    v20 || 0, v21 || 0, v22 === undefined ? 1 : v22,
                    type );
+    
+    phetAllocation && phetAllocation( 'Matrix3' );
   };
   var Matrix3 = dot.Matrix3;
 

@@ -18,6 +18,8 @@ define( function( require ) {
     this.dir = dir;
     
     assert && assert( Math.abs( dir.magnitude() - 1 ) < 0.01 );
+    
+    phetAllocation && phetAllocation( 'Ray2' );
   };
   var Ray2 = dot.Ray2;
 
