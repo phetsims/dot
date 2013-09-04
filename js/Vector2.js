@@ -259,7 +259,6 @@ define( function( require ) {
   Immutable.mutableOverrideHelper( 'set' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
-  Immutable.mutableOverrideHelper( 'copy' );
   Immutable.mutableOverrideHelper( 'add' );
   Immutable.mutableOverrideHelper( 'addScalar' );
   Immutable.mutableOverrideHelper( 'subtract' );
