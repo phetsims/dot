@@ -14,6 +14,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   
   var inherit = require( 'PHET_CORE/inherit' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
   
@@ -237,6 +238,21 @@ define( function( require ) {
     }
     
   };
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( Vector2, {
+    defaultFactory: function() { return new Vector2(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( x, y ) {
+        if ( pool.length ) {
+          return pool.pop().set( x, y );
+        } else {
+          return new Vector2( x, y );
+        }
+      };
+    }
+  } );
   
   /*---------------------------------------------------------------------------*
    * Immutable Vector form
