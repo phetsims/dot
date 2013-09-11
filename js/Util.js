@@ -87,6 +87,13 @@ define( function( require ) {
     
     // return an array of real roots of ax^2 + bx + c = 0
     solveQuadraticRootsReal: function( a, b, c ) {
+      var epsilon = 1E7;
+      
+      //We need to test whether a is several orders of magnitude less than b or c. If so, return the result as a solution to the linear (easy) equation
+      if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon ) {
+        return [ -c / b ];
+      }
+      
       var discriminant = b * b - 4 * a * c;
       if ( discriminant < 0 ) {
         return [];
