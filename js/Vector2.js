@@ -53,6 +53,13 @@ define( function( require ) {
     distance: function( point ) {
       return Math.sqrt( this.distanceSquared( point ) );
     },
+
+    // the distance between this vector (treated as a point) and another point specified as x:Number, y:Number
+    distanceXY: function( x, y ) {
+      var dx = this.x - x;
+      var dy = this.y - y;
+      return Math.sqrt( dx * dx + dy * dy );
+    },
     
     // the squared distance between this vector (treated as a point) and another point
     distanceSquared: function( point ) {
