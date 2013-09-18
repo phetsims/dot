@@ -39,6 +39,8 @@
     var t = new Transform3( new Matrix3( 2, 0, 10, 0, 3, 1, 0, 0, 1 ) );
     equal( t.transformX( 5 ), 20 );
     equal( t.transformY( 5 ), 16 );
+    equal( t.inverseX( 20 ), 5 );
+    equal( t.inverseY( 16 ), 5 );
     
     var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
     throws( function() {

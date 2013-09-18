@@ -207,7 +207,19 @@ define( function( require ) {
     inverseNormal2: function( vec2 ) {
       return this.matrix.timesTransposeVector2( vec2 );
     },
-
+    
+    inverseX: function( x ) {
+      var m = this.getInverse();
+      assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
+      return m.m00() * x + m.m02();
+    },
+    
+    inverseY: function( y ) {
+      var m = this.getInverse();
+      assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
+      return m.m11() * y + m.m12();
+    },
+    
     inverseDeltaX: function( x ) {
       return this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
     },
