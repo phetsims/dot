@@ -34,4 +34,18 @@
     
     approximateRayEqual( transform.inverseRay2( transform.transformRay2( ray ) ), ray, 'inverse correctness' );
   } );
+  
+  test( 'Transform x/y', function() {
+    var t = new Transform3( new Matrix3( 2, 0, 10, 0, 3, 1, 0, 0, 1 ) );
+    equal( t.transformX( 5 ), 20 );
+    equal( t.transformY( 5 ), 16 );
+    
+    var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
+    throws( function() {
+      var x = t2.transformX( 5 );
+    } );
+    throws( function() {
+      var y = t2.transformY( 5 );
+    } );
+  } );
 })();

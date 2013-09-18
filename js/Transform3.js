@@ -158,11 +158,23 @@ define( function( require ) {
     transformNormal2: function( vec2 ) {
       return this.getInverse().timesTransposeVector2( vec2 );
     },
-
+    
+    transformX: function( x ) {
+      var m = this.getMatrix();
+      assert && assert( !m.m01(), 'Transforming an X value with a rotation/shear is ill-defined' );
+      return m.m00() * x + m.m02();
+    },
+    
+    transformY: function( y ) {
+      var m = this.getMatrix();
+      assert && assert( !m.m10(), 'Transforming a Y value with a rotation/shear is ill-defined' );
+      return m.m11() * y + m.m12();
+    },
+    
     transformDeltaX: function( x ) {
       return this.transformDelta2( new dot.Vector2( x, 0 ) ).x;
     },
-
+    
     transformDeltaY: function( y ) {
       return this.transformDelta2( new dot.Vector2( 0, y ) ).y;
     },
