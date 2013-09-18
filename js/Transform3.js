@@ -208,8 +208,9 @@ define( function( require ) {
     },
 
     inverseDelta2: function( vec2 ) {
-      // inverse actually has the translation rolled into the other coefficients, so we have to make this longer
-      return this.inversePosition2( vec2 ).minus( this.inversePosition2( dot.Vector2.ZERO ) );
+      var m = this.getInverse();
+      // m . vec2 - m . Vector2.ZERO
+      return new dot.Vector2( m.m00() * vec2.x + m.m01() * vec2.y, m.m10() * vec2.x + m.m11() * vec2.y );
     },
 
     inverseNormal2: function( vec2 ) {
@@ -229,11 +230,17 @@ define( function( require ) {
     },
     
     inverseDeltaX: function( x ) {
-      return this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
+      var m = this.getInverse();
+      assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
+      // same as this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
+      return m.m00() * x;
     },
 
     inverseDeltaY: function( y ) {
-      return this.inverseDelta2( new dot.Vector2( 0, y ) ).y;
+      var m = this.getInverse();
+      assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
+      // same as this.inverseDelta2( new dot.Vector2( 0, y ) ).y;
+      return m.m11() * y;
     },
     
     inverseBounds2: function( bounds2 ) {
