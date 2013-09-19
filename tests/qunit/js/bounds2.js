@@ -13,6 +13,10 @@
     ok( Math.abs( a.maxY - b.maxY ) < epsilon, msg + ' maxY: expected: ' + b.maxY + ', result: ' + a.maxY );
   }
   
+  test( 'Rectangle', function() {
+    ok( new Bounds2( -2, -4, 2, 4 ).equals( new dot.Rectangle( -2, -4, 4, 8 ) ), 'Bounds2-Rectangle equivalence' );
+  } );
+  
   test( 'Basic', function() {
     var bounds = new Bounds2( 1, 2, 3, 4 );
     ok( bounds.minX === 1, 'minX' );

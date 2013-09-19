@@ -27,6 +27,10 @@ define( function ( require ) {
 
     constructor: Range,
 
+    copy: function() {
+       return new Range( this.min, this.max, this.defaultValue );
+    },
+
     getLength: function () {
       return this.max - this.min;
     },

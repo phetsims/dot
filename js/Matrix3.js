@@ -26,6 +26,8 @@ define( function( require ) {
                    v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
                    v20 || 0, v21 || 0, v22 === undefined ? 1 : v22,
                    type );
+    
+    phetAllocation && phetAllocation( 'Matrix3' );
   };
   var Matrix3 = dot.Matrix3;
 
@@ -768,7 +770,7 @@ define( function( require ) {
       }
     }
   };
-
+  
   // create an immutable
   Matrix3.IDENTITY = new Matrix3( 1, 0, 0,
                                   0, 1, 0,
@@ -787,6 +789,25 @@ define( function( require ) {
                                       0,  0, 1,
                                       Types.AFFINE );
   Matrix3.Y_REFLECTION.makeImmutable();
+  
+  //Shortcut for translation times a matrix (without allocating a translation matrix), see scenery#119
+  Matrix3.translationTimesMatrix = function( x, y, m ) {
+    var type;
+    if ( m.type === Types.IDENTITY || m.type === Types.TRANSLATION_2D ) {
+      return new Matrix3( 1, 0, m.m02() + x,
+                          0, 1, m.m12() + y,
+                          0, 0, 1,
+                          Types.TRANSLATION_2D );
+    } else if ( m.type === Types.OTHER ) {
+      type = Types.OTHER;
+    } else {
+      type = Types.AFFINE;
+    }
+    return new Matrix3( m.m00(), m.m01(), m.m02() + x,
+                        m.m10(), m.m11(), m.m12() + y,
+                        m.m20(), m.m21(), m.m22(),
+                        type );
+  };
   
   Matrix3.printer = {
     print: function( matrix ) {

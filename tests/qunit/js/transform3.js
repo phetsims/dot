@@ -4,10 +4,13 @@
   
   var Matrix3 = dot.Matrix3;
   var Transform3 = dot.Transform3;
+  var Vector2 = dot.Vector2;
   
-  // function approximateEqual( a, b, msg ) {
-  //   ok( Math.abs( a - b ) < epsilon, msg + ' expected: ' + b + ', got: ' + a );
-  // }
+  var epsilon = 1e-7;
+  
+  function approximateEqual( a, b, msg ) {
+    ok( Math.abs( a - b ) < epsilon, msg + ' expected: ' + b + ', got: ' + a );
+  }
   
   // function approximateMatrixEqual( a, b, msg ) {
   //   ok( a.equalsEpsilon( b, epsilon ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
@@ -33,5 +36,58 @@
     ok( ray.dir.equalsEpsilon( forwardOffset.minus( forwardPos ).normalized(), 0.00001 ), 'inverseRay2 ray linearity' );
     
     approximateRayEqual( transform.inverseRay2( transform.transformRay2( ray ) ), ray, 'inverse correctness' );
+  } );
+  
+  test( 'Transform x/y', function() {
+    var t = new Transform3( new Matrix3( 2, 0, 10, 0, 3, 1, 0, 0, 1 ) );
+    equal( t.transformX( 5 ), 20 );
+    equal( t.transformY( 5 ), 16 );
+    equal( t.inverseX( 20 ), 5 );
+    equal( t.inverseY( 16 ), 5 );
+    
+    var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
+    dot.assert && throws( function() {
+      var x = t2.transformX( 5 );
+    } );
+    dot.assert && throws( function() {
+      var y = t2.transformY( 5 );
+    } );
+  } );
+  
+  test( 'Transform delta', function() {
+    var t1 = new Transform3( new Matrix3( 2, 1, 0, -2, 5, 0, 0, 0, 1 ) );
+    var t2 = new Transform3( new Matrix3( 2, 1, 52, -2, 5, -61, 0, 0, 1 ) );
+    
+    ok( t1.transformDelta2( Vector2.ZERO ).equalsEpsilon( Vector2.ZERO, 1e-7 ), 'ensuring linearity at 0, no translation' );
+    ok( t2.transformDelta2( Vector2.ZERO ).equalsEpsilon( Vector2.ZERO, 1e-7 ), 'ensuring linearity at 0, with translation' );
+    
+    ok( t1.transformDelta2( new Vector2( 2, -3 ) ).equalsEpsilon( new Vector2( 1, -19 ), 1e-7 ), 'basic delta check, no translation' );
+    ok( t2.transformDelta2( new Vector2( 2, -3 ) ).equalsEpsilon( new Vector2( 1, -19 ), 1e-7 ), 'basic delta check, with translation' );
+    
+    var v = new Vector2( -71, 27 );
+    ok( t1.inverseDelta2( t1.transformDelta2( v ) ).equalsEpsilon( v, 1e-7 ), 'inverse check, no translation' );
+    ok( t2.inverseDelta2( t2.transformDelta2( v ) ).equalsEpsilon( v, 1e-7 ), 'inverse check, with translation' );
+  } );
+  
+  test( 'Transform delta x/y', function() {
+    var t = new Transform3( new Matrix3( 2, 0, 52, 0, 5, -61, 0, 0, 1 ) );
+    
+    approximateEqual( t.transformDeltaX( 1 ), 2, 'deltaX' );
+    approximateEqual( t.transformDeltaY( 1 ), 5, 'deltaY' );
+    
+    approximateEqual( t.transformDeltaX( 71 ), t.transformDelta2( new Vector2( 71, 27 ) ).x, 'deltaX check vs transformDelta' );
+    approximateEqual( t.transformDeltaY( 27 ), t.transformDelta2( new Vector2( 71, 27 ) ).y, 'deltaY check vs transformDelta' );
+    
+    var v = new Vector2( -71, 27 );
+    approximateEqual( t.inverseDeltaX( t.transformDeltaX( v.x ) ), v.x, 'inverse check X' );
+    approximateEqual( t.inverseDeltaY( t.transformDeltaY( v.y ) ), v.y, 'inverse check Y' );
+    
+    var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
+    dot.assert && throws( function() {
+      var x = t2.transformDeltaX( 5 );
+    } );
+    dot.assert && throws( function() {
+      var y = t2.transformDeltaY( 5 );
+    } );
   } );
 })();

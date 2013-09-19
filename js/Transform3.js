@@ -23,6 +23,8 @@ define( function( require ) {
     
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
     this.set( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
+    
+    phetAllocation && phetAllocation( 'Transform3' );
   };
   var Transform3 = dot.Transform3;
 
@@ -61,6 +63,11 @@ define( function( require ) {
     
     prepend: function( matrix ) {
       this.set( matrix.timesMatrix( this.matrix ) );
+    },
+
+    //Simpler case of prepending a translation without having to allocate a matrix for it, see scenery#119
+    prependTranslation: function( x, y ) {
+      this.set( dot.Matrix3.translationTimesMatrix( x, y, this.matrix ) );
     },
 
     append: function( matrix ) {
@@ -143,21 +150,41 @@ define( function( require ) {
 
     // transform a vector (exclude translation)
     transformDelta2: function( vec2 ) {
-      // transform actually has the translation rolled into the other coefficients, so we have to make this longer
-      return this.transformPosition2( vec2 ).minus( this.transformPosition2( dot.Vector2.ZERO ) );
+      var m = this.getMatrix();
+      // m . vec2 - m . Vector2.ZERO
+      return new dot.Vector2( m.m00() * vec2.x + m.m01() * vec2.y, m.m10() * vec2.x + m.m11() * vec2.y );
     },
 
     // transform a normal vector (different than a normal vector)
     transformNormal2: function( vec2 ) {
       return this.getInverse().timesTransposeVector2( vec2 );
     },
-
-    transformDeltaX: function( x ) {
-      return this.transformDelta2( new dot.Vector2( x, 0 ) ).x;
+    
+    transformX: function( x ) {
+      var m = this.getMatrix();
+      // TODO: ensure assertions are stripped out
+      assert && assert( !m.m01(), 'Transforming an X value with a rotation/shear is ill-defined' );
+      return m.m00() * x + m.m02();
     },
-
+    
+    transformY: function( y ) {
+      var m = this.getMatrix();
+      assert && assert( !m.m10(), 'Transforming a Y value with a rotation/shear is ill-defined' );
+      return m.m11() * y + m.m12();
+    },
+    
+    transformDeltaX: function( x ) {
+      var m = this.getMatrix();
+      assert && assert( !m.m01(), 'Transforming an X value with a rotation/shear is ill-defined' );
+      // same as this.transformDelta2( new dot.Vector2( x, 0 ) ).x;
+      return m.m00() * x;
+    },
+    
     transformDeltaY: function( y ) {
-      return this.transformDelta2( new dot.Vector2( 0, y ) ).y;
+      var m = this.getMatrix();
+      assert && assert( !m.m10(), 'Transforming a Y value with a rotation/shear is ill-defined' );
+      // same as this.transformDelta2( new dot.Vector2( 0, y ) ).y;
+      return m.m11() * y;
     },
     
     transformBounds2: function( bounds2 ) {
@@ -181,20 +208,39 @@ define( function( require ) {
     },
 
     inverseDelta2: function( vec2 ) {
-      // inverse actually has the translation rolled into the other coefficients, so we have to make this longer
-      return this.inversePosition2( vec2 ).minus( this.inversePosition2( dot.Vector2.ZERO ) );
+      var m = this.getInverse();
+      // m . vec2 - m . Vector2.ZERO
+      return new dot.Vector2( m.m00() * vec2.x + m.m01() * vec2.y, m.m10() * vec2.x + m.m11() * vec2.y );
     },
 
     inverseNormal2: function( vec2 ) {
       return this.matrix.timesTransposeVector2( vec2 );
     },
-
+    
+    inverseX: function( x ) {
+      var m = this.getInverse();
+      assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
+      return m.m00() * x + m.m02();
+    },
+    
+    inverseY: function( y ) {
+      var m = this.getInverse();
+      assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
+      return m.m11() * y + m.m12();
+    },
+    
     inverseDeltaX: function( x ) {
-      return this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
+      var m = this.getInverse();
+      assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
+      // same as this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
+      return m.m00() * x;
     },
 
     inverseDeltaY: function( y ) {
-      return this.inverseDelta2( new dot.Vector2( 0, y ) ).y;
+      var m = this.getInverse();
+      assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
+      // same as this.inverseDelta2( new dot.Vector2( 0, y ) ).y;
+      return m.m11() * y;
     },
     
     inverseBounds2: function( bounds2 ) {

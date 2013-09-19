@@ -18,4 +18,5 @@ function runDotTests( pathToTestBase ) {
   loadTestFile( 'js/matrix3.js' );
   loadTestFile( 'js/transform3.js' );
   loadTestFile( 'js/modulo.js' );
+  loadTestFile( 'js/linting.js' );
 };

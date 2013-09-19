@@ -14,6 +14,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   
   var inherit = require( 'PHET_CORE/inherit' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
   
@@ -24,6 +25,8 @@ define( function( require ) {
     
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );
+    
+    phetAllocation && phetAllocation( 'Vector2' );
   };
   var Vector2 = dot.Vector2;
   
@@ -43,17 +46,26 @@ define( function( require ) {
     },
     
     magnitudeSquared: function() {
-      return this.dot( this );
+      return this.x * this.x + this.y * this.y;
     },
     
     // the distance between this vector (treated as a point) and another point
     distance: function( point ) {
-      return this.minus( point ).magnitude();
+      return Math.sqrt( this.distanceSquared( point ) );
+    },
+
+    // the distance between this vector (treated as a point) and another point specified as x:Number, y:Number
+    distanceXY: function( x, y ) {
+      var dx = this.x - x;
+      var dy = this.y - y;
+      return Math.sqrt( dx * dx + dy * dy );
     },
     
     // the squared distance between this vector (treated as a point) and another point
     distanceSquared: function( point ) {
-      return this.minus( point ).magnitudeSquared();
+      var dx = this.x - point.x;
+      var dy = this.y - point.y;
+      return dx * dx + dy * dy;
     },
     
     dot: function( v ) {
@@ -80,7 +92,7 @@ define( function( require ) {
      *----------------------------------------------------------------------------*/
     
     copy: function() {
-      return new this.constructor( this.x, this.y );
+      return new Vector2( this.x, this.y );
     },
     
     // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
@@ -94,12 +106,12 @@ define( function( require ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
       }
       else {
-        return new this.constructor( this.x / mag, this.y / mag );
+        return new Vector2( this.x / mag, this.y / mag );
       }
     },
     
     timesScalar: function( scalar ) {
-      return new this.constructor( this.x * scalar, this.y * scalar );
+      return new Vector2( this.x * scalar, this.y * scalar );
     },
     
     times: function( scalar ) {
@@ -109,31 +121,31 @@ define( function( require ) {
     },
     
     componentTimes: function( v ) {
-      return new this.constructor( this.x * v.x, this.y * v.y );
+      return new Vector2( this.x * v.x, this.y * v.y );
     },
     
     plus: function( v ) {
-      return new this.constructor( this.x + v.x, this.y + v.y );
+      return new Vector2( this.x + v.x, this.y + v.y );
     },
     
     plusScalar: function( scalar ) {
-      return new this.constructor( this.x + scalar, this.y + scalar );
+      return new Vector2( this.x + scalar, this.y + scalar );
     },
     
     minus: function( v ) {
-      return new this.constructor( this.x - v.x, this.y - v.y );
+      return new Vector2( this.x - v.x, this.y - v.y );
     },
     
     minusScalar: function( scalar ) {
-      return new this.constructor( this.x - scalar, this.y - scalar );
+      return new Vector2( this.x - scalar, this.y - scalar );
     },
     
     dividedScalar: function( scalar ) {
-      return new this.constructor( this.x / scalar, this.y / scalar );
+      return new Vector2( this.x / scalar, this.y / scalar );
     },
     
     negated: function() {
-      return new this.constructor( -this.x, -this.y );
+      return new Vector2( -this.x, -this.y );
     },
     
     angle: function() {
@@ -142,21 +154,24 @@ define( function( require ) {
     
     // equivalent to a -PI/2 rotation (right hand rotation)
     perpendicular: function() {
-      return new this.constructor( this.y, -this.x );
+      return new Vector2( this.y, -this.x );
     },
     
     angleBetween: function( v ) {
-      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+      var thisMagnitude = this.magnitude();
+      var vMagnitude = v.magnitude();
+      return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
     },
     
     rotated: function( angle ) {
       var newAngle = this.angle() + angle;
-      return new this.constructor( Math.cos( newAngle ), Math.sin( newAngle ) ).timesScalar( this.magnitude() );
+      var mag = this.magnitude();
+      return new Vector2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
     
     // linear interpolation from this (ratio=0) to vector (ratio=1)
     blend: function( vector, ratio ) {
-      return this.plus( vector.minus( this ).times( ratio ) );
+      return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
     },
     
     toString: function() {
@@ -231,6 +246,21 @@ define( function( require ) {
     
   };
   
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( Vector2, {
+    defaultFactory: function() { return new Vector2(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( x, y ) {
+        if ( pool.length ) {
+          return pool.pop().set( x, y );
+        } else {
+          return new Vector2( x, y );
+        }
+      };
+    }
+  } );
+  
   /*---------------------------------------------------------------------------*
    * Immutable Vector form
    *----------------------------------------------------------------------------*/
@@ -252,7 +282,6 @@ define( function( require ) {
   Immutable.mutableOverrideHelper( 'set' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
-  Immutable.mutableOverrideHelper( 'copy' );
   Immutable.mutableOverrideHelper( 'add' );
   Immutable.mutableOverrideHelper( 'addScalar' );
   Immutable.mutableOverrideHelper( 'subtract' );

@@ -17,6 +17,7 @@ define( [
   'DOT/QRDecomposition',
   'DOT/Ray2',
   'DOT/Ray3',
+  'DOT/Rectangle',
   'DOT/SingularValueDecomposition',
   'DOT/Transform3',
   'DOT/Transform4',
