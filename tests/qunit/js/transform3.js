@@ -46,10 +46,10 @@
     equal( t.inverseY( 16 ), 5 );
     
     var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
-    throws( function() {
+    dot.assert && throws( function() {
       var x = t2.transformX( 5 );
     } );
-    throws( function() {
+    dot.assert && throws( function() {
       var y = t2.transformY( 5 );
     } );
   } );
@@ -83,10 +83,10 @@
     approximateEqual( t.inverseDeltaY( t.transformDeltaY( v.y ) ), v.y, 'inverse check Y' );
     
     var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
-    throws( function() {
+    dot.assert && throws( function() {
       var x = t2.transformDeltaX( 5 );
     } );
-    throws( function() {
+    dot.assert && throws( function() {
       var y = t2.transformDeltaY( 5 );
     } );
   } );
