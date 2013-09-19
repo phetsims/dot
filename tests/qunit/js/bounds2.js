@@ -2,7 +2,6 @@
 (function() {
   module( 'Dot: Bounds2' );
   
-  var dot = require( 'DOT/dot' );
   var Bounds2 = dot.Bounds2;
   
   var epsilon = 0.00000001;
