@@ -79,9 +79,19 @@ define( function( require ) {
     
     // intersection between the line from p1-p2 and the line from p3-p4
     lineLineIntersection: function( p1, p2, p3, p4 ) {
+      var x12 = p1.x - p2.x;
+      var x34 = p3.x - p4.x;
+      var y12 = p1.y - p2.y;
+      var y34 = p3.y - p4.y;
+      
+      var denom = x12 * y34 - y12 * x34;
+      
+      var a = p1.x * p2.y - p1.y * p2.x;
+      var b = p3.x * p4.y - p3.y * p4.x;
+      
       return new dot.Vector2(
-        ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.x - p4.x ) - ( p1.x - p2.x ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) ),
-        ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) )
+        ( a * x34 - x12 * b ) / denom,
+        ( a * y34 - y12 * b ) / denom
       );
     },
     
