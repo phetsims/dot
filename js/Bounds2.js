@@ -3,6 +3,13 @@
 /**
  * A 2D rectangle-shaped bounded area (bounding box)
  *
+ * There are a number of convenience functions to get locations and points on the Bounds. Currently we do not
+ * store these with the Bounds2 instance, since we want to lower the memory footprint.
+ *
+ * minX, minY, maxX, and maxY are actually stored. We don't do x,y,width,height because this can't properly express
+ * semi-infinite bounds (like a half-plane), or easily handle what Bounds2.NOTHING and Bounds2.EVERYTHING do with
+ * the constructive solid areas.
+ *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
@@ -40,25 +47,49 @@ define( function( require ) {
     getHeight: function() { return this.maxY - this.minY; },
     get height() { return this.getHeight(); },
     
+    /* 
+     * Convenience locations
+     * upper is in terms of the visual layout in Scenery and other programs, so the minY is the "upper", and minY is the "lower"
+     *
+     *             minX (x)     centerX        maxX
+     *          ---------------------------------------
+     * minY (y) | upperLeft   upperCenter   upperRight
+     * centerY  | centerLeft    center      centerRight
+     * maxY     | lowerLeft   lowerCenter   lowerRight
+     */
     getX: function() { return this.minX; },
     get x() { return this.getX(); },
-    
     getY: function() { return this.minY; },
     get y() { return this.getY(); },
-    
-    getCenter: function() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); },
-    get center() { return this.getCenter(); },
-    
-    getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
-    get centerX() { return this.getCenterX(); },
-    
-    getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
-    get centerY() { return this.getCenterY(); },
     
     getMinX: function() { return this.minX; },
     getMinY: function() { return this.minY; },
     getMaxX: function() { return this.maxX; },
     getMaxY: function() { return this.maxY; },
+    
+    getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
+    get centerX() { return this.getCenterX(); },
+    getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
+    get centerY() { return this.getCenterY(); },
+    
+    getUpperLeft: function() { return new dot.Vector2( this.minX, this.minY ); },
+    get upperLeft() { return this.getUpperLeft(); },
+    getUpperCenter: function() { return new dot.Vector2( this.getCenterX(), this.minY ); },
+    get upperCenter() { return this.getUpperCenter(); },
+    getUpperRight: function() { return new dot.Vector2( this.maxX, this.minY ); },
+    get upperRight() { return this.getUpperRight(); },
+    getCenterLeft: function() { return new dot.Vector2( this.minX, this.getCenterY ); },
+    get centerLeft() { return this.getCenterLeft(); },
+    getCenter: function() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); },
+    get center() { return this.getCenter(); },
+    getCenterRight: function() { return new dot.Vector2( this.maxX, this.getCenterY ); },
+    get centerRight() { return this.getCenterRight(); },
+    getLowerLeft: function() { return new dot.Vector2( this.minX, this.maxY ); },
+    get lowerLeft() { return this.getLowerLeft(); },
+    getLowerCenter: function() { return new dot.Vector2( this.getCenterX(), this.maxY ); },
+    get lowerCenter() { return this.getLowerCenter(); },
+    getLowerRight: function() { return new dot.Vector2( this.maxX, this.maxY ); },
+    get lowerRight() { return this.getLowerRight(); },
     
     isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0; },
     
