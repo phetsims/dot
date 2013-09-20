@@ -43,9 +43,9 @@
       $( '#qunit-tests .fail ol' ).css( 'display', 'none' );
     }
     
-    QUnit.moduleDone( function( details ) {
-      collapseTests();
-    } );
+    // QUnit.moduleDone( function( details ) {
+    //   collapseTests();
+    // } );
     
     runDotTests( '.' );
     runPhetCoreTests( '../../../phet-core/tests/qunit' );
