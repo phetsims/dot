@@ -63,9 +63,13 @@ define( function( require ) {
     get y() { return this.getY(); },
     
     getMinX: function() { return this.minX; },
+    get left() { return this.minX; },
     getMinY: function() { return this.minY; },
+    get top() { return this.minY; },
     getMaxX: function() { return this.maxX; },
+    get right() { return this.maxX; },
     getMaxY: function() { return this.maxY; },
+    get bottom() { return this.maxY; },
     
     getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
     get centerX() { return this.getCenterX(); },
