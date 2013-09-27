@@ -341,6 +341,7 @@ define( function( require ) {
                               0, 1 / this.m11(), 0, 0,
                               0, 0, 1 / this.m22(), 0,
                               0, 0, 0, 1 / this.m33(), Types.SCALING );
+        case Types.AFFINE:
         case Types.OTHER:
           var det = this.getDeterminant();
           if ( det !== 0 ) {
