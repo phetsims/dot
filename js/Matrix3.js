@@ -250,6 +250,7 @@ define( function( require ) {
     },
     get determinant() { return this.getDeterminant(); },
     
+    // the 2D translation, assuming multiplication with a homogeneous vector
     getTranslation: function() {
       return new dot.Vector2( this.m02(), this.m12() );
     },
