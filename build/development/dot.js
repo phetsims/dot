@@ -928,9 +928,19 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
     
     // intersection between the line from p1-p2 and the line from p3-p4
     lineLineIntersection: function( p1, p2, p3, p4 ) {
+      var x12 = p1.x - p2.x;
+      var x34 = p3.x - p4.x;
+      var y12 = p1.y - p2.y;
+      var y34 = p3.y - p4.y;
+      
+      var denom = x12 * y34 - y12 * x34;
+      
+      var a = p1.x * p2.y - p1.y * p2.x;
+      var b = p3.x * p4.y - p3.y * p4.x;
+      
       return new dot.Vector2(
-        ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.x - p4.x ) - ( p1.x - p2.x ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) ),
-        ( ( p1.x * p2.y - p1.y * p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x * p4.y - p3.y * p4.x ) ) / ( ( p1.x - p2.x ) * ( p3.y - p4.y ) - ( p1.y - p2.y ) * ( p3.x - p4.x ) )
+        ( a * x34 - x12 * b ) / denom,
+        ( a * y34 - y12 * b ) / denom
       );
     },
     
@@ -1027,6 +1037,38 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
 
     isInteger: function( number ) {
       return Math.floor( number ) === number;
+    },
+
+    /*
+     * Computes the intersection of two line segments. Algorithm taked from Paul Bourke, 1989:
+     * http://astronomy.swin.edu.au/~pbourke/geometry/lineline2d/
+     * Ported from MathUtil.java on 9/20/2013 by @samreid
+     * line a goes from point 1->2 and line b goes from 3->4
+     * @returns a Vector2 of the intersection point, or null if no intersection
+     */
+    lineSegmentIntersection: function( x1, y1, x2, y2, x3, y3, x4, y4 ) {
+      var numA = ( x4 - x3 ) * ( y1 - y3 ) - ( y4 - y3 ) * ( x1 - x3 );
+      var numB = ( x2 - x1 ) * ( y1 - y3 ) - ( y2 - y1 ) * ( x1 - x3 );
+      var denom = ( y4 - y3 ) * ( x2 - x1 ) - ( x4 - x3 ) * ( y2 - y1 );
+
+      // If denominator is 0, the lines are parallel or coincident
+      if ( denom === 0 ) {
+        return null;
+      }
+      else {
+        var ua = numA / denom;
+        var ub = numB / denom;
+
+        // ua and ub must both be in the range 0 to 1 for the segments to have an intersection pt.
+        if ( !( ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1 ) ) {
+          return null;
+        }
+        else {
+          var x = x1 + ua * ( x2 - x1 );
+          var y = y1 + ua * ( y2 - y1 );
+          return new dot.Vector2( x, y );
+        }
+      }
     }
   };
   var Util = dot.Util;
@@ -1354,6 +1396,13 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
 /**
  * A 2D rectangle-shaped bounded area (bounding box)
  *
+ * There are a number of convenience functions to get locations and points on the Bounds. Currently we do not
+ * store these with the Bounds2 instance, since we want to lower the memory footprint.
+ *
+ * minX, minY, maxX, and maxY are actually stored. We don't do x,y,width,height because this can't properly express
+ * semi-infinite bounds (like a half-plane), or easily handle what Bounds2.NOTHING and Bounds2.EVERYTHING do with
+ * the constructive solid areas.
+ *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
@@ -1391,25 +1440,53 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
     getHeight: function() { return this.maxY - this.minY; },
     get height() { return this.getHeight(); },
     
+    /* 
+     * Convenience locations
+     * upper is in terms of the visual layout in Scenery and other programs, so the minY is the "upper", and minY is the "lower"
+     *
+     *             minX (x)     centerX        maxX
+     *          ---------------------------------------
+     * minY (y) | upperLeft   upperCenter   upperRight
+     * centerY  | centerLeft    center      centerRight
+     * maxY     | lowerLeft   lowerCenter   lowerRight
+     */
     getX: function() { return this.minX; },
     get x() { return this.getX(); },
-    
     getY: function() { return this.minY; },
     get y() { return this.getY(); },
     
-    getCenter: function() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); },
-    get center() { return this.getCenter(); },
+    getMinX: function() { return this.minX; },
+    get left() { return this.minX; },
+    getMinY: function() { return this.minY; },
+    get top() { return this.minY; },
+    getMaxX: function() { return this.maxX; },
+    get right() { return this.maxX; },
+    getMaxY: function() { return this.maxY; },
+    get bottom() { return this.maxY; },
     
     getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
     get centerX() { return this.getCenterX(); },
-    
     getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
     get centerY() { return this.getCenterY(); },
     
-    getMinX: function() { return this.minX; },
-    getMinY: function() { return this.minY; },
-    getMaxX: function() { return this.maxX; },
-    getMaxY: function() { return this.maxY; },
+    getUpperLeft: function() { return new dot.Vector2( this.minX, this.minY ); },
+    get upperLeft() { return this.getUpperLeft(); },
+    getUpperCenter: function() { return new dot.Vector2( this.getCenterX(), this.minY ); },
+    get upperCenter() { return this.getUpperCenter(); },
+    getUpperRight: function() { return new dot.Vector2( this.maxX, this.minY ); },
+    get upperRight() { return this.getUpperRight(); },
+    getCenterLeft: function() { return new dot.Vector2( this.minX, this.getCenterY ); },
+    get centerLeft() { return this.getCenterLeft(); },
+    getCenter: function() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); },
+    get center() { return this.getCenter(); },
+    getCenterRight: function() { return new dot.Vector2( this.maxX, this.getCenterY ); },
+    get centerRight() { return this.getCenterRight(); },
+    getLowerLeft: function() { return new dot.Vector2( this.minX, this.maxY ); },
+    get lowerLeft() { return this.getLowerLeft(); },
+    getLowerCenter: function() { return new dot.Vector2( this.getCenterX(), this.maxY ); },
+    get lowerCenter() { return this.getLowerCenter(); },
+    getLowerRight: function() { return new dot.Vector2( this.maxX, this.maxY ); },
+    get lowerRight() { return this.getLowerRight(); },
     
     isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0; },
     
@@ -4919,6 +4996,7 @@ define( 'DOT/Matrix',['require','ASSERT/assert','DOT/dot','PHET_CORE/isArray','D
  * 4-dimensional Matrix
  *
  * TODO: consider adding affine flag if it will help performance (a la Matrix3)
+ * TODO: get rotation angles
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
@@ -4950,7 +5028,8 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
     OTHER: 0, // default
     IDENTITY: 1,
     TRANSLATION_3D: 2,
-    SCALING: 3
+    SCALING: 3,
+    AFFINE: 4
 
     // TODO: possibly add rotations
   };
@@ -4997,7 +5076,7 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
               axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s, 0,
               axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c, 0,
               0, 0, 0, 1,
-              Types.OTHER );
+              Types.AFFINE );
   };
 
   // TODO: add in rotation from quaternion, and from quat + translation
@@ -5010,7 +5089,7 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
               0, c, -s, 0,
               0, s, c, 0,
               0, 0, 0, 1,
-              Types.OTHER );
+              Types.AFFINE );
   };
 
   Matrix4.rotationY = function( angle ) {
@@ -5021,7 +5100,7 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
               0, 1, 0, 0,
               -s, 0, c, 0,
               0, 0, 0, 1,
-              Types.OTHER );
+              Types.AFFINE );
   };
 
   Matrix4.rotationZ = function( angle ) {
@@ -5032,7 +5111,7 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
               s, c, 0, 0,
               0, 0, 1, 0,
               0, 0, 0, 1,
-              Types.OTHER );
+              Types.AFFINE );
   };
 
   // aspect === width / height
@@ -5065,11 +5144,14 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
       this.entries[13] = v13;
       this.entries[14] = v23;
       this.entries[15] = v33;
-      this.type = type === undefined ? Types.OTHER : type;
+      
+      // TODO: consider performance of the affine check here
+      this.type = type === undefined ? ( ( v30 === 0 && v31 === 0 && v32 === 0 && v33 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
+      return this;
     },
 
     columnMajor: function( v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33, type ) {
-      this.rowMajor( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type );
+      return this.rowMajor( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type );
     },
 
     // convenience getters. inline usages of these when performance is critical? TODO: test performance of inlining these, with / without closure compiler
@@ -5089,7 +5171,122 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
     m31: function() { return this.entries[7]; },
     m32: function() { return this.entries[11]; },
     m33: function() { return this.entries[15]; },
-
+    
+    isFinite: function() {
+      return isFinite( this.m00() ) &&
+             isFinite( this.m01() ) &&
+             isFinite( this.m02() ) &&
+             isFinite( this.m03() ) &&
+             isFinite( this.m10() ) &&
+             isFinite( this.m11() ) &&
+             isFinite( this.m12() ) &&
+             isFinite( this.m13() ) &&
+             isFinite( this.m20() ) &&
+             isFinite( this.m21() ) &&
+             isFinite( this.m22() ) &&
+             isFinite( this.m23() ) &&
+             isFinite( this.m30() ) &&
+             isFinite( this.m31() ) &&
+             isFinite( this.m32() ) &&
+             isFinite( this.m33() );
+    },
+    
+    // the 3D translation, assuming multiplication with a homogeneous vector
+    getTranslation: function() {
+      return new dot.Vector3( this.m03(), this.m13(), this.m23() );
+    },
+    get translation() { return this.getTranslation(); },
+    
+    // returns a vector that is equivalent to ( T(1,0,0).magnitude(), T(0,1,0).magnitude(), T(0,0,1).magnitude() )
+    // where T is a relative transform
+    getScaleVector: function() {
+      var m0003 = this.m00() + this.m03();
+      var m1013 = this.m10() + this.m13();
+      var m2023 = this.m20() + this.m23();
+      var m3033 = this.m30() + this.m33();
+      var m0103 = this.m01() + this.m03();
+      var m1113 = this.m11() + this.m13();
+      var m2123 = this.m21() + this.m23();
+      var m3133 = this.m31() + this.m33();
+      var m0203 = this.m02() + this.m03();
+      var m1213 = this.m12() + this.m13();
+      var m2223 = this.m22() + this.m23();
+      var m3233 = this.m32() + this.m33();
+      return new dot.Vector3( Math.sqrt( m0003 * m0003 + m1013 * m1013 + m2023 * m2023 + m3033 * m3033 ),
+                              Math.sqrt( m0103 * m0103 + m1113 * m1113 + m2123 * m2123 + m3133 * m3133 ),
+                              Math.sqrt( m0203 * m0203 + m1213 * m1213 + m2223 * m2223 + m3233 * m3233 ) );
+    },
+    get scaleVector() { return this.getScaleVector(); },
+    
+    getCSSTransform: function() {
+      // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
+      
+      // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
+      // 20 is the largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
+      
+      // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
+      // NOTE: the toFixed calls are inlined for performance reasons
+      return 'matrix3d(' + this.entries[0].toFixed( 20 ) + ',' +
+                           this.entries[1].toFixed( 20 ) + ',' +
+                           this.entries[2].toFixed( 20 ) + ',' +
+                           this.entries[3].toFixed( 20 ) + ',' +
+                           this.entries[4].toFixed( 20 ) + ',' +
+                           this.entries[5].toFixed( 20 ) + ',' +
+                           this.entries[6].toFixed( 20 ) + ',' +
+                           this.entries[7].toFixed( 20 ) + ',' +
+                           this.entries[8].toFixed( 20 ) + ',' +
+                           this.entries[9].toFixed( 20 ) + ',' +
+                           this.entries[10].toFixed( 20 ) + ',' +
+                           this.entries[11].toFixed( 20 ) + ',' +
+                           this.entries[12].toFixed( 20 ) + ',' +
+                           this.entries[13].toFixed( 20 ) + ',' +
+                           this.entries[14].toFixed( 20 ) + ',' +
+                           this.entries[15].toFixed( 20 ) + ')';
+    },
+    get cssTransform() { return this.getCSSTransform(); },
+    
+    // exact equality
+    equals: function( m ) {
+      return this.m00() === m.m00() && this.m01() === m.m01() && this.m02() === m.m02() && this.m03() === m.m03() &&
+             this.m10() === m.m10() && this.m11() === m.m11() && this.m12() === m.m12() && this.m13() === m.m13() &&
+             this.m20() === m.m20() && this.m21() === m.m21() && this.m22() === m.m22() && this.m23() === m.m23() &&
+             this.m30() === m.m30() && this.m31() === m.m31() && this.m32() === m.m32() && this.m33() === m.m33();
+    },
+    
+    // equality within a margin of error
+    equalsEpsilon: function( m, epsilon ) {
+      return Math.abs( this.m00() - m.m00() ) < epsilon &&
+             Math.abs( this.m01() - m.m01() ) < epsilon &&
+             Math.abs( this.m02() - m.m02() ) < epsilon &&
+             Math.abs( this.m03() - m.m03() ) < epsilon &&
+             Math.abs( this.m10() - m.m10() ) < epsilon &&
+             Math.abs( this.m11() - m.m11() ) < epsilon &&
+             Math.abs( this.m12() - m.m12() ) < epsilon &&
+             Math.abs( this.m13() - m.m13() ) < epsilon &&
+             Math.abs( this.m20() - m.m20() ) < epsilon &&
+             Math.abs( this.m21() - m.m21() ) < epsilon &&
+             Math.abs( this.m22() - m.m22() ) < epsilon &&
+             Math.abs( this.m23() - m.m23() ) < epsilon &&
+             Math.abs( this.m30() - m.m30() ) < epsilon &&
+             Math.abs( this.m31() - m.m31() ) < epsilon &&
+             Math.abs( this.m32() - m.m32() ) < epsilon &&
+             Math.abs( this.m33() - m.m33() ) < epsilon;
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Immutable operations (returning a new matrix)
+    *----------------------------------------------------------------------------*/
+    
+    copy: function() {
+      return new Matrix4(
+        this.m00(), this.m01(), this.m02(), this.m03(),
+        this.m10(), this.m11(), this.m12(), this.m13(),
+        this.m20(), this.m21(), this.m22(), this.m23(),
+        this.m30(), this.m31(), this.m32(), this.m33(),
+        this.type
+      );
+    },
+    
     plus: function( m ) {
       return new Matrix4(
           this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(), this.m03() + m.m03(),
@@ -5123,49 +5320,93 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
     },
 
     inverted: function() {
-      // TODO: optimizations for matrix types (like identity)
-
-      var det = this.determinant();
-
-      if ( det !== 0 ) {
-        return new Matrix4(
-            ( -this.m31() * this.m22() * this.m13() + this.m21() * this.m32() * this.m13() + this.m31() * this.m12() * this.m23() - this.m11() * this.m32() * this.m23() - this.m21() * this.m12() * this.m33() + this.m11() * this.m22() * this.m33() ) / det,
-            ( this.m31() * this.m22() * this.m03() - this.m21() * this.m32() * this.m03() - this.m31() * this.m02() * this.m23() + this.m01() * this.m32() * this.m23() + this.m21() * this.m02() * this.m33() - this.m01() * this.m22() * this.m33() ) / det,
-            ( -this.m31() * this.m12() * this.m03() + this.m11() * this.m32() * this.m03() + this.m31() * this.m02() * this.m13() - this.m01() * this.m32() * this.m13() - this.m11() * this.m02() * this.m33() + this.m01() * this.m12() * this.m33() ) / det,
-            ( this.m21() * this.m12() * this.m03() - this.m11() * this.m22() * this.m03() - this.m21() * this.m02() * this.m13() + this.m01() * this.m22() * this.m13() + this.m11() * this.m02() * this.m23() - this.m01() * this.m12() * this.m23() ) / det,
-            ( this.m30() * this.m22() * this.m13() - this.m20() * this.m32() * this.m13() - this.m30() * this.m12() * this.m23() + this.m10() * this.m32() * this.m23() + this.m20() * this.m12() * this.m33() - this.m10() * this.m22() * this.m33() ) / det,
-            ( -this.m30() * this.m22() * this.m03() + this.m20() * this.m32() * this.m03() + this.m30() * this.m02() * this.m23() - this.m00() * this.m32() * this.m23() - this.m20() * this.m02() * this.m33() + this.m00() * this.m22() * this.m33() ) / det,
-            ( this.m30() * this.m12() * this.m03() - this.m10() * this.m32() * this.m03() - this.m30() * this.m02() * this.m13() + this.m00() * this.m32() * this.m13() + this.m10() * this.m02() * this.m33() - this.m00() * this.m12() * this.m33() ) / det,
-            ( -this.m20() * this.m12() * this.m03() + this.m10() * this.m22() * this.m03() + this.m20() * this.m02() * this.m13() - this.m00() * this.m22() * this.m13() - this.m10() * this.m02() * this.m23() + this.m00() * this.m12() * this.m23() ) / det,
-            ( -this.m30() * this.m21() * this.m13() + this.m20() * this.m31() * this.m13() + this.m30() * this.m11() * this.m23() - this.m10() * this.m31() * this.m23() - this.m20() * this.m11() * this.m33() + this.m10() * this.m21() * this.m33() ) / det,
-            ( this.m30() * this.m21() * this.m03() - this.m20() * this.m31() * this.m03() - this.m30() * this.m01() * this.m23() + this.m00() * this.m31() * this.m23() + this.m20() * this.m01() * this.m33() - this.m00() * this.m21() * this.m33() ) / det,
-            ( -this.m30() * this.m11() * this.m03() + this.m10() * this.m31() * this.m03() + this.m30() * this.m01() * this.m13() - this.m00() * this.m31() * this.m13() - this.m10() * this.m01() * this.m33() + this.m00() * this.m11() * this.m33() ) / det,
-            ( this.m20() * this.m11() * this.m03() - this.m10() * this.m21() * this.m03() - this.m20() * this.m01() * this.m13() + this.m00() * this.m21() * this.m13() + this.m10() * this.m01() * this.m23() - this.m00() * this.m11() * this.m23() ) / det,
-            ( this.m30() * this.m21() * this.m12() - this.m20() * this.m31() * this.m12() - this.m30() * this.m11() * this.m22() + this.m10() * this.m31() * this.m22() + this.m20() * this.m11() * this.m32() - this.m10() * this.m21() * this.m32() ) / det,
-            ( -this.m30() * this.m21() * this.m02() + this.m20() * this.m31() * this.m02() + this.m30() * this.m01() * this.m22() - this.m00() * this.m31() * this.m22() - this.m20() * this.m01() * this.m32() + this.m00() * this.m21() * this.m32() ) / det,
-            ( this.m30() * this.m11() * this.m02() - this.m10() * this.m31() * this.m02() - this.m30() * this.m01() * this.m12() + this.m00() * this.m31() * this.m12() + this.m10() * this.m01() * this.m32() - this.m00() * this.m11() * this.m32() ) / det,
-            ( -this.m20() * this.m11() * this.m02() + this.m10() * this.m21() * this.m02() + this.m20() * this.m01() * this.m12() - this.m00() * this.m21() * this.m12() - this.m10() * this.m01() * this.m22() + this.m00() * this.m11() * this.m22() ) / det
-        );
-      }
-      else {
-        throw new Error( "Matrix could not be inverted, determinant === 0" );
+      switch ( this.type ) {
+        case Types.IDENTITY:
+          return this;
+        case Types.TRANSLATION_3D:
+          return new Matrix4( 1, 0, 0, -this.m03(),
+                              0, 1, 0, -this.m13(),
+                              0, 0, 1, -this.m23(),
+                              0, 0, 0, 1, Types.TRANSLATION_3D );
+        case Types.SCALING:
+          return new Matrix4( 1 / this.m00(), 0, 0, 0,
+                              0, 1 / this.m11(), 0, 0,
+                              0, 0, 1 / this.m22(), 0,
+                              0, 0, 0, 1 / this.m33(), Types.SCALING );
+        case Types.AFFINE:
+        case Types.OTHER:
+          var det = this.getDeterminant();
+          if ( det !== 0 ) {
+            return new Matrix4(
+                ( -this.m31() * this.m22() * this.m13() + this.m21() * this.m32() * this.m13() + this.m31() * this.m12() * this.m23() - this.m11() * this.m32() * this.m23() - this.m21() * this.m12() * this.m33() + this.m11() * this.m22() * this.m33() ) / det,
+                ( this.m31() * this.m22() * this.m03() - this.m21() * this.m32() * this.m03() - this.m31() * this.m02() * this.m23() + this.m01() * this.m32() * this.m23() + this.m21() * this.m02() * this.m33() - this.m01() * this.m22() * this.m33() ) / det,
+                ( -this.m31() * this.m12() * this.m03() + this.m11() * this.m32() * this.m03() + this.m31() * this.m02() * this.m13() - this.m01() * this.m32() * this.m13() - this.m11() * this.m02() * this.m33() + this.m01() * this.m12() * this.m33() ) / det,
+                ( this.m21() * this.m12() * this.m03() - this.m11() * this.m22() * this.m03() - this.m21() * this.m02() * this.m13() + this.m01() * this.m22() * this.m13() + this.m11() * this.m02() * this.m23() - this.m01() * this.m12() * this.m23() ) / det,
+                ( this.m30() * this.m22() * this.m13() - this.m20() * this.m32() * this.m13() - this.m30() * this.m12() * this.m23() + this.m10() * this.m32() * this.m23() + this.m20() * this.m12() * this.m33() - this.m10() * this.m22() * this.m33() ) / det,
+                ( -this.m30() * this.m22() * this.m03() + this.m20() * this.m32() * this.m03() + this.m30() * this.m02() * this.m23() - this.m00() * this.m32() * this.m23() - this.m20() * this.m02() * this.m33() + this.m00() * this.m22() * this.m33() ) / det,
+                ( this.m30() * this.m12() * this.m03() - this.m10() * this.m32() * this.m03() - this.m30() * this.m02() * this.m13() + this.m00() * this.m32() * this.m13() + this.m10() * this.m02() * this.m33() - this.m00() * this.m12() * this.m33() ) / det,
+                ( -this.m20() * this.m12() * this.m03() + this.m10() * this.m22() * this.m03() + this.m20() * this.m02() * this.m13() - this.m00() * this.m22() * this.m13() - this.m10() * this.m02() * this.m23() + this.m00() * this.m12() * this.m23() ) / det,
+                ( -this.m30() * this.m21() * this.m13() + this.m20() * this.m31() * this.m13() + this.m30() * this.m11() * this.m23() - this.m10() * this.m31() * this.m23() - this.m20() * this.m11() * this.m33() + this.m10() * this.m21() * this.m33() ) / det,
+                ( this.m30() * this.m21() * this.m03() - this.m20() * this.m31() * this.m03() - this.m30() * this.m01() * this.m23() + this.m00() * this.m31() * this.m23() + this.m20() * this.m01() * this.m33() - this.m00() * this.m21() * this.m33() ) / det,
+                ( -this.m30() * this.m11() * this.m03() + this.m10() * this.m31() * this.m03() + this.m30() * this.m01() * this.m13() - this.m00() * this.m31() * this.m13() - this.m10() * this.m01() * this.m33() + this.m00() * this.m11() * this.m33() ) / det,
+                ( this.m20() * this.m11() * this.m03() - this.m10() * this.m21() * this.m03() - this.m20() * this.m01() * this.m13() + this.m00() * this.m21() * this.m13() + this.m10() * this.m01() * this.m23() - this.m00() * this.m11() * this.m23() ) / det,
+                ( this.m30() * this.m21() * this.m12() - this.m20() * this.m31() * this.m12() - this.m30() * this.m11() * this.m22() + this.m10() * this.m31() * this.m22() + this.m20() * this.m11() * this.m32() - this.m10() * this.m21() * this.m32() ) / det,
+                ( -this.m30() * this.m21() * this.m02() + this.m20() * this.m31() * this.m02() + this.m30() * this.m01() * this.m22() - this.m00() * this.m31() * this.m22() - this.m20() * this.m01() * this.m32() + this.m00() * this.m21() * this.m32() ) / det,
+                ( this.m30() * this.m11() * this.m02() - this.m10() * this.m31() * this.m02() - this.m30() * this.m01() * this.m12() + this.m00() * this.m31() * this.m12() + this.m10() * this.m01() * this.m32() - this.m00() * this.m11() * this.m32() ) / det,
+                ( -this.m20() * this.m11() * this.m02() + this.m10() * this.m21() * this.m02() + this.m20() * this.m01() * this.m12() - this.m00() * this.m21() * this.m12() - this.m10() * this.m01() * this.m22() + this.m00() * this.m11() * this.m22() ) / det
+            );
+          } else {
+            throw new Error( 'Matrix could not be inverted, determinant === 0' );
+          }
+          break; // because JSHint totally can't tell that this can't be reached
+        default:
+          throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
     },
 
     timesMatrix: function( m ) {
-      var newType = Types.OTHER;
-      if ( this.type === Types.TRANSLATION_3D && m.type === Types.TRANSLATION_3D ) {
-        newType = Types.TRANSLATION_3D;
+      // I * M === M * I === I (the identity)
+      if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
+        return this.type === Types.IDENTITY ? m : this;
       }
-      if ( this.type === Types.SCALING && m.type === Types.SCALING ) {
-        newType = Types.SCALING;
+      
+      if ( this.type === m.type ) {
+        // currently two matrices of the same type will result in the same result type
+        if ( this.type === Types.TRANSLATION_3D ) {
+          // faster combination of translations
+          return new Matrix4( 1, 0, 0, this.m03() + m.m02(),
+                              0, 1, 0, this.m13() + m.m12(),
+                              0, 0, 1, this.m23() + m.m23(),
+                              0, 0, 0, 1, Types.TRANSLATION_3D );
+        } else if ( this.type === Types.SCALING ) {
+          // faster combination of scaling
+          return new Matrix4( this.m00() * m.m00(), 0, 0, 0,
+                              0, this.m11() * m.m11(), 0, 0,
+                              0, 0, this.m22() * m.m22(), 0,
+                              0, 0, 0, 1, Types.SCALING );
+        }
       }
-      if ( this.type === Types.IDENTITY ) {
-        newType = m.type;
+      
+      if ( this.type !== Types.OTHER && m.type !== Types.OTHER ) {
+        // currently two matrices that are anything but "other" are technically affine, and the result will be affine
+        
+        // affine case
+        return new Matrix4( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
+                            this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
+                            this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
+                            this.m00() * m.m03() + this.m01() * m.m13() + this.m02() * m.m23() + this.m03(),
+                            this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
+                            this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
+                            this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
+                            this.m10() * m.m03() + this.m11() * m.m13() + this.m12() * m.m23() + this.m13(),
+                            this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
+                            this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
+                            this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22(),
+                            this.m20() * m.m03() + this.m21() * m.m13() + this.m22() * m.m23() + this.m23(),
+                            0, 0, 0, 1, Types.AFFINE );
       }
-      if ( m.type === Types.IDENTITY ) {
-        newType = this.type;
-      }
+      
+      // general case
       return new Matrix4( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20() + this.m03() * m.m30(),
                 this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21() + this.m03() * m.m31(),
                 this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22() + this.m03() * m.m32(),
@@ -5181,8 +5422,7 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
                 this.m30() * m.m00() + this.m31() * m.m10() + this.m32() * m.m20() + this.m33() * m.m30(),
                 this.m30() * m.m01() + this.m31() * m.m11() + this.m32() * m.m21() + this.m33() * m.m31(),
                 this.m30() * m.m02() + this.m31() * m.m12() + this.m32() * m.m22() + this.m33() * m.m32(),
-                this.m30() * m.m03() + this.m31() * m.m13() + this.m32() * m.m23() + this.m33() * m.m33(),
-                newType );
+                this.m30() * m.m03() + this.m31() * m.m13() + this.m32() * m.m23() + this.m33() * m.m33() );
     },
 
     timesVector4: function( v ) {
@@ -5216,7 +5456,7 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
       return new dot.Vector3( x, y, z );
     },
 
-    determinant: function() {
+    getDeterminant: function() {
       return this.m03() * this.m12() * this.m21() * this.m30() -
           this.m02() * this.m13() * this.m21() * this.m30() -
           this.m03() * this.m11() * this.m22() * this.m30() +
@@ -5242,6 +5482,7 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
           this.m01() * this.m10() * this.m22() * this.m33() +
           this.m00() * this.m11() * this.m22() * this.m33();
     },
+    get determinant() { return this.getDeterminant(); },
 
     toString: function() {
       return this.m00() + " " + this.m01() + " " + this.m02() + " " + this.m03() + "\n" +
@@ -5249,9 +5490,6 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
            this.m20() + " " + this.m21() + " " + this.m22() + " " + this.m23() + "\n" +
            this.m30() + " " + this.m31() + " " + this.m32() + " " + this.m33();
     },
-
-    translation: function() { return new dot.Vector3( this.m03(), this.m13(), this.m23() ); },
-    scaling: function() { return new dot.Vector3( this.m00(), this.m11(), this.m22() );},
 
     makeImmutable: function() {
       this.rowMajor = function() {
@@ -5519,6 +5757,7 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
     },
     get determinant() { return this.getDeterminant(); },
     
+    // the 2D translation, assuming multiplication with a homogeneous vector
     getTranslation: function() {
       return new dot.Vector2( this.m02(), this.m12() );
     },
@@ -6821,53 +7060,6 @@ define( 'main',[
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * A method of calling an overridden super-type method.
- *
- * @author Chris Malley (PixelZoom, Inc.)
- */
-define( 'PHET_CORE/callSuper',['require'],function( require ) {
-  
-
-  /**
-   * A somewhat ugly method of calling an overridden super-type method.
-   * <p>
-   * Example:
-   * <code>
-   * function SuperType() {
-   * }
-   *
-   * SuperType.prototype.reset = function() {...}
-   *
-   * function SubType() {
-   *    SuperType.call( this ); // constructor stealing
-   * }
-   *
-   * SubType.prototype = new SuperType(); // prototype chaining
-   *
-   * SubType.prototype.reset = function() {
-   *     callSuper( SuperType, "reset", this ); // call overridden super method
-   *     // do subtype-specific stuff
-   * }
-   * </code>
-   *
-   * @param supertype
-   * @param {String} name
-   * @param context typically this
-   * @return {Function}
-   */
-  function callSuper( supertype, name, context ) {
-    (function () {
-      var fn = supertype.prototype[name];
-      Function.call.apply( fn, arguments );
-    })( context );
-  }
-
-  return callSuper;
-} );
-
-// Copyright 2002-2013, University of Colorado Boulder
-
-/**
  * Creates an array of results from an iterator that takes a callback.
  *
  * For instance, if calling a function f( g ) will call g( 1 ), g( 2 ), and g( 3 ),
@@ -7014,11 +7206,10 @@ define( 'PHET_CORE/loadScript',['require'],function( require ) {
 
 // Copyright 2002-2013, University of Colorado Boulder
 
-define( 'PHET_CORE/main',['require','PHET_CORE/callSuper','PHET_CORE/collect','PHET_CORE/escapeHTML','PHET_CORE/inherit','PHET_CORE/inheritPrototype','PHET_CORE/isArray','PHET_CORE/extend','PHET_CORE/loadScript','PHET_CORE/phetAllocation','PHET_CORE/Poolable'],function( require ) {
+define( 'PHET_CORE/main',['require','PHET_CORE/collect','PHET_CORE/escapeHTML','PHET_CORE/inherit','PHET_CORE/inheritPrototype','PHET_CORE/isArray','PHET_CORE/extend','PHET_CORE/loadScript','PHET_CORE/phetAllocation','PHET_CORE/Poolable'],function( require ) {
   
   
   return {
-    callSuper: require( 'PHET_CORE/callSuper' ),
     collect: require( 'PHET_CORE/collect' ),
     escapeHTML: require( 'PHET_CORE/escapeHTML' ),
     inherit: require( 'PHET_CORE/inherit' ),
