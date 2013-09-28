@@ -127,7 +127,11 @@ define( function( require ) {
     plus: function( v ) {
       return new Vector2( this.x + v.x, this.y + v.y );
     },
-    
+
+    plusXY: function( x, y ) {
+      return new Vector2( this.x + x, this.y + y );
+    },
+
     plusScalar: function( scalar ) {
       return new Vector2( this.x + scalar, this.y + scalar );
     },
