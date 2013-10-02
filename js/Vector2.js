@@ -196,6 +196,13 @@ define( function( require ) {
       return this;
     },
     
+    
+    setVector2: function( v ) {
+      this.x = v.x;
+      this.y = v.y;
+      return this;
+    },
+    
     setX: function( x ) {
       this.x = x;
       return this;
