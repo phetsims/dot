@@ -8,8 +8,6 @@
 define( function ( require ) {
   'use strict';
 
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-
   var dot = require( 'DOT/dot' );
 
   dot.Range = function Range( min, max, defaultValue ) {

@@ -11,8 +11,6 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   require( 'DOT/Util' );

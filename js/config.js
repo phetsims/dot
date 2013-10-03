@@ -2,11 +2,9 @@
 // Copyright 2002-2013, University of Colorado Boulder
 
 if ( window.has ) {
-  window.has.add( 'assert.dot', function( global, document, anElement ) {
-    'use strict';
-    
-    return true;
-  } );
+  // default config only enables basic assertions
+  window.has.add( 'assert.basic', function( global, document, anElement ) { 'use strict'; return true; } );
+  // window.has.add( 'assert.slow', function( global, document, anElement ) { 'use strict'; return true; } );
 }
 
 window.loadedDotConfig = true;

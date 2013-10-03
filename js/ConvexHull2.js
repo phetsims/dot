@@ -9,8 +9,6 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   // counter-clockwise turn if > 0, clockwise turn if < 0, collinear if === 0.

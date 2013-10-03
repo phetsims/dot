@@ -4,7 +4,8 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
+  window.assert = window.assert || require( 'ASSERT/assert' )( 'basic' );
+  window.assertSlow = window.assertSlow || require( 'ASSERT/assert' )( 'slow', true );
   
   // object allocation tracking
   window.phetAllocation = require( 'PHET_CORE/phetAllocation' );
@@ -24,8 +25,6 @@ define( function( require ) {
   
   // TODO: performance: check browser speed to compare how fast this is. We may need to add a 32 option for GL ES.
   dot.FastArray = window.Float64Array ? window.Float64Array : window.Array;
-  
-  dot.assert = assert;
   
   // will be filled in by other modules
   return dot;
