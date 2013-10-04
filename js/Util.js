@@ -93,6 +93,68 @@ define( function( require ) {
       );
     },
     
+    // assumes a sphere with the specified radius, centered at the origin
+    sphereRayIntersection: function( radius, ray, epsilon ) {
+      epsilon = epsilon === undefined ? 1e-5 : epsilon;
+
+      // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
+      var center = new dot.Vector3();
+
+      var rayDir = ray.dir;
+      var pos = ray.pos;
+      var centerToRay = pos.minus( center );
+
+      // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
+      var tmp = rayDir.dot( centerToRay );
+      var centerToRayDistSq = centerToRay.magnitudeSquared();
+      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
+      if ( det < epsilon ) {
+        // ray misses sphere entirely
+        return null;
+      }
+
+      var base = rayDir.dot( center ) - rayDir.dot( pos );
+      var sqt = Math.sqrt( det ) / 2;
+
+      // the "first" entry point distance into the sphere. if we are inside the sphere, it is behind us
+      var ta = base - sqt;
+
+      // the "second" entry point distance
+      var tb = base + sqt;
+
+      if ( tb < epsilon ) {
+        // sphere is behind ray, so don't return an intersection
+        return null;
+      }
+
+      var hitPositionB = ray.pointAtDistance( tb );
+      var normalB = hitPositionB.minus( center ).normalized();
+
+      if ( ta < epsilon ) {
+        // we are inside the sphere
+        // in => out
+        return {
+          distance: tb,
+          hitPoint: hitPositionB,
+          normal: normalB.negated(),
+          fromOutside: false
+        };
+      }
+      else {
+        // two possible hits
+        var hitPositionA = ray.pointAtDistance( ta );
+        var normalA = hitPositionA.minus( center ).normalized();
+
+        // close hit, we have out => in
+        return {
+          distance: ta,
+          hitPoint: hitPositionA,
+          normal: normalA,
+          fromOutside: true
+        };
+      }
+    },
+    
     // return an array of real roots of ax^2 + bx + c = 0
     solveQuadraticRootsReal: function( a, b, c ) {
       var epsilon = 1E7;
@@ -232,6 +294,7 @@ define( function( require ) {
   dot.toRadians = Util.toRadians;
   dot.toDegrees = Util.toDegrees;
   dot.lineLineIntersection = Util.lineLineIntersection;
+  dot.sphereRayIntersection = Util.sphereRayIntersection;
   dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
   dot.solveCubicRootsReal = Util.solveCubicRootsReal;
   dot.cubeRoot = Util.cubeRoot;
