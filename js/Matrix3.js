@@ -229,6 +229,10 @@ define( function( require ) {
     m21: function() { return this.entries[5]; },
     m22: function() { return this.entries[8]; },
     
+    isIdentity: function() {
+      return this.type === Types.IDENTITY || this.equals( Matrix3.IDENTITY );
+    },
+    
     isAffine: function() {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
     },
