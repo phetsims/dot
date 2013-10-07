@@ -549,6 +549,19 @@ define( function( require ) {
     * Mutable operations (changes this matrix)
     *----------------------------------------------------------------------------*/
     
+    set: function( matrix ) {
+      this.entries[0] = matrix.entries[0];
+      this.entries[1] = matrix.entries[1];
+      this.entries[2] = matrix.entries[2];
+      this.entries[3] = matrix.entries[3];
+      this.entries[4] = matrix.entries[4];
+      this.entries[5] = matrix.entries[5];
+      this.entries[6] = matrix.entries[6];
+      this.entries[7] = matrix.entries[7];
+      this.entries[8] = matrix.entries[8];
+      this.type = matrix.type;
+    },
+    
     makeImmutable: function() {
       this.rowMajor = function() {
         throw new Error( 'Cannot modify immutable matrix' );
