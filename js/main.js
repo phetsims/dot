@@ -4,6 +4,7 @@
 define( [
   'DOT/dot',
   'DOT/Bounds2',
+  'DOT/Bounds3',
   'DOT/Complex',
   'DOT/ConvexHull2',
   'DOT/Dimension2',
