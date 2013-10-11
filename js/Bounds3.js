@@ -245,10 +245,32 @@ define( function( require ) {
       return new Bounds3( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
     },
     
-    // returns copy contracted on all sides by length d
-    eroded: function( d ) {
-      return this.dilated( -d );
+    // dilates only in the x direction
+    dilatedX: function( x ) {
+      return new Bounds3( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
+    
+    // dilates only in the y direction
+    dilatedY: function( y ) {
+      return new Bounds3( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
+    },
+    
+    // dilates only in the z direction
+    dilatedZ: function( z ) {
+      return new Bounds3( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
+    },
+    
+    // dilate with different amounts in the x, y and z directions
+    dilatedXYZ: function( x, y, z ) {
+      return new Bounds3( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
+    },
+    
+    // returns copy contracted on all sides by length d, or x/y/z separately
+    eroded: function( d ) { return this.dilated( -d ); },
+    erodedX: function( x ) { return this.dilatedX( -x ); },
+    erodedY: function( y ) { return this.dilatedY( -y ); },
+    erodedZ: function( z ) { return this.dilatedZ( -z ); },
+    erodedXYZ: function( x, y, z ) { return this.dilatedXYZ( -x, -y, -z ); },
     
     shiftedX: function( x ) {
       return new Bounds3( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
@@ -383,10 +405,32 @@ define( function( require ) {
       return this.set( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
     },
     
-    // contracts on all sides by length d
-    erode: function( d ) {
-      return this.dilate( -d );
+    // dilates only in the x direction
+    dilateX: function( x ) {
+      return this.set( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
+    
+    // dilates only in the y direction
+    dilateY: function( y ) {
+      return this.set( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
+    },
+    
+    // dilates only in the z direction
+    dilateZ: function( z ) {
+      return this.set( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
+    },
+    
+    // dilate with different amounts in the x, y and z directions
+    dilateXYZ: function( x, y, z ) {
+      return this.set( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
+    },
+    
+    // contracts on all sides by length d, or x/y/z independently
+    erode: function( d ) { return this.dilate( -d ); },
+    erodeX: function( x ) { return this.dilateX( -x ); },
+    erodeY: function( y ) { return this.dilateY( -y ); },
+    erodeZ: function( z ) { return this.dilateZ( -z ); },
+    erodeXYZ: function( x, y, z ) { return this.dilateXYZ( -x, -y, -z ); },
     
     shiftX: function( x ) {
       return this.setMinX( this.minX + x ).setMaxX( this.maxX + x );

@@ -232,10 +232,26 @@ define( function( require ) {
       return new Bounds2( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
     },
     
-    // returns copy contracted on all sides by length d
-    eroded: function( d ) {
-      return this.dilated( -d );
+    // dilates only in the x direction
+    dilatedX: function( x ) {
+      return new Bounds2( this.minX - x, this.minY, this.maxX + x, this.maxY );
     },
+    
+    // dilates only in the y direction
+    dilatedY: function( y ) {
+      return new Bounds2( this.minX, this.minY - y, this.maxX, this.maxY + y );
+    },
+    
+    // dilate with different amounts in the x and y directions
+    dilatedXY: function( x, y ) {
+      return new Bounds2( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
+    },
+    
+    // returns copy contracted on all sides by length d, or for x/y independently
+    eroded: function( d ) { return this.dilated( -d ); },
+    erodedX: function( x ) { return this.dilatedX( -x ); },
+    erodedY: function( y ) { return this.dilatedY( -y ); },
+    erodedXY: function( x, y ) { return this.dilatedXY( -x, -y ); },
     
     shiftedX: function( x ) {
       return new Bounds2( this.minX + x, this.minY, this.maxX + x, this.maxY );
@@ -346,10 +362,26 @@ define( function( require ) {
       return this.set( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
     },
     
-    // contracts on all sides by length d
-    erode: function( d ) {
-      return this.dilate( -d );
+    // dilates only in the x direction
+    dilateX: function( x ) {
+      return this.set( this.minX - x, this.minY, this.maxX + x, this.maxY );
     },
+    
+    // dilates only in the y direction
+    dilateY: function( y ) {
+      return this.set( this.minX, this.minY - y, this.maxX, this.maxY + y );
+    },
+    
+    // dilate with different amounts in the x and y directions
+    dilateXY: function( x, y ) {
+      return this.set( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
+    },
+    
+    // contracts on all sides by length d, or for x/y independently
+    erode: function( d ) { return this.dilate( -d ); },
+    erodeX: function( x ) { return this.dilateX( -x ); },
+    erodeY: function( y ) { return this.dilateY( -y ); },
+    erodeXY: function( x, y ) { return this.dilateXY( -x, -y ); },
     
     shiftX: function( x ) {
       return this.setMinX( this.minX + x ).setMaxX( this.maxX + x );
