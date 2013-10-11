@@ -453,6 +453,11 @@ define( function( require ) {
     return new Bounds3( x, y, z, x + width, y + height, z + depth );
   };
   
+  // a volume-less point bounds, which can be dilated to form a centered bounds
+  Bounds3.point = function( x, y, z ) {
+    return new Bounds3( x, y, z, x, y, z );
+  };
+  
   // specific bounds useful for operations
   Bounds3.EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
   Bounds3.NOTHING = new Bounds3( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );

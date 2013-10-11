@@ -420,6 +420,11 @@ define( function( require ) {
   Bounds2.rect = function( x, y, width, height ) {
     return new Bounds2( x, y, x + width, y + height );
   };
+  
+  // a volume-less point bounds, which can be dilated to form a centered bounds
+  Bounds2.point = function( x, y ) {
+    return new Bounds2( x, y, x, y );
+  };
 
   // specific bounds useful for operations
   Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
