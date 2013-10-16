@@ -205,6 +205,18 @@ define( function( require ) {
       this.z = -this.z;
     },
     
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        this.x /= mag;
+        this.y /= mag;
+        this.z /= mag;
+      }
+      return this;
+    },
+    
     equals: function( other ) {
       return this.x === other.x && this.y === other.y && this.z === other.z;
     },

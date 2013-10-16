@@ -260,6 +260,7 @@ define( function( require ) {
         this.x /= mag;
         this.y /= mag;
       }
+      return this;
     }
     
   };
