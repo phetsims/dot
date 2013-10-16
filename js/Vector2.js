@@ -102,8 +102,7 @@ define( function( require ) {
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
-      }
-      else {
+      } else {
         return new Vector2( this.x / mag, this.y / mag );
       }
     },
@@ -251,6 +250,16 @@ define( function( require ) {
       this.x = -this.x;
       this.y = -this.y;
       return this;
+    },
+    
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        this.x /= mag;
+        this.y /= mag;
+      }
     }
     
   };
