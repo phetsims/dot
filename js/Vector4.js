@@ -185,6 +185,20 @@ define( function( require ) {
       this.z -= scalar;
       this.w -= scalar;
     },
+    
+    multiplyScalar: function( scalar ) {
+      this.x *= scalar;
+      this.y *= scalar;
+      this.z *= scalar;
+      this.w *= scalar;
+      return this;
+    },
+    
+    multiply: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.multiplyScalar( scalar );
+    },
 
     componentMultiply: function( v ) {
       this.x *= v.x;
