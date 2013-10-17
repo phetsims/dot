@@ -280,7 +280,34 @@ define( function( require ) {
           return new dot.Vector2( x, y );
         }
       }
-    }
+    },
+
+    /**
+     * Squared distance from a point to a line segment squared.
+     * See http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+     *
+     * @param point the point
+     * @param a start point of a line segment
+     * @param b end point of a line segment
+     * @returns {Number}
+     */
+    distToSegmentSquared: function( point, a, b ) {
+      var segmentLength = a.distanceSquared( b );
+      if ( segmentLength === 0 ) { return point.distanceSquared( a ); }
+      var t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / segmentLength;
+      return t < 0 ? point.distanceSquared( a ) :
+             t > 1 ? point.distanceSquared( b ) :
+             point.distanceSquared( new dot.Vector2( a.x + t * (b.x - a.x), a.y + t * (b.y - a.y) ) );
+    },
+
+    /**
+     * Squared distance from a point to a line segment squared.
+     * @param point the point
+     * @param a start point of a line segment
+     * @param b end point of a line segment
+     * @returns {Number}
+     */
+    distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); }
   };
   var Util = dot.Util;
   
