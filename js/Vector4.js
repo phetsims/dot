@@ -115,6 +115,11 @@ define( function( require ) {
     blend: function( vector, ratio ) {
       return this.plus( vector.minus( this ).times( ratio ) );
     },
+    
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
 
     toString: function() {
       return "Vector4(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";

@@ -175,6 +175,11 @@ define( function( require ) {
       return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
     },
     
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
+    
     toString: function() {
       return "Vector2(" + this.x + ", " + this.y + ")";
     },

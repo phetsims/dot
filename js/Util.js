@@ -307,7 +307,23 @@ define( function( require ) {
      * @param b end point of a line segment
      * @returns {Number}
      */
-    distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); }
+    distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); },
+    
+    arePointsCollinear: function( a, b, c, epsilon ) {
+      if ( epsilon === undefined ) {
+        epsilon = 0;
+      }
+      return Util.triangleArea( a, b, c ) <= epsilon;
+    },
+    
+    triangleArea: function( a, b, c ) {
+      return Math.abs( Util.triangleAreaSigned( a, b, c ) );
+    },
+    
+    // TODO: investigate which way we want the sign (Canvas or WebGL style)
+    triangleAreaSigned: function( a, b, c ) {
+      return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
+    },
   };
   var Util = dot.Util;
   
