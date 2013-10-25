@@ -124,6 +124,39 @@ define( function( require ) {
       return !this.intersection( bounds ).isEmpty();
     },
     
+    // distance to the closest point inside the Bounds2
+    minimumDistanceToPointSquared: function( point ) {
+      var closeX = point.x < this.minX ? this.minX : ( point.x > this.maxX ? this.maxX : null );
+      var closeY = point.y < this.minY ? this.minY : ( point.y > this.maxY ? this.maxY : null );
+      var d;
+      if ( closeX === null && closeY === null ) {
+        // inside, or on the boundary
+        return 0;
+      } else if ( closeX === null ) {
+        // vertically directly above/below
+        d = closeY - point.y;
+        return d * d;
+      } else if ( closeY === null ) {
+        // horizontally directly to the left/right
+        d = closeX - point.x;
+        return d * d;
+      } else {
+        // corner case
+        var dx = closeX - point.x;
+        var dy = closeY - point.y;
+        return dx * dx + dy * dy;
+      }
+    },
+    
+    // distance to the farthest point inside the Bounds2
+    maximumDistanceToPointSquared: function( point ) {
+      var x = point.x > this.getCenterX() ? this.minX : this.maxX;
+      var y = point.y > this.getCenterY() ? this.minY : this.maxY;
+      x -= point.x;
+      y -= point.y;
+      return x * x + y * y;
+    },
+    
     toString: function() {
       return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
     },
