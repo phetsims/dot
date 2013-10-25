@@ -456,7 +456,12 @@ define( function( require ) {
   
   // a volume-less point bounds, which can be dilated to form a centered bounds
   Bounds2.point = function( x, y ) {
-    return new Bounds2( x, y, x, y );
+    if ( x instanceof dot.Vector2 ) {
+      var p = x;
+      return new Bounds2( p.x, p.y, p.x, p.y );
+    } else {
+      return new Bounds2( x, y, x, y );
+    }
   };
 
   // specific bounds useful for operations
