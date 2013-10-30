@@ -124,6 +124,14 @@ define( function( require ) {
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
   
+  Matrix3.rotationAround = function( angle, x, y ) {
+    return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
+  };
+  
+  Matrix3.rotationAroundPoint = function( angle, point ) {
+    return Matrix3.rotationAround( angle, point.x, point.y );
+  };
+  
   Matrix3.fromSVGMatrix = function( svgMatrix ) {
     return new Matrix3( svgMatrix.a, svgMatrix.c, svgMatrix.e,
                         svgMatrix.b, svgMatrix.d, svgMatrix.f,
