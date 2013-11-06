@@ -195,7 +195,7 @@ define( function( require ) {
     // create a copy, or if bounds is passed in, set that bounds to our value
     copy: function( bounds ) {
       if ( bounds ) {
-        return bounds.setBounds( this );
+        return bounds.set( this );
       } else {
         return new Bounds2( this.minX, this.minY, this.maxX, this.maxY );
       }
@@ -315,7 +315,7 @@ define( function( require ) {
       return this;
     },
     
-    setBounds: function( bounds ) {
+    set: function( bounds ) {
       return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
     },
     
@@ -387,7 +387,7 @@ define( function( require ) {
       // using mutable vector so we don't create excessive instances of Vector2 during this
       // make sure all 4 corners are inside this transformed bounding box
       var vector = new dot.Vector2();
-      this.setBounds( Bounds2.NOTHING );
+      this.set( Bounds2.NOTHING );
       this.addPoint( matrix.multiplyVector2( vector.setXY( minX, minY ) ) );
       this.addPoint( matrix.multiplyVector2( vector.setXY( minX, maxY ) ) );
       this.addPoint( matrix.multiplyVector2( vector.setXY( maxX, minY ) ) );
