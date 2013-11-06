@@ -388,7 +388,7 @@ define( function( require ) {
       
       // optimization to bail for identity matrices
       if ( matrix.isIdentity() ) {
-        return;
+        return this;
       }
       
       var minX = Number.POSITIVE_INFINITY;
