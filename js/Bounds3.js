@@ -163,7 +163,7 @@ define( function( require ) {
     // create a copy, or if bounds is passed in, set that bounds to our value
     copy: function( bounds ) {
       if ( bounds ) {
-        return bounds.setBounds( this );
+        return bounds.set( this );
       } else {
         return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
       }
@@ -296,7 +296,8 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
     * Mutable operations
     *----------------------------------------------------------------------------*/
-
+    
+    // core mutations (every other mutator should call one of these once)
     setMinMax: function( minX, minY, minZ, maxX, maxY, maxZ ) {
       this.minX = minX;
       this.minY = minY;
@@ -306,47 +307,6 @@ define( function( require ) {
       this.maxZ = maxZ;
       return this;
     },
-    
-    setBounds: function( bounds ) {
-      return this.setMinMax( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );
-    },
-    
-    // mutable union
-    includeBounds: function( bounds ) {
-      this.minX = Math.min( this.minX, bounds.minX );
-      this.minY = Math.min( this.minY, bounds.minY );
-      this.minZ = Math.min( this.minZ, bounds.minZ );
-      this.maxX = Math.max( this.maxX, bounds.maxX );
-      this.maxY = Math.max( this.maxY, bounds.maxY );
-      this.maxZ = Math.max( this.maxZ, bounds.maxZ );
-      return this;
-    },
-    
-    // mutable intersection
-    constrainBounds: function( bounds ) {
-      this.minX = Math.max( this.minX, bounds.minX );
-      this.minY = Math.max( this.minY, bounds.minY );
-      this.minZ = Math.max( this.minZ, bounds.minZ );
-      this.maxX = Math.min( this.maxX, bounds.maxX );
-      this.maxY = Math.min( this.maxY, bounds.maxY );
-      this.maxZ = Math.min( this.maxZ, bounds.maxZ );
-      return this;
-    },
-    
-    addCoordinates: function( x, y, z ) {
-      this.minX = Math.min( this.minX, x );
-      this.minY = Math.min( this.minY, y );
-      this.minZ = Math.min( this.minZ, z );
-      this.maxX = Math.max( this.maxX, x );
-      this.maxY = Math.max( this.maxY, y );
-      this.maxZ = Math.max( this.maxZ, z );
-      return this;
-    },
-    
-    addPoint: function( point ) {
-      return this.addCoordinates( point.x, point.y, point.z );
-    },
-    
     setMinX: function( minX ) { this.minX = minX; return this; },
     setMinY: function( minY ) { this.minY = minY; return this; },
     setMinZ: function( minZ ) { this.minZ = minZ; return this; },
@@ -354,26 +314,71 @@ define( function( require ) {
     setMaxY: function( maxY ) { this.maxY = maxY; return this; },
     setMaxZ: function( maxZ ) { this.maxZ = maxZ; return this; },
     
+    set: function( bounds ) {
+      return this.setMinMax( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );
+    },
+    
+    // mutable union
+    includeBounds: function( bounds ) {
+      return this.setMinMax(
+        Math.min( this.minX, bounds.minX ),
+        Math.min( this.minY, bounds.minY ),
+        Math.min( this.minZ, bounds.minZ ),
+        Math.max( this.maxX, bounds.maxX ),
+        Math.max( this.maxY, bounds.maxY ),
+        Math.max( this.maxZ, bounds.maxZ )
+      );
+    },
+    
+    // mutable intersection
+    constrainBounds: function( bounds ) {
+      return this.setMinMax(
+        Math.max( this.minX, bounds.minX ),
+        Math.max( this.minY, bounds.minY ),
+        Math.max( this.minZ, bounds.minZ ),
+        Math.min( this.maxX, bounds.maxX ),
+        Math.min( this.maxY, bounds.maxY ),
+        Math.min( this.maxZ, bounds.maxZ )
+      );
+    },
+    
+    addCoordinates: function( x, y, z ) {
+      return this.setMinMax(
+        Math.min( this.minX, x ),
+        Math.min( this.minY, y ),
+        Math.min( this.minZ, z ),
+        Math.max( this.maxX, x ),
+        Math.max( this.maxY, y ),
+        Math.max( this.maxZ, z )
+      );
+    },
+    
+    addPoint: function( point ) {
+      return this.addCoordinates( point.x, point.y, point.z );
+    },
+    
     // round to integral values, expanding where necessary
     roundOut: function() {
-      this.minX = Math.floor( this.minX );
-      this.minY = Math.floor( this.minY );
-      this.minZ = Math.floor( this.minZ );
-      this.maxX = Math.ceil( this.maxX );
-      this.maxY = Math.ceil( this.maxY );
-      this.maxZ = Math.ceil( this.maxZ );
-      return this;
+      return this.setMinMax(
+        Math.floor( this.minX ),
+        Math.floor( this.minY ),
+        Math.floor( this.minZ ),
+        Math.ceil( this.maxX ),
+        Math.ceil( this.maxY ),
+        Math.ceil( this.maxZ )
+      );
     },
     
     // round to integral values, contracting where necessary
     roundIn: function() {
-      this.minX = Math.ceil( this.minX );
-      this.minY = Math.ceil( this.minY );
-      this.minZ = Math.ceil( this.minZ );
-      this.maxX = Math.floor( this.maxX );
-      this.maxY = Math.floor( this.maxY );
-      this.maxZ = Math.floor( this.maxZ );
-      return this;
+      return this.setMinMax(
+        Math.ceil( this.minX ),
+        Math.ceil( this.minY ),
+        Math.ceil( this.minZ ),
+        Math.floor( this.maxX ),
+        Math.floor( this.maxY ),
+        Math.floor( this.maxZ )
+      );
     },
     
     // transform a bounding box.
@@ -383,51 +388,66 @@ define( function( require ) {
       if ( this.isEmpty() ) {
         return this;
       }
-      var minX = this.minX;
-      var minY = this.minY;
-      var minZ = this.minZ;
-      var maxX = this.maxX;
-      var maxY = this.maxY;
-      var maxZ = this.maxZ;
+      
+      // optimization to bail for identity matrices
+      if ( matrix.isIdentity() ) {
+        return;
+      }
+      
+      var minX = Number.POSITIVE_INFINITY;
+      var minY = Number.POSITIVE_INFINITY;
+      var minZ = Number.POSITIVE_INFINITY;
+      var maxX = Number.NEGATIVE_INFINITY;
+      var maxY = Number.NEGATIVE_INFINITY;
+      var maxZ = Number.NEGATIVE_INFINITY;
       
       // using mutable vector so we don't create excessive instances of Vector2 during this
       // make sure all 4 corners are inside this transformed bounding box
       var vector = new dot.Vector3();
-      this.setBounds( Bounds3.NOTHING );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, minY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, maxY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, minY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, maxY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, minY, maxZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, maxY, maxZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, minY, maxZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, maxY, maxZ ) ) );
-      return this;
+      
+      function withIt( vector ) {
+        minX = Math.min( minX, vector.x );
+        minY = Math.min( minY, vector.y );
+        minZ = Math.min( minZ, vector.z );
+        maxX = Math.max( maxX, vector.x );
+        maxY = Math.max( maxY, vector.y );
+        maxZ = Math.max( maxZ, vector.z );
+      }
+      
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.minY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.maxY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.minY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.maxY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.minY, this.maxZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.maxY, this.maxZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.minY, this.maxZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.maxY, this.maxZ ) ) );
+      return this.setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
     },
     
     // expands on all sides by length d
     dilate: function( d ) {
-      return this.set( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
+      return this.setMinMax( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
     },
     
     // dilates only in the x direction
     dilateX: function( x ) {
-      return this.set( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
+      return this.setMinMax( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
     
     // dilates only in the y direction
     dilateY: function( y ) {
-      return this.set( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
+      return this.setMinMax( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
     },
     
     // dilates only in the z direction
     dilateZ: function( z ) {
-      return this.set( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
+      return this.setMinMax( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
     },
     
     // dilate with different amounts in the x, y and z directions
     dilateXYZ: function( x, y, z ) {
-      return this.set( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
+      return this.setMinMax( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
     },
     
     // contracts on all sides by length d, or x/y/z independently
@@ -438,19 +458,19 @@ define( function( require ) {
     erodeXYZ: function( x, y, z ) { return this.dilateXYZ( -x, -y, -z ); },
     
     shiftX: function( x ) {
-      return this.setMinX( this.minX + x ).setMaxX( this.maxX + x );
+      return this.setMinMax( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
     
     shiftY: function( y ) {
-      return this.setMinY( this.minY + y ).setMaxY( this.maxY + y );
+      return this.setMinMax( this.minX, this.minY + y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
     },
     
     shiftZ: function( z ) {
-      return this.setMinZ( this.minZ + z ).setMaxZ( this.maxZ + z );
+      return this.setMinMax( this.minX, this.minY, this.minZ + z, this.maxX, this.maxY, this.maxZ + z );
     },
     
     shift: function( x, y, z ) {
-      return this.shiftX( x ).shiftY( y ).shiftZ( z );
+      return this.setMinMax( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
     }
   };
   

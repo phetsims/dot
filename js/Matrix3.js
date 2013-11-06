@@ -735,37 +735,24 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     multiplyVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02();
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12();
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m01() * v.y + this.m02(),
+                      this.m10() * v.x + this.m11() * v.y + this.m12() );
     },
     
     multiplyVector3: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
-      var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
-      v.setX( x );
-      v.setY( y );
-      v.setZ( z );
-      return v;
+      return v.setXYZ( this.m00() * v.x + this.m01() * v.y + this.m02() * v.z,
+                       this.m10() * v.x + this.m11() * v.y + this.m12() * v.z,
+                       this.m20() * v.x + this.m21() * v.y + this.m22() * v.z );
     },
     
     multiplyTransposeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m10() * v.y;
-      var y = this.m01() * v.x + this.m11() * v.y;
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m10() * v.y,
+                      this.m01() * v.x + this.m11() * v.y );
     },
     
     multiplyRelativeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y;
-      var y = this.m10() * v.y + this.m11() * v.y;
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m01() * v.y,
+                      this.m10() * v.y + this.m11() * v.y );
     },
     
     // sets the transform of a Canvas 2D rendering context to the affine part of this matrix
