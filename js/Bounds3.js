@@ -160,8 +160,13 @@ define( function( require ) {
     * Immutable operations
     *----------------------------------------------------------------------------*/
     
-    copy: function() {
-      return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
+    // create a copy, or if bounds is passed in, set that bounds to our value
+    copy: function( bounds ) {
+      if ( bounds ) {
+        return bounds.setBounds( this );
+      } else {
+        return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
+      }
     },
     
     // immutable operations (bounding-box style handling, so that the relevant bounds contain everything)
