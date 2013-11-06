@@ -28,6 +28,8 @@ define( function( require ) {
   
   Vector4.prototype = {
     constructor: Vector4,
+    isVector4: true,
+    dimension: 4,
 
     magnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
@@ -53,6 +55,17 @@ define( function( require ) {
     
     isFinite: function() {
       return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z ) && isFinite( this.w );
+    },
+    
+    equals: function( other ) {
+      return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
+      if ( !epsilon ) {
+        epsilon = 0;
+      }
+      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) + Math.abs( this.w - other.w ) <= epsilon;
     },
 
     /*---------------------------------------------------------------------------*
@@ -141,7 +154,8 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Mutables
      *----------------------------------------------------------------------------*/
-
+    
+    // our core mutables (all mutation should go through these)
     setXYZW: function( x, y, z, w ) {
       this.x = x;
       this.y = y;
@@ -149,73 +163,45 @@ define( function( require ) {
       this.w = w;
       return this;
     },
-    
-    set: function( v ) {
-      this.x = v.x;
-      this.y = v.y;
-      this.z = v.z;
-      this.w = v.w;
-      return this;
-    },
-
     setX: function( x ) {
       this.x = x;
       return this;
     },
-
     setY: function( y ) {
       this.y = y;
       return this;
     },
-
     setZ: function( z ) {
       this.z = z;
       return this;
     },
-
     setW: function( w ) {
       this.w = w;
       return this;
     },
+    
+    set: function( v ) {
+      return this.setXYZW( v.x, v.y, v.z, v.w );
+    },
 
     add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      this.z += v.z;
-      this.w += v.w;
-      return this;
+      return this.setXYZW( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
     },
 
     addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      this.z += scalar;
-      this.w += scalar;
-      return this;
+      return this.setXYZW( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
     },
 
     subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      this.z -= v.z;
-      this.w -= v.w;
-      return this;
+      return this.setXYZW( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
     },
 
     subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      this.z -= scalar;
-      this.w -= scalar;
-      return this;
+      return this.setXYZW( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
     },
     
     multiplyScalar: function( scalar ) {
-      this.x *= scalar;
-      this.y *= scalar;
-      this.z *= scalar;
-      this.w *= scalar;
-      return this;
+      return this.setXYZW( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
     },
     
     multiply: function( scalar ) {
@@ -225,27 +211,15 @@ define( function( require ) {
     },
 
     componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      this.z *= v.z;
-      this.w *= v.w;
-      return this;
+      return this.setXYZW( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
     },
 
     divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      this.z /= scalar;
-      this.w /= scalar;
-      return this;
+      return this.setXYZW( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
     },
 
     negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      this.z = -this.z;
-      this.w = -this.w;
-      return this;
+      return this.setXYZW( -this.x, -this.y, -this.z, -this.w );
     },
     
     normalize: function() {
@@ -253,29 +227,10 @@ define( function( require ) {
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
       } else {
-        this.x /= mag;
-        this.y /= mag;
-        this.z /= mag;
-        this.w /= mag;
+        return this.divideScalar( mag );
       }
       return this;
-    },
-    
-    equals: function( other ) {
-      return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
-    },
-    
-    equalsEpsilon: function( other, epsilon ) {
-      if ( !epsilon ) {
-        epsilon = 0;
-      }
-      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) + Math.abs( this.w - other.w ) <= epsilon;
-    },
-
-    isVector4: true,
-
-    dimension: 4
-
+    }
   };
 
   /*---------------------------------------------------------------------------*
@@ -305,14 +260,6 @@ define( function( require ) {
   Immutable.mutableOverrideHelper( 'setY' );
   Immutable.mutableOverrideHelper( 'setZ' );
   Immutable.mutableOverrideHelper( 'setW' );
-  Immutable.mutableOverrideHelper( 'copy' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
 
   // helpful immutable constants
   Vector4.ZERO = new Immutable( 0, 0, 0, 0 );

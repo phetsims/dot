@@ -14,6 +14,7 @@ define( [
   'DOT/Matrix',
   'DOT/Matrix3',
   'DOT/Matrix4',
+  'DOT/ObservableVector2',
   'DOT/Permutation',
   'DOT/QRDecomposition',
   'DOT/Quaternion',

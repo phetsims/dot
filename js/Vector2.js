@@ -34,9 +34,7 @@ define( function( require ) {
   
   Vector2.prototype = {
     constructor: Vector2,
-    
     isVector2: true,
-    
     dimension: 2,
     
     magnitude: function() {
@@ -186,7 +184,7 @@ define( function( require ) {
     },
     
     toString: function() {
-      return "Vector2(" + this.x + ", " + this.y + ")";
+      return 'Vector2(' + this.x + ', ' + this.y + ')';
     },
     
     toVector3: function() {
@@ -197,56 +195,43 @@ define( function( require ) {
      * Mutables
      *----------------------------------------------------------------------------*/
     
+    // our core three functions which all mutation should go through
     setXY: function( x, y ) {
       this.x = x;
       this.y = y;
       return this;
     },
-    
-    set: function( v ) {
-      this.x = v.x;
-      this.y = v.y;
-      return this;
-    },
-    
     setX: function( x ) {
       this.x = x;
       return this;
     },
-    
     setY: function( y ) {
       this.y = y;
       return this;
     },
     
+    set: function( v ) {
+      return this.setXY( v.x, v.y );
+    },
+    
     add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      return this;
+      return this.setXY( this.x + v.x, this.y + v.y );
     },
     
     addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      return this;
+      return this.setXY( this.x + scalar, this.y + scalar );
     },
     
     subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      return this;
+      return this.setXY( this.x - v.x, this.y - v.y );
     },
     
     subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      return this;
+      return this.setXY( this.x - scalar, this.y - scalar );
     },
     
     multiplyScalar: function( scalar ) {
-      this.x *= scalar;
-      this.y *= scalar;
-      return this;
+      return this.setXY( this.x * scalar, this.y * scalar );
     },
     
     multiply: function( scalar ) {
@@ -256,21 +241,15 @@ define( function( require ) {
     },
     
     componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      return this;
+      return this.setXY( this.x * v.x, this.y * v.y );
     },
     
     divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      return this;
+      return this.setXY( this.x / scalar, this.y / scalar );
     },
     
     negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      return this;
+      return this.setXY( -this.x, -this.y );
     },
     
     normalize: function() {
@@ -278,10 +257,8 @@ define( function( require ) {
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
       } else {
-        this.x /= mag;
-        this.y /= mag;
+        return this.divideScalar( mag );
       }
-      return this;
     }
     
   };
@@ -322,13 +299,6 @@ define( function( require ) {
   Immutable.mutableOverrideHelper( 'setXY' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
   
   // helpful immutable constants
   Vector2.ZERO = new Immutable( 0, 0 );

@@ -16,7 +16,8 @@ require.config( {
     underscore: '../../sherpa/lodash-2.0.0',
     DOT: '.',
     PHET_CORE: '../../phet-core/js',
-    ASSERT: '../../assert/js'
+    ASSERT: '../../assert/js',
+    AXON: '../../axon/js'
   },
   
   shim: {
