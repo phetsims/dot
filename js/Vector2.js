@@ -192,7 +192,7 @@ define( function( require ) {
      * Mutables
      *----------------------------------------------------------------------------*/
     
-    set: function( x, y ) {
+    setXY: function( x, y ) {
       this.x = x;
       this.y = y;
       return this;
@@ -289,7 +289,7 @@ define( function( require ) {
     constructorDuplicateFactory: function( pool ) {
       return function( x, y ) {
         if ( pool.length ) {
-          return pool.pop().set( x, y );
+          return pool.pop().setXY( x, y );
         } else {
           return new Vector2( x, y );
         }
@@ -315,7 +315,7 @@ define( function( require ) {
   };
   
   // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
+  Immutable.mutableOverrideHelper( 'setXY' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
   Immutable.mutableOverrideHelper( 'add' );

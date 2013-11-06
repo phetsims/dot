@@ -291,8 +291,8 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
     * Mutable operations
     *----------------------------------------------------------------------------*/
-    
-    set: function( minX, minY, minZ, maxX, maxY, maxZ ) {
+
+    setMinMax: function( minX, minY, minZ, maxX, maxY, maxZ ) {
       this.minX = minX;
       this.minY = minY;
       this.minZ = minZ;
@@ -303,7 +303,7 @@ define( function( require ) {
     },
     
     setBounds: function( bounds ) {
-      return this.set( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );
+      return this.setMinMax( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );
     },
     
     // mutable union
@@ -389,14 +389,14 @@ define( function( require ) {
       // make sure all 4 corners are inside this transformed bounding box
       var vector = new dot.Vector3();
       this.setBounds( Bounds3.NOTHING );
-      this.addPoint( matrix.multiplyVector3( vector.set( minX, minY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.set( minX, maxY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.set( maxX, minY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.set( maxX, maxY, minZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.set( minX, minY, maxZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.set( minX, maxY, maxZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.set( maxX, minY, maxZ ) ) );
-      this.addPoint( matrix.multiplyVector3( vector.set( maxX, maxY, maxZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, minY, minZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, maxY, minZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, minY, minZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, maxY, minZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, minY, maxZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( minX, maxY, maxZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, minY, maxZ ) ) );
+      this.addPoint( matrix.multiplyVector3( vector.setXYZ( maxX, maxY, maxZ ) ) );
       return this;
     },
     

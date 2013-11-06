@@ -557,7 +557,7 @@ define( function( require ) {
     * Mutable operations (changes this matrix)
     *----------------------------------------------------------------------------*/
     
-    set: function( matrix ) {
+    setMatrix: function( matrix ) {
       this.entries[0] = matrix.entries[0];
       this.entries[1] = matrix.entries[1];
       this.entries[2] = matrix.entries[2];

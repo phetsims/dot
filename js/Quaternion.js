@@ -19,7 +19,7 @@ define( function( require ) {
   require( 'DOT/Util' );
   
   dot.Quaternion = function Quaternion( x, y, z, w ) {
-    this.set( x, y, z, w );
+    this.setXYZW( x, y, z, w );
     
     phetAllocation && phetAllocation( 'Quaternion' );
   };
@@ -29,8 +29,8 @@ define( function( require ) {
     constructor: Quaternion,
     
     isQuaternion: true,
-    
-    set: function( x, y, z, w ) {
+
+    setXYZW: function( x, y, z, w ) {
       this.x = x || 0;
       this.y = y || 0;
       this.z = z || 0;

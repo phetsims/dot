@@ -144,7 +144,7 @@ define( function( require ) {
      * Mutables
      *----------------------------------------------------------------------------*/
 
-    set: function( x, y, z ) {
+    setXYZ: function( x, y, z ) {
       this.x = x;
       this.y = y;
       this.z = z;
@@ -273,7 +273,7 @@ define( function( require ) {
   };
 
   // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
+  Immutable.mutableOverrideHelper( 'setXYZ' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
   Immutable.mutableOverrideHelper( 'setZ' );

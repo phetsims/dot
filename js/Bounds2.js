@@ -301,8 +301,8 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
     * Mutable operations
     *----------------------------------------------------------------------------*/
-    
-    set: function( minX, minY, maxX, maxY ) {
+
+    setMinMax: function( minX, minY, maxX, maxY ) {
       this.minX = minX;
       this.minY = minY;
       this.maxX = maxX;
@@ -311,7 +311,7 @@ define( function( require ) {
     },
     
     setBounds: function( bounds ) {
-      return this.set( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
+      return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
     },
     
     // mutable union
@@ -383,31 +383,31 @@ define( function( require ) {
       // make sure all 4 corners are inside this transformed bounding box
       var vector = new dot.Vector2();
       this.setBounds( Bounds2.NOTHING );
-      this.addPoint( matrix.multiplyVector2( vector.set( minX, minY ) ) );
-      this.addPoint( matrix.multiplyVector2( vector.set( minX, maxY ) ) );
-      this.addPoint( matrix.multiplyVector2( vector.set( maxX, minY ) ) );
-      this.addPoint( matrix.multiplyVector2( vector.set( maxX, maxY ) ) );
+      this.addPoint( matrix.multiplyVector2( vector.setXY( minX, minY ) ) );
+      this.addPoint( matrix.multiplyVector2( vector.setXY( minX, maxY ) ) );
+      this.addPoint( matrix.multiplyVector2( vector.setXY( maxX, minY ) ) );
+      this.addPoint( matrix.multiplyVector2( vector.setXY( maxX, maxY ) ) );
       return this;
     },
     
     // expands on all sides by length d
     dilate: function( d ) {
-      return this.set( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
+      return this.setMinMax( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
     },
     
     // dilates only in the x direction
     dilateX: function( x ) {
-      return this.set( this.minX - x, this.minY, this.maxX + x, this.maxY );
+      return this.setMinMax( this.minX - x, this.minY, this.maxX + x, this.maxY );
     },
     
     // dilates only in the y direction
     dilateY: function( y ) {
-      return this.set( this.minX, this.minY - y, this.maxX, this.maxY + y );
+      return this.setMinMax( this.minX, this.minY - y, this.maxX, this.maxY + y );
     },
     
     // dilate with different amounts in the x and y directions
     dilateXY: function( x, y ) {
-      return this.set( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
+      return this.setMinMax( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
     },
     
     // contracts on all sides by length d, or for x/y independently
@@ -437,7 +437,7 @@ define( function( require ) {
      */
     getClosestPoint: function( x, y, result ) {
       if ( result ) {
-        result.set( x, y );
+        result.setXY( x, y );
       }
       else {
         result = new dot.Vector2( x, y );
