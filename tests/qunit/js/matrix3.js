@@ -221,4 +221,57 @@
     approximateEqual( rotation.getScaleVector().x, 1, 'rotation x' );
     approximateEqual( rotation.getScaleVector().y, 1, 'rotation x' );
   } );
+  
+  test( 'ObservableMatrix3', function() {
+    var newMatrix = null;
+    var oldMatrix = null;
+    var count = 0;
+    var currentCount;
+    
+    var b = new dot.ObservableMatrix3(); // identity
+    equal( b.m00(), 1 );
+    
+    b.link( function( n, o ) {
+      newMatrix = n ? n.copy() : n;
+      oldMatrix = o ? o.copy() : o;
+      count++;
+    } );
+    // should immediately call back with b,null
+    equal( newMatrix.m00(), 1 );
+    equal( oldMatrix, null );
+    
+    // set a single component directly
+    b.negate();
+    equal( newMatrix.m00(), -1 );
+    equal( oldMatrix.m00(), 1 );
+    
+    // set everything
+    b.set( new dot.Matrix3( 2, 0, 0,
+                            0, 2, 0,
+                            0, 0, 2 ) );
+    equal( newMatrix.m00(), 2 );
+    equal( oldMatrix.m00(), -1 );
+    
+    // this shouldn't trigger a change
+    currentCount = count;
+    b.set( new dot.Matrix3( 2, 0, 0,
+                            0, 2, 0,
+                            0, 0, 2 ) );
+    equal( count, currentCount, 'change guard on set' );
+    
+    equal( b.get().m00(), b.m00(), 'reflexive m00()' );
+    
+    b.reset();
+    equal( newMatrix.m00(), 1 );
+    equal( oldMatrix.m00(), 2 );
+    
+    currentCount = count;
+    b.reset();
+    equal( count, currentCount, 'change guard on reset' );
+    
+    currentCount = count;
+    b.entries[0] = 7;
+    equal( count, currentCount, 'no notifications on manual set' );
+    b.entries[0] = 1;
+  } );
 })();

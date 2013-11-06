@@ -60,9 +60,7 @@ define( function( require ) {
       }
       return this;
     },
-    set: function( vector ) {
-      return this.setXY( vector.x, vector.y );
-    },
+    set: dot.Vector2.prototype.set,
     
     // override with vector equality instead of instance equality
     equalsValue: function( value ) {

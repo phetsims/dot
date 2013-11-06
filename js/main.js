@@ -15,6 +15,7 @@ define( [
   'DOT/Matrix3',
   'DOT/Matrix4',
   'DOT/ObservableBounds2',
+  'DOT/ObservableMatrix3',
   'DOT/ObservableVector2',
   'DOT/Permutation',
   'DOT/QRDecomposition',

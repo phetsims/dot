@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
   
   var dot = require( 'DOT/dot' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   
   var FastArray = dot.FastArray;
   
@@ -557,20 +558,7 @@ define( function( require ) {
     * Mutable operations (changes this matrix)
     *----------------------------------------------------------------------------*/
     
-    set: function( matrix ) {
-      return this.rowMajor( matrix.m00(), matrix.m01(), matrix.m02(),
-                            matrix.m10(), matrix.m11(), matrix.m12(),
-                            matrix.m20(), matrix.m21(), matrix.m22(),
-                            matrix.type );
-    },
-    
-    makeImmutable: function() {
-      this.rowMajor = function() {
-        throw new Error( 'Cannot modify immutable matrix' );
-      };
-      return this;
-    },
-    
+    // every mutable method goes through rowMajor
     rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
       this.entries[0] = v00;
       this.entries[1] = v10;
@@ -584,6 +572,20 @@ define( function( require ) {
       
       // TODO: consider performance of the affine check here
       this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
+      return this;
+    },
+    
+    set: function( matrix ) {
+      return this.rowMajor( matrix.m00(), matrix.m01(), matrix.m02(),
+                            matrix.m10(), matrix.m11(), matrix.m12(),
+                            matrix.m20(), matrix.m21(), matrix.m22(),
+                            matrix.type );
+    },
+    
+    makeImmutable: function() {
+      this.rowMajor = function() {
+        throw new Error( 'Cannot modify immutable matrix' );
+      };
       return this;
     },
     
@@ -821,6 +823,21 @@ define( function( require ) {
       console.log( matrix.toString() );
     }
   };
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( Matrix3, {
+    defaultFactory: function() { return new Matrix3(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+        if ( pool.length ) {
+          return pool.pop().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        } else {
+          return new Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        }
+      };
+    }
+  } );
   
   return Matrix3;
 } );

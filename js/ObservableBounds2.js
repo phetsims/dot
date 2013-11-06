@@ -80,9 +80,7 @@ define( function( require ) {
       }
       return this;
     },
-    set: function( bounds ) {
-      return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
-    },
+    set: dot.Bounds2.prototype.set,
     
     // override with vector equality instead of instance equality
     equalsValue: function( value ) {
