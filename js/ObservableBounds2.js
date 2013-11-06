@@ -36,47 +36,47 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     setMinMax: function( minX, minY, maxX, maxY ) {
       if ( this.minX !== minX || this.minY !== minY || this.maxX !== maxX || this.maxY !== maxY ) {
+        this._oldValue.minX = this.minX;
+        this._oldValue.minY = this.minY;
+        this._oldValue.maxX = this.maxX;
+        this._oldValue.maxY = this.maxY;
         this.minX = minX;
         this.minY = minY;
         this.maxX = maxX;
         this.maxY = maxY;
         this._notifyObservers( this._oldValue );
-        this._oldValue.minX = minX;
-        this._oldValue.minY = minY;
-        this._oldValue.maxX = maxX;
-        this._oldValue.maxY = maxY;
       }
       return this;
     },
     setMinX: function( minX ) {
       if ( this.minX !== minX ) {
+        this._oldValue.minX = this.minX;
         this.minX = minX;
         this._notifyObservers( this._oldValue );
-        this._oldValue.minX = minX;
       }
       return this;
     },
     setMinY: function( minY ) {
       if ( this.minY !== minY ) {
+        this._oldValue.minY = this.minY;
         this.minY = minY;
         this._notifyObservers( this._oldValue );
-        this._oldValue.minY = minY;
       }
       return this;
     },
     setMaxX: function( maxX ) {
       if ( this.maxX !== maxX ) {
+        this._oldValue.maxX = this.maxX;
         this.maxX = maxX;
         this._notifyObservers( this._oldValue );
-        this._oldValue.maxX = maxX;
       }
       return this;
     },
     setMaxY: function( maxY ) {
       if ( this.maxY !== maxY ) {
+        this._oldValue.maxY = this.maxY;
         this.maxY = maxY;
         this._notifyObservers( this._oldValue );
-        this._oldValue.maxY = maxY;
       }
       return this;
     },

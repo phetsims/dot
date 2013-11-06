@@ -36,27 +36,27 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     setXY: function( x, y ) {
       if ( this.x !== x || this.y !== y ) {
+        this._oldValue.x = this.x;
+        this._oldValue.y = this.y;
         this.x = x;
         this.y = y;
         this._notifyObservers( this._oldValue );
-        this._oldValue.x = x;
-        this._oldValue.y = y;
       }
       return this;
     },
     setX: function( x ) {
       if ( this.x !== x ) {
+        this._oldValue.x = this.x;
         this.x = x;
         this._notifyObservers( this._oldValue );
-        this._oldValue.x = x;
       }
       return this;
     },
     setY: function( y ) {
       if ( this.y !== y ) {
+        this._oldValue.y = this.y;
         this.y = y;
         this._notifyObservers( this._oldValue );
-        this._oldValue.y = y;
       }
       return this;
     },

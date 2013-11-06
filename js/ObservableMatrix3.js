@@ -46,6 +46,20 @@ define( function( require ) {
            v12 !== this.entries[7] ||
            v22 !== this.entries[8] ||
            type !== this.type ) {
+        
+        if ( this._oldValue ) {
+          this._oldValue.entries[0] = this.entries[0];
+          this._oldValue.entries[1] = this.entries[1];
+          this._oldValue.entries[2] = this.entries[2];
+          this._oldValue.entries[3] = this.entries[3];
+          this._oldValue.entries[4] = this.entries[4];
+          this._oldValue.entries[5] = this.entries[5];
+          this._oldValue.entries[6] = this.entries[6];
+          this._oldValue.entries[7] = this.entries[7];
+          this._oldValue.entries[8] = this.entries[8];
+          this._oldValue.type = this.type;
+        }
+        
         this.entries[0] = v00;
         this.entries[1] = v10;
         this.entries[2] = v20;
@@ -62,17 +76,6 @@ define( function( require ) {
         // if this isn't initialization, fire off changes and update the old value
         if ( this._observers ) {
           this._notifyObservers( this._oldValue );
-          
-          this._oldValue.entries[0] = this.entries[0];
-          this._oldValue.entries[1] = this.entries[1];
-          this._oldValue.entries[2] = this.entries[2];
-          this._oldValue.entries[3] = this.entries[3];
-          this._oldValue.entries[4] = this.entries[4];
-          this._oldValue.entries[5] = this.entries[5];
-          this._oldValue.entries[6] = this.entries[6];
-          this._oldValue.entries[7] = this.entries[7];
-          this._oldValue.entries[8] = this.entries[8];
-          this._oldValue.type = this.type;
         }
       }
       
