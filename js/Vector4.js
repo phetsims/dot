@@ -58,7 +58,16 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Immutables
      *----------------------------------------------------------------------------*/
-
+    
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector4( this.x, this.y, this.z, this.w );
+      }
+    },
+    
     normalized: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
@@ -138,29 +147,35 @@ define( function( require ) {
       this.y = y;
       this.z = z;
       this.w = w;
+      return this;
     },
-
-    setX: function( x ) {
-      this.x = x;
-    },
-
-    setY: function( y ) {
-      this.y = y;
-    },
-
-    setZ: function( z ) {
-      this.z = z;
-    },
-
-    setW: function( w ) {
-      this.w = w;
-    },
-
-    copy: function( v ) {
+    
+    set: function( v ) {
       this.x = v.x;
       this.y = v.y;
       this.z = v.z;
       this.w = v.w;
+      return this;
+    },
+
+    setX: function( x ) {
+      this.x = x;
+      return this;
+    },
+
+    setY: function( y ) {
+      this.y = y;
+      return this;
+    },
+
+    setZ: function( z ) {
+      this.z = z;
+      return this;
+    },
+
+    setW: function( w ) {
+      this.w = w;
+      return this;
     },
 
     add: function( v ) {
@@ -168,6 +183,7 @@ define( function( require ) {
       this.y += v.y;
       this.z += v.z;
       this.w += v.w;
+      return this;
     },
 
     addScalar: function( scalar ) {
@@ -175,6 +191,7 @@ define( function( require ) {
       this.y += scalar;
       this.z += scalar;
       this.w += scalar;
+      return this;
     },
 
     subtract: function( v ) {
@@ -182,6 +199,7 @@ define( function( require ) {
       this.y -= v.y;
       this.z -= v.z;
       this.w -= v.w;
+      return this;
     },
 
     subtractScalar: function( scalar ) {
@@ -189,6 +207,7 @@ define( function( require ) {
       this.y -= scalar;
       this.z -= scalar;
       this.w -= scalar;
+      return this;
     },
     
     multiplyScalar: function( scalar ) {
@@ -210,6 +229,7 @@ define( function( require ) {
       this.y *= v.y;
       this.z *= v.z;
       this.w *= v.w;
+      return this;
     },
 
     divideScalar: function( scalar ) {
@@ -217,6 +237,7 @@ define( function( require ) {
       this.y /= scalar;
       this.z /= scalar;
       this.w /= scalar;
+      return this;
     },
 
     negate: function() {
@@ -224,6 +245,7 @@ define( function( require ) {
       this.y = -this.y;
       this.z = -this.z;
       this.w = -this.w;
+      return this;
     },
     
     normalize: function() {

@@ -57,6 +57,15 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Immutables
      *----------------------------------------------------------------------------*/
+    
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector3( this.x, this.y, this.z );
+      }
+    },
 
     cross: function( v ) {
       return new Vector3(
@@ -148,48 +157,57 @@ define( function( require ) {
       this.x = x;
       this.y = y;
       this.z = z;
+      return this;
+    },
+    
+    set: function( v ) {
+      this.x = v.x;
+      this.y = v.y;
+      this.z = v.z;
+      return this;
     },
 
     setX: function( x ) {
       this.x = x;
+      return this;
     },
 
     setY: function( y ) {
       this.y = y;
+      return this;
     },
 
     setZ: function( z ) {
       this.z = z;
-    },
-
-    copy: function( v ) {
-      this.x = v.x;
-      this.y = v.y;
-      this.z = v.z;
+      return this;
     },
 
     add: function( v ) {
       this.x += v.x;
       this.y += v.y;
       this.z += v.z;
+      return this;
     },
 
     addScalar: function( scalar ) {
       this.x += scalar;
       this.y += scalar;
       this.z += scalar;
+      return this;
     },
 
     subtract: function( v ) {
       this.x -= v.x;
       this.y -= v.y;
       this.z -= v.z;
+      return this;
     },
 
     subtractScalar: function( scalar ) {
       this.x -= scalar;
       this.y -= scalar;
       this.z -= scalar;
+      return this;
     },
     
     multiplyScalar: function( scalar ) {
@@ -209,18 +227,21 @@ define( function( require ) {
       this.x *= v.x;
       this.y *= v.y;
       this.z *= v.z;
+      return this;
     },
 
     divideScalar: function( scalar ) {
       this.x /= scalar;
       this.y /= scalar;
       this.z /= scalar;
+      return this;
     },
 
     negate: function() {
       this.x = -this.x;
       this.y = -this.y;
       this.z = -this.z;
+      return this;
     },
     
     normalize: function() {

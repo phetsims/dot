@@ -89,8 +89,13 @@ define( function( require ) {
      * Immutables
      *----------------------------------------------------------------------------*/
     
-    copy: function() {
-      return new Vector2( this.x, this.y );
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector2( this.x, this.y );
+      }
     },
     
     // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
@@ -198,8 +203,7 @@ define( function( require ) {
       return this;
     },
     
-    
-    setVector2: function( v ) {
+    set: function( v ) {
       this.x = v.x;
       this.y = v.y;
       return this;
