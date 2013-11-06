@@ -17,6 +17,7 @@ define( function( require ) {
   'use strict';
   
   var dot = require( 'DOT/dot' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   
   require( 'DOT/Vector2' );
   
@@ -486,6 +487,21 @@ define( function( require ) {
       return new Bounds2( x, y, x, y );
     }
   };
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( Bounds2, {
+    defaultFactory: function() { return new Bounds2(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( minX, minY, maxX, maxY ) {
+        if ( pool.length ) {
+          return pool.pop().setMinMax( minX, minY, maxX, maxY );
+        } else {
+          return new Bounds2( minX, minY, maxX, maxY );
+        }
+      };
+    }
+  } );
 
   // specific bounds useful for operations
   Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );

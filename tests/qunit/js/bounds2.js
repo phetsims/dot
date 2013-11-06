@@ -111,4 +111,92 @@
     ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equals( new Bounds2( 0, 0, 6, Number.POSITIVE_INFINITY ) ), 'Without epsilon: Mixed finite-ness - different finite number' );
     ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equalsEpsilon( new Bounds2( 0, 0, 6, Number.POSITIVE_INFINITY ), epsilon ), 'With epsilon: Mixed finite-ness - different finite number' );
   } );
+  
+  test( 'ObservableBounds2', function() {
+    var newBounds = null;
+    var oldBounds = null;
+    var count = 0;
+    var currentCount;
+    
+    var b = new dot.ObservableBounds2( 2, 4, 6, 8 );
+    equal( b.minX, 2 );
+    equal( b.minY, 4 );
+    equal( b.maxX, 6 );
+    equal( b.maxY, 8 );
+    
+    b.link( function( n, o ) {
+      newBounds = n ? n.copy() : n;
+      oldBounds = o ? o.copy() : o;
+      count++;
+    } );
+    // should immediately call back with b,null
+    equal( newBounds.minX, 2 );
+    equal( newBounds.minY, 4 );
+    equal( newBounds.maxX, 6 );
+    equal( newBounds.maxY, 8 );
+    equal( oldBounds, null );
+    
+    // set a single component directly
+    b.setMinX( 5 );
+    equal( newBounds.minX, 5 );
+    equal( newBounds.minY, 4 );
+    equal( newBounds.maxX, 6 );
+    equal( newBounds.maxY, 8 );
+    equal( oldBounds.minX, 2 );
+    equal( oldBounds.minY, 4 );
+    equal( oldBounds.maxX, 6 );
+    equal( oldBounds.maxY, 8 );
+    
+    // set everything
+    b.set( new dot.Bounds2( 1, 2, 3, 4 ) );
+    equal( newBounds.minX, 1 );
+    equal( newBounds.minY, 2 );
+    equal( newBounds.maxX, 3 );
+    equal( newBounds.maxY, 4 );
+    equal( oldBounds.minX, 5 );
+    equal( oldBounds.minY, 4 );
+    equal( oldBounds.maxX, 6 );
+    equal( oldBounds.maxY, 8 );
+    
+    // this shouldn't trigger a change
+    currentCount = count;
+    b.set( new dot.Bounds2( 1, 2, 3, 4 ) );
+    equal( count, currentCount, 'change guard on set' );
+    
+    // this shouldn't trigger a change
+    currentCount = count;
+    b.setMinX( 1 );
+    equal( count, currentCount, 'change guard on setY' );
+    
+    equal( b.get().minX, b.minX, 'reflexive minX' );
+    
+    b.dilate( 5 );
+    equal( newBounds.minX, -4 );
+    equal( newBounds.minY, -3 );
+    equal( newBounds.maxX, 8 );
+    equal( newBounds.maxY, 9 );
+    equal( oldBounds.minX, 1 );
+    equal( oldBounds.minY, 2 );
+    equal( oldBounds.maxX, 3 );
+    equal( oldBounds.maxY, 4 );
+    
+    b.reset();
+    equal( newBounds.minX, 2 );
+    equal( newBounds.minY, 4 );
+    equal( newBounds.maxX, 6 );
+    equal( newBounds.maxY, 8 );
+    equal( oldBounds.minX, -4 );
+    equal( oldBounds.minY, -3 );
+    equal( oldBounds.maxX, 8 );
+    equal( oldBounds.maxY, 9 );
+    
+    currentCount = count;
+    b.reset();
+    equal( count, currentCount, 'change guard on reset' );
+    
+    currentCount = count;
+    b.minX = 7;
+    equal( count, currentCount, 'no notifications on manual set' );
+    b.minX = 2;
+  } );
 })();
