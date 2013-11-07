@@ -21,6 +21,7 @@ define( function( require ) {
     dot.Matrix3.call( this, v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
     
     this._oldValue = this.copy();
+    this._skipChecks = false;
     Property.call( this, this );
   };
   var ObservableMatrix3 = dot.ObservableMatrix3;
@@ -36,18 +37,21 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     // every mutable method goes through rowMajor
     rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
-      if ( v00 !== this.entries[0] ||
-           v10 !== this.entries[1] ||
-           v20 !== this.entries[2] ||
-           v01 !== this.entries[3] ||
-           v11 !== this.entries[4] ||
-           v21 !== this.entries[5] ||
-           v02 !== this.entries[6] ||
-           v12 !== this.entries[7] ||
-           v22 !== this.entries[8] ||
-           type !== this.type ) {
+      var skip = this._skipChecks;
+      var modified = skip ||
+                     v00 !== this.entries[0] ||
+                     v10 !== this.entries[1] ||
+                     v20 !== this.entries[2] ||
+                     v01 !== this.entries[3] ||
+                     v11 !== this.entries[4] ||
+                     v21 !== this.entries[5] ||
+                     v02 !== this.entries[6] ||
+                     v12 !== this.entries[7] ||
+                     v22 !== this.entries[8] ||
+                     type !== this.type;
+      if ( modified ) {
         
-        if ( this._oldValue ) {
+        if ( !skip && this._oldValue ) {
           this._oldValue.entries[0] = this.entries[0];
           this._oldValue.entries[1] = this.entries[1];
           this._oldValue.entries[2] = this.entries[2];
@@ -75,7 +79,7 @@ define( function( require ) {
         
         // if this isn't initialization, fire off changes and update the old value
         if ( this._observers ) {
-          this._notifyObservers( this._oldValue );
+          this._notifyObservers( skip ? null : this._oldValue );
         }
       }
       
