@@ -29,7 +29,7 @@ define( function( require ) {
   var Vector2 = dot.Vector2;
   
   Vector2.createPolar = function( magnitude, angle ) {
-    return new Vector2( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
+    return new Vector2().setPolar( magnitude, angle );
   };
   
   Vector2.prototype = {
@@ -259,6 +259,10 @@ define( function( require ) {
       } else {
         return this.divideScalar( mag );
       }
+    },
+    
+    setPolar: function( magnitude, angle ) {
+      return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
     }
     
   };
