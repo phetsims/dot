@@ -323,7 +323,7 @@ define( function( require ) {
     // TODO: investigate which way we want the sign (Canvas or WebGL style)
     triangleAreaSigned: function( a, b, c ) {
       return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
-    },
+    }
   };
   var Util = dot.Util;
   
