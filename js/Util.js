@@ -243,7 +243,8 @@ define( function( require ) {
      */
     toFixed: function( number, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
-      return Math.round( number * multiplier ) / multiplier;
+      var value = Math.round( number * multiplier ) / multiplier;
+      return value.toFixed( decimalPlaces );
     },
 
     isInteger: function( number ) {
