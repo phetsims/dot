@@ -240,11 +240,19 @@ define( function( require ) {
      * A predictable implementation of toFixed.
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
+     * @param {number} number
+     * @param {number} decimalPlaces
+     * @returns {string}
      */
     toFixed: function( number, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
       var value = Math.round( number * multiplier ) / multiplier;
       return value.toFixed( decimalPlaces );
+    },
+
+    // Convenience for returning a number instead of a string.
+    toFixedNumber: function( number, decimalPlaces ) {
+      return parseFloat( Util.toFixed( number, decimalPlaces ) );
     },
 
     isInteger: function( number ) {
