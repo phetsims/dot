@@ -217,6 +217,10 @@ define( function( require ) {
     add: function( v ) {
       return this.setXY( this.x + v.x, this.y + v.y );
     },
+
+    addXY: function( x, y ) {
+      return this.setXY( this.x + x, this.y + y );
+    },
     
     addScalar: function( scalar ) {
       return this.setXY( this.x + scalar, this.y + scalar );
