@@ -347,7 +347,7 @@ define( function( require ) {
     },
     
     timesMatrix: function( m ) {
-      // I * M === M * I === I (the identity)
+      // I * M === M * I === M (the identity)
       if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
         return this.type === Types.IDENTITY ? m : this;
       }
@@ -549,9 +549,16 @@ define( function( require ) {
     },
     
     multiplyMatrix: function( m ) {
-      // I * M === M * I === I (the identity)
-      if ( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
-        return this.type === Types.IDENTITY ? m : this;
+      // M * I === M (the identity)
+      if ( m.type === Types.IDENTITY ) {
+        // no change needed
+        return this;
+      }
+      
+      // I * M === M (the identity)
+      if ( this.type === Types.IDENTITY ) {
+        // copy the other matrix to us
+        return this.set( m );
       }
       
       if ( this.type === m.type ) {
