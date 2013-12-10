@@ -57,20 +57,20 @@ define( function( require ) {
 
   var Types = Matrix3.Types;
 
-  Matrix3.identity = function() { return new FastMatrix3().setToIdentity(); };
-  Matrix3.translation = function( x, y ) { return new FastMatrix3().setToTranslation( x, y ); };
+  Matrix3.identity = function() { return FastMatrix3.dirtyFromPool().setToIdentity(); };
+  Matrix3.translation = function( x, y ) { return FastMatrix3.dirtyFromPool().setToTranslation( x, y ); };
   Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
-  Matrix3.scaling = function( x, y ) { return new FastMatrix3().setToScale( x, y ); };
+  Matrix3.scaling = function( x, y ) { return FastMatrix3.dirtyFromPool().setToScale( x, y ); };
   Matrix3.scale = Matrix3.scaling;
-  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) { return new FastMatrix3().setToAffine( m00, m01, m02, m10, m11, m12 ); };
-  Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return new FastMatrix3().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
+  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) { return FastMatrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
+  Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return FastMatrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
 
   // axis is a normalized Vector3, angle in radians.
-  Matrix3.rotationAxisAngle = function( axis, angle ) { return new FastMatrix3().setToRotationAxisAngle( axis, angle ); };
+  Matrix3.rotationAxisAngle = function( axis, angle ) { return FastMatrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
   
-  Matrix3.rotationX = function( angle ) { return new FastMatrix3().setToRotationX( angle ); };
-  Matrix3.rotationY = function( angle ) { return new FastMatrix3().setToRotationY( angle ); };
-  Matrix3.rotationZ = function( angle ) { return new FastMatrix3().setToRotationZ( angle ); };
+  Matrix3.rotationX = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationX( angle ); };
+  Matrix3.rotationY = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationY( angle ); };
+  Matrix3.rotationZ = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationZ( angle ); };
   
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
@@ -83,10 +83,10 @@ define( function( require ) {
     return Matrix3.rotationAround( angle, point.x, point.y );
   };
   
-  Matrix3.fromSVGMatrix = function( svgMatrix ) { return new FastMatrix3().setToSVGMatrix( svgMatrix ); };
+  Matrix3.fromSVGMatrix = function( svgMatrix ) { return FastMatrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
 
   // a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-  Matrix3.rotateAToB = function( a, b ) { return new FastMatrix3().setRotationAToB( a, b ); };
+  Matrix3.rotateAToB = function( a, b ) { return FastMatrix3.dirtyFromPool().setRotationAToB( a, b ); };
 
   Matrix3.prototype = {
     constructor: Matrix3,
@@ -550,7 +550,7 @@ define( function( require ) {
     
     multiplyMatrix: function( m ) {
       // I * M === M * I === I (the identity)
-      if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
+      if ( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
         return this.type === Types.IDENTITY ? m : this;
       }
       
@@ -806,7 +806,6 @@ define( function( require ) {
     }
   };
   
-  // experimental object pooling
   /* jshint -W064 */
   Poolable( Matrix3, {
     defaultFactory: function() { return new Matrix3(); },
@@ -819,6 +818,12 @@ define( function( require ) {
         }
       };
     }
+  } );
+  
+  /* jshint -W064 */
+  Poolable( FastMatrix3, {
+    // no constructor function needed, always grab a dirty one
+    defaultFactory: function() { return new FastMatrix3(); }
   } );
   
   // prototype should be done by here, so now we hook it up to FastMatrix3
