@@ -63,6 +63,13 @@ define( function( require ) {
       var dy = this.y - point.y;
       return dx * dx + dy * dy;
     },
+
+    // the squared distance between this vector (treated as a point) and another point as (x,y)
+    distanceSquaredXY: function( x, y ) {
+      var dx = this.x - x;
+      var dy = this.y - y;
+      return dx * dx + dy * dy ;
+    },
     
     dot: function( v ) {
       return this.x * v.x + this.y * v.y;
