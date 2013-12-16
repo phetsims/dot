@@ -220,6 +220,12 @@ define( function( require ) {
     set: function( v ) {
       return this.setXY( v.x, v.y );
     },
+
+    //Sets the magnitude of the vector, keeping the same direction (though a negative magnitude will flip the vector direction)
+    setMagnitude: function( m ) {
+      var scale = m / this.magnitude();
+      return this.multiplyScalar( scale );
+    },
     
     add: function( v ) {
       return this.setXY( this.x + v.x, this.y + v.y );
