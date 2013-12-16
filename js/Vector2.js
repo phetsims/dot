@@ -74,6 +74,10 @@ define( function( require ) {
     dot: function( v ) {
       return this.x * v.x + this.y * v.y;
     },
+
+    dotXY: function( vx, vy ) {
+      return this.x * vx + this.y * vy;
+    },
     
     equals: function( other ) {
       return this.x === other.x && this.y === other.y;
