@@ -150,6 +150,10 @@ define( function( require ) {
     minus: function( v ) {
       return new Vector2( this.x - v.x, this.y - v.y );
     },
+
+    minusXY: function( x,y ) {
+      return new Vector2( this.x - x, this.y - y );
+    },
     
     minusScalar: function( scalar ) {
       return new Vector2( this.x - scalar, this.y - scalar );
