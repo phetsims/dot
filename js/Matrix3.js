@@ -696,8 +696,6 @@ define( function( require ) {
       // if "from" and "to" vectors are nearly parallel
       if ( f > 1.0 - epsilon ) {
         var c1, c2, c3;
-        /* coefficients for later use */
-        var i, j;
 
         var x = new dot.Vector3(
           ( start.x > 0.0 ) ? start.x : -start.x,

@@ -195,7 +195,6 @@ define( function( require ) {
       c /= a;
       d /= a;
       
-      var s, t;
       var q = ( 3.0 * c - ( b * b ) ) / 9;
       var r = ( -(27 * d) + b * (9 * c - 2 * (b * b)) ) / 54;
       var discriminant = q  * q  * q + r  * r;
