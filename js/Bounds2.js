@@ -36,6 +36,9 @@ define( function( require ) {
   Bounds2.prototype = {
     constructor: Bounds2,
     
+    isBounds: true,
+    dimension: 2,
+    
     /*---------------------------------------------------------------------------*
     * Properties
     *----------------------------------------------------------------------------*/
