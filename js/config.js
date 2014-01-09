@@ -13,7 +13,7 @@ require.config( {
   deps: [ 'main', 'PHET_CORE/main' ],
 
   paths: {
-    underscore: '../../sherpa/lodash-2.0.0',
+    underscore: '../../sherpa/lodash-2.4.1',
     DOT: '.',
     PHET_CORE: '../../phet-core/js',
     ASSERT: '../../assert/js',
