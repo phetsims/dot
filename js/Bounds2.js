@@ -494,7 +494,7 @@ define( function( require ) {
   // experimental object pooling
   /* jshint -W064 */
   Poolable( Bounds2, {
-    defaultFactory: function() { return new Bounds2(); },
+    defaultFactory: function() { return Bounds2.NOTHING.copy(); },
     constructorDuplicateFactory: function( pool ) {
       return function( minX, minY, maxX, maxY ) {
         if ( pool.length ) {
