@@ -12,8 +12,6 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   require( 'DOT/Util' );
@@ -30,6 +28,8 @@ define( function( require ) {
   
   Vector4.prototype = {
     constructor: Vector4,
+    isVector4: true,
+    dimension: 4,
 
     magnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
@@ -56,11 +56,31 @@ define( function( require ) {
     isFinite: function() {
       return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z ) && isFinite( this.w );
     },
+    
+    equals: function( other ) {
+      return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
+      if ( !epsilon ) {
+        epsilon = 0;
+      }
+      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) + Math.abs( this.w - other.w ) <= epsilon;
+    },
 
     /*---------------------------------------------------------------------------*
      * Immutables
      *----------------------------------------------------------------------------*/
-
+    
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector4( this.x, this.y, this.z, this.w );
+      }
+    },
+    
     normalized: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
@@ -117,6 +137,11 @@ define( function( require ) {
     blend: function( vector, ratio ) {
       return this.plus( vector.minus( this ).times( ratio ) );
     },
+    
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
 
     toString: function() {
       return "Vector4(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";
@@ -129,101 +154,83 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Mutables
      *----------------------------------------------------------------------------*/
-
-    set: function( x, y, z, w ) {
+    
+    // our core mutables (all mutation should go through these)
+    setXYZW: function( x, y, z, w ) {
       this.x = x;
       this.y = y;
       this.z = z;
       this.w = w;
+      return this;
     },
-
     setX: function( x ) {
       this.x = x;
+      return this;
     },
-
     setY: function( y ) {
       this.y = y;
+      return this;
     },
-
     setZ: function( z ) {
       this.z = z;
+      return this;
     },
-
     setW: function( w ) {
       this.w = w;
+      return this;
     },
-
-    copy: function( v ) {
-      this.x = v.x;
-      this.y = v.y;
-      this.z = v.z;
-      this.w = v.w;
+    
+    set: function( v ) {
+      return this.setXYZW( v.x, v.y, v.z, v.w );
     },
 
     add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      this.z += v.z;
-      this.w += v.w;
+      return this.setXYZW( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
     },
 
     addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      this.z += scalar;
-      this.w += scalar;
+      return this.setXYZW( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
     },
 
     subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      this.z -= v.z;
-      this.w -= v.w;
+      return this.setXYZW( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
     },
 
     subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      this.z -= scalar;
-      this.w -= scalar;
+      return this.setXYZW( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
+    },
+    
+    multiplyScalar: function( scalar ) {
+      return this.setXYZW( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
+    },
+    
+    multiply: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.multiplyScalar( scalar );
     },
 
     componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      this.z *= v.z;
-      this.w *= v.w;
+      return this.setXYZW( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
     },
 
     divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      this.z /= scalar;
-      this.w /= scalar;
+      return this.setXYZW( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
     },
 
     negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      this.z = -this.z;
-      this.w = -this.w;
+      return this.setXYZW( -this.x, -this.y, -this.z, -this.w );
     },
     
-    equals: function( other ) {
-      return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
-    },
-    
-    equalsEpsilon: function( other, epsilon ) {
-      if ( !epsilon ) {
-        epsilon = 0;
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        return this.divideScalar( mag );
       }
-      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) + Math.abs( this.w - other.w ) <= epsilon;
-    },
-
-    isVector4: true,
-
-    dimension: 4
-
+      return this;
+    }
   };
 
   /*---------------------------------------------------------------------------*
@@ -248,19 +255,11 @@ define( function( require ) {
   };
 
   // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
+  Immutable.mutableOverrideHelper( 'setXYZW' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
   Immutable.mutableOverrideHelper( 'setZ' );
   Immutable.mutableOverrideHelper( 'setW' );
-  Immutable.mutableOverrideHelper( 'copy' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
 
   // helpful immutable constants
   Vector4.ZERO = new Immutable( 0, 0, 0, 0 );

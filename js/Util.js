@@ -9,8 +9,6 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   // require( 'DOT/Vector2' ); // Require.js doesn't like the circular reference
   
@@ -95,6 +93,68 @@ define( function( require ) {
       );
     },
     
+    // assumes a sphere with the specified radius, centered at the origin
+    sphereRayIntersection: function( radius, ray, epsilon ) {
+      epsilon = epsilon === undefined ? 1e-5 : epsilon;
+
+      // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
+      var center = new dot.Vector3();
+
+      var rayDir = ray.dir;
+      var pos = ray.pos;
+      var centerToRay = pos.minus( center );
+
+      // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
+      var tmp = rayDir.dot( centerToRay );
+      var centerToRayDistSq = centerToRay.magnitudeSquared();
+      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
+      if ( det < epsilon ) {
+        // ray misses sphere entirely
+        return null;
+      }
+
+      var base = rayDir.dot( center ) - rayDir.dot( pos );
+      var sqt = Math.sqrt( det ) / 2;
+
+      // the "first" entry point distance into the sphere. if we are inside the sphere, it is behind us
+      var ta = base - sqt;
+
+      // the "second" entry point distance
+      var tb = base + sqt;
+
+      if ( tb < epsilon ) {
+        // sphere is behind ray, so don't return an intersection
+        return null;
+      }
+
+      var hitPositionB = ray.pointAtDistance( tb );
+      var normalB = hitPositionB.minus( center ).normalized();
+
+      if ( ta < epsilon ) {
+        // we are inside the sphere
+        // in => out
+        return {
+          distance: tb,
+          hitPoint: hitPositionB,
+          normal: normalB.negated(),
+          fromOutside: false
+        };
+      }
+      else {
+        // two possible hits
+        var hitPositionA = ray.pointAtDistance( ta );
+        var normalA = hitPositionA.minus( center ).normalized();
+
+        // close hit, we have out => in
+        return {
+          distance: ta,
+          hitPoint: hitPositionA,
+          normal: normalA,
+          fromOutside: true
+        };
+      }
+    },
+    
     // return an array of real roots of ax^2 + bx + c = 0
     solveQuadraticRootsReal: function( a, b, c ) {
       var epsilon = 1E7;
@@ -135,7 +195,6 @@ define( function( require ) {
       c /= a;
       d /= a;
       
-      var s, t;
       var q = ( 3.0 * c - ( b * b ) ) / 9;
       var r = ( -(27 * d) + b * (9 * c - 2 * (b * b)) ) / 54;
       var discriminant = q  * q  * q + r  * r;
@@ -180,10 +239,19 @@ define( function( require ) {
      * A predictable implementation of toFixed.
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
+     * @param {number} number
+     * @param {number} decimalPlaces
+     * @returns {string}
      */
     toFixed: function( number, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
-      return Math.round( number * multiplier ) / multiplier;
+      var value = Math.round( number * multiplier ) / multiplier;
+      return value.toFixed( decimalPlaces );
+    },
+
+    // Convenience for returning a number instead of a string.
+    toFixedNumber: function( number, decimalPlaces ) {
+      return parseFloat( Util.toFixed( number, decimalPlaces ) );
     },
 
     isInteger: function( number ) {
@@ -220,6 +288,53 @@ define( function( require ) {
           return new dot.Vector2( x, y );
         }
       }
+    },
+
+    /**
+     * Squared distance from a point to a line segment squared.
+     * See http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+     *
+     * @param point the point
+     * @param a start point of a line segment
+     * @param b end point of a line segment
+     * @returns {Number}
+     */
+    distToSegmentSquared: function( point, a, b ) {
+      var segmentLength = a.distanceSquared( b );
+      if ( segmentLength === 0 ) { return point.distanceSquared( a ); }
+      var t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / segmentLength;
+      return t < 0 ? point.distanceSquared( a ) :
+             t > 1 ? point.distanceSquared( b ) :
+             point.distanceSquared( new dot.Vector2( a.x + t * (b.x - a.x), a.y + t * (b.y - a.y) ) );
+    },
+
+    /**
+     * Squared distance from a point to a line segment squared.
+     * @param point the point
+     * @param a start point of a line segment
+     * @param b end point of a line segment
+     * @returns {Number}
+     */
+    distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); },
+    
+    arePointsCollinear: function( a, b, c, epsilon ) {
+      if ( epsilon === undefined ) {
+        epsilon = 0;
+      }
+      return Util.triangleArea( a, b, c ) <= epsilon;
+    },
+    
+    triangleArea: function( a, b, c ) {
+      return Math.abs( Util.triangleAreaSigned( a, b, c ) );
+    },
+    
+    // TODO: investigate which way we want the sign (Canvas or WebGL style)
+    triangleAreaSigned: function( a, b, c ) {
+      return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
+    },
+
+    log10: function( val ) {
+      return Math.log( val ) / Math.LN10;
     }
   };
   var Util = dot.Util;
@@ -234,6 +349,7 @@ define( function( require ) {
   dot.toRadians = Util.toRadians;
   dot.toDegrees = Util.toDegrees;
   dot.lineLineIntersection = Util.lineLineIntersection;
+  dot.sphereRayIntersection = Util.sphereRayIntersection;
   dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
   dot.solveCubicRootsReal = Util.solveCubicRootsReal;
   dot.cubeRoot = Util.cubeRoot;

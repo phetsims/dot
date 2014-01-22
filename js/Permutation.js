@@ -9,15 +9,13 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   var isArray = require( 'PHET_CORE/isArray' );
   require( 'DOT/Util' ); // for rangeInclusive
   
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
-  var Permutation = function Permutation( indices ) {
+  var Permutation = dot.Permutation = function Permutation( indices ) {
     this.indices = indices;
   };
 

@@ -9,8 +9,6 @@
 define( function( require ) {
   'use strict';
 
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   require( 'DOT/Matrix3' );
@@ -22,7 +20,7 @@ define( function( require ) {
     this.listeners = [];
     
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
-    this.set( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
+    this.setMatrix( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
     
     phetAllocation && phetAllocation( 'Transform3' );
   };
@@ -34,8 +32,8 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
     * mutators
     *----------------------------------------------------------------------------*/
-    
-    set: function( matrix ) {
+
+    setMatrix: function( matrix ) {
       // TODO: performance: don't notify or handle instances where the matrix is detected to be the identity matrix?
       assert && assert( matrix instanceof dot.Matrix3 );
       
@@ -62,16 +60,16 @@ define( function( require ) {
     },
     
     prepend: function( matrix ) {
-      this.set( matrix.timesMatrix( this.matrix ) );
+      this.setMatrix( matrix.timesMatrix( this.matrix ) );
     },
 
     //Simpler case of prepending a translation without having to allocate a matrix for it, see scenery#119
     prependTranslation: function( x, y ) {
-      this.set( dot.Matrix3.translationTimesMatrix( x, y, this.matrix ) );
+      this.setMatrix( dot.Matrix3.translationTimesMatrix( x, y, this.matrix ) );
     },
 
     append: function( matrix ) {
-      this.set( this.matrix.timesMatrix( matrix ) );
+      this.setMatrix( this.matrix.timesMatrix( matrix ) );
     },
 
     prependTransform: function( transform ) {

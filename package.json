@@ -2,7 +2,7 @@
   "name": "dot",
   "version": "0.0.0",
   "license": "MIT",
-  "phetLibs": "sherpa chipper assert phet-core dot",
+  "phetLibs": "sherpa chipper axon assert phet-core dot",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-requirejs": "~0.4.0",

@@ -10,6 +10,8 @@ define( function( require ) {
   'use strict';
   
   var dot = require( 'DOT/dot' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
+  var inherit = require( 'PHET_CORE/inherit' );
   
   var FastArray = dot.FastArray;
   
@@ -30,6 +32,15 @@ define( function( require ) {
     phetAllocation && phetAllocation( 'Matrix3' );
   };
   var Matrix3 = dot.Matrix3;
+  
+  // a variety of constructing a matrix without calling rowMajor and executing a lot of tests (built for initialization speed with mutators)
+  dot.FastMatrix3 = function FastMatrix3() {
+    // not initialized, so it is faster
+    this.entries = new FastArray( 9 );
+    
+    phetAllocation && phetAllocation( 'Matrix3' );
+  };
+  var FastMatrix3 = dot.FastMatrix3;
 
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
@@ -46,170 +57,36 @@ define( function( require ) {
 
   var Types = Matrix3.Types;
 
-  Matrix3.identity = function() {
-    return new Matrix3( 1, 0, 0,
-                        0, 1, 0,
-                        0, 0, 1,
-                        Types.IDENTITY );
-  };
-
-  Matrix3.translation = function( x, y ) {
-    return new Matrix3( 1, 0, x,
-                        0, 1, y,
-                        0, 0, 1,
-                        Types.TRANSLATION_2D );
-  };
-
+  Matrix3.identity = function() { return FastMatrix3.dirtyFromPool().setToIdentity(); };
+  Matrix3.translation = function( x, y ) { return FastMatrix3.dirtyFromPool().setToTranslation( x, y ); };
   Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
-
-  Matrix3.scaling = function( x, y ) {
-    // allow using one parameter to scale everything
-    y = y === undefined ? x : y;
-
-    return new Matrix3( x, 0, 0,
-                        0, y, 0,
-                        0, 0, 1,
-                        Types.SCALING );
-  };
+  Matrix3.scaling = function( x, y ) { return FastMatrix3.dirtyFromPool().setToScale( x, y ); };
   Matrix3.scale = Matrix3.scaling;
-  
-  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) {
-    return new Matrix3( m00, m01, m02, m10, m11, m12, 0, 0, 1, Types.AFFINE );
-  };
+  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) { return FastMatrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
+  Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return FastMatrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
 
   // axis is a normalized Vector3, angle in radians.
-  Matrix3.rotationAxisAngle = function( axis, angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-    var C = 1 - c;
-
-    return new Matrix3( axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s,
-                        axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s,
-                        axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c,
-                        Types.OTHER );
-  };
-
-  // TODO: add in rotation from quaternion, and from quat + translation
-
-  Matrix3.rotationX = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-
-    return new Matrix3( 1, 0, 0,
-                        0, c, -s,
-                        0, s, c,
-                        Types.OTHER );
-  };
-
-  Matrix3.rotationY = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-
-    return new Matrix3( c, 0, s,
-                        0, 1, 0,
-                        -s, 0, c,
-                        Types.OTHER );
-  };
-
-  Matrix3.rotationZ = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-
-    return new Matrix3( c, -s, 0,
-                        s, c, 0,
-                        0, 0, 1,
-                        Types.AFFINE );
-  };
+  Matrix3.rotationAxisAngle = function( axis, angle ) { return FastMatrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
+  
+  Matrix3.rotationX = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationX( angle ); };
+  Matrix3.rotationY = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationY( angle ); };
+  Matrix3.rotationZ = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationZ( angle ); };
   
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
   
-  Matrix3.fromSVGMatrix = function( svgMatrix ) {
-    return new Matrix3( svgMatrix.a, svgMatrix.c, svgMatrix.e,
-                        svgMatrix.b, svgMatrix.d, svgMatrix.f,
-                        0, 0, 1,
-                        Types.AFFINE );
+  Matrix3.rotationAround = function( angle, x, y ) {
+    return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
   };
+  
+  Matrix3.rotationAroundPoint = function( angle, point ) {
+    return Matrix3.rotationAround( angle, point.x, point.y );
+  };
+  
+  Matrix3.fromSVGMatrix = function( svgMatrix ) { return FastMatrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
 
   // a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-  Matrix3.rotateAToB = function( a, b ) {
-    // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
-    var start = a;
-    var end = b;
-
-    var epsilon = 0.0001;
-
-    var e, h, f;
-
-    var v = start.cross( end );
-    e = start.dot( end );
-    f = ( e < 0 ) ? -e : e;
-
-    // if "from" and "to" vectors are nearly parallel
-    if ( f > 1.0 - epsilon ) {
-      var c1, c2, c3;
-      /* coefficients for later use */
-      var i, j;
-
-      var x = new dot.Vector3(
-        ( start.x > 0.0 ) ? start.x : -start.x,
-        ( start.y > 0.0 ) ? start.y : -start.y,
-        ( start.z > 0.0 ) ? start.z : -start.z
-      );
-
-      if ( x.x < x.y ) {
-        if ( x.x < x.z ) {
-          x = dot.Vector3.X_UNIT;
-        }
-        else {
-          x = dot.Vector3.Z_UNIT;
-        }
-      }
-      else {
-        if ( x.y < x.z ) {
-          x = dot.Vector3.Y_UNIT;
-        }
-        else {
-          x = dot.Vector3.Z_UNIT;
-        }
-      }
-
-      var u = x.minus( start );
-      v = x.minus( end );
-
-      c1 = 2.0 / u.dot( u );
-      c2 = 2.0 / v.dot( v );
-      c3 = c1 * c2 * u.dot( v );
-
-      return Matrix3.IDENTITY.plus( Matrix3.rowMajor(
-        -c1 * u.x * u.x - c2 * v.x * v.x + c3 * v.x * u.x,
-        -c1 * u.x * u.y - c2 * v.x * v.y + c3 * v.x * u.y,
-        -c1 * u.x * u.z - c2 * v.x * v.z + c3 * v.x * u.z,
-        -c1 * u.y * u.x - c2 * v.y * v.x + c3 * v.y * u.x,
-        -c1 * u.y * u.y - c2 * v.y * v.y + c3 * v.y * u.y,
-        -c1 * u.y * u.z - c2 * v.y * v.z + c3 * v.y * u.z,
-        -c1 * u.z * u.x - c2 * v.z * v.x + c3 * v.z * u.x,
-        -c1 * u.z * u.y - c2 * v.z * v.y + c3 * v.z * u.y,
-        -c1 * u.z * u.z - c2 * v.z * v.z + c3 * v.z * u.z
-      ) );
-    }
-    else {
-      // the most common case, unless "start"="end", or "start"=-"end"
-      var hvx, hvz, hvxy, hvxz, hvyz;
-      h = 1.0 / ( 1.0 + e );
-      hvx = h * v.x;
-      hvz = h * v.z;
-      hvxy = hvx * v.y;
-      hvxz = hvx * v.z;
-      hvyz = hvz * v.y;
-
-      return Matrix3.rowMajor(
-        e + hvx * v.x, hvxy - v.z, hvxz + v.y,
-        hvxy + v.z, e + h * v.y * v.y, hvyz - v.x,
-        hvxz - v.y, hvyz + v.x, e + hvz * v.z
-      );
-    }
-  };
+  Matrix3.rotateAToB = function( a, b ) { return FastMatrix3.dirtyFromPool().setRotationAToB( a, b ); };
 
   Matrix3.prototype = {
     constructor: Matrix3,
@@ -228,6 +105,10 @@ define( function( require ) {
     m20: function() { return this.entries[2]; },
     m21: function() { return this.entries[5]; },
     m22: function() { return this.entries[8]; },
+    
+    isIdentity: function() {
+      return this.type === Types.IDENTITY || this.equals( Matrix3.IDENTITY );
+    },
     
     isAffine: function() {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
@@ -466,7 +347,7 @@ define( function( require ) {
     },
     
     timesMatrix: function( m ) {
-      // I * M === M * I === I (the identity)
+      // I * M === M * I === M (the identity)
       if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
         return this.type === Types.IDENTITY ? m : this;
       }
@@ -545,13 +426,7 @@ define( function( require ) {
     * Mutable operations (changes this matrix)
     *----------------------------------------------------------------------------*/
     
-    makeImmutable: function() {
-      this.rowMajor = function() {
-        throw new Error( 'Cannot modify immutable matrix' );
-      };
-      return this;
-    },
-    
+    // every mutable method goes through rowMajor
     rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
       this.entries[0] = v00;
       this.entries[1] = v10;
@@ -565,6 +440,20 @@ define( function( require ) {
       
       // TODO: consider performance of the affine check here
       this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
+      return this;
+    },
+    
+    set: function( matrix ) {
+      return this.rowMajor( matrix.m00(), matrix.m01(), matrix.m02(),
+                            matrix.m10(), matrix.m11(), matrix.m12(),
+                            matrix.m20(), matrix.m21(), matrix.m22(),
+                            matrix.type );
+    },
+    
+    makeImmutable: function() {
+      this.rowMajor = function() {
+        throw new Error( 'Cannot modify immutable matrix' );
+      };
       return this;
     },
     
@@ -660,9 +549,16 @@ define( function( require ) {
     },
     
     multiplyMatrix: function( m ) {
-      // I * M === M * I === I (the identity)
-      if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
-        return this.type === Types.IDENTITY ? m : this;
+      // M * I === M (the identity)
+      if ( m.type === Types.IDENTITY ) {
+        // no change needed
+        return this;
+      }
+      
+      // I * M === M (the identity)
+      if ( this.type === Types.IDENTITY ) {
+        // copy the other matrix to us
+        return this.set( m );
       }
       
       if ( this.type === m.type ) {
@@ -705,42 +601,185 @@ define( function( require ) {
                             this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
     },
     
+    setToIdentity: function() {
+      return this.rowMajor( 1, 0, 0,
+                            0, 1, 0,
+                            0, 0, 1,
+                            Types.IDENTITY );
+    },
+    
+    setToTranslation: function( x, y ) {
+      return this.rowMajor( 1, 0, x,
+                            0, 1, y,
+                            0, 0, 1,
+                            Types.TRANSLATION_2D );
+    },
+    
+    setToScale: function( x, y ) {
+      // allow using one parameter to scale everything
+      y = y === undefined ? x : y;
+
+      return this.rowMajor( x, 0, 0,
+                            0, y, 0,
+                            0, 0, 1,
+                            Types.SCALING );
+    },
+    
+    // row major
+    setToAffine: function( m00, m01, m02, m10, m11, m12 ) {
+      return this.rowMajor( m00, m01, m02, m10, m11, m12, 0, 0, 1, Types.AFFINE );
+    },
+    
+    // axis is a normalized Vector3, angle in radians.
+    setToRotationAxisAngle: function( axis, angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+      var C = 1 - c;
+
+      return this.rowMajor( axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s,
+                            axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s,
+                            axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c,
+                            Types.OTHER );
+    },
+    
+    setToRotationX: function( angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor( 1, 0, 0,
+                            0, c, -s,
+                            0, s, c,
+                            Types.OTHER );
+    },
+    
+    setToRotationY: function( angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor( c, 0, s,
+                            0, 1, 0,
+                            -s, 0, c,
+                            Types.OTHER );
+    },
+    
+    setToRotationZ: function( angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor( c, -s, 0,
+                            s, c, 0,
+                            0, 0, 1,
+                            Types.AFFINE );
+    },
+    
+    setToSVGMatrix: function( svgMatrix ) {
+      return this.rowMajor( svgMatrix.a, svgMatrix.c, svgMatrix.e,
+                            svgMatrix.b, svgMatrix.d, svgMatrix.f,
+                            0, 0, 1,
+                            Types.AFFINE );
+    },
+    
+    // a rotation matrix that rotates A to B (Vector3 instances), by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
+    setRotationAToB: function( a, b ) {
+      // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
+      var start = a;
+      var end = b;
+
+      var epsilon = 0.0001;
+
+      var e, h, f;
+
+      var v = start.cross( end );
+      e = start.dot( end );
+      f = ( e < 0 ) ? -e : e;
+
+      // if "from" and "to" vectors are nearly parallel
+      if ( f > 1.0 - epsilon ) {
+        var c1, c2, c3;
+
+        var x = new dot.Vector3(
+          ( start.x > 0.0 ) ? start.x : -start.x,
+          ( start.y > 0.0 ) ? start.y : -start.y,
+          ( start.z > 0.0 ) ? start.z : -start.z
+        );
+
+        if ( x.x < x.y ) {
+          if ( x.x < x.z ) {
+            x = dot.Vector3.X_UNIT;
+          }
+          else {
+            x = dot.Vector3.Z_UNIT;
+          }
+        }
+        else {
+          if ( x.y < x.z ) {
+            x = dot.Vector3.Y_UNIT;
+          }
+          else {
+            x = dot.Vector3.Z_UNIT;
+          }
+        }
+
+        var u = x.minus( start );
+        v = x.minus( end );
+
+        c1 = 2.0 / u.dot( u );
+        c2 = 2.0 / v.dot( v );
+        c3 = c1 * c2 * u.dot( v );
+
+        return this.rowMajor(
+          -c1 * u.x * u.x - c2 * v.x * v.x + c3 * v.x * u.x + 1,
+          -c1 * u.x * u.y - c2 * v.x * v.y + c3 * v.x * u.y,
+          -c1 * u.x * u.z - c2 * v.x * v.z + c3 * v.x * u.z,
+          -c1 * u.y * u.x - c2 * v.y * v.x + c3 * v.y * u.x,
+          -c1 * u.y * u.y - c2 * v.y * v.y + c3 * v.y * u.y + 1,
+          -c1 * u.y * u.z - c2 * v.y * v.z + c3 * v.y * u.z,
+          -c1 * u.z * u.x - c2 * v.z * v.x + c3 * v.z * u.x,
+          -c1 * u.z * u.y - c2 * v.z * v.y + c3 * v.z * u.y,
+          -c1 * u.z * u.z - c2 * v.z * v.z + c3 * v.z * u.z + 1
+        );
+      }
+      else {
+        // the most common case, unless "start"="end", or "start"=-"end"
+        var hvx, hvz, hvxy, hvxz, hvyz;
+        h = 1.0 / ( 1.0 + e );
+        hvx = h * v.x;
+        hvz = h * v.z;
+        hvxy = hvx * v.y;
+        hvxz = hvx * v.z;
+        hvyz = hvz * v.y;
+
+        return this.rowMajor(
+          e + hvx * v.x, hvxy - v.z,        hvxz + v.y,
+          hvxy + v.z,    e + h * v.y * v.y, hvyz - v.x,
+          hvxz - v.y,    hvyz + v.x,        e + hvz * v.z
+        );
+      }
+    },
+    
     /*---------------------------------------------------------------------------*
     * Mutable operations (changes the parameter)
     *----------------------------------------------------------------------------*/
     
     multiplyVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02();
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12();
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m01() * v.y + this.m02(),
+                      this.m10() * v.x + this.m11() * v.y + this.m12() );
     },
     
     multiplyVector3: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
-      var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
-      v.setX( x );
-      v.setY( y );
-      v.setZ( z );
-      return v;
+      return v.setXYZ( this.m00() * v.x + this.m01() * v.y + this.m02() * v.z,
+                       this.m10() * v.x + this.m11() * v.y + this.m12() * v.z,
+                       this.m20() * v.x + this.m21() * v.y + this.m22() * v.z );
     },
     
     multiplyTransposeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m10() * v.y;
-      var y = this.m01() * v.x + this.m11() * v.y;
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m10() * v.y,
+                      this.m01() * v.x + this.m11() * v.y );
     },
     
     multiplyRelativeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y;
-      var y = this.m10() * v.y + this.m11() * v.y;
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m01() * v.y,
+                      this.m10() * v.y + this.m11() * v.y );
     },
     
     // sets the transform of a Canvas 2D rendering context to the affine part of this matrix
@@ -771,6 +810,29 @@ define( function( require ) {
       }
     }
   };
+  
+  /* jshint -W064 */
+  Poolable( Matrix3, {
+    defaultFactory: function() { return new Matrix3(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+        if ( pool.length ) {
+          return pool.pop().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        } else {
+          return new Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        }
+      };
+    }
+  } );
+  
+  /* jshint -W064 */
+  Poolable( FastMatrix3, {
+    // no constructor function needed, always grab a dirty one
+    defaultFactory: function() { return new FastMatrix3(); }
+  } );
+  
+  // prototype should be done by here, so now we hook it up to FastMatrix3
+  inherit( Matrix3, FastMatrix3 );
   
   // create an immutable
   Matrix3.IDENTITY = new Matrix3( 1, 0, 0,

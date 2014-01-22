@@ -11,8 +11,6 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   require( 'DOT/Util' );
@@ -29,6 +27,8 @@ define( function( require ) {
 
   Vector3.prototype = {
     constructor: Vector3,
+    isVector3: true,
+    dimension: 3,
 
     magnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
@@ -55,10 +55,30 @@ define( function( require ) {
     isFinite: function() {
       return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z );
     },
+    
+    equals: function( other ) {
+      return this.x === other.x && this.y === other.y && this.z === other.z;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
+      if ( !epsilon ) {
+        epsilon = 0;
+      }
+      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) <= epsilon;
+    },
 
     /*---------------------------------------------------------------------------*
      * Immutables
      *----------------------------------------------------------------------------*/
+    
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector3( this.x, this.y, this.z );
+      }
+    },
 
     cross: function( v ) {
       return new Vector3(
@@ -124,6 +144,11 @@ define( function( require ) {
     blend: function( vector, ratio ) {
       return this.plus( vector.minus( this ).times( ratio ) );
     },
+    
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
 
     toString: function() {
       return "Vector3(" + this.x + ", " + this.y + ", " + this.z + ")";
@@ -140,88 +165,77 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Mutables
      *----------------------------------------------------------------------------*/
-
-    set: function( x, y, z ) {
+    
+    // our core mutables, all mutation should go through these
+    setXYZ: function( x, y, z ) {
       this.x = x;
       this.y = y;
       this.z = z;
+      return this;
     },
-
     setX: function( x ) {
       this.x = x;
+      return this;
     },
-
     setY: function( y ) {
       this.y = y;
+      return this;
     },
-
     setZ: function( z ) {
       this.z = z;
+      return this;
     },
-
-    copy: function( v ) {
-      this.x = v.x;
-      this.y = v.y;
-      this.z = v.z;
+    
+    set: function( v ) {
+      return this.setXYZ( v.x, v.y, v.z );
     },
 
     add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      this.z += v.z;
+      return this.setXYZ( this.x + v.x, this.y + v.y, this.z + v.z );
     },
 
     addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      this.z += scalar;
+      return this.setXYZ( this.x + scalar, this.y + scalar, this.z + scalar );
     },
 
     subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      this.z -= v.z;
+      return this.setXYZ( this.x - v.x, this.y - v.y, this.z - v.z );
     },
 
     subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      this.z -= scalar;
+      return this.setXYZ( this.x - scalar, this.y - scalar, this.z - scalar );
+    },
+    
+    multiplyScalar: function( scalar ) {
+      return this.setXYZ( this.x * scalar, this.y * scalar, this.z * scalar );
+    },
+    
+    multiply: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.multiplyScalar( scalar );
     },
 
     componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      this.z *= v.z;
+      return this.setXYZ( this.x * v.x, this.y * v.y, this.z * v.z );
     },
 
     divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      this.z /= scalar;
+      return this.setXYZ( this.x / scalar, this.y / scalar, this.z / scalar );
     },
 
     negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      this.z = -this.z;
+      return this.setXYZ( -this.x, -this.y, -this.z );
     },
     
-    equals: function( other ) {
-      return this.x === other.x && this.y === other.y && this.z === other.z;
-    },
-    
-    equalsEpsilon: function( other, epsilon ) {
-      if ( !epsilon ) {
-        epsilon = 0;
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        return this.divideScalar( mag );
       }
-      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) <= epsilon;
-    },
-
-    isVector3: true,
-
-    dimension: 3
-
+    }
   };
 
   /*---------------------------------------------------------------------------*
@@ -245,18 +259,10 @@ define( function( require ) {
   };
 
   // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
+  Immutable.mutableOverrideHelper( 'setXYZ' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
   Immutable.mutableOverrideHelper( 'setZ' );
-  Immutable.mutableOverrideHelper( 'copy' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
 
   // helpful immutable constants
   Vector3.ZERO = new Immutable( 0, 0, 0 );

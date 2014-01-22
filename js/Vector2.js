@@ -9,8 +9,6 @@
 define( function( require ) {
   'use strict';
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   var inherit = require( 'PHET_CORE/inherit' );
@@ -31,14 +29,12 @@ define( function( require ) {
   var Vector2 = dot.Vector2;
   
   Vector2.createPolar = function( magnitude, angle ) {
-    return new Vector2( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
+    return new Vector2().setPolar( magnitude, angle );
   };
   
   Vector2.prototype = {
     constructor: Vector2,
-    
     isVector2: true,
-    
     dimension: 2,
     
     magnitude: function() {
@@ -67,9 +63,20 @@ define( function( require ) {
       var dy = this.y - point.y;
       return dx * dx + dy * dy;
     },
+
+    // the squared distance between this vector (treated as a point) and another point as (x,y)
+    distanceSquaredXY: function( x, y ) {
+      var dx = this.x - x;
+      var dy = this.y - y;
+      return dx * dx + dy * dy ;
+    },
     
     dot: function( v ) {
       return this.x * v.x + this.y * v.y;
+    },
+
+    dotXY: function( vx, vy ) {
+      return this.x * vx + this.y * vy;
     },
     
     equals: function( other ) {
@@ -91,8 +98,13 @@ define( function( require ) {
      * Immutables
      *----------------------------------------------------------------------------*/
     
-    copy: function() {
-      return new Vector2( this.x, this.y );
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector2( this.x, this.y );
+      }
     },
     
     // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
@@ -104,8 +116,7 @@ define( function( require ) {
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
-      }
-      else {
+      } else {
         return new Vector2( this.x / mag, this.y / mag );
       }
     },
@@ -127,13 +138,21 @@ define( function( require ) {
     plus: function( v ) {
       return new Vector2( this.x + v.x, this.y + v.y );
     },
-    
+
+    plusXY: function( x, y ) {
+      return new Vector2( this.x + x, this.y + y );
+    },
+
     plusScalar: function( scalar ) {
       return new Vector2( this.x + scalar, this.y + scalar );
     },
     
     minus: function( v ) {
       return new Vector2( this.x - v.x, this.y - v.y );
+    },
+
+    minusXY: function( x,y ) {
+      return new Vector2( this.x - x, this.y - y );
     },
     
     minusScalar: function( scalar ) {
@@ -174,8 +193,13 @@ define( function( require ) {
       return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
     },
     
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
+    
     toString: function() {
-      return "Vector2(" + this.x + ", " + this.y + ")";
+      return 'Vector2(' + this.x + ', ' + this.y + ')';
     },
     
     toVector3: function() {
@@ -186,62 +210,84 @@ define( function( require ) {
      * Mutables
      *----------------------------------------------------------------------------*/
     
-    set: function( x, y ) {
+    // our core three functions which all mutation should go through
+    setXY: function( x, y ) {
       this.x = x;
       this.y = y;
       return this;
     },
-    
     setX: function( x ) {
       this.x = x;
       return this;
     },
-    
     setY: function( y ) {
       this.y = y;
       return this;
     },
     
+    set: function( v ) {
+      return this.setXY( v.x, v.y );
+    },
+
+    //Sets the magnitude of the vector, keeping the same direction (though a negative magnitude will flip the vector direction)
+    setMagnitude: function( m ) {
+      var scale = m / this.magnitude();
+      return this.multiplyScalar( scale );
+    },
+    
     add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      return this;
+      return this.setXY( this.x + v.x, this.y + v.y );
+    },
+
+    addXY: function( x, y ) {
+      return this.setXY( this.x + x, this.y + y );
     },
     
     addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      return this;
+      return this.setXY( this.x + scalar, this.y + scalar );
     },
     
     subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      return this;
+      return this.setXY( this.x - v.x, this.y - v.y );
     },
     
     subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      return this;
+      return this.setXY( this.x - scalar, this.y - scalar );
+    },
+    
+    multiplyScalar: function( scalar ) {
+      return this.setXY( this.x * scalar, this.y * scalar );
+    },
+    
+    multiply: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.multiplyScalar( scalar );
     },
     
     componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      return this;
+      return this.setXY( this.x * v.x, this.y * v.y );
     },
     
     divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      return this;
+      return this.setXY( this.x / scalar, this.y / scalar );
     },
     
     negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      return this;
+      return this.setXY( -this.x, -this.y );
+    },
+    
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        return this.divideScalar( mag );
+      }
+    },
+    
+    setPolar: function( magnitude, angle ) {
+      return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
     }
     
   };
@@ -253,7 +299,7 @@ define( function( require ) {
     constructorDuplicateFactory: function( pool ) {
       return function( x, y ) {
         if ( pool.length ) {
-          return pool.pop().set( x, y );
+          return pool.pop().setXY( x, y );
         } else {
           return new Vector2( x, y );
         }
@@ -279,16 +325,9 @@ define( function( require ) {
   };
   
   // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
+  Immutable.mutableOverrideHelper( 'setXY' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
   
   // helpful immutable constants
   Vector2.ZERO = new Immutable( 0, 0 );

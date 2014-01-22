@@ -18,14 +18,14 @@ define( function( require ) {
   // takes a 4x4 matrix
   dot.Transform4 = function Transform4( matrix ) {
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
-    this.set( matrix === undefined ? dot.Matrix4.IDENTITY : matrix );
+    this.setMatrix( matrix === undefined ? dot.Matrix4.IDENTITY : matrix );
   };
   var Transform4 = dot.Transform4;
   
   Transform4.prototype = {
     constructor: Transform4,
     
-    set: function( matrix ) {
+    setMatrix: function( matrix ) {
       this.matrix = matrix;
       
       // compute these lazily
@@ -60,11 +60,11 @@ define( function( require ) {
     },
     
     prepend: function( matrix ) {
-      this.set( matrix.timesMatrix( this.matrix ) );
+      this.setMatrix( matrix.timesMatrix( this.matrix ) );
     },
     
     append: function( matrix ) {
-      this.set( this.matrix.timesMatrix( matrix ) );
+      this.setMatrix( this.matrix.timesMatrix( matrix ) );
     },
     
     prependTransform: function( transform ) {
