@@ -583,7 +583,7 @@ define("almond", function(){});
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'ASSERT/assert',['require'],function( require ) {
+define( 'ASSERT/assert',[],function() {
   
   
   // CAUTION: if using the AST modifier for assertions, do not separate this out into its own 'assert' variable
@@ -616,18 +616,43 @@ define( 'ASSERT/assert',['require'],function( require ) {
   };
 } );
 
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+define( 'PHET_CORE/core',['require','ASSERT/assert','ASSERT/assert'],function( require ) {
+  
+  
+  window.assert = window.assert || require( 'ASSERT/assert' )( 'basic' );
+  window.assertSlow = window.assertSlow || require( 'ASSERT/assert' )( 'slow', true );
+  
+  // no phetAllocation initialized, since we don't need it with just phet-core, and this file is required before that
+  
+  // will be filled in by other modules
+  return {};
+} );
+
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
  * Object instance allocation tracking, so we can cut down on garbage collection.
  *
+ * Sample usage:
+ * 1. Run the sim and set up the scenario that you wish to profile
+ * 2. In the JS console, type: window.alloc={}
+ * 3. Wait until you have taken enough data
+ * 4. Type x = window.alloc; delete window.alloc;
+ *
+ * Now you can inspect the x variable which contains the allocation information.
+ *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'PHET_CORE/phetAllocation',['require'],function( require ) {
+define( 'PHET_CORE/phetAllocation',['require','PHET_CORE/core'],function( require ) {
   
   
-  return function phetAllocation( name ) {
+  var core = require( 'PHET_CORE/core' );
+  
+  var phetAllocation = core.phetAllocation = function phetAllocation( name ) {
     if ( window.alloc ) {
       var stack;
       try { throw new Error(); } catch ( e ) { stack = e.stack; }
@@ -652,15 +677,17 @@ define( 'PHET_CORE/phetAllocation',['require'],function( require ) {
       };
     }
   };
+  return phetAllocation;
 } );
 
 
 // Copyright 2002-2013, University of Colorado Boulder
 
-define( 'DOT/dot',['require','ASSERT/assert','PHET_CORE/phetAllocation'],function( require ) {
+define( 'DOT/dot',['require','ASSERT/assert','ASSERT/assert','PHET_CORE/phetAllocation'],function( require ) {
   
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
+  window.assert = window.assert || require( 'ASSERT/assert' )( 'basic' );
+  window.assertSlow = window.assertSlow || require( 'ASSERT/assert' )( 'slow', true );
   
   // object allocation tracking
   window.phetAllocation = require( 'PHET_CORE/phetAllocation' );
@@ -681,8 +708,6 @@ define( 'DOT/dot',['require','ASSERT/assert','PHET_CORE/phetAllocation'],functio
   // TODO: performance: check browser speed to compare how fast this is. We may need to add a 32 option for GL ES.
   dot.FastArray = window.Float64Array ? window.Float64Array : window.Array;
   
-  dot.assert = assert;
-  
   // will be filled in by other modules
   return dot;
 } );
@@ -697,10 +722,12 @@ define( 'DOT/dot',['require','ASSERT/assert','PHET_CORE/phetAllocation'],functio
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'PHET_CORE/extend',['require'],function( require ) {
+define( 'PHET_CORE/extend',['require','PHET_CORE/core'],function( require ) {
   
   
-  return function extend( obj ) {
+  var core = require( 'PHET_CORE/core' );
+  
+  var extend = core.extend = function extend( obj ) {
     _.each( Array.prototype.slice.call( arguments, 1 ), function( source ) {
       if ( source ) {
         for ( var prop in source ) {
@@ -710,60 +737,7 @@ define( 'PHET_CORE/extend',['require'],function( require ) {
     });
     return obj;
   };
-} );
-
-// Copyright 2002-2013, University of Colorado Boulder
-
-/**
- * Experimental prototype inheritance
- *
- * @author Jonathan Olson <olsonsjc@gmail.com>
- */
-define( 'PHET_CORE/inherit',['require','PHET_CORE/extend'],function( require ) {
-  
-  
-  var extend = require( 'PHET_CORE/extend' );
-  
-  /**
-   * Experimental inheritance prototype, similar to Inheritance.inheritPrototype, but maintains
-   * supertype.prototype.constructor while properly copying ES5 getters and setters.
-   *
-   * TODO: find problems with this! It's effectively what is being used by Scenery
-   * TODO: consider inspecting arguments to see whether they are functions or just objects, to support
-   *       something like inherit( subtype, supertypeA, supertypeB, properties )
-   *
-   * Usage:
-   * function A() { scenery.Node.call( this ); };
-   * inherit( scenery.Node, A, {
-   *   customBehavior: function() { ... },
-   *   isAnA: true
-   * } );
-   * new A().isAnA // true
-   * new scenery.Node().isAnA // undefined
-   * new A().constructor.name // 'A'
-   *
-   * @param subtype             Constructor for the subtype. Generally should contain supertype.call( this, ... )
-   * @param supertype           Constructor for the supertype.
-   * @param prototypeProperties [optional] object containing properties that will be set on the prototype.
-   * @param staticProperties [optional] object containing properties that will be set on the constructor function itself
-   */
-  function inherit( supertype, subtype, prototypeProperties, staticProperties ) {
-    function F() {}
-    F.prototype = supertype.prototype; // so new F().__proto__ === supertype.prototype
-    
-    subtype.prototype = extend( // extend will combine the properties and constructor into the new F copy
-      new F(),                  // so new F().__proto__ === supertype.prototype, and the prototype chain is set up nicely
-      { constructor: subtype }, // overrides the constructor properly
-      prototypeProperties       // [optional] additional properties for the prototype, as an object.
-    );
-
-    //Copy the static properties onto the subtype constructor so they can be accessed 'statically'
-    extend( subtype, staticProperties );
-    
-    return subtype; // pass back the subtype so it can be returned immediately as a module export
-  }
-
-  return inherit;
+  return extend;
 } );
 
 // Copyright 2002-2013, University of Colorado
@@ -774,15 +748,16 @@ define( 'PHET_CORE/inherit',['require','PHET_CORE/extend'],function( require ) {
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'PHET_CORE/Poolable',['require','PHET_CORE/extend'],function( require ) {
+define( 'PHET_CORE/Poolable',['require','PHET_CORE/core','PHET_CORE/extend'],function( require ) {
   
   
+  var core = require( 'PHET_CORE/core' );
   var extend = require( 'PHET_CORE/extend' );
   
   /*
    * For option details, please see documentation inside this constructor body for now
    */
-  return function Poolable( type, options ) {
+  var Poolable = core.Poolable = function Poolable( type, options ) {
     var proto = type.prototype;
     
     // defaults
@@ -845,6 +820,64 @@ define( 'PHET_CORE/Poolable',['require','PHET_CORE/extend'],function( require ) 
       }
     };
   };
+  return Poolable;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * Experimental prototype inheritance
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+define( 'PHET_CORE/inherit',['require','PHET_CORE/core','PHET_CORE/extend'],function( require ) {
+  
+  
+  var core = require( 'PHET_CORE/core' );
+  var extend = require( 'PHET_CORE/extend' );
+  
+  /**
+   * Experimental inheritance prototype, similar to Inheritance.inheritPrototype, but maintains
+   * supertype.prototype.constructor while properly copying ES5 getters and setters.
+   *
+   * TODO: find problems with this! It's effectively what is being used by Scenery
+   * TODO: consider inspecting arguments to see whether they are functions or just objects, to support
+   *       something like inherit( subtype, supertypeA, supertypeB, properties )
+   *
+   * Usage:
+   * function A() { scenery.Node.call( this ); };
+   * inherit( scenery.Node, A, {
+   *   customBehavior: function() { ... },
+   *   isAnA: true
+   * } );
+   * new A().isAnA // true
+   * new scenery.Node().isAnA // undefined
+   * new A().constructor.name // 'A'
+   *
+   * @param subtype             Constructor for the subtype. Generally should contain supertype.call( this, ... )
+   * @param supertype           Constructor for the supertype.
+   * @param prototypeProperties [optional] object containing properties that will be set on the prototype.
+   * @param staticProperties [optional] object containing properties that will be set on the constructor function itself
+   */
+  var inherit = core.inherit = function inherit( supertype, subtype, prototypeProperties, staticProperties ) {
+    assert && assert( typeof supertype === 'function' );
+    
+    function F() {}
+    F.prototype = supertype.prototype; // so new F().__proto__ === supertype.prototype
+    
+    subtype.prototype = extend( // extend will combine the properties and constructor into the new F copy
+      new F(),                  // so new F().__proto__ === supertype.prototype, and the prototype chain is set up nicely
+      { constructor: subtype }, // overrides the constructor properly
+      prototypeProperties       // [optional] additional properties for the prototype, as an object.
+    );
+
+    //Copy the static properties onto the subtype constructor so they can be accessed 'statically'
+    extend( subtype, staticProperties );
+    
+    return subtype; // pass back the subtype so it can be returned immediately as a module export
+  };
+
+  return inherit;
 } );
 
 // Copyright 2002-2013, University of Colorado Boulder
@@ -855,10 +888,8 @@ define( 'PHET_CORE/Poolable',['require','PHET_CORE/extend'],function( require ) 
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
+define( 'DOT/Util',['require','DOT/dot'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
   // require( 'DOT/Vector2' ); // Require.js doesn't like the circular reference
@@ -944,6 +975,68 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
       );
     },
     
+    // assumes a sphere with the specified radius, centered at the origin
+    sphereRayIntersection: function( radius, ray, epsilon ) {
+      epsilon = epsilon === undefined ? 1e-5 : epsilon;
+
+      // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
+      var center = new dot.Vector3();
+
+      var rayDir = ray.dir;
+      var pos = ray.pos;
+      var centerToRay = pos.minus( center );
+
+      // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
+      var tmp = rayDir.dot( centerToRay );
+      var centerToRayDistSq = centerToRay.magnitudeSquared();
+      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
+      if ( det < epsilon ) {
+        // ray misses sphere entirely
+        return null;
+      }
+
+      var base = rayDir.dot( center ) - rayDir.dot( pos );
+      var sqt = Math.sqrt( det ) / 2;
+
+      // the "first" entry point distance into the sphere. if we are inside the sphere, it is behind us
+      var ta = base - sqt;
+
+      // the "second" entry point distance
+      var tb = base + sqt;
+
+      if ( tb < epsilon ) {
+        // sphere is behind ray, so don't return an intersection
+        return null;
+      }
+
+      var hitPositionB = ray.pointAtDistance( tb );
+      var normalB = hitPositionB.minus( center ).normalized();
+
+      if ( ta < epsilon ) {
+        // we are inside the sphere
+        // in => out
+        return {
+          distance: tb,
+          hitPoint: hitPositionB,
+          normal: normalB.negated(),
+          fromOutside: false
+        };
+      }
+      else {
+        // two possible hits
+        var hitPositionA = ray.pointAtDistance( ta );
+        var normalA = hitPositionA.minus( center ).normalized();
+
+        // close hit, we have out => in
+        return {
+          distance: ta,
+          hitPoint: hitPositionA,
+          normal: normalA,
+          fromOutside: true
+        };
+      }
+    },
+    
     // return an array of real roots of ax^2 + bx + c = 0
     solveQuadraticRootsReal: function( a, b, c ) {
       var epsilon = 1E7;
@@ -984,7 +1077,6 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
       c /= a;
       d /= a;
       
-      var s, t;
       var q = ( 3.0 * c - ( b * b ) ) / 9;
       var r = ( -(27 * d) + b * (9 * c - 2 * (b * b)) ) / 54;
       var discriminant = q  * q  * q + r  * r;
@@ -1029,10 +1121,19 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
      * A predictable implementation of toFixed.
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
+     * @param {number} number
+     * @param {number} decimalPlaces
+     * @returns {string}
      */
     toFixed: function( number, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
-      return Math.round( number * multiplier ) / multiplier;
+      var value = Math.round( number * multiplier ) / multiplier;
+      return value.toFixed( decimalPlaces );
+    },
+
+    // Convenience for returning a number instead of a string.
+    toFixedNumber: function( number, decimalPlaces ) {
+      return parseFloat( Util.toFixed( number, decimalPlaces ) );
     },
 
     isInteger: function( number ) {
@@ -1069,6 +1170,53 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
           return new dot.Vector2( x, y );
         }
       }
+    },
+
+    /**
+     * Squared distance from a point to a line segment squared.
+     * See http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+     *
+     * @param point the point
+     * @param a start point of a line segment
+     * @param b end point of a line segment
+     * @returns {Number}
+     */
+    distToSegmentSquared: function( point, a, b ) {
+      var segmentLength = a.distanceSquared( b );
+      if ( segmentLength === 0 ) { return point.distanceSquared( a ); }
+      var t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / segmentLength;
+      return t < 0 ? point.distanceSquared( a ) :
+             t > 1 ? point.distanceSquared( b ) :
+             point.distanceSquared( new dot.Vector2( a.x + t * (b.x - a.x), a.y + t * (b.y - a.y) ) );
+    },
+
+    /**
+     * Squared distance from a point to a line segment squared.
+     * @param point the point
+     * @param a start point of a line segment
+     * @param b end point of a line segment
+     * @returns {Number}
+     */
+    distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); },
+    
+    arePointsCollinear: function( a, b, c, epsilon ) {
+      if ( epsilon === undefined ) {
+        epsilon = 0;
+      }
+      return Util.triangleArea( a, b, c ) <= epsilon;
+    },
+    
+    triangleArea: function( a, b, c ) {
+      return Math.abs( Util.triangleAreaSigned( a, b, c ) );
+    },
+    
+    // TODO: investigate which way we want the sign (Canvas or WebGL style)
+    triangleAreaSigned: function( a, b, c ) {
+      return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
+    },
+
+    log10: function( val ) {
+      return Math.log( val ) / Math.LN10;
     }
   };
   var Util = dot.Util;
@@ -1083,6 +1231,7 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
   dot.toRadians = Util.toRadians;
   dot.toDegrees = Util.toDegrees;
   dot.lineLineIntersection = Util.lineLineIntersection;
+  dot.sphereRayIntersection = Util.sphereRayIntersection;
   dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
   dot.solveCubicRootsReal = Util.solveCubicRootsReal;
   dot.cubeRoot = Util.cubeRoot;
@@ -1099,10 +1248,8 @@ define( 'DOT/Util',['require','ASSERT/assert','DOT/dot'],function( require ) {
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','PHET_CORE/Poolable','DOT/Util'],function( require ) {
+define( 'DOT/Vector2',['require','DOT/dot','PHET_CORE/inherit','PHET_CORE/Poolable','DOT/Util'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
   
@@ -1124,14 +1271,12 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
   var Vector2 = dot.Vector2;
   
   Vector2.createPolar = function( magnitude, angle ) {
-    return new Vector2( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
+    return new Vector2().setPolar( magnitude, angle );
   };
   
   Vector2.prototype = {
     constructor: Vector2,
-    
     isVector2: true,
-    
     dimension: 2,
     
     magnitude: function() {
@@ -1160,9 +1305,20 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
       var dy = this.y - point.y;
       return dx * dx + dy * dy;
     },
+
+    // the squared distance between this vector (treated as a point) and another point as (x,y)
+    distanceSquaredXY: function( x, y ) {
+      var dx = this.x - x;
+      var dy = this.y - y;
+      return dx * dx + dy * dy ;
+    },
     
     dot: function( v ) {
       return this.x * v.x + this.y * v.y;
+    },
+
+    dotXY: function( vx, vy ) {
+      return this.x * vx + this.y * vy;
     },
     
     equals: function( other ) {
@@ -1184,8 +1340,13 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
      * Immutables
      *----------------------------------------------------------------------------*/
     
-    copy: function() {
-      return new Vector2( this.x, this.y );
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector2( this.x, this.y );
+      }
     },
     
     // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
@@ -1197,8 +1358,7 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
-      }
-      else {
+      } else {
         return new Vector2( this.x / mag, this.y / mag );
       }
     },
@@ -1220,13 +1380,21 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
     plus: function( v ) {
       return new Vector2( this.x + v.x, this.y + v.y );
     },
-    
+
+    plusXY: function( x, y ) {
+      return new Vector2( this.x + x, this.y + y );
+    },
+
     plusScalar: function( scalar ) {
       return new Vector2( this.x + scalar, this.y + scalar );
     },
     
     minus: function( v ) {
       return new Vector2( this.x - v.x, this.y - v.y );
+    },
+
+    minusXY: function( x,y ) {
+      return new Vector2( this.x - x, this.y - y );
     },
     
     minusScalar: function( scalar ) {
@@ -1267,8 +1435,13 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
       return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
     },
     
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
+    
     toString: function() {
-      return "Vector2(" + this.x + ", " + this.y + ")";
+      return 'Vector2(' + this.x + ', ' + this.y + ')';
     },
     
     toVector3: function() {
@@ -1279,62 +1452,84 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
      * Mutables
      *----------------------------------------------------------------------------*/
     
-    set: function( x, y ) {
+    // our core three functions which all mutation should go through
+    setXY: function( x, y ) {
       this.x = x;
       this.y = y;
       return this;
     },
-    
     setX: function( x ) {
       this.x = x;
       return this;
     },
-    
     setY: function( y ) {
       this.y = y;
       return this;
     },
     
+    set: function( v ) {
+      return this.setXY( v.x, v.y );
+    },
+
+    //Sets the magnitude of the vector, keeping the same direction (though a negative magnitude will flip the vector direction)
+    setMagnitude: function( m ) {
+      var scale = m / this.magnitude();
+      return this.multiplyScalar( scale );
+    },
+    
     add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      return this;
+      return this.setXY( this.x + v.x, this.y + v.y );
+    },
+
+    addXY: function( x, y ) {
+      return this.setXY( this.x + x, this.y + y );
     },
     
     addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      return this;
+      return this.setXY( this.x + scalar, this.y + scalar );
     },
     
     subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      return this;
+      return this.setXY( this.x - v.x, this.y - v.y );
     },
     
     subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      return this;
+      return this.setXY( this.x - scalar, this.y - scalar );
+    },
+    
+    multiplyScalar: function( scalar ) {
+      return this.setXY( this.x * scalar, this.y * scalar );
+    },
+    
+    multiply: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.multiplyScalar( scalar );
     },
     
     componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      return this;
+      return this.setXY( this.x * v.x, this.y * v.y );
     },
     
     divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      return this;
+      return this.setXY( this.x / scalar, this.y / scalar );
     },
     
     negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      return this;
+      return this.setXY( -this.x, -this.y );
+    },
+    
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        return this.divideScalar( mag );
+      }
+    },
+    
+    setPolar: function( magnitude, angle ) {
+      return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
     }
     
   };
@@ -1346,7 +1541,7 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
     constructorDuplicateFactory: function( pool ) {
       return function( x, y ) {
         if ( pool.length ) {
-          return pool.pop().set( x, y );
+          return pool.pop().setXY( x, y );
         } else {
           return new Vector2( x, y );
         }
@@ -1372,16 +1567,9 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
   };
   
   // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
+  Immutable.mutableOverrideHelper( 'setXY' );
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
   
   // helpful immutable constants
   Vector2.ZERO = new Immutable( 0, 0 );
@@ -1406,12 +1594,11 @@ define( 'DOT/Vector2',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],function( require ) {
+define( 'DOT/Bounds2',['require','DOT/dot','PHET_CORE/Poolable','DOT/Vector2'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   
   require( 'DOT/Vector2' );
   
@@ -1429,6 +1616,9 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
 
   Bounds2.prototype = {
     constructor: Bounds2,
+    
+    isBounds: true,
+    dimension: 2,
     
     /*---------------------------------------------------------------------------*
     * Properties
@@ -1519,6 +1709,39 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
       return !this.intersection( bounds ).isEmpty();
     },
     
+    // distance to the closest point inside the Bounds2
+    minimumDistanceToPointSquared: function( point ) {
+      var closeX = point.x < this.minX ? this.minX : ( point.x > this.maxX ? this.maxX : null );
+      var closeY = point.y < this.minY ? this.minY : ( point.y > this.maxY ? this.maxY : null );
+      var d;
+      if ( closeX === null && closeY === null ) {
+        // inside, or on the boundary
+        return 0;
+      } else if ( closeX === null ) {
+        // vertically directly above/below
+        d = closeY - point.y;
+        return d * d;
+      } else if ( closeY === null ) {
+        // horizontally directly to the left/right
+        d = closeX - point.x;
+        return d * d;
+      } else {
+        // corner case
+        var dx = closeX - point.x;
+        var dy = closeY - point.y;
+        return dx * dx + dy * dy;
+      }
+    },
+    
+    // distance to the farthest point inside the Bounds2
+    maximumDistanceToPointSquared: function( point ) {
+      var x = point.x > this.getCenterX() ? this.minX : this.maxX;
+      var y = point.y > this.getCenterY() ? this.minY : this.maxY;
+      x -= point.x;
+      y -= point.y;
+      return x * x + y * y;
+    },
+    
     toString: function() {
       return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
     },
@@ -1554,8 +1777,13 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
     * Immutable operations
     *----------------------------------------------------------------------------*/
     
-    copy: function() {
-      return new Bounds2( this.minX, this.minY, this.maxX, this.maxY );
+    // create a copy, or if bounds is passed in, set that bounds to our value
+    copy: function( bounds ) {
+      if ( bounds ) {
+        return bounds.set( this );
+      } else {
+        return new Bounds2( this.minX, this.minY, this.maxX, this.maxY );
+      }
     },
     
     // immutable operations (bounding-box style handling, so that the relevant bounds contain everything)
@@ -1627,10 +1855,26 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
       return new Bounds2( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
     },
     
-    // returns copy contracted on all sides by length d
-    eroded: function( d ) {
-      return this.dilated( -d );
+    // dilates only in the x direction
+    dilatedX: function( x ) {
+      return new Bounds2( this.minX - x, this.minY, this.maxX + x, this.maxY );
     },
+    
+    // dilates only in the y direction
+    dilatedY: function( y ) {
+      return new Bounds2( this.minX, this.minY - y, this.maxX, this.maxY + y );
+    },
+    
+    // dilate with different amounts in the x and y directions
+    dilatedXY: function( x, y ) {
+      return new Bounds2( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
+    },
+    
+    // returns copy contracted on all sides by length d, or for x/y independently
+    eroded: function( d ) { return this.dilated( -d ); },
+    erodedX: function( x ) { return this.dilatedX( -x ); },
+    erodedY: function( y ) { return this.dilatedY( -y ); },
+    erodedXY: function( x, y ) { return this.dilatedXY( -x, -y ); },
     
     shiftedX: function( x ) {
       return new Bounds2( this.minX + x, this.minY, this.maxX + x, this.maxY );
@@ -1648,69 +1892,1140 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
     * Mutable operations
     *----------------------------------------------------------------------------*/
     
-    set: function( minX, minY, maxX, maxY ) {
+    // mutable core opreations (all other mutations should be called through these)
+    setMinMax: function( minX, minY, maxX, maxY ) {
       this.minX = minX;
       this.minY = minY;
       this.maxX = maxX;
       this.maxY = maxY;
       return this;
     },
+    setMinX: function( minX ) { this.minX = minX; return this; },
+    setMinY: function( minY ) { this.minY = minY; return this; },
+    setMaxX: function( maxX ) { this.maxX = maxX; return this; },
+    setMaxY: function( maxY ) { this.maxY = maxY; return this; },
     
-    setBounds: function( bounds ) {
-      return this.set( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
+    set: function( bounds ) {
+      return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
     },
     
     // mutable union
     includeBounds: function( bounds ) {
-      this.minX = Math.min( this.minX, bounds.minX );
-      this.minY = Math.min( this.minY, bounds.minY );
-      this.maxX = Math.max( this.maxX, bounds.maxX );
-      this.maxY = Math.max( this.maxY, bounds.maxY );
-      return this;
+      return this.setMinMax(
+        Math.min( this.minX, bounds.minX ),
+        Math.min( this.minY, bounds.minY ),
+        Math.max( this.maxX, bounds.maxX ),
+        Math.max( this.maxY, bounds.maxY )
+      );
     },
     
     // mutable intersection
     constrainBounds: function( bounds ) {
-      this.minX = Math.max( this.minX, bounds.minX );
-      this.minY = Math.max( this.minY, bounds.minY );
-      this.maxX = Math.min( this.maxX, bounds.maxX );
-      this.maxY = Math.min( this.maxY, bounds.maxY );
-      return this;
+      return this.setMinMax(
+        Math.max( this.minX, bounds.minX ),
+        Math.max( this.minY, bounds.minY ),
+        Math.min( this.maxX, bounds.maxX ),
+        Math.min( this.maxY, bounds.maxY )
+      );
     },
     
     addCoordinates: function( x, y ) {
-      this.minX = Math.min( this.minX, x );
-      this.minY = Math.min( this.minY, y );
-      this.maxX = Math.max( this.maxX, x );
-      this.maxY = Math.max( this.maxY, y );
-      return this;
+      return this.setMinMax(
+        Math.min( this.minX, x ),
+        Math.min( this.minY, y ),
+        Math.max( this.maxX, x ),
+        Math.max( this.maxY, y )
+      );
     },
     
     addPoint: function( point ) {
       return this.addCoordinates( point.x, point.y );
     },
     
-    setMinX: function( minX ) { this.minX = minX; return this; },
-    setMinY: function( minY ) { this.minY = minY; return this; },
-    setMaxX: function( maxX ) { this.maxX = maxX; return this; },
-    setMaxY: function( maxY ) { this.maxY = maxY; return this; },
-    
     // round to integral values, expanding where necessary
     roundOut: function() {
-      this.minX = Math.floor( this.minX );
-      this.minY = Math.floor( this.minY );
-      this.maxX = Math.ceil( this.maxX );
-      this.maxY = Math.ceil( this.maxY );
-      return this;
+      return this.setMinMax(
+        Math.floor( this.minX ),
+        Math.floor( this.minY ),
+        Math.ceil( this.maxX ),
+        Math.ceil( this.maxY )
+      );
     },
     
     // round to integral values, contracting where necessary
     roundIn: function() {
-      this.minX = Math.ceil( this.minX );
-      this.minY = Math.ceil( this.minY );
-      this.maxX = Math.floor( this.maxX );
-      this.maxY = Math.floor( this.maxY );
+      return this.setMinMax(
+        Math.ceil( this.minX ),
+        Math.ceil( this.minY ),
+        Math.floor( this.maxX ),
+        Math.floor( this.maxY )
+      );
+    },
+    
+    // transform a bounding box.
+    // NOTE that box.transformed( matrix ).transformed( inverse ) may be larger than the original box
+    transform: function( matrix ) {
+      // if we contain no area, no change is needed
+      if ( this.isEmpty() ) {
+        return this;
+      }
+      
+      // optimization to bail for identity matrices
+      if ( matrix.isIdentity() ) {
+        return this;
+      }
+      
+      var minX = Number.POSITIVE_INFINITY;
+      var minY = Number.POSITIVE_INFINITY;
+      var maxX = Number.NEGATIVE_INFINITY;
+      var maxY = Number.NEGATIVE_INFINITY;
+      
+      // using mutable vector so we don't create excessive instances of Vector2 during this
+      // make sure all 4 corners are inside this transformed bounding box
+      var vector = new dot.Vector2();
+      
+      function withIt( vector ) {
+        minX = Math.min( minX, vector.x );
+        minY = Math.min( minY, vector.y );
+        maxX = Math.max( maxX, vector.x );
+        maxY = Math.max( maxY, vector.y );
+      }
+      
+      withIt( matrix.multiplyVector2( vector.setXY( this.minX, this.minY ) ) );
+      withIt( matrix.multiplyVector2( vector.setXY( this.minX, this.maxY ) ) );
+      withIt( matrix.multiplyVector2( vector.setXY( this.maxX, this.minY ) ) );
+      withIt( matrix.multiplyVector2( vector.setXY( this.maxX, this.maxY ) ) );
+      return this.setMinMax( minX, minY, maxX, maxY );
+    },
+    
+    // expands on all sides by length d
+    dilate: function( d ) {
+      return this.setMinMax( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
+    },
+    
+    // dilates only in the x direction
+    dilateX: function( x ) {
+      return this.setMinMax( this.minX - x, this.minY, this.maxX + x, this.maxY );
+    },
+    
+    // dilates only in the y direction
+    dilateY: function( y ) {
+      return this.setMinMax( this.minX, this.minY - y, this.maxX, this.maxY + y );
+    },
+    
+    // dilate with different amounts in the x and y directions
+    dilateXY: function( x, y ) {
+      return this.setMinMax( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
+    },
+    
+    // contracts on all sides by length d, or for x/y independently
+    erode: function( d ) { return this.dilate( -d ); },
+    erodeX: function( x ) { return this.dilateX( -x ); },
+    erodeY: function( y ) { return this.dilateY( -y ); },
+    erodeXY: function( x, y ) { return this.dilateXY( -x, -y ); },
+    
+    shiftX: function( x ) {
+      return this.setMinMax( this.minX + x, this.minY, this.maxX + x, this.maxY );
+    },
+    
+    shiftY: function( y ) {
+      return this.setMinMax( this.minX, this.minY + y, this.maxX, this.maxY + y );
+    },
+    
+    shift: function( x, y ) {
+      return this.setMinMax( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
+    },
+
+    /**
+     * Find a point in the Bounds2 closest to the specified point.  Used for making sure a dragged object doesn't get outside the visible play area.
+     * @param x x point to test
+     * @param y y point to test
+     * @param {Vector2} result optional Vector2 that can store the return value to avoid allocations
+     * @returns {Vector2}
+     */
+    getClosestPoint: function( x, y, result ) {
+      if ( result ) {
+        result.setXY( x, y );
+      }
+      else {
+        result = new dot.Vector2( x, y );
+      }
+      if ( result.x < this.minX ) { result.x = this.minX; }
+      if ( result.x > this.maxX ) { result.x = this.maxX; }
+      if ( result.y < this.minY ) { result.y = this.minY; }
+      if ( result.y > this.maxY ) { result.y = this.maxY; }
+      return result;
+    }
+  };
+  
+  Bounds2.rect = function( x, y, width, height ) {
+    return new Bounds2( x, y, x + width, y + height );
+  };
+  
+  // a volume-less point bounds, which can be dilated to form a centered bounds
+  Bounds2.point = function( x, y ) {
+    if ( x instanceof dot.Vector2 ) {
+      var p = x;
+      return new Bounds2( p.x, p.y, p.x, p.y );
+    } else {
+      return new Bounds2( x, y, x, y );
+    }
+  };
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( Bounds2, {
+    defaultFactory: function() { return Bounds2.NOTHING.copy(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( minX, minY, maxX, maxY ) {
+        if ( pool.length ) {
+          return pool.pop().setMinMax( minX, minY, maxX, maxY );
+        } else {
+          return new Bounds2( minX, minY, maxX, maxY );
+        }
+      };
+    }
+  } );
+
+  // specific bounds useful for operations
+  Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
+  Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
+  
+  return Bounds2;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * Basic 4-dimensional vector
+ *
+ * TODO: sync with Vector2 changes
+ * TODO: add quaternion extension
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+
+define( 'DOT/Vector4',['require','DOT/dot','DOT/Util'],function( require ) {
+  
+  
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Util' );
+  // require( 'DOT/Vector3' ); // commented out so Require.js doesn't complain about the circular dependency
+  
+  dot.Vector4 = function Vector4( x, y, z, w ) {
+    // allow optional parameters
+    this.x = x || 0;
+    this.y = y || 0;
+    this.z = z || 0;
+    this.w = w !== undefined ? w : 1; // since w could be zero!
+  };
+  var Vector4 = dot.Vector4;
+  
+  Vector4.prototype = {
+    constructor: Vector4,
+    isVector4: true,
+    dimension: 4,
+
+    magnitude: function() {
+      return Math.sqrt( this.magnitudeSquared() );
+    },
+
+    magnitudeSquared: function() {
+      this.dot( this );
+    },
+    
+    // the distance between this vector (treated as a point) and another point
+    distance: function( point ) {
+      return this.minus( point ).magnitude();
+    },
+    
+    // the squared distance between this vector (treated as a point) and another point
+    distanceSquared: function( point ) {
+      return this.minus( point ).magnitudeSquared();
+    },
+
+    dot: function( v ) {
+      return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
+    },
+    
+    isFinite: function() {
+      return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z ) && isFinite( this.w );
+    },
+    
+    equals: function( other ) {
+      return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
+      if ( !epsilon ) {
+        epsilon = 0;
+      }
+      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) + Math.abs( this.w - other.w ) <= epsilon;
+    },
+
+    /*---------------------------------------------------------------------------*
+     * Immutables
+     *----------------------------------------------------------------------------*/
+    
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector4( this.x, this.y, this.z, this.w );
+      }
+    },
+    
+    normalized: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      }
+      else {
+        return new Vector4( this.x / mag, this.y / mag, this.z / mag, this.w / mag );
+      }
+    },
+
+    timesScalar: function( scalar ) {
+      return new Vector4( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
+    },
+
+    times: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.timesScalar( scalar );
+    },
+
+    componentTimes: function( v ) {
+      return new Vector4( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
+    },
+
+    plus: function( v ) {
+      return new Vector4( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
+    },
+
+    plusScalar: function( scalar ) {
+      return new Vector4( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
+    },
+
+    minus: function( v ) {
+      return new Vector4( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
+    },
+
+    minusScalar: function( scalar ) {
+      return new Vector4( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
+    },
+
+    dividedScalar: function( scalar ) {
+      return new Vector4( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
+    },
+
+    negated: function() {
+      return new Vector4( -this.x, -this.y, -this.z, -this.w );
+    },
+
+    angleBetween: function( v ) {
+      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+    },
+    
+    // linear interpolation from this (ratio=0) to vector (ratio=1)
+    blend: function( vector, ratio ) {
+      return this.plus( vector.minus( this ).times( ratio ) );
+    },
+    
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
+
+    toString: function() {
+      return "Vector4(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";
+    },
+
+    toVector3: function() {
+      return new dot.Vector3( this.x, this.y, this.z );
+    },
+
+    /*---------------------------------------------------------------------------*
+     * Mutables
+     *----------------------------------------------------------------------------*/
+    
+    // our core mutables (all mutation should go through these)
+    setXYZW: function( x, y, z, w ) {
+      this.x = x;
+      this.y = y;
+      this.z = z;
+      this.w = w;
       return this;
+    },
+    setX: function( x ) {
+      this.x = x;
+      return this;
+    },
+    setY: function( y ) {
+      this.y = y;
+      return this;
+    },
+    setZ: function( z ) {
+      this.z = z;
+      return this;
+    },
+    setW: function( w ) {
+      this.w = w;
+      return this;
+    },
+    
+    set: function( v ) {
+      return this.setXYZW( v.x, v.y, v.z, v.w );
+    },
+
+    add: function( v ) {
+      return this.setXYZW( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
+    },
+
+    addScalar: function( scalar ) {
+      return this.setXYZW( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
+    },
+
+    subtract: function( v ) {
+      return this.setXYZW( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
+    },
+
+    subtractScalar: function( scalar ) {
+      return this.setXYZW( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
+    },
+    
+    multiplyScalar: function( scalar ) {
+      return this.setXYZW( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
+    },
+    
+    multiply: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.multiplyScalar( scalar );
+    },
+
+    componentMultiply: function( v ) {
+      return this.setXYZW( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
+    },
+
+    divideScalar: function( scalar ) {
+      return this.setXYZW( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
+    },
+
+    negate: function() {
+      return this.setXYZW( -this.x, -this.y, -this.z, -this.w );
+    },
+    
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        return this.divideScalar( mag );
+      }
+      return this;
+    }
+  };
+
+  /*---------------------------------------------------------------------------*
+   * Immutable Vector form
+   *----------------------------------------------------------------------------*/
+  Vector4.Immutable = function( x, y, z, w ) {
+    this.x = x || 0;
+    this.y = y || 0;
+    this.z = z || 0;
+    this.w = w !== undefined ? w : 1;
+  };
+  var Immutable = Vector4.Immutable;
+
+  Immutable.prototype = new Vector4();
+  Immutable.prototype.constructor = Immutable;
+
+  // throw errors whenever a mutable method is called on our immutable vector
+  Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
+    Immutable.prototype[mutableFunctionName] = function() {
+      throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector4" );
+    };
+  };
+
+  // TODO: better way to handle this list?
+  Immutable.mutableOverrideHelper( 'setXYZW' );
+  Immutable.mutableOverrideHelper( 'setX' );
+  Immutable.mutableOverrideHelper( 'setY' );
+  Immutable.mutableOverrideHelper( 'setZ' );
+  Immutable.mutableOverrideHelper( 'setW' );
+
+  // helpful immutable constants
+  Vector4.ZERO = new Immutable( 0, 0, 0, 0 );
+  Vector4.X_UNIT = new Immutable( 1, 0, 0, 0 );
+  Vector4.Y_UNIT = new Immutable( 0, 1, 0, 0 );
+  Vector4.Z_UNIT = new Immutable( 0, 0, 1, 0 );
+  Vector4.W_UNIT = new Immutable( 0, 0, 0, 1 );
+  
+  return Vector4;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * Basic 3-dimensional vector
+ *
+ * TODO: sync with Vector2 changes
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+
+define( 'DOT/Vector3',['require','DOT/dot','DOT/Util','DOT/Vector2','DOT/Vector4'],function( require ) {
+  
+  
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Util' );
+  require( 'DOT/Vector2' );
+  require( 'DOT/Vector4' );
+
+  dot.Vector3 = function Vector3( x, y, z ) {
+    // allow optional parameters
+    this.x = x || 0;
+    this.y = y || 0;
+    this.z = z || 0;
+  };
+  var Vector3 = dot.Vector3;
+
+  Vector3.prototype = {
+    constructor: Vector3,
+    isVector3: true,
+    dimension: 3,
+
+    magnitude: function() {
+      return Math.sqrt( this.magnitudeSquared() );
+    },
+
+    magnitudeSquared: function() {
+      return this.dot( this );
+    },
+    
+    // the distance between this vector (treated as a point) and another point
+    distance: function( point ) {
+      return this.minus( point ).magnitude();
+    },
+    
+    // the squared distance between this vector (treated as a point) and another point
+    distanceSquared: function( point ) {
+      return this.minus( point ).magnitudeSquared();
+    },
+
+    dot: function( v ) {
+      return this.x * v.x + this.y * v.y + this.z * v.z;
+    },
+    
+    isFinite: function() {
+      return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z );
+    },
+    
+    equals: function( other ) {
+      return this.x === other.x && this.y === other.y && this.z === other.z;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
+      if ( !epsilon ) {
+        epsilon = 0;
+      }
+      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) <= epsilon;
+    },
+
+    /*---------------------------------------------------------------------------*
+     * Immutables
+     *----------------------------------------------------------------------------*/
+    
+    // create a copy, or if a vector is passed in, set that vector to our value
+    copy: function( vector ) {
+      if ( vector ) {
+        return vector.set( this );
+      } else {
+        return new Vector3( this.x, this.y, this.z );
+      }
+    },
+
+    cross: function( v ) {
+      return new Vector3(
+          this.y * v.z - this.z * v.y,
+          this.z * v.x - this.x * v.z,
+          this.x * v.y - this.y * v.x
+      );
+    },
+
+    normalized: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      }
+      else {
+        return new Vector3( this.x / mag, this.y / mag, this.z / mag );
+      }
+    },
+
+    timesScalar: function( scalar ) {
+      return new Vector3( this.x * scalar, this.y * scalar, this.z * scalar );
+    },
+
+    times: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.timesScalar( scalar );
+    },
+
+    componentTimes: function( v ) {
+      return new Vector3( this.x * v.x, this.y * v.y, this.z * v.z );
+    },
+
+    plus: function( v ) {
+      return new Vector3( this.x + v.x, this.y + v.y, this.z + v.z );
+    },
+
+    plusScalar: function( scalar ) {
+      return new Vector3( this.x + scalar, this.y + scalar, this.z + scalar );
+    },
+
+    minus: function( v ) {
+      return new Vector3( this.x - v.x, this.y - v.y, this.z - v.z );
+    },
+
+    minusScalar: function( scalar ) {
+      return new Vector3( this.x - scalar, this.y - scalar, this.z - scalar );
+    },
+
+    dividedScalar: function( scalar ) {
+      return new Vector3( this.x / scalar, this.y / scalar, this.z / scalar );
+    },
+
+    negated: function() {
+      return new Vector3( -this.x, -this.y, -this.z );
+    },
+
+    angleBetween: function( v ) {
+      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+    },
+    
+    // linear interpolation from this (ratio=0) to vector (ratio=1)
+    blend: function( vector, ratio ) {
+      return this.plus( vector.minus( this ).times( ratio ) );
+    },
+    
+    // average position between this and the provided vector
+    average: function( vector ) {
+      return this.blend( vector, 0.5 );
+    },
+
+    toString: function() {
+      return "Vector3(" + this.x + ", " + this.y + ", " + this.z + ")";
+    },
+
+    toVector2: function() {
+      return new dot.Vector2( this.x, this.y );
+    },
+
+    toVector4: function() {
+      return new dot.Vector4( this.x, this.y, this.z );
+    },
+
+    /*---------------------------------------------------------------------------*
+     * Mutables
+     *----------------------------------------------------------------------------*/
+    
+    // our core mutables, all mutation should go through these
+    setXYZ: function( x, y, z ) {
+      this.x = x;
+      this.y = y;
+      this.z = z;
+      return this;
+    },
+    setX: function( x ) {
+      this.x = x;
+      return this;
+    },
+    setY: function( y ) {
+      this.y = y;
+      return this;
+    },
+    setZ: function( z ) {
+      this.z = z;
+      return this;
+    },
+    
+    set: function( v ) {
+      return this.setXYZ( v.x, v.y, v.z );
+    },
+
+    add: function( v ) {
+      return this.setXYZ( this.x + v.x, this.y + v.y, this.z + v.z );
+    },
+
+    addScalar: function( scalar ) {
+      return this.setXYZ( this.x + scalar, this.y + scalar, this.z + scalar );
+    },
+
+    subtract: function( v ) {
+      return this.setXYZ( this.x - v.x, this.y - v.y, this.z - v.z );
+    },
+
+    subtractScalar: function( scalar ) {
+      return this.setXYZ( this.x - scalar, this.y - scalar, this.z - scalar );
+    },
+    
+    multiplyScalar: function( scalar ) {
+      return this.setXYZ( this.x * scalar, this.y * scalar, this.z * scalar );
+    },
+    
+    multiply: function( scalar ) {
+      // make sure it's not a vector!
+      assert && assert( scalar.dimension === undefined );
+      return this.multiplyScalar( scalar );
+    },
+
+    componentMultiply: function( v ) {
+      return this.setXYZ( this.x * v.x, this.y * v.y, this.z * v.z );
+    },
+
+    divideScalar: function( scalar ) {
+      return this.setXYZ( this.x / scalar, this.y / scalar, this.z / scalar );
+    },
+
+    negate: function() {
+      return this.setXYZ( -this.x, -this.y, -this.z );
+    },
+    
+    normalize: function() {
+      var mag = this.magnitude();
+      if ( mag === 0 ) {
+        throw new Error( "Cannot normalize a zero-magnitude vector" );
+      } else {
+        return this.divideScalar( mag );
+      }
+    }
+  };
+
+  /*---------------------------------------------------------------------------*
+   * Immutable Vector form
+   *----------------------------------------------------------------------------*/
+  Vector3.Immutable = function( x, y, z ) {
+    this.x = x || 0;
+    this.y = y || 0;
+    this.z = z || 0;
+  };
+  var Immutable = Vector3.Immutable;
+
+  Immutable.prototype = new Vector3();
+  Immutable.prototype.constructor = Immutable;
+
+  // throw errors whenever a mutable method is called on our immutable vector
+  Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
+    Immutable.prototype[mutableFunctionName] = function() {
+      throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector3" );
+    };
+  };
+
+  // TODO: better way to handle this list?
+  Immutable.mutableOverrideHelper( 'setXYZ' );
+  Immutable.mutableOverrideHelper( 'setX' );
+  Immutable.mutableOverrideHelper( 'setY' );
+  Immutable.mutableOverrideHelper( 'setZ' );
+
+  // helpful immutable constants
+  Vector3.ZERO = new Immutable( 0, 0, 0 );
+  Vector3.X_UNIT = new Immutable( 1, 0, 0 );
+  Vector3.Y_UNIT = new Immutable( 0, 1, 0 );
+  Vector3.Z_UNIT = new Immutable( 0, 0, 1 );
+  
+  return Vector3;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * A 3D cuboid-shaped bounded area (bounding box)
+ *
+ * There are a number of convenience functions to get locations and points on the Bounds. Currently we do not
+ * store these with the Bounds3 instance, since we want to lower the memory footprint.
+ *
+ * minX, minY, minZ, maxX, maxY, and maxZ are actually stored. We don't do x,y,z,width,height,depth because this can't properly express
+ * semi-infinite bounds (like a half-plane), or easily handle what Bounds3.NOTHING and Bounds3.EVERYTHING do with
+ * the constructive solid areas.
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+
+define( 'DOT/Bounds3',['require','DOT/dot','DOT/Vector3'],function( require ) {
+  
+  
+  var dot = require( 'DOT/dot' );
+  
+  require( 'DOT/Vector3' );
+  
+  // not using x,y,width,height so that it can handle infinity-based cases in a better way
+  dot.Bounds3 = function Bounds3( minX, minY, minZ, maxX, maxY, maxZ ) {
+    assert && assert( maxY !== undefined, 'Bounds3 requires 4 parameters' );
+    this.minX = minX;
+    this.minY = minY;
+    this.minZ = minZ;
+    this.maxX = maxX;
+    this.maxY = maxY;
+    this.maxZ = maxZ;
+    
+    phetAllocation && phetAllocation( 'Bounds3' );
+  };
+  var Bounds3 = dot.Bounds3;
+
+  Bounds3.prototype = {
+    constructor: Bounds3,
+    
+    isBounds: true,
+    dimension: 3,
+    
+    /*---------------------------------------------------------------------------*
+    * Properties
+    *----------------------------------------------------------------------------*/
+    
+    getWidth: function() { return this.maxX - this.minX; },
+    get width() { return this.getWidth(); },
+    
+    getHeight: function() { return this.maxY - this.minY; },
+    get height() { return this.getHeight(); },
+    
+    getDepth: function() { return this.maxZ - this.minZ; },
+    get depth() { return this.getDepth(); },
+    
+    /* 
+     * Convenience locations
+     * upper is in terms of the visual layout in Scenery and other programs, so the minY is the "upper", and minY is the "lower"
+     *
+     *             minX (x)     centerX        maxX
+     *          ---------------------------------------
+     * minY (y) | upperLeft   upperCenter   upperRight
+     * centerY  | centerLeft    center      centerRight
+     * maxY     | lowerLeft   lowerCenter   lowerRight
+     */
+    getX: function() { return this.minX; },
+    get x() { return this.getX(); },
+    getY: function() { return this.minY; },
+    get y() { return this.getY(); },
+    getZ: function() { return this.minZ; },
+    get z() { return this.getZ(); },
+    
+    getMinX: function() { return this.minX; },
+    get left() { return this.minX; },
+    getMinY: function() { return this.minY; },
+    get top() { return this.minY; },
+    getMinZ: function() { return this.minZ; },
+    get back() { return this.minZ; },
+    getMaxX: function() { return this.maxX; },
+    get right() { return this.maxX; },
+    getMaxY: function() { return this.maxY; },
+    get bottom() { return this.maxY; },
+    getMaxZ: function() { return this.maxZ; },
+    get front() { return this.maxZ; },
+    
+    getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
+    get centerX() { return this.getCenterX(); },
+    getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
+    get centerY() { return this.getCenterY(); },
+    getCenterZ: function() { return ( this.maxZ + this.minZ ) / 2; },
+    get centerZ() { return this.getCenterZ(); },
+    
+    getCenter: function() { return new dot.Vector3( this.getCenterX(), this.getCenterY(), this.getCenterZ() ); },
+    get center() { return this.getCenter(); },
+    
+    isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0 || this.getDepth() < 0; },
+    
+    isFinite: function() {
+      return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.minZ ) && isFinite( this.maxX ) && isFinite( this.maxY ) && isFinite( this.maxZ );
+    },
+    
+    isValid: function() {
+      return !this.isEmpty() && this.isFinite();
+    },
+    
+    // whether the coordinates are inside the bounding box (or on the boundary)
+    containsCoordinates: function( x, y, z ) {
+      return this.minX <= x && x <= this.maxX && this.minY <= y && y <= this.maxY && this.minZ <= z && z <= this.maxZ;
+    },
+    
+    // whether the point is inside the bounding box (or on the boundary)
+    containsPoint: function( point ) {
+      return this.containsCoordinates( point.x, point.y, point.z );
+    },
+    
+    // whether this bounding box completely contains the argument bounding box
+    containsBounds: function( bounds ) {
+      return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY && this.minZ <= bounds.minZ && this.maxZ >= bounds.maxZ;
+    },
+    
+    // whether the intersection is non-empty (if they share any part of a boundary, this will be true)
+    intersectsBounds: function( bounds ) {
+      // TODO: more efficient way of doing this?
+      return !this.intersection( bounds ).isEmpty();
+    },
+    
+    toString: function() {
+      return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + '),z:(' + this.minZ + ',' + this.maxZ + ')]';
+    },
+    
+    equals: function( other ) {
+      return this.minX === other.minX && this.minY === other.minY && this.minZ === other.minZ && this.maxX === other.maxX && this.maxY === other.maxY && this.maxZ === other.maxZ;
+    },
+    
+    equalsEpsilon: function( other, epsilon ) {
+      epsilon = epsilon || 0;
+      var thisFinite = this.isFinite();
+      var otherFinite = other.isFinite();
+      if ( thisFinite && otherFinite ) {
+        // both are finite, so we can use Math.abs() - it would fail with non-finite values like Infinity
+        return Math.abs( this.minX - other.minX ) < epsilon &&
+               Math.abs( this.minY - other.minY ) < epsilon &&
+               Math.abs( this.minZ - other.minZ ) < epsilon &&
+               Math.abs( this.maxX - other.maxX ) < epsilon &&
+               Math.abs( this.maxY - other.maxY ) < epsilon &&
+               Math.abs( this.maxZ - other.maxZ ) < epsilon;
+      } else if ( thisFinite !== otherFinite ) {
+        return false; // one is finite, the other is not. definitely not equal
+      } else if ( this === other ) {
+        return true; // exact same instance, must be equal
+      } else {
+        // epsilon only applies on finite dimensions. due to JS's handling of isFinite(), it's faster to check the sum of both
+        return ( isFinite( this.minX + other.minX ) ? ( Math.abs( this.minX - other.minX ) < epsilon ) : ( this.minX === other.minX ) ) &&
+               ( isFinite( this.minY + other.minY ) ? ( Math.abs( this.minY - other.minY ) < epsilon ) : ( this.minY === other.minY ) ) &&
+               ( isFinite( this.minZ + other.minZ ) ? ( Math.abs( this.minZ - other.minZ ) < epsilon ) : ( this.minZ === other.minZ ) ) &&
+               ( isFinite( this.maxX + other.maxX ) ? ( Math.abs( this.maxX - other.maxX ) < epsilon ) : ( this.maxX === other.maxX ) ) &&
+               ( isFinite( this.maxY + other.maxY ) ? ( Math.abs( this.maxY - other.maxY ) < epsilon ) : ( this.maxY === other.maxY ) ) &&
+               ( isFinite( this.maxZ + other.maxZ ) ? ( Math.abs( this.maxZ - other.maxZ ) < epsilon ) : ( this.maxZ === other.maxZ ) );
+      }
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Immutable operations
+    *----------------------------------------------------------------------------*/
+    
+    // create a copy, or if bounds is passed in, set that bounds to our value
+    copy: function( bounds ) {
+      if ( bounds ) {
+        return bounds.set( this );
+      } else {
+        return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
+      }
+    },
+    
+    // immutable operations (bounding-box style handling, so that the relevant bounds contain everything)
+    union: function( bounds ) {
+      return new Bounds3(
+        Math.min( this.minX, bounds.minX ),
+        Math.min( this.minY, bounds.minY ),
+        Math.min( this.minZ, bounds.minZ ),
+        Math.max( this.maxX, bounds.maxX ),
+        Math.max( this.maxY, bounds.maxY ),
+        Math.max( this.maxZ, bounds.maxZ )
+      );
+    },
+    intersection: function( bounds ) {
+      return new Bounds3(
+        Math.max( this.minX, bounds.minX ),
+        Math.max( this.minY, bounds.minY ),
+        Math.max( this.minZ, bounds.minZ ),
+        Math.min( this.maxX, bounds.maxX ),
+        Math.min( this.maxY, bounds.maxY ),
+        Math.min( this.maxZ, bounds.maxZ )
+      );
+    },
+    // TODO: difference should be well-defined, but more logic is needed to compute
+    
+    withCoordinates: function( x, y, z ) {
+      return new Bounds3(
+        Math.min( this.minX, x ),
+        Math.min( this.minY, y ),
+        Math.min( this.minZ, z ),
+        Math.max( this.maxX, x ),
+        Math.max( this.maxY, y ),
+        Math.max( this.maxZ, z )
+      );
+    },
+    
+    // like a union with a point-sized bounding box
+    withPoint: function( point ) {
+      return this.withCoordinates( point.x, point.y, point.z );
+    },
+    
+    withMinX: function( minX ) { return new Bounds3( minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ ); },
+    withMinY: function( minY ) { return new Bounds3( this.minX, minY, this.minZ, this.maxX, this.maxY, this.maxZ ); },
+    withMinZ: function( minZ ) { return new Bounds3( this.minX, this.minY, minZ, this.maxX, this.maxY, this.maxZ ); },
+    withMaxX: function( maxX ) { return new Bounds3( this.minX, this.minY, this.minZ, maxX, this.maxY, this.maxZ ); },
+    withMaxY: function( maxY ) { return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, maxY, this.maxZ ); },
+    withMaxZ: function( maxZ ) { return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, maxZ ); },
+    
+    // copy rounded to integral values, expanding where necessary
+    roundedOut: function() {
+      return new Bounds3(
+        Math.floor( this.minX ),
+        Math.floor( this.minY ),
+        Math.floor( this.minZ ),
+        Math.ceil( this.maxX ),
+        Math.ceil( this.maxY ),
+        Math.ceil( this.maxZ )
+      );
+    },
+    
+    // copy rounded to integral values, contracting where necessary
+    roundedIn: function() {
+      return new Bounds3(
+        Math.ceil( this.minX ),
+        Math.ceil( this.minY ),
+        Math.ceil( this.minZ ),
+        Math.floor( this.maxX ),
+        Math.floor( this.maxY ),
+        Math.floor( this.maxZ )
+      );
+    },
+    
+    // transform a bounding box.
+    // NOTE that box.transformed( matrix ).transformed( inverse ) may be larger than the original box
+    transformed: function( matrix ) {
+      return this.copy().transform( matrix );
+    },
+    
+    // returns copy expanded on all sides by length d
+    dilated: function( d ) {
+      return new Bounds3( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
+    },
+    
+    // dilates only in the x direction
+    dilatedX: function( x ) {
+      return new Bounds3( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
+    },
+    
+    // dilates only in the y direction
+    dilatedY: function( y ) {
+      return new Bounds3( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
+    },
+    
+    // dilates only in the z direction
+    dilatedZ: function( z ) {
+      return new Bounds3( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
+    },
+    
+    // dilate with different amounts in the x, y and z directions
+    dilatedXYZ: function( x, y, z ) {
+      return new Bounds3( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
+    },
+    
+    // returns copy contracted on all sides by length d, or x/y/z separately
+    eroded: function( d ) { return this.dilated( -d ); },
+    erodedX: function( x ) { return this.dilatedX( -x ); },
+    erodedY: function( y ) { return this.dilatedY( -y ); },
+    erodedZ: function( z ) { return this.dilatedZ( -z ); },
+    erodedXYZ: function( x, y, z ) { return this.dilatedXYZ( -x, -y, -z ); },
+    
+    shiftedX: function( x ) {
+      return new Bounds3( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
+    },
+    
+    shiftedY: function( y ) {
+      return new Bounds3( this.minX, this.minY + y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
+    },
+    
+    shiftedZ: function( z ) {
+      return new Bounds3( this.minX, this.minY, this.minZ + z, this.maxX, this.maxY, this.maxZ + z );
+    },
+    
+    shifted: function( x, y, z ) {
+      return new Bounds3( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Mutable operations
+    *----------------------------------------------------------------------------*/
+    
+    // core mutations (every other mutator should call one of these once)
+    setMinMax: function( minX, minY, minZ, maxX, maxY, maxZ ) {
+      this.minX = minX;
+      this.minY = minY;
+      this.minZ = minZ;
+      this.maxX = maxX;
+      this.maxY = maxY;
+      this.maxZ = maxZ;
+      return this;
+    },
+    setMinX: function( minX ) { this.minX = minX; return this; },
+    setMinY: function( minY ) { this.minY = minY; return this; },
+    setMinZ: function( minZ ) { this.minZ = minZ; return this; },
+    setMaxX: function( maxX ) { this.maxX = maxX; return this; },
+    setMaxY: function( maxY ) { this.maxY = maxY; return this; },
+    setMaxZ: function( maxZ ) { this.maxZ = maxZ; return this; },
+    
+    set: function( bounds ) {
+      return this.setMinMax( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );
+    },
+    
+    // mutable union
+    includeBounds: function( bounds ) {
+      return this.setMinMax(
+        Math.min( this.minX, bounds.minX ),
+        Math.min( this.minY, bounds.minY ),
+        Math.min( this.minZ, bounds.minZ ),
+        Math.max( this.maxX, bounds.maxX ),
+        Math.max( this.maxY, bounds.maxY ),
+        Math.max( this.maxZ, bounds.maxZ )
+      );
+    },
+    
+    // mutable intersection
+    constrainBounds: function( bounds ) {
+      return this.setMinMax(
+        Math.max( this.minX, bounds.minX ),
+        Math.max( this.minY, bounds.minY ),
+        Math.max( this.minZ, bounds.minZ ),
+        Math.min( this.maxX, bounds.maxX ),
+        Math.min( this.maxY, bounds.maxY ),
+        Math.min( this.maxZ, bounds.maxZ )
+      );
+    },
+    
+    addCoordinates: function( x, y, z ) {
+      return this.setMinMax(
+        Math.min( this.minX, x ),
+        Math.min( this.minY, y ),
+        Math.min( this.minZ, z ),
+        Math.max( this.maxX, x ),
+        Math.max( this.maxY, y ),
+        Math.max( this.maxZ, z )
+      );
+    },
+    
+    addPoint: function( point ) {
+      return this.addCoordinates( point.x, point.y, point.z );
+    },
+    
+    // round to integral values, expanding where necessary
+    roundOut: function() {
+      return this.setMinMax(
+        Math.floor( this.minX ),
+        Math.floor( this.minY ),
+        Math.floor( this.minZ ),
+        Math.ceil( this.maxX ),
+        Math.ceil( this.maxY ),
+        Math.ceil( this.maxZ )
+      );
+    },
+    
+    // round to integral values, contracting where necessary
+    roundIn: function() {
+      return this.setMinMax(
+        Math.ceil( this.minX ),
+        Math.ceil( this.minY ),
+        Math.ceil( this.minZ ),
+        Math.floor( this.maxX ),
+        Math.floor( this.maxY ),
+        Math.floor( this.maxZ )
+      );
     },
     
     // transform a bounding box.
@@ -1720,54 +3035,106 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
       if ( this.isEmpty() ) {
         return this;
       }
-      var minX = this.minX;
-      var minY = this.minY;
-      var maxX = this.maxX;
-      var maxY = this.maxY;
+      
+      // optimization to bail for identity matrices
+      if ( matrix.isIdentity() ) {
+        return this;
+      }
+      
+      var minX = Number.POSITIVE_INFINITY;
+      var minY = Number.POSITIVE_INFINITY;
+      var minZ = Number.POSITIVE_INFINITY;
+      var maxX = Number.NEGATIVE_INFINITY;
+      var maxY = Number.NEGATIVE_INFINITY;
+      var maxZ = Number.NEGATIVE_INFINITY;
       
       // using mutable vector so we don't create excessive instances of Vector2 during this
       // make sure all 4 corners are inside this transformed bounding box
-      var vector = new dot.Vector2();
-      this.setBounds( Bounds2.NOTHING );
-      this.addPoint( matrix.multiplyVector2( vector.set( minX, minY ) ) );
-      this.addPoint( matrix.multiplyVector2( vector.set( minX, maxY ) ) );
-      this.addPoint( matrix.multiplyVector2( vector.set( maxX, minY ) ) );
-      this.addPoint( matrix.multiplyVector2( vector.set( maxX, maxY ) ) );
-      return this;
+      var vector = new dot.Vector3();
+      
+      function withIt( vector ) {
+        minX = Math.min( minX, vector.x );
+        minY = Math.min( minY, vector.y );
+        minZ = Math.min( minZ, vector.z );
+        maxX = Math.max( maxX, vector.x );
+        maxY = Math.max( maxY, vector.y );
+        maxZ = Math.max( maxZ, vector.z );
+      }
+      
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.minY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.maxY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.minY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.maxY, this.minZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.minY, this.maxZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.maxY, this.maxZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.minY, this.maxZ ) ) );
+      withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.maxY, this.maxZ ) ) );
+      return this.setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
     },
     
     // expands on all sides by length d
     dilate: function( d ) {
-      return this.set( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
+      return this.setMinMax( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
     },
     
-    // contracts on all sides by length d
-    erode: function( d ) {
-      return this.dilate( -d );
+    // dilates only in the x direction
+    dilateX: function( x ) {
+      return this.setMinMax( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
+    
+    // dilates only in the y direction
+    dilateY: function( y ) {
+      return this.setMinMax( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
+    },
+    
+    // dilates only in the z direction
+    dilateZ: function( z ) {
+      return this.setMinMax( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
+    },
+    
+    // dilate with different amounts in the x, y and z directions
+    dilateXYZ: function( x, y, z ) {
+      return this.setMinMax( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
+    },
+    
+    // contracts on all sides by length d, or x/y/z independently
+    erode: function( d ) { return this.dilate( -d ); },
+    erodeX: function( x ) { return this.dilateX( -x ); },
+    erodeY: function( y ) { return this.dilateY( -y ); },
+    erodeZ: function( z ) { return this.dilateZ( -z ); },
+    erodeXYZ: function( x, y, z ) { return this.dilateXYZ( -x, -y, -z ); },
     
     shiftX: function( x ) {
-      return this.setMinX( this.minX + x ).setMaxX( this.maxX + x );
+      return this.setMinMax( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
     
     shiftY: function( y ) {
-      return this.setMinY( this.minY + y ).setMaxY( this.maxY + y );
+      return this.setMinMax( this.minX, this.minY + y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
     },
     
-    shift: function( x, y ) {
-      return this.shiftX( x ).shiftY( y );
+    shiftZ: function( z ) {
+      return this.setMinMax( this.minX, this.minY, this.minZ + z, this.maxX, this.maxY, this.maxZ + z );
+    },
+    
+    shift: function( x, y, z ) {
+      return this.setMinMax( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
     }
   };
   
-  Bounds2.rect = function( x, y, width, height ) {
-    return new Bounds2( x, y, x + width, y + height );
+  Bounds3.cuboid = function( x, y, z, width, height, depth ) {
+    return new Bounds3( x, y, z, x + width, y + height, z + depth );
+  };
+  
+  // a volume-less point bounds, which can be dilated to form a centered bounds
+  Bounds3.point = function( x, y, z ) {
+    return new Bounds3( x, y, z, x, y, z );
   };
   
   // specific bounds useful for operations
-  Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
-  Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
+  Bounds3.EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
+  Bounds3.NOTHING = new Bounds3( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
   
-  return Bounds2;
+  return Bounds3;
 } );
 
 // Copyright 2002-2013, University of Colorado Boulder
@@ -1781,10 +3148,8 @@ define( 'DOT/Bounds2',['require','ASSERT/assert','DOT/dot','DOT/Vector2'],functi
  * @author Chris Malley
  */
 
-define( 'DOT/Complex',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','DOT/Vector2'],function( require ) {
+define( 'DOT/Complex',['require','DOT/dot','PHET_CORE/inherit','DOT/Vector2'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
   
@@ -1867,10 +3232,8 @@ define( 'DOT/Complex',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/ConvexHull2',['require','ASSERT/assert','DOT/dot'],function( require ) {
+define( 'DOT/ConvexHull2',['require','DOT/dot'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
   
@@ -1941,6 +3304,7 @@ define( 'DOT/ConvexHull2',['require','ASSERT/assert','DOT/dot'],function( requir
   return dot.ConvexHull2;
 } );
 
+
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
@@ -1949,10 +3313,11 @@ define( 'DOT/ConvexHull2',['require','ASSERT/assert','DOT/dot'],function( requir
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Dimension2',['require','DOT/dot'],function( require ) {
+define( 'DOT/Dimension2',['require','DOT/dot','DOT/Bounds2'],function( require ) {
   
   
   var dot = require( 'DOT/dot' );
+  require( 'DOT/Bounds2' );
   
   dot.Dimension2 = function Dimension2( width, height ) {
     this.width = width;
@@ -1965,6 +3330,12 @@ define( 'DOT/Dimension2',['require','DOT/dot'],function( require ) {
 
     toString: function() {
       return "[" + this.width + "w, " + this.height + "h]";
+    },
+    
+    toBounds: function( x, y ) {
+      x = x || 0;
+      y = y || 0;
+      return new dot.Bounds2( x, y, this.width + x, this.height + y );
     },
 
     equals: function( other ) {
@@ -3188,13 +4559,16 @@ define( 'DOT/LUDecomposition',['require','DOT/dot'],function( require ) {
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'PHET_CORE/isArray',['require'],function( require ) {
+define( 'PHET_CORE/isArray',['require','PHET_CORE/core'],function( require ) {
   
   
-  return function isArray( array ) {
+  var core = require( 'PHET_CORE/core' );
+  
+  var isArray = core.isArray = function isArray( array ) {
     // yes, this is actually how to do this. see http://stackoverflow.com/questions/4775722/javascript-check-if-object-is-array
     return Object.prototype.toString.call( array ) === '[object Array]';
   };
+  return isArray;
 } );
 
 // Copyright 2002-2013, University of Colorado Boulder
@@ -3901,558 +5275,13 @@ define( 'DOT/QRDecomposition',['require','DOT/dot'],function( require ) {
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
- * Basic 4-dimensional vector
- *
- * TODO: sync with Vector2 changes
- * TODO: add quaternion extension
- *
- * @author Jonathan Olson <olsonsjc@gmail.com>
- */
-
-define( 'DOT/Vector4',['require','ASSERT/assert','DOT/dot','DOT/Util'],function( require ) {
-  
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
-  var dot = require( 'DOT/dot' );
-  
-  require( 'DOT/Util' );
-  // require( 'DOT/Vector3' ); // commented out so Require.js doesn't complain about the circular dependency
-  
-  dot.Vector4 = function Vector4( x, y, z, w ) {
-    // allow optional parameters
-    this.x = x || 0;
-    this.y = y || 0;
-    this.z = z || 0;
-    this.w = w !== undefined ? w : 1; // since w could be zero!
-  };
-  var Vector4 = dot.Vector4;
-  
-  Vector4.prototype = {
-    constructor: Vector4,
-
-    magnitude: function() {
-      return Math.sqrt( this.magnitudeSquared() );
-    },
-
-    magnitudeSquared: function() {
-      this.dot( this );
-    },
-    
-    // the distance between this vector (treated as a point) and another point
-    distance: function( point ) {
-      return this.minus( point ).magnitude();
-    },
-    
-    // the squared distance between this vector (treated as a point) and another point
-    distanceSquared: function( point ) {
-      return this.minus( point ).magnitudeSquared();
-    },
-
-    dot: function( v ) {
-      return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
-    },
-    
-    isFinite: function() {
-      return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z ) && isFinite( this.w );
-    },
-
-    /*---------------------------------------------------------------------------*
-     * Immutables
-     *----------------------------------------------------------------------------*/
-
-    normalized: function() {
-      var mag = this.magnitude();
-      if ( mag === 0 ) {
-        throw new Error( "Cannot normalize a zero-magnitude vector" );
-      }
-      else {
-        return new Vector4( this.x / mag, this.y / mag, this.z / mag, this.w / mag );
-      }
-    },
-
-    timesScalar: function( scalar ) {
-      return new Vector4( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
-    },
-
-    times: function( scalar ) {
-      // make sure it's not a vector!
-      assert && assert( scalar.dimension === undefined );
-      return this.timesScalar( scalar );
-    },
-
-    componentTimes: function( v ) {
-      return new Vector4( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
-    },
-
-    plus: function( v ) {
-      return new Vector4( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
-    },
-
-    plusScalar: function( scalar ) {
-      return new Vector4( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
-    },
-
-    minus: function( v ) {
-      return new Vector4( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
-    },
-
-    minusScalar: function( scalar ) {
-      return new Vector4( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
-    },
-
-    dividedScalar: function( scalar ) {
-      return new Vector4( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
-    },
-
-    negated: function() {
-      return new Vector4( -this.x, -this.y, -this.z, -this.w );
-    },
-
-    angleBetween: function( v ) {
-      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
-    },
-    
-    // linear interpolation from this (ratio=0) to vector (ratio=1)
-    blend: function( vector, ratio ) {
-      return this.plus( vector.minus( this ).times( ratio ) );
-    },
-
-    toString: function() {
-      return "Vector4(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";
-    },
-
-    toVector3: function() {
-      return new dot.Vector3( this.x, this.y, this.z );
-    },
-
-    /*---------------------------------------------------------------------------*
-     * Mutables
-     *----------------------------------------------------------------------------*/
-
-    set: function( x, y, z, w ) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-      this.w = w;
-    },
-
-    setX: function( x ) {
-      this.x = x;
-    },
-
-    setY: function( y ) {
-      this.y = y;
-    },
-
-    setZ: function( z ) {
-      this.z = z;
-    },
-
-    setW: function( w ) {
-      this.w = w;
-    },
-
-    copy: function( v ) {
-      this.x = v.x;
-      this.y = v.y;
-      this.z = v.z;
-      this.w = v.w;
-    },
-
-    add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      this.z += v.z;
-      this.w += v.w;
-    },
-
-    addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      this.z += scalar;
-      this.w += scalar;
-    },
-
-    subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      this.z -= v.z;
-      this.w -= v.w;
-    },
-
-    subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      this.z -= scalar;
-      this.w -= scalar;
-    },
-
-    componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      this.z *= v.z;
-      this.w *= v.w;
-    },
-
-    divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      this.z /= scalar;
-      this.w /= scalar;
-    },
-
-    negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      this.z = -this.z;
-      this.w = -this.w;
-    },
-    
-    equals: function( other ) {
-      return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
-    },
-    
-    equalsEpsilon: function( other, epsilon ) {
-      if ( !epsilon ) {
-        epsilon = 0;
-      }
-      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) + Math.abs( this.w - other.w ) <= epsilon;
-    },
-
-    isVector4: true,
-
-    dimension: 4
-
-  };
-
-  /*---------------------------------------------------------------------------*
-   * Immutable Vector form
-   *----------------------------------------------------------------------------*/
-  Vector4.Immutable = function( x, y, z, w ) {
-    this.x = x || 0;
-    this.y = y || 0;
-    this.z = z || 0;
-    this.w = w !== undefined ? w : 1;
-  };
-  var Immutable = Vector4.Immutable;
-
-  Immutable.prototype = new Vector4();
-  Immutable.prototype.constructor = Immutable;
-
-  // throw errors whenever a mutable method is called on our immutable vector
-  Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
-    Immutable.prototype[mutableFunctionName] = function() {
-      throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector4" );
-    };
-  };
-
-  // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
-  Immutable.mutableOverrideHelper( 'setX' );
-  Immutable.mutableOverrideHelper( 'setY' );
-  Immutable.mutableOverrideHelper( 'setZ' );
-  Immutable.mutableOverrideHelper( 'setW' );
-  Immutable.mutableOverrideHelper( 'copy' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
-
-  // helpful immutable constants
-  Vector4.ZERO = new Immutable( 0, 0, 0, 0 );
-  Vector4.X_UNIT = new Immutable( 1, 0, 0, 0 );
-  Vector4.Y_UNIT = new Immutable( 0, 1, 0, 0 );
-  Vector4.Z_UNIT = new Immutable( 0, 0, 1, 0 );
-  Vector4.W_UNIT = new Immutable( 0, 0, 0, 1 );
-  
-  return Vector4;
-} );
-
-// Copyright 2002-2013, University of Colorado Boulder
-
-/**
- * Basic 3-dimensional vector
- *
- * TODO: sync with Vector2 changes
- *
- * @author Jonathan Olson <olsonsjc@gmail.com>
- */
-
-define( 'DOT/Vector3',['require','ASSERT/assert','DOT/dot','DOT/Util','DOT/Vector2','DOT/Vector4'],function( require ) {
-  
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
-  var dot = require( 'DOT/dot' );
-  
-  require( 'DOT/Util' );
-  require( 'DOT/Vector2' );
-  require( 'DOT/Vector4' );
-
-  dot.Vector3 = function Vector3( x, y, z ) {
-    // allow optional parameters
-    this.x = x || 0;
-    this.y = y || 0;
-    this.z = z || 0;
-  };
-  var Vector3 = dot.Vector3;
-
-  Vector3.prototype = {
-    constructor: Vector3,
-
-    magnitude: function() {
-      return Math.sqrt( this.magnitudeSquared() );
-    },
-
-    magnitudeSquared: function() {
-      return this.dot( this );
-    },
-    
-    // the distance between this vector (treated as a point) and another point
-    distance: function( point ) {
-      return this.minus( point ).magnitude();
-    },
-    
-    // the squared distance between this vector (treated as a point) and another point
-    distanceSquared: function( point ) {
-      return this.minus( point ).magnitudeSquared();
-    },
-
-    dot: function( v ) {
-      return this.x * v.x + this.y * v.y + this.z * v.z;
-    },
-    
-    isFinite: function() {
-      return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z );
-    },
-
-    /*---------------------------------------------------------------------------*
-     * Immutables
-     *----------------------------------------------------------------------------*/
-
-    cross: function( v ) {
-      return new Vector3(
-          this.y * v.z - this.z * v.y,
-          this.z * v.x - this.x * v.z,
-          this.x * v.y - this.y * v.x
-      );
-    },
-
-    normalized: function() {
-      var mag = this.magnitude();
-      if ( mag === 0 ) {
-        throw new Error( "Cannot normalize a zero-magnitude vector" );
-      }
-      else {
-        return new Vector3( this.x / mag, this.y / mag, this.z / mag );
-      }
-    },
-
-    timesScalar: function( scalar ) {
-      return new Vector3( this.x * scalar, this.y * scalar, this.z * scalar );
-    },
-
-    times: function( scalar ) {
-      // make sure it's not a vector!
-      assert && assert( scalar.dimension === undefined );
-      return this.timesScalar( scalar );
-    },
-
-    componentTimes: function( v ) {
-      return new Vector3( this.x * v.x, this.y * v.y, this.z * v.z );
-    },
-
-    plus: function( v ) {
-      return new Vector3( this.x + v.x, this.y + v.y, this.z + v.z );
-    },
-
-    plusScalar: function( scalar ) {
-      return new Vector3( this.x + scalar, this.y + scalar, this.z + scalar );
-    },
-
-    minus: function( v ) {
-      return new Vector3( this.x - v.x, this.y - v.y, this.z - v.z );
-    },
-
-    minusScalar: function( scalar ) {
-      return new Vector3( this.x - scalar, this.y - scalar, this.z - scalar );
-    },
-
-    dividedScalar: function( scalar ) {
-      return new Vector3( this.x / scalar, this.y / scalar, this.z / scalar );
-    },
-
-    negated: function() {
-      return new Vector3( -this.x, -this.y, -this.z );
-    },
-
-    angleBetween: function( v ) {
-      return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
-    },
-    
-    // linear interpolation from this (ratio=0) to vector (ratio=1)
-    blend: function( vector, ratio ) {
-      return this.plus( vector.minus( this ).times( ratio ) );
-    },
-
-    toString: function() {
-      return "Vector3(" + this.x + ", " + this.y + ", " + this.z + ")";
-    },
-
-    toVector2: function() {
-      return new dot.Vector2( this.x, this.y );
-    },
-
-    toVector4: function() {
-      return new dot.Vector4( this.x, this.y, this.z );
-    },
-
-    /*---------------------------------------------------------------------------*
-     * Mutables
-     *----------------------------------------------------------------------------*/
-
-    set: function( x, y, z ) {
-      this.x = x;
-      this.y = y;
-      this.z = z;
-    },
-
-    setX: function( x ) {
-      this.x = x;
-    },
-
-    setY: function( y ) {
-      this.y = y;
-    },
-
-    setZ: function( z ) {
-      this.z = z;
-    },
-
-    copy: function( v ) {
-      this.x = v.x;
-      this.y = v.y;
-      this.z = v.z;
-    },
-
-    add: function( v ) {
-      this.x += v.x;
-      this.y += v.y;
-      this.z += v.z;
-    },
-
-    addScalar: function( scalar ) {
-      this.x += scalar;
-      this.y += scalar;
-      this.z += scalar;
-    },
-
-    subtract: function( v ) {
-      this.x -= v.x;
-      this.y -= v.y;
-      this.z -= v.z;
-    },
-
-    subtractScalar: function( scalar ) {
-      this.x -= scalar;
-      this.y -= scalar;
-      this.z -= scalar;
-    },
-
-    componentMultiply: function( v ) {
-      this.x *= v.x;
-      this.y *= v.y;
-      this.z *= v.z;
-    },
-
-    divideScalar: function( scalar ) {
-      this.x /= scalar;
-      this.y /= scalar;
-      this.z /= scalar;
-    },
-
-    negate: function() {
-      this.x = -this.x;
-      this.y = -this.y;
-      this.z = -this.z;
-    },
-    
-    equals: function( other ) {
-      return this.x === other.x && this.y === other.y && this.z === other.z;
-    },
-    
-    equalsEpsilon: function( other, epsilon ) {
-      if ( !epsilon ) {
-        epsilon = 0;
-      }
-      return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) <= epsilon;
-    },
-
-    isVector3: true,
-
-    dimension: 3
-
-  };
-
-  /*---------------------------------------------------------------------------*
-   * Immutable Vector form
-   *----------------------------------------------------------------------------*/
-  Vector3.Immutable = function( x, y, z ) {
-    this.x = x || 0;
-    this.y = y || 0;
-    this.z = z || 0;
-  };
-  var Immutable = Vector3.Immutable;
-
-  Immutable.prototype = new Vector3();
-  Immutable.prototype.constructor = Immutable;
-
-  // throw errors whenever a mutable method is called on our immutable vector
-  Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
-    Immutable.prototype[mutableFunctionName] = function() {
-      throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector3" );
-    };
-  };
-
-  // TODO: better way to handle this list?
-  Immutable.mutableOverrideHelper( 'set' );
-  Immutable.mutableOverrideHelper( 'setX' );
-  Immutable.mutableOverrideHelper( 'setY' );
-  Immutable.mutableOverrideHelper( 'setZ' );
-  Immutable.mutableOverrideHelper( 'copy' );
-  Immutable.mutableOverrideHelper( 'add' );
-  Immutable.mutableOverrideHelper( 'addScalar' );
-  Immutable.mutableOverrideHelper( 'subtract' );
-  Immutable.mutableOverrideHelper( 'subtractScalar' );
-  Immutable.mutableOverrideHelper( 'componentMultiply' );
-  Immutable.mutableOverrideHelper( 'divideScalar' );
-  Immutable.mutableOverrideHelper( 'negate' );
-
-  // helpful immutable constants
-  Vector3.ZERO = new Immutable( 0, 0, 0 );
-  Vector3.X_UNIT = new Immutable( 1, 0, 0 );
-  Vector3.Y_UNIT = new Immutable( 0, 1, 0 );
-  Vector3.Z_UNIT = new Immutable( 0, 0, 1 );
-  
-  return Vector3;
-} );
-
-// Copyright 2002-2013, University of Colorado Boulder
-
-/**
  * Arbitrary-dimensional matrix, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Matrix',['require','ASSERT/assert','DOT/dot','PHET_CORE/isArray','DOT/SingularValueDecomposition','DOT/LUDecomposition','DOT/QRDecomposition','DOT/EigenvalueDecomposition','DOT/Vector2','DOT/Vector3','DOT/Vector4'],function( require ) {
+define( 'DOT/Matrix',['require','DOT/dot','PHET_CORE/isArray','DOT/SingularValueDecomposition','DOT/LUDecomposition','DOT/QRDecomposition','DOT/EigenvalueDecomposition','DOT/Vector2','DOT/Vector3','DOT/Vector4'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
   
@@ -5513,10 +6342,12 @@ define( 'DOT/Matrix4',['require','DOT/dot','DOT/Vector3','DOT/Vector4'],function
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matrix4'],function( require ) {
+define( 'DOT/Matrix3',['require','DOT/dot','PHET_CORE/Poolable','PHET_CORE/inherit','DOT/Vector2','DOT/Vector3','DOT/Matrix4'],function( require ) {
   
   
   var dot = require( 'DOT/dot' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
+  var inherit = require( 'PHET_CORE/inherit' );
   
   var FastArray = dot.FastArray;
   
@@ -5537,6 +6368,15 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
     phetAllocation && phetAllocation( 'Matrix3' );
   };
   var Matrix3 = dot.Matrix3;
+  
+  // a variety of constructing a matrix without calling rowMajor and executing a lot of tests (built for initialization speed with mutators)
+  dot.FastMatrix3 = function FastMatrix3() {
+    // not initialized, so it is faster
+    this.entries = new FastArray( 9 );
+    
+    phetAllocation && phetAllocation( 'Matrix3' );
+  };
+  var FastMatrix3 = dot.FastMatrix3;
 
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
@@ -5553,170 +6393,36 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
 
   var Types = Matrix3.Types;
 
-  Matrix3.identity = function() {
-    return new Matrix3( 1, 0, 0,
-                        0, 1, 0,
-                        0, 0, 1,
-                        Types.IDENTITY );
-  };
-
-  Matrix3.translation = function( x, y ) {
-    return new Matrix3( 1, 0, x,
-                        0, 1, y,
-                        0, 0, 1,
-                        Types.TRANSLATION_2D );
-  };
-
+  Matrix3.identity = function() { return FastMatrix3.dirtyFromPool().setToIdentity(); };
+  Matrix3.translation = function( x, y ) { return FastMatrix3.dirtyFromPool().setToTranslation( x, y ); };
   Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
-
-  Matrix3.scaling = function( x, y ) {
-    // allow using one parameter to scale everything
-    y = y === undefined ? x : y;
-
-    return new Matrix3( x, 0, 0,
-                        0, y, 0,
-                        0, 0, 1,
-                        Types.SCALING );
-  };
+  Matrix3.scaling = function( x, y ) { return FastMatrix3.dirtyFromPool().setToScale( x, y ); };
   Matrix3.scale = Matrix3.scaling;
-  
-  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) {
-    return new Matrix3( m00, m01, m02, m10, m11, m12, 0, 0, 1, Types.AFFINE );
-  };
+  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) { return FastMatrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
+  Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return FastMatrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
 
   // axis is a normalized Vector3, angle in radians.
-  Matrix3.rotationAxisAngle = function( axis, angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-    var C = 1 - c;
-
-    return new Matrix3( axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s,
-                        axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s,
-                        axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c,
-                        Types.OTHER );
-  };
-
-  // TODO: add in rotation from quaternion, and from quat + translation
-
-  Matrix3.rotationX = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-
-    return new Matrix3( 1, 0, 0,
-                        0, c, -s,
-                        0, s, c,
-                        Types.OTHER );
-  };
-
-  Matrix3.rotationY = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-
-    return new Matrix3( c, 0, s,
-                        0, 1, 0,
-                        -s, 0, c,
-                        Types.OTHER );
-  };
-
-  Matrix3.rotationZ = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-
-    return new Matrix3( c, -s, 0,
-                        s, c, 0,
-                        0, 0, 1,
-                        Types.AFFINE );
-  };
+  Matrix3.rotationAxisAngle = function( axis, angle ) { return FastMatrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
+  
+  Matrix3.rotationX = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationX( angle ); };
+  Matrix3.rotationY = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationY( angle ); };
+  Matrix3.rotationZ = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationZ( angle ); };
   
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
   
-  Matrix3.fromSVGMatrix = function( svgMatrix ) {
-    return new Matrix3( svgMatrix.a, svgMatrix.c, svgMatrix.e,
-                        svgMatrix.b, svgMatrix.d, svgMatrix.f,
-                        0, 0, 1,
-                        Types.AFFINE );
+  Matrix3.rotationAround = function( angle, x, y ) {
+    return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
   };
+  
+  Matrix3.rotationAroundPoint = function( angle, point ) {
+    return Matrix3.rotationAround( angle, point.x, point.y );
+  };
+  
+  Matrix3.fromSVGMatrix = function( svgMatrix ) { return FastMatrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
 
   // a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-  Matrix3.rotateAToB = function( a, b ) {
-    // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
-    var start = a;
-    var end = b;
-
-    var epsilon = 0.0001;
-
-    var e, h, f;
-
-    var v = start.cross( end );
-    e = start.dot( end );
-    f = ( e < 0 ) ? -e : e;
-
-    // if "from" and "to" vectors are nearly parallel
-    if ( f > 1.0 - epsilon ) {
-      var c1, c2, c3;
-      /* coefficients for later use */
-      var i, j;
-
-      var x = new dot.Vector3(
-        ( start.x > 0.0 ) ? start.x : -start.x,
-        ( start.y > 0.0 ) ? start.y : -start.y,
-        ( start.z > 0.0 ) ? start.z : -start.z
-      );
-
-      if ( x.x < x.y ) {
-        if ( x.x < x.z ) {
-          x = dot.Vector3.X_UNIT;
-        }
-        else {
-          x = dot.Vector3.Z_UNIT;
-        }
-      }
-      else {
-        if ( x.y < x.z ) {
-          x = dot.Vector3.Y_UNIT;
-        }
-        else {
-          x = dot.Vector3.Z_UNIT;
-        }
-      }
-
-      var u = x.minus( start );
-      v = x.minus( end );
-
-      c1 = 2.0 / u.dot( u );
-      c2 = 2.0 / v.dot( v );
-      c3 = c1 * c2 * u.dot( v );
-
-      return Matrix3.IDENTITY.plus( Matrix3.rowMajor(
-        -c1 * u.x * u.x - c2 * v.x * v.x + c3 * v.x * u.x,
-        -c1 * u.x * u.y - c2 * v.x * v.y + c3 * v.x * u.y,
-        -c1 * u.x * u.z - c2 * v.x * v.z + c3 * v.x * u.z,
-        -c1 * u.y * u.x - c2 * v.y * v.x + c3 * v.y * u.x,
-        -c1 * u.y * u.y - c2 * v.y * v.y + c3 * v.y * u.y,
-        -c1 * u.y * u.z - c2 * v.y * v.z + c3 * v.y * u.z,
-        -c1 * u.z * u.x - c2 * v.z * v.x + c3 * v.z * u.x,
-        -c1 * u.z * u.y - c2 * v.z * v.y + c3 * v.z * u.y,
-        -c1 * u.z * u.z - c2 * v.z * v.z + c3 * v.z * u.z
-      ) );
-    }
-    else {
-      // the most common case, unless "start"="end", or "start"=-"end"
-      var hvx, hvz, hvxy, hvxz, hvyz;
-      h = 1.0 / ( 1.0 + e );
-      hvx = h * v.x;
-      hvz = h * v.z;
-      hvxy = hvx * v.y;
-      hvxz = hvx * v.z;
-      hvyz = hvz * v.y;
-
-      return Matrix3.rowMajor(
-        e + hvx * v.x, hvxy - v.z, hvxz + v.y,
-        hvxy + v.z, e + h * v.y * v.y, hvyz - v.x,
-        hvxz - v.y, hvyz + v.x, e + hvz * v.z
-      );
-    }
-  };
+  Matrix3.rotateAToB = function( a, b ) { return FastMatrix3.dirtyFromPool().setRotationAToB( a, b ); };
 
   Matrix3.prototype = {
     constructor: Matrix3,
@@ -5735,6 +6441,10 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
     m20: function() { return this.entries[2]; },
     m21: function() { return this.entries[5]; },
     m22: function() { return this.entries[8]; },
+    
+    isIdentity: function() {
+      return this.type === Types.IDENTITY || this.equals( Matrix3.IDENTITY );
+    },
     
     isAffine: function() {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
@@ -5973,7 +6683,7 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
     },
     
     timesMatrix: function( m ) {
-      // I * M === M * I === I (the identity)
+      // I * M === M * I === M (the identity)
       if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
         return this.type === Types.IDENTITY ? m : this;
       }
@@ -6052,13 +6762,7 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
     * Mutable operations (changes this matrix)
     *----------------------------------------------------------------------------*/
     
-    makeImmutable: function() {
-      this.rowMajor = function() {
-        throw new Error( 'Cannot modify immutable matrix' );
-      };
-      return this;
-    },
-    
+    // every mutable method goes through rowMajor
     rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
       this.entries[0] = v00;
       this.entries[1] = v10;
@@ -6072,6 +6776,20 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
       
       // TODO: consider performance of the affine check here
       this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
+      return this;
+    },
+    
+    set: function( matrix ) {
+      return this.rowMajor( matrix.m00(), matrix.m01(), matrix.m02(),
+                            matrix.m10(), matrix.m11(), matrix.m12(),
+                            matrix.m20(), matrix.m21(), matrix.m22(),
+                            matrix.type );
+    },
+    
+    makeImmutable: function() {
+      this.rowMajor = function() {
+        throw new Error( 'Cannot modify immutable matrix' );
+      };
       return this;
     },
     
@@ -6167,9 +6885,16 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
     },
     
     multiplyMatrix: function( m ) {
-      // I * M === M * I === I (the identity)
-      if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
-        return this.type === Types.IDENTITY ? m : this;
+      // M * I === M (the identity)
+      if ( m.type === Types.IDENTITY ) {
+        // no change needed
+        return this;
+      }
+      
+      // I * M === M (the identity)
+      if ( this.type === Types.IDENTITY ) {
+        // copy the other matrix to us
+        return this.set( m );
       }
       
       if ( this.type === m.type ) {
@@ -6212,42 +6937,185 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
                             this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
     },
     
+    setToIdentity: function() {
+      return this.rowMajor( 1, 0, 0,
+                            0, 1, 0,
+                            0, 0, 1,
+                            Types.IDENTITY );
+    },
+    
+    setToTranslation: function( x, y ) {
+      return this.rowMajor( 1, 0, x,
+                            0, 1, y,
+                            0, 0, 1,
+                            Types.TRANSLATION_2D );
+    },
+    
+    setToScale: function( x, y ) {
+      // allow using one parameter to scale everything
+      y = y === undefined ? x : y;
+
+      return this.rowMajor( x, 0, 0,
+                            0, y, 0,
+                            0, 0, 1,
+                            Types.SCALING );
+    },
+    
+    // row major
+    setToAffine: function( m00, m01, m02, m10, m11, m12 ) {
+      return this.rowMajor( m00, m01, m02, m10, m11, m12, 0, 0, 1, Types.AFFINE );
+    },
+    
+    // axis is a normalized Vector3, angle in radians.
+    setToRotationAxisAngle: function( axis, angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+      var C = 1 - c;
+
+      return this.rowMajor( axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s,
+                            axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s,
+                            axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c,
+                            Types.OTHER );
+    },
+    
+    setToRotationX: function( angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor( 1, 0, 0,
+                            0, c, -s,
+                            0, s, c,
+                            Types.OTHER );
+    },
+    
+    setToRotationY: function( angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor( c, 0, s,
+                            0, 1, 0,
+                            -s, 0, c,
+                            Types.OTHER );
+    },
+    
+    setToRotationZ: function( angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor( c, -s, 0,
+                            s, c, 0,
+                            0, 0, 1,
+                            Types.AFFINE );
+    },
+    
+    setToSVGMatrix: function( svgMatrix ) {
+      return this.rowMajor( svgMatrix.a, svgMatrix.c, svgMatrix.e,
+                            svgMatrix.b, svgMatrix.d, svgMatrix.f,
+                            0, 0, 1,
+                            Types.AFFINE );
+    },
+    
+    // a rotation matrix that rotates A to B (Vector3 instances), by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
+    setRotationAToB: function( a, b ) {
+      // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
+      var start = a;
+      var end = b;
+
+      var epsilon = 0.0001;
+
+      var e, h, f;
+
+      var v = start.cross( end );
+      e = start.dot( end );
+      f = ( e < 0 ) ? -e : e;
+
+      // if "from" and "to" vectors are nearly parallel
+      if ( f > 1.0 - epsilon ) {
+        var c1, c2, c3;
+
+        var x = new dot.Vector3(
+          ( start.x > 0.0 ) ? start.x : -start.x,
+          ( start.y > 0.0 ) ? start.y : -start.y,
+          ( start.z > 0.0 ) ? start.z : -start.z
+        );
+
+        if ( x.x < x.y ) {
+          if ( x.x < x.z ) {
+            x = dot.Vector3.X_UNIT;
+          }
+          else {
+            x = dot.Vector3.Z_UNIT;
+          }
+        }
+        else {
+          if ( x.y < x.z ) {
+            x = dot.Vector3.Y_UNIT;
+          }
+          else {
+            x = dot.Vector3.Z_UNIT;
+          }
+        }
+
+        var u = x.minus( start );
+        v = x.minus( end );
+
+        c1 = 2.0 / u.dot( u );
+        c2 = 2.0 / v.dot( v );
+        c3 = c1 * c2 * u.dot( v );
+
+        return this.rowMajor(
+          -c1 * u.x * u.x - c2 * v.x * v.x + c3 * v.x * u.x + 1,
+          -c1 * u.x * u.y - c2 * v.x * v.y + c3 * v.x * u.y,
+          -c1 * u.x * u.z - c2 * v.x * v.z + c3 * v.x * u.z,
+          -c1 * u.y * u.x - c2 * v.y * v.x + c3 * v.y * u.x,
+          -c1 * u.y * u.y - c2 * v.y * v.y + c3 * v.y * u.y + 1,
+          -c1 * u.y * u.z - c2 * v.y * v.z + c3 * v.y * u.z,
+          -c1 * u.z * u.x - c2 * v.z * v.x + c3 * v.z * u.x,
+          -c1 * u.z * u.y - c2 * v.z * v.y + c3 * v.z * u.y,
+          -c1 * u.z * u.z - c2 * v.z * v.z + c3 * v.z * u.z + 1
+        );
+      }
+      else {
+        // the most common case, unless "start"="end", or "start"=-"end"
+        var hvx, hvz, hvxy, hvxz, hvyz;
+        h = 1.0 / ( 1.0 + e );
+        hvx = h * v.x;
+        hvz = h * v.z;
+        hvxy = hvx * v.y;
+        hvxz = hvx * v.z;
+        hvyz = hvz * v.y;
+
+        return this.rowMajor(
+          e + hvx * v.x, hvxy - v.z,        hvxz + v.y,
+          hvxy + v.z,    e + h * v.y * v.y, hvyz - v.x,
+          hvxz - v.y,    hvyz + v.x,        e + hvz * v.z
+        );
+      }
+    },
+    
     /*---------------------------------------------------------------------------*
     * Mutable operations (changes the parameter)
     *----------------------------------------------------------------------------*/
     
     multiplyVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02();
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12();
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m01() * v.y + this.m02(),
+                      this.m10() * v.x + this.m11() * v.y + this.m12() );
     },
     
     multiplyVector3: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
-      var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
-      v.setX( x );
-      v.setY( y );
-      v.setZ( z );
-      return v;
+      return v.setXYZ( this.m00() * v.x + this.m01() * v.y + this.m02() * v.z,
+                       this.m10() * v.x + this.m11() * v.y + this.m12() * v.z,
+                       this.m20() * v.x + this.m21() * v.y + this.m22() * v.z );
     },
     
     multiplyTransposeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m10() * v.y;
-      var y = this.m01() * v.x + this.m11() * v.y;
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m10() * v.y,
+                      this.m01() * v.x + this.m11() * v.y );
     },
     
     multiplyRelativeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y;
-      var y = this.m10() * v.y + this.m11() * v.y;
-      v.setX( x );
-      v.setY( y );
-      return v;
+      return v.setXY( this.m00() * v.x + this.m01() * v.y,
+                      this.m10() * v.y + this.m11() * v.y );
     },
     
     // sets the transform of a Canvas 2D rendering context to the affine part of this matrix
@@ -6278,6 +7146,29 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
       }
     }
   };
+  
+  /* jshint -W064 */
+  Poolable( Matrix3, {
+    defaultFactory: function() { return new Matrix3(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+        if ( pool.length ) {
+          return pool.pop().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        } else {
+          return new Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        }
+      };
+    }
+  } );
+  
+  /* jshint -W064 */
+  Poolable( FastMatrix3, {
+    // no constructor function needed, always grab a dirty one
+    defaultFactory: function() { return new FastMatrix3(); }
+  } );
+  
+  // prototype should be done by here, so now we hook it up to FastMatrix3
+  inherit( Matrix3, FastMatrix3 );
   
   // create an immutable
   Matrix3.IDENTITY = new Matrix3( 1, 0, 0,
@@ -6328,16 +7219,658 @@ define( 'DOT/Matrix3',['require','DOT/dot','DOT/Vector2','DOT/Vector3','DOT/Matr
 
 // Copyright 2002-2013, University of Colorado Boulder
 
+define( 'AXON/axon',['require'],function( require ) {
+  
+
+  var axon = {};
+
+  // will be filled in by other modules
+  return axon;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * An observable property, notifies registered observers when the value changes.
+ *
+ * Uses the 'Constructor' pattern for object creation, which has the downside that
+ * all properties are created once for each instance. It would be nice if our functions
+ * were shared. But since the only way to create private fields is in the constructor,
+ * and the functions need access to those private fields, there doesn't seem to be
+ * any choice but to define the functions in the constructor.
+ *
+ * @author Chris Malley (PixelZoom, Inc.)
+ */
+define( 'AXON/Property',['require','AXON/axon'],function( require ) {
+  
+
+  var axon = require( 'AXON/axon' );
+
+  /**
+   * @param {*} value
+   * @constructor
+   */
+  axon.Property = function Property( value ) {
+
+    //Store the internal value and the initial value
+    this.storeValue( value );        // typically sets this._value
+    this.storeInitialValue( value ); // typically sets this._initialValue
+    this._observers = [];
+  };
+
+  axon.Property.prototype = {
+
+    /**
+     * Gets the value.  You can also use the es5 getter (property.value) but this means is provided for inner loops or internal code that must be fast.
+     * @return {*}
+     */
+    get: function() {
+      return this._value;
+    },
+
+    /**
+     * Sets the value and notifies registered observers.  You can also use the es5 getter (property.value) but this means is provided for inner loops or internal code that must be fast.
+     * If the value hasn't changed, this is a no-op.
+     *
+     * @param {*} value
+     */
+    set: function( value ) {
+      if ( !this.equalsValue( value ) ) {
+        this._setAndNotifyObservers( value );
+      }
+      return this;
+    },
+
+    // whether this property will not "change" when the passed-in value is set
+    equalsValue: function( value ) {
+      return value === this._value;
+    },
+
+    // store the current (new) value
+    storeValue: function( value ) {
+      this._value = value;
+    },
+
+    // store the initial value
+    storeInitialValue: function( value ) {
+      this._initialValue = value;
+    },
+
+    _setAndNotifyObservers: function( value ) {
+      var oldValue = this.get();
+      this.storeValue( value );
+      this._notifyObservers( oldValue );
+    },
+
+    _notifyObservers: function( oldValue ) {
+      var value = this.get();
+      // TODO: JO: avoid slice() by storing observers array correctly
+      var observersCopy = this._observers.slice(); // make a copy, in case notification results in removeObserver
+      for ( var i = 0; i < observersCopy.length; i++ ) {
+        observersCopy[i]( value, oldValue );
+      }
+    },
+
+    //Use this method when mutating a value (not replacing with a new instance) and you want to send notifications about the change.
+    //This is different from the normal axon strategy, but may be necessary to prevent memory allocations.
+    //This method is unsafe for removing observers because it assumes the observer list not modified, to save another allocation
+    //Only provides the new reference as a callback (no oldvalue)
+    //See https://github.com/phetsims/axon/issues/6
+    notifyObserversUnsafe: function() {
+      var value = this.get();
+      for ( var i = 0; i < this._observers.length; i++ ) {
+        this._observers[i]( value );
+      }
+    },
+
+    /**
+     * Resets the value to the initial value.
+     */
+    reset: function() {
+      this.set( this._initialValue );
+    },
+
+    /**
+     * This function returns a bound function that sets the specified value.  For use in creating closures e.g. with gui classes.
+     * For instance, to have a button that sets a property to true, instead of using
+     * button.click(function(){property.set(true);});
+     * you could use
+     * button.click(property._set(true));
+     * @param value the value to use when the setter is called.
+     * @return a function that can be used to set the specified value.
+     */
+    _set: function( value ) {
+      return this.set.bind( this, value );
+    },
+
+    get value() { return this.get(); },
+
+    set value( newValue ) { this.set( newValue ); },
+
+    /**
+     * Adds an observer and notifies it immediately.
+     * If observer is already registered, this is a no-op.
+     * The initial notification provides the current value for newValue and null for oldValue.
+     *
+     * @param {Function} observer a function of the form observer(newValue,oldValue)
+     */
+    link: function( observer ) {
+      if ( this._observers.indexOf( observer ) === -1 ) {
+        this._observers.push( observer );
+        observer( this.get(), null ); // null should be used when an object is expected but unavailable
+      }
+    },
+
+    /**
+     * Removes an observer.
+     * If observer is not registered, this is a no-op.
+     *
+     * @param {Function} observer
+     */
+    unlink: function( observer ) {
+      var index = this._observers.indexOf( observer );
+      if ( index !== -1 ) {
+        this._observers.splice( index, 1 );
+      }
+    },
+
+    /**
+     * Add an observer to the Property, without calling it back right away.  This is used when you need to register a listener without an immediate callback.
+     * @param {Function} observer  a function with a single argument, which is the value of the property at the time the function is called.
+     */
+    lazyLink: function( observer ) {
+      if ( this._observers.indexOf( observer ) === -1 ) {
+        this._observers.push( observer );
+      }
+    },
+
+    //Provide toString for console debugging, see http://stackoverflow.com/questions/2485632/valueof-vs-tostring-in-javascript
+    toString: function() {return 'Property{' + this.get() + '}'; },
+    valueOf: function() {return this.toString();},
+
+    /**
+     * Add a listener so that it will only fire once (and not on registration)
+     *
+     * I can see two ways to implement this:
+     * (a) add a field to the observer so after notifications it can be checked and possibly removed. Disadvantage: will make everything slower even if not using 'once'
+     * (b) wrap the observer in a new function which will call the observer and then remove itself.  Disadvantage: cannot remove an observer added using 'once'
+     * To avoid possible performance problems, use a wrapper function, and return it as a handle in case the 'once' listener must be removed before it is called once
+     *
+     * @param observer the listener which should be called back only for one property change (and not on registration)
+     * @returns {Function} the wrapper handle in case the wrapped function needs to be removed with 'unlink' before it is called once
+     */
+    once: function( observer ) {
+      var property = this;
+      var wrapper = function( newValue, oldValue ) {
+        observer( newValue, oldValue );
+        property.unlink( wrapper );
+      };
+      this.lazyLink( wrapper );
+      return wrapper;
+    },
+
+    /**
+     * Links an object's named attribute to this property.  Returns a handle so it can be removed.
+     * Example: modelVisibleProperty.linkAttribute(view,'visible');
+     *
+     * @param object
+     * @param attributeName
+     */
+    linkAttribute: function( object, attributeName ) {
+      var handle = function( value ) {object[attributeName] = value;};
+      this.link( handle );
+      return handle;
+    },
+
+    /**
+     * Returns a new DerivedProperty which is true/false based on whether the value matches (based on ===) the passed in argument.
+     * @param value
+     * @returns {axon.DerivedProperty}
+     */
+    valueEquals: function( value ) {
+      return new axon.DerivedProperty( [this], function( propertyValue ) { return propertyValue === value; } );
+    },
+
+    /**
+     * Returns a new boolean DerivedProperty which is true/false based on whether this value matches the other property based on ===.
+     * @param otherProperty
+     * @returns {DerivedProperty<boolean>}
+     */
+    and: function( otherProperty ) {
+      return new axon.DerivedProperty( [this, otherProperty], function( thisValue, otherValue ) { return thisValue && otherValue; } );
+    },
+
+    /**
+     * Not property, which does not propagate changes to dependents.
+     * @returns {DerivedProperty}
+     */
+    derivedNot: function() {
+      return new axon.DerivedProperty( [this], function( thisValue ) { return !thisValue; } );
+    },
+
+    /**
+     * Two way communication for not, so you can set the value and have it come back to the parent
+     * Note that noting about the following code is specific to booleans, although this should probably be used mostly for booleans.
+     * To unlink both listeners attached unlink a property created with not(), use detach()
+     */
+    not: function() {
+      var parentProperty = this;
+      var childProperty = new axon.Property( !this.value );
+
+      var setParentToChild = function( value ) {childProperty.set( !value );};
+      parentProperty.link( setParentToChild );
+
+      var setChildToParent = function( value ) {parentProperty.set( !value );};
+      childProperty.link( setChildToParent );
+
+      childProperty.detach = function() {
+        parentProperty.unlink( setParentToChild );
+        childProperty.unlink( setChildToParent );
+      };
+      return childProperty;
+    },
+
+    /**
+     * Convenience function for debugging a property values.  It prints the new value on registration and when changed.
+     * @param name debug name to be printed on the console
+     * @returns {Function} the handle to the linked listener in case it needs to be removed later
+     */
+    debug: function( name ) {
+      var listener = function( value ) { console.log( name, value ); };
+      this.link( listener );
+      return listener;
+    }
+  };
+
+  return axon.Property;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * Observable version of the basic 2-dimensional bounding box (Bounds2)
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+
+define( 'DOT/ObservableBounds2',['require','DOT/dot','PHET_CORE/inherit','PHET_CORE/extend','PHET_CORE/Poolable','AXON/Property','DOT/Bounds2'],function( require ) {
+  
+  
+  var dot = require( 'DOT/dot' );
+  
+  var inherit = require( 'PHET_CORE/inherit' );
+  var extend = require( 'PHET_CORE/extend' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
+  var Property = require( 'AXON/Property' );
+  require( 'DOT/Bounds2' );
+  
+  dot.ObservableBounds2 = function ObservableBounds2( minX, minY, maxX, maxY ) {
+    dot.Bounds2.call( this, minX, minY, maxX, maxY );
+    
+    this._oldValue = this.copy();
+    Property.call( this, this );
+  };
+  var ObservableBounds2 = dot.ObservableBounds2;
+  
+  inherit( dot.Bounds2, ObservableBounds2, extend( {}, Property.prototype, {
+    // returns this value directly
+    get: function() {
+      return this;
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Overriding the core mutable methods (any mutable operation should call one of these)
+    *----------------------------------------------------------------------------*/
+    setMinMax: function( minX, minY, maxX, maxY ) {
+      if ( this.minX !== minX || this.minY !== minY || this.maxX !== maxX || this.maxY !== maxY ) {
+        this._oldValue.minX = this.minX;
+        this._oldValue.minY = this.minY;
+        this._oldValue.maxX = this.maxX;
+        this._oldValue.maxY = this.maxY;
+        this.minX = minX;
+        this.minY = minY;
+        this.maxX = maxX;
+        this.maxY = maxY;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    setMinX: function( minX ) {
+      if ( this.minX !== minX ) {
+        this._oldValue.minX = this.minX;
+        this.minX = minX;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    setMinY: function( minY ) {
+      if ( this.minY !== minY ) {
+        this._oldValue.minY = this.minY;
+        this.minY = minY;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    setMaxX: function( maxX ) {
+      if ( this.maxX !== maxX ) {
+        this._oldValue.maxX = this.maxX;
+        this.maxX = maxX;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    setMaxY: function( maxY ) {
+      if ( this.maxY !== maxY ) {
+        this._oldValue.maxY = this.maxY;
+        this.maxY = maxY;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    set: dot.Bounds2.prototype.set,
+    
+    // override with vector equality instead of instance equality
+    equalsValue: function( value ) {
+      return this.equals( value );
+    },
+    
+    // we are not storing a separate value field (_value), so we leave this blank
+    storeValue: function( value ) {
+    },
+    
+    // to prevent a user from modifying the passed in initial value, we store the x/y here
+    storeInitialValue: function( value ) {
+      this._initialMinX = value.minX;
+      this._initialMinY = value.minY;
+      this._initialMaxX = value.maxX;
+      this._initialMaxY = value.maxY;
+    },
+    
+    reset: function() {
+      this.setMinMax( this._initialMinX, this._initialMinY, this._initialMaxX, this._initialMaxY );
+    },
+    
+    toString: function() {
+      return 'ObservableBounds2(' + this.minX + ', ' + this.minY + ', ' + this.maxX + ', ' + this.maxY + ')';
+    }
+  } ) );
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( ObservableBounds2, {
+    defaultFactory: function() { return new ObservableBounds2(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( minX, minY, maxX, maxY ) {
+        if ( pool.length ) {
+          return pool.pop().setMinMax( minX, minY, maxX, maxY );
+        } else {
+          return new ObservableBounds2( minX, minY, maxX, maxY );
+        }
+      };
+    }
+  } );
+  
+  return ObservableBounds2;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * Observable version of the basic 3-dimensional matrix (Matrix3)
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+
+define( 'DOT/ObservableMatrix3',['require','DOT/dot','PHET_CORE/inherit','PHET_CORE/extend','PHET_CORE/Poolable','AXON/Property','DOT/Matrix3'],function( require ) {
+  
+  
+  var dot = require( 'DOT/dot' );
+  
+  var inherit = require( 'PHET_CORE/inherit' );
+  var extend = require( 'PHET_CORE/extend' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
+  var Property = require( 'AXON/Property' );
+  require( 'DOT/Matrix3' );
+  
+  dot.ObservableMatrix3 = function ObservableMatrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+    dot.Matrix3.call( this, v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+    
+    this._oldValue = this.copy();
+    this._skipChecks = false;
+    Property.call( this, this );
+  };
+  var ObservableMatrix3 = dot.ObservableMatrix3;
+  
+  inherit( dot.Matrix3, ObservableMatrix3, extend( {}, Property.prototype, {
+    // returns this value directly
+    get: function() {
+      return this;
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Overriding the core mutable methods (any mutable operation should call one of these)
+    *----------------------------------------------------------------------------*/
+    // every mutable method goes through rowMajor
+    rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+      var skip = this._skipChecks;
+      var modified = skip ||
+                     v00 !== this.entries[0] ||
+                     v10 !== this.entries[1] ||
+                     v20 !== this.entries[2] ||
+                     v01 !== this.entries[3] ||
+                     v11 !== this.entries[4] ||
+                     v21 !== this.entries[5] ||
+                     v02 !== this.entries[6] ||
+                     v12 !== this.entries[7] ||
+                     v22 !== this.entries[8] ||
+                     type !== this.type;
+      if ( modified ) {
+        
+        if ( !skip && this._oldValue ) {
+          this._oldValue.entries[0] = this.entries[0];
+          this._oldValue.entries[1] = this.entries[1];
+          this._oldValue.entries[2] = this.entries[2];
+          this._oldValue.entries[3] = this.entries[3];
+          this._oldValue.entries[4] = this.entries[4];
+          this._oldValue.entries[5] = this.entries[5];
+          this._oldValue.entries[6] = this.entries[6];
+          this._oldValue.entries[7] = this.entries[7];
+          this._oldValue.entries[8] = this.entries[8];
+          this._oldValue.type = this.type;
+        }
+        
+        this.entries[0] = v00;
+        this.entries[1] = v10;
+        this.entries[2] = v20;
+        this.entries[3] = v01;
+        this.entries[4] = v11;
+        this.entries[5] = v21;
+        this.entries[6] = v02;
+        this.entries[7] = v12;
+        this.entries[8] = v22;
+        
+        // TODO: consider performance of the affine check here
+        this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? dot.Matrix3.Types.AFFINE : dot.Matrix3.Types.OTHER ) : type;
+        
+        // if this isn't initialization, fire off changes and update the old value
+        if ( this._observers ) {
+          this._notifyObservers( skip ? null : this._oldValue );
+        }
+      }
+      
+      return this;
+    },
+    
+    // override set, since it is overridden by property
+    set: dot.Matrix3.prototype.set,
+    
+    // override with vector equality instead of instance equality
+    equalsValue: function( value ) {
+      return this.equals( value );
+    },
+    
+    // we are not storing a separate value field (_value), so we leave this blank
+    storeValue: function( value ) {
+    },
+    
+    // to prevent a user from modifying the passed in initial value, we store the x/y here
+    storeInitialValue: function( value ) {
+      this._initial00 = value.m00();
+      this._initial01 = value.m01();
+      this._initial02 = value.m02();
+      this._initial10 = value.m10();
+      this._initial11 = value.m11();
+      this._initial12 = value.m12();
+      this._initial20 = value.m20();
+      this._initial21 = value.m21();
+      this._initial22 = value.m22();
+      this._initialType = value.type;
+    },
+    
+    reset: function() {
+      this.rowMajor( this._initial00, this._initial01, this._initial02,
+                     this._initial10, this._initial11, this._initial12,
+                     this._initial20, this._initial21, this._initial22,
+                     this._initialType );
+    },
+    
+    toString: dot.Matrix3.prototype.toString
+  } ) );
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( ObservableMatrix3, {
+    defaultFactory: function() { return new ObservableMatrix3(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+        if ( pool.length ) {
+          return pool.pop().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        } else {
+          return new ObservableMatrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+        }
+      };
+    }
+  } );
+  
+  return ObservableMatrix3;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * Observable version of the basic 2-dimensional vector
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+
+define( 'DOT/ObservableVector2',['require','DOT/dot','PHET_CORE/inherit','PHET_CORE/extend','PHET_CORE/Poolable','AXON/Property','DOT/Vector2'],function( require ) {
+  
+  
+  var dot = require( 'DOT/dot' );
+  
+  var inherit = require( 'PHET_CORE/inherit' );
+  var extend = require( 'PHET_CORE/extend' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
+  var Property = require( 'AXON/Property' );
+  require( 'DOT/Vector2' );
+  
+  dot.ObservableVector2 = function ObservableVector2( x, y ) {
+    dot.Vector2.call( this, x, y );
+    
+    this._oldValue = this.copy();
+    Property.call( this, this );
+  };
+  var ObservableVector2 = dot.ObservableVector2;
+  
+  inherit( dot.Vector2, ObservableVector2, extend( {}, Property.prototype, {
+    // returns this value directly
+    get: function() {
+      return this;
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Overriding the core mutable methods (any mutable operation should call one of these)
+    *----------------------------------------------------------------------------*/
+    setXY: function( x, y ) {
+      if ( this.x !== x || this.y !== y ) {
+        this._oldValue.x = this.x;
+        this._oldValue.y = this.y;
+        this.x = x;
+        this.y = y;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    setX: function( x ) {
+      if ( this.x !== x ) {
+        this._oldValue.x = this.x;
+        this.x = x;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    setY: function( y ) {
+      if ( this.y !== y ) {
+        this._oldValue.y = this.y;
+        this.y = y;
+        this._notifyObservers( this._oldValue );
+      }
+      return this;
+    },
+    set: dot.Vector2.prototype.set,
+    
+    // override with vector equality instead of instance equality
+    equalsValue: function( value ) {
+      return this.equals( value );
+    },
+    
+    // we are not storing a separate value field (_value), so we leave this blank
+    storeValue: function( value ) {
+    },
+    
+    // to prevent a user from modifying the passed in initial value, we store the x/y here
+    storeInitialValue: function( value ) {
+      this._initialX = value.x;
+      this._initialY = value.y;
+    },
+    
+    reset: function() {
+      this.setXY( this._initialX, this._initialY );
+    },
+    
+    toString: function() {
+      return 'ObservableVector2(' + this.x + ', ' + this.y + ')';
+    }
+  } ) );
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( ObservableVector2, {
+    defaultFactory: function() { return new ObservableVector2(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( x, y ) {
+        if ( pool.length ) {
+          return pool.pop().setXY( x, y );
+        } else {
+          return new ObservableVector2( x, y );
+        }
+      };
+    }
+  } );
+  
+  return ObservableVector2;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
 /**
  * An immutable permutation that can permute an array
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Permutation',['require','ASSERT/assert','DOT/dot','PHET_CORE/isArray','DOT/Util'],function( require ) {
+define( 'DOT/Permutation',['require','DOT/dot','PHET_CORE/isArray','DOT/Util'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
   
@@ -6345,7 +7878,7 @@ define( 'DOT/Permutation',['require','ASSERT/assert','DOT/dot','PHET_CORE/isArra
   require( 'DOT/Util' ); // for rangeInclusive
   
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
-  var Permutation = function Permutation( indices ) {
+  var Permutation = dot.Permutation = function Permutation( indices ) {
     this.indices = indices;
   };
 
@@ -6473,15 +8006,293 @@ define( 'DOT/Permutation',['require','ASSERT/assert','DOT/dot','PHET_CORE/isArra
 // Copyright 2002-2013, University of Colorado Boulder
 
 /**
+ * Quaternion, see http://en.wikipedia.org/wiki/Quaternion
+ *
+ * TODO: convert from JME-style parameterization into classical mathematical description?
+ *
+ * @author Jonathan Olson <olsonsjc@gmail.com>
+ */
+
+define( 'DOT/Quaternion',['require','DOT/dot','PHET_CORE/Poolable','DOT/Vector3','DOT/Matrix3','DOT/Util'],function( require ) {
+  
+  
+  var dot = require( 'DOT/dot' );
+  
+  var Poolable = require( 'PHET_CORE/Poolable' );
+  require( 'DOT/Vector3' );
+  require( 'DOT/Matrix3' );
+  require( 'DOT/Util' );
+  
+  dot.Quaternion = function Quaternion( x, y, z, w ) {
+    this.setXYZW( x, y, z, w );
+    
+    phetAllocation && phetAllocation( 'Quaternion' );
+  };
+  var Quaternion = dot.Quaternion;
+  
+  Quaternion.prototype = {
+    constructor: Quaternion,
+    
+    isQuaternion: true,
+
+    setXYZW: function( x, y, z, w ) {
+      this.x = x || 0;
+      this.y = y || 0;
+      this.z = z || 0;
+      this.w = w !== undefined ? w : 1;
+    },
+    
+    /*---------------------------------------------------------------------------*
+    * Immutables
+    *----------------------------------------------------------------------------*/
+    
+    plus: function( quat ) {
+      return new Quaternion( this.x + quat.x, this.y + quat.y, this.z + quat.z, this.w + quat.w );
+    },
+    
+    timesScalar: function( s ) {
+      return new Quaternion( this.x * s, this.y * s, this.z * s, this.w * s );
+    },
+    
+    // standard quaternion multiplication (hamilton product)
+    timesQuaternion: function( quat ) {
+      // TODO: note why this is the case? product noted everywhere is the other one mentioned!
+      // mathematica-style
+//        return new Quaternion(
+//                this.x * quat.x - this.y * quat.y - this.z * quat.z - this.w * quat.w,
+//                this.x * quat.y + this.y * quat.x + this.z * quat.w - this.w * quat.z,
+//                this.x * quat.z - this.y * quat.w + this.z * quat.x + this.w * quat.y,
+//                this.x * quat.w + this.y * quat.z - this.z * quat.y + this.w * quat.x
+//        );
+
+      // JME-style
+      return new Quaternion(
+        this.x * quat.w - this.z * quat.y + this.y * quat.z + this.w * quat.x,
+        -this.x * quat.z + this.y * quat.w + this.z * quat.x + this.w * quat.y,
+        this.x * quat.y - this.y * quat.x + this.z * quat.w + this.w * quat.z,
+        -this.x * quat.x - this.y * quat.y - this.z * quat.z + this.w * quat.w
+      );
+
+      /*
+          Mathematica!
+          In[13]:= Quaternion[-0.0, -0.0024999974, 0.0, 0.9999969] ** Quaternion[-0.9864071, 0.0016701065, -0.0050373166, 0.16423558]
+          Out[13]= Quaternion[-0.164231, 0.00750332, 0.00208069, -0.986391]
+
+          In[17]:= Quaternion[-0.0024999974, 0.0, 0.9999969, 0] ** Quaternion[0.0016701065, -0.0050373166, 0.16423558, -0.9864071]
+          Out[17]= Quaternion[-0.164239, -0.986391, 0.00125951, 0.00750332]
+
+          JME contains the rearrangement of what is typically called {w,x,y,z}
+       */
+    },
+    
+    timesVector3: function( v ) {
+      if ( v.magnitude() === 0 ) {
+        return new dot.Vector3();
+      }
+      
+      // TODO: optimization?
+      return new dot.Vector3F(
+        this.w * this.w * v.x + 2 * this.y * this.w * v.z - 2 * this.z * this.w * v.y + this.x * this.x * v.x + 2 * this.y * this.x * v.y + 2 * this.z * this.x * v.z - this.z * this.z * v.x - this.y * this.y * v.x,
+        2 * this.x * this.y * v.x + this.y * this.y * v.y + 2 * this.z * this.y * v.z + 2 * this.w * this.z * v.x - this.z * this.z * v.y + this.w * this.w * v.y - 2 * this.x * this.w * v.z - this.x * this.x * v.y,
+        2 * this.x * this.z * v.x + 2 * this.y * this.z * v.y + this.z * this.z * v.z - 2 * this.w * this.y * v.x - this.y * this.y * v.z + 2 * this.w * this.x * v.y - this.x * this.x * v.z + this.w * this.w * v.z
+      );
+    },
+    
+    magnitude: function() {
+      return Math.sqrt( this.magnitudeSquared() );
+    },
+    
+    magnitudeSquared: function() {
+      return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+    },
+    
+    normalized: function() {
+      var magnitude = this.magnitude();
+      assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude quaternion' );
+      return this.timesScalar( 1 / magnitude );
+    },
+    
+    negated: function() {
+      return new Quaternion( -this.x, -this.y, -this.z, -this.w );
+    },
+    
+    toRotationMatrix: function() {
+      // see http://en.wikipedia.org/wiki/Rotation_matrix#Quaternion
+
+      var norm = this.magnitudeSquared();
+      var flip = ( norm === 1 ) ? 2 : ( norm > 0 ) ? 2 / norm : 0;
+
+      var xx = this.x * this.x * flip;
+      var xy = this.x * this.y * flip;
+      var xz = this.x * this.z * flip;
+      var xw = this.w * this.x * flip;
+      var yy = this.y * this.y * flip;
+      var yz = this.y * this.z * flip;
+      var yw = this.w * this.y * flip;
+      var zz = this.z * this.z * flip;
+      var zw = this.w * this.z * flip;
+
+      return new dot.Matrix3().columnMajor(
+        1 - ( yy + zz ),
+        ( xy + zw ),
+        ( xz - yw ),
+        ( xy - zw ),
+        1 - ( xx + zz ),
+        ( yz + xw ),
+        ( xz + yw ),
+        ( yz - xw ),
+        1 - ( xx + yy )
+      );
+    }
+  };
+  
+  Quaternion.fromEulerAngles = function( yaw, roll, pitch ) {
+    var sinPitch = Math.sin( pitch * 0.5 );
+    var cosPitch = Math.cos( pitch * 0.5 );
+    var sinRoll = Math.sin( roll * 0.5 );
+    var cosRoll = Math.cos( roll * 0.5 );
+    var sinYaw = Math.sin( yaw * 0.5 );
+    var cosYaw = Math.cos( yaw * 0.5 );
+
+    var a = cosRoll * cosPitch;
+    var b = sinRoll * sinPitch;
+    var c = cosRoll * sinPitch;
+    var d = sinRoll * cosPitch;
+
+    return new Quaternion(
+      a * sinYaw + b * cosYaw,
+      d * cosYaw + c * sinYaw,
+      c * cosYaw - d * sinYaw,
+      a * cosYaw - b * sinYaw
+    );
+  };
+  
+  Quaternion.fromRotationMatrix = function( matrix ) {
+    var v00 = matrix.m00();
+    var v01 = matrix.m01();
+    var v02 = matrix.m02();
+    var v10 = matrix.m10();
+    var v11 = matrix.m11();
+    var v12 = matrix.m12();
+    var v20 = matrix.m20();
+    var v21 = matrix.m21();
+    var v22 = matrix.m22();
+
+    // from graphics gems code
+    var trace = v00 + v11 + v22;
+    var sqt;
+
+    // we protect the division by s by ensuring that s>=1
+    if ( trace >= 0 ) {
+      sqt = Math.sqrt( trace + 1 );
+      return new Quaternion(
+        ( v21 - v12 ) * 0.5 / sqt,
+        ( v02 - v20 ) * 0.5 / sqt,
+        ( v10 - v01 ) * 0.5 / sqt,
+        0.5 * sqt
+      );
+    } else if ( ( v00 > v11 ) && ( v00 > v22 ) ) {
+      sqt = Math.sqrt( 1 + v00 - v11 - v22 );
+      return new Quaternion(
+        sqt * 0.5,
+        ( v10 + v01 ) * 0.5 / sqt,
+        ( v02 + v20 ) * 0.5 / sqt,
+        ( v21 - v12 ) * 0.5 / sqt
+      );
+    } else if ( v11 > v22 ) {
+      sqt = Math.sqrt( 1 + v11 - v00 - v22 );
+      return new Quaternion(
+        ( v10 + v01 ) * 0.5 / sqt,
+        sqt * 0.5,
+        ( v21 + v12 ) * 0.5 / sqt,
+        ( v02 - v20 ) * 0.5 / sqt
+      );
+    } else {
+      sqt = Math.sqrt( 1 + v22 - v00 - v11 );
+      return new Quaternion(
+        ( v02 + v20 ) * 0.5 / sqt,
+        ( v21 + v12 ) * 0.5 / sqt,
+        sqt * 0.5,
+        ( v10 - v01 ) * 0.5 / sqt
+      );
+    }
+  };
+  
+  /**
+   * Find a quaternion that transforms a unit vector A into a unit vector B. There
+   * are technically multiple solutions, so this only picks one.
+   *
+   * @param a Unit vector A
+   * @param b Unit vector B
+   * @return A quaternion s.t. Q * A = B
+   */
+  Quaternion.getRotationQuaternion = function( a, b ) {
+    return Quaternion.fromRotationMatrix( dot.Matrix3.rotateAToB( a, b ) );
+  };
+
+  // spherical linear interpolation - blending two quaternions
+  Quaternion.slerp = function( a, b, t ) {
+    // if they are identical, just return one of them
+    if ( a.x === b.x && a.y === b.y && a.z === b.z && a.w === b.w ) {
+      return a;
+    }
+
+    var dot = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+
+    if ( dot < 0 ) {
+      b = b.negated();
+      dot = -dot;
+    }
+
+    // how much of each quaternion should be contributed
+    var ratioA = 1 - t;
+    var ratioB = t;
+
+    // tweak them if necessary
+    if ( ( 1 - dot ) > 0.1 ) {
+      var theta = Math.acos( dot );
+      var invSinTheta = ( 1 / Math.sin( theta ) );
+
+      ratioA = ( Math.sin( ( 1 - t ) * theta ) * invSinTheta );
+      ratioB = ( Math.sin( ( t * theta ) ) * invSinTheta );
+    }
+
+    return new Quaternion(
+      ratioA * a.x + ratioB * b.x,
+      ratioA * a.y + ratioB * b.y,
+      ratioA * a.z + ratioB * b.z,
+      ratioA * a.w + ratioB * b.w
+    );
+  };
+  
+  // experimental object pooling
+  /* jshint -W064 */
+  Poolable( Quaternion, {
+    defaultFactory: function() { return new Quaternion(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( x, y, z, w ) {
+        if ( pool.length ) {
+          return pool.pop().set( x, y, z, w );
+        } else {
+          return new Quaternion( x, y, z, w );
+        }
+      };
+    }
+  } );
+  
+  return Quaternion;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
  * 2-dimensional ray
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Ray2',['require','ASSERT/assert','DOT/dot'],function( require ) {
+define( 'DOT/Ray2',['require','DOT/dot'],function( require ) {
   
-  
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   
   var dot = require( 'DOT/dot' );
 
@@ -6561,10 +8372,9 @@ define( 'DOT/Ray3',['require','DOT/dot'],function( require ) {
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Rectangle',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit','DOT/Bounds2'],function( require ) {
+define( 'DOT/Rectangle',['require','DOT/dot','PHET_CORE/inherit','DOT/Bounds2'],function( require ) {
   
   
-  var assert = require( 'ASSERT/assert' )( 'dot' );
   var dot = require( 'DOT/dot' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
@@ -6588,11 +8398,9 @@ define( 'DOT/Rectangle',['require','ASSERT/assert','DOT/dot','PHET_CORE/inherit'
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'DOT/Transform3',['require','ASSERT/assert','DOT/dot','DOT/Matrix3','DOT/Vector2','DOT/Ray2'],function( require ) {
+define( 'DOT/Transform3',['require','DOT/dot','DOT/Matrix3','DOT/Vector2','DOT/Ray2'],function( require ) {
   
 
-  var assert = require( 'ASSERT/assert' )( 'dot' );
-  
   var dot = require( 'DOT/dot' );
   
   require( 'DOT/Matrix3' );
@@ -6604,7 +8412,7 @@ define( 'DOT/Transform3',['require','ASSERT/assert','DOT/dot','DOT/Matrix3','DOT
     this.listeners = [];
     
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
-    this.set( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
+    this.setMatrix( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
     
     phetAllocation && phetAllocation( 'Transform3' );
   };
@@ -6616,8 +8424,8 @@ define( 'DOT/Transform3',['require','ASSERT/assert','DOT/dot','DOT/Matrix3','DOT
     /*---------------------------------------------------------------------------*
     * mutators
     *----------------------------------------------------------------------------*/
-    
-    set: function( matrix ) {
+
+    setMatrix: function( matrix ) {
       // TODO: performance: don't notify or handle instances where the matrix is detected to be the identity matrix?
       assert && assert( matrix instanceof dot.Matrix3 );
       
@@ -6644,16 +8452,16 @@ define( 'DOT/Transform3',['require','ASSERT/assert','DOT/dot','DOT/Matrix3','DOT
     },
     
     prepend: function( matrix ) {
-      this.set( matrix.timesMatrix( this.matrix ) );
+      this.setMatrix( matrix.timesMatrix( this.matrix ) );
     },
 
     //Simpler case of prepending a translation without having to allocate a matrix for it, see scenery#119
     prependTranslation: function( x, y ) {
-      this.set( dot.Matrix3.translationTimesMatrix( x, y, this.matrix ) );
+      this.setMatrix( dot.Matrix3.translationTimesMatrix( x, y, this.matrix ) );
     },
 
     append: function( matrix ) {
-      this.set( this.matrix.timesMatrix( matrix ) );
+      this.setMatrix( this.matrix.timesMatrix( matrix ) );
     },
 
     prependTransform: function( transform ) {
@@ -6882,14 +8690,14 @@ define( 'DOT/Transform4',['require','DOT/dot','DOT/Matrix4','DOT/Vector3','DOT/R
   // takes a 4x4 matrix
   dot.Transform4 = function Transform4( matrix ) {
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
-    this.set( matrix === undefined ? dot.Matrix4.IDENTITY : matrix );
+    this.setMatrix( matrix === undefined ? dot.Matrix4.IDENTITY : matrix );
   };
   var Transform4 = dot.Transform4;
   
   Transform4.prototype = {
     constructor: Transform4,
     
-    set: function( matrix ) {
+    setMatrix: function( matrix ) {
       this.matrix = matrix;
       
       // compute these lazily
@@ -6924,11 +8732,11 @@ define( 'DOT/Transform4',['require','DOT/dot','DOT/Matrix4','DOT/Vector3','DOT/R
     },
     
     prepend: function( matrix ) {
-      this.set( matrix.timesMatrix( this.matrix ) );
+      this.setMatrix( matrix.timesMatrix( this.matrix ) );
     },
     
     append: function( matrix ) {
-      this.set( this.matrix.timesMatrix( matrix ) );
+      this.setMatrix( this.matrix.timesMatrix( matrix ) );
     },
     
     prependTransform: function( transform ) {
@@ -7031,6 +8839,7 @@ define( 'DOT/Transform4',['require','DOT/dot','DOT/Matrix4','DOT/Vector3','DOT/R
 define( 'main',[
   'DOT/dot',
   'DOT/Bounds2',
+  'DOT/Bounds3',
   'DOT/Complex',
   'DOT/ConvexHull2',
   'DOT/Dimension2',
@@ -7040,8 +8849,12 @@ define( 'main',[
   'DOT/Matrix',
   'DOT/Matrix3',
   'DOT/Matrix4',
+  'DOT/ObservableBounds2',
+  'DOT/ObservableMatrix3',
+  'DOT/ObservableVector2',
   'DOT/Permutation',
   'DOT/QRDecomposition',
+  'DOT/Quaternion',
   'DOT/Ray2',
   'DOT/Ray3',
   'DOT/Rectangle',
@@ -7069,16 +8882,20 @@ define( 'main',[
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'PHET_CORE/collect',['require'],function( require ) {
+define( 'PHET_CORE/collect',['require','PHET_CORE/core'],function( require ) {
   
   
-  return function collect( iterate ) {
+  var core = require( 'PHET_CORE/core' );
+  
+  var collect = core.collect = function collect( iterate ) {
+    assert && assert( typeof iterate === 'function' );
     var result = [];
     iterate( function( ob ) {
       result.push( ob );
     } );
     return result;
   };
+  return collect;
 } );
 
 // Copyright 2002-2013, University of Colorado Boulder
@@ -7090,10 +8907,12 @@ define( 'PHET_CORE/collect',['require'],function( require ) {
  *
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
-define( 'PHET_CORE/escapeHTML',['require'],function( require ) {
+define( 'PHET_CORE/escapeHTML',['require','PHET_CORE/core'],function( require ) {
   
   
-  return function escapeHTML( str ) {
+  var core = require( 'PHET_CORE/core' );
+  
+  var escapeHTML = core.escapeHTML = function escapeHTML( str ) {
     // see https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
     // HTML Entity Encoding
     return str.replace( /&/g, '&amp;' )
@@ -7103,6 +8922,7 @@ define( 'PHET_CORE/escapeHTML',['require'],function( require ) {
               .replace( /\'/g, '&#x27;' )
               .replace( /\//g, '&#x2F;' );
   };
+  return escapeHTML;
 } );
 
 // Copyright 2002-2013, University of Colorado Boulder
@@ -7112,8 +8932,10 @@ define( 'PHET_CORE/escapeHTML',['require'],function( require ) {
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( 'PHET_CORE/inheritPrototype',['require'],function( require ) {
+define( 'PHET_CORE/inheritPrototype',['require','PHET_CORE/core'],function( require ) {
   
+  
+  var core = require( 'PHET_CORE/core' );
 
   /**
    * Use this function to do prototype chaining using Parasitic Combination Inheritance.
@@ -7135,11 +8957,11 @@ define( 'PHET_CORE/inheritPrototype',['require'],function( require ) {
    * <br>
    * (source: JavaScript for Web Developers, N. Zakas, Wrox Press, p. 212-215)
    */
-  function inheritPrototype( subtype, supertype ) {
+  var inheritPrototype = core.inheritPrototype = function inheritPrototype( subtype, supertype ) {
     var prototype = Object( supertype.prototype ); // create a clone of the supertype's prototype
     prototype.constructor = subtype; // account for losing the default constructor when prototype is overwritten
     subtype.prototype = prototype; // assign cloned prototype to subtype
-  }
+  };
 
   return inheritPrototype;
 } );
@@ -7152,8 +8974,10 @@ define( 'PHET_CORE/inheritPrototype',['require'],function( require ) {
  * @author Jonathan Olson <olsonsjc@gmail.com>
  */
 
-define( 'PHET_CORE/loadScript',['require'],function( require ) {
+define( 'PHET_CORE/loadScript',['require','PHET_CORE/core'],function( require ) {
   
+  
+  var core = require( 'PHET_CORE/core' );
   
   /*
    * Load a script. The only required argument is src, and can be specified either as
@@ -7165,7 +8989,7 @@ define( 'PHET_CORE/loadScript',['require'],function( require ) {
    *   async:       Whether the script should be loaded asynchronously. Defaults to true
    *   cacheBuster: Whether the URL should have an appended query string to work around caches
    */
-  return function loadScript( args ) {
+  var loadScript = core.loadScript = function loadScript( args ) {
     // handle a string argument
     if ( typeof args === 'string' ) {
       args = { src: args };
@@ -7202,35 +9026,182 @@ define( 'PHET_CORE/loadScript',['require'],function( require ) {
     var other = document.getElementsByTagName( 'script' )[0];
     other.parentNode.insertBefore( script, other );
   };
+  return loadScript;
 } );
 
 // Copyright 2002-2013, University of Colorado Boulder
 
-define( 'PHET_CORE/main',['require','PHET_CORE/collect','PHET_CORE/escapeHTML','PHET_CORE/inherit','PHET_CORE/inheritPrototype','PHET_CORE/isArray','PHET_CORE/extend','PHET_CORE/loadScript','PHET_CORE/phetAllocation','PHET_CORE/Poolable'],function( require ) {
+/**
+ * Code for testing which platform is running.  Use sparingly, if at all!
+ *
+ * Sample usage:
+ * if (platform.firefox) {node.renderer = 'canvas';}
+ *
+ * @author Sam Reid
+ */
+define( 'PHET_CORE/platform',['require','PHET_CORE/core'],function( require ) {
   
   
-  return {
-    collect: require( 'PHET_CORE/collect' ),
-    escapeHTML: require( 'PHET_CORE/escapeHTML' ),
-    inherit: require( 'PHET_CORE/inherit' ),
-    inheritPrototype: require( 'PHET_CORE/inheritPrototype' ),
-    isArray: require( 'PHET_CORE/isArray' ),
-    extend: require( 'PHET_CORE/extend' ),
-    loadScript: require( 'PHET_CORE/loadScript' ),
-    phetAllocation: require( 'PHET_CORE/phetAllocation' ),
-    Poolable: require( 'PHET_CORE/Poolable' )
+  var core = require( 'PHET_CORE/core' );
+  
+  var ua = navigator.userAgent;
+  
+  // taken from HomeScreen
+  function isIE( version ) {
+    var r = new RegExp( 'msie' + (!isNaN( version ) ? ('\\s' + version) : ''), 'i' );
+    return r.test( ua );
+  }
+  
+  var platform = core.platform = {
+    get firefox() { return ua.toLowerCase().indexOf( 'firefox' ) > -1; },
+
+    //see http://stackoverflow.com/questions/3007480/determine-if-user-navigated-from-mobile-safari
+    get mobileSafari() { return ua.match( /(iPod|iPhone|iPad)/ ) && ua.match( /AppleWebKit/ ); },
+    get safari5() { return ua.match( /Version\/5\./ ) && ua.match( /Safari\// ) && ua.match( /AppleWebKit/ ); },
+    get safari6() { return ua.match( /Version\/6\./ ) && ua.match( /Safari\// ) && ua.match( /AppleWebKit/ ); },
+    get safari7() { return ua.match( /Version\/7\./ ) && ua.match( /Safari\// ) && ua.match( /AppleWebKit/ ); },
+    
+    get ie9() { return isIE( 9 ); },
+    get ie10() { return isIE( 10 ); },
+    get ie11() { return isIE( 11 ); },
+    get ie() { return ua.indexOf( 'MSIE' ) !== -1; },
+    
+    // from HomeScreen
+    get android() { return ua.indexOf( 'Android' ) > 0; }
   };
+  return platform;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+/**
+ * Simple profiler which handles nested calls which provides a composite view, to help for micro-optimization.
+ * Usage:
+ * profiler.start('updateScene');
+ * ...
+ * profiler.start('moveObjects');
+ * ...
+ * profiler.stop();
+ * ...
+ * profiler.stop();
+ * See testSelf() for a larger example. This could be used on ipad for instance.
+ *
+ * @author Sam Reid
+ */
+define( 'PHET_CORE/profiler',['require','PHET_CORE/core'],function( require ) {
+  
+
+  var core = require( 'PHET_CORE/core' );
+
+  var stack = [];
+  var results = {};
+  var count = 0;
+  var listeners = [];
+  var profiler = core.profiler = {
+    displayCount: 1000,
+    start: function( name ) {
+      var time = Date.now();
+      stack.push( {name: name, time: time} );
+    },
+    addListener: function( listener ) {
+      listeners.push( listener );
+    },
+    stop: function() {
+      var end = Date.now();
+      var top = stack.pop();
+      var elapsed = end - top.time;
+      if ( !results[top.name] ) {
+        results[top.name] = [];
+      }
+      //TODO: this may be a memory problem, consider coalescing (averaging or summing) values here
+      results[top.name].push( elapsed );
+      count++;
+      if ( count % this.displayCount === 0 ) {
+        var summary = JSON.stringify( this.toJSON() );
+
+        console.log( summary );
+
+        //Also notify listeners that a new result was obtained
+        for ( var i = 0; i < listeners.length; i++ ) {
+          listeners[i]( summary );
+        }
+        results = {};
+      }
+    },
+    toJSON: function() {
+      var summary = {};
+      var sum;
+      for ( var property in results ) {
+        sum = 0;
+        for ( var i = 0; i < results[property].length; i++ ) {
+          var time = results[property][i];
+          sum += time;
+        }
+        var average = sum / results[property].length;
+        summary[property] = {average: average, count: results[property].length};
+      }
+      return summary;
+    },
+
+    //sanity test
+    testSelf: function() {
+      var a, b;
+      var profiler = this;
+      this.displayCount = 10000000;//Only show final result
+      for ( var i = 0; i < 10; i++ ) {
+        profiler.start( 'physics' );
+        for ( var k = 0; k < 10000; k++ ) {
+          profiler.start( 'mloop' );
+          for ( var m = 0; m < 10000; m++ ) {
+            a = 100 * 200;
+          }
+          profiler.stop();
+          profiler.start( 'xloop' );
+          for ( var x = 0; x < 20000; x++ ) {
+            b = 100 * 200;
+          }
+          profiler.stop();
+        }
+        profiler.stop();
+      }
+
+      console.log( 'results: ', a, b );
+      console.log( JSON.stringify( this.toJSON() ) );
+
+      //sample correct output on chrome: {"mloop":{"average":0.01675,"count":100000},"xloop":{"average":0.03254,"count":100000},"physics":{"average":498.9,"count":10}}
+    }
+  };
+//  profiler.testSelf();
+  return profiler;
+} );
+
+// Copyright 2002-2013, University of Colorado Boulder
+
+define( 'PHET_CORE/main',[
+  'PHET_CORE/core',
+  'PHET_CORE/collect',
+  'PHET_CORE/escapeHTML',
+  'PHET_CORE/extend',
+  'PHET_CORE/inherit',
+  'PHET_CORE/inheritPrototype',
+  'PHET_CORE/isArray',
+  'PHET_CORE/loadScript',
+  'PHET_CORE/phetAllocation',
+  'PHET_CORE/platform',
+  'PHET_CORE/Poolable',
+  'PHET_CORE/profiler'
+  ], function( core ) {
+    
+    return core;
 } );
 
 
 // Copyright 2002-2013, University of Colorado Boulder
 
 if ( window.has ) {
-  window.has.add( 'assert.dot', function( global, document, anElement ) {
-    
-    
-    return true;
-  } );
+  // default config only enables basic assertions
+  window.has.add( 'assert.basic', function( global, document, anElement ) {  return true; } );
+  // window.has.add( 'assert.slow', function( global, document, anElement ) {  return true; } );
 }
 
 window.loadedDotConfig = true;
@@ -7239,10 +9210,11 @@ require.config( {
   deps: [ 'main', 'PHET_CORE/main' ],
 
   paths: {
-    underscore: '../../sherpa/lodash-2.0.0',
+    underscore: '../../sherpa/lodash-2.4.1',
     DOT: '.',
     PHET_CORE: '../../phet-core/js',
-    ASSERT: '../../assert/js'
+    ASSERT: '../../assert/js',
+    AXON: '../../axon/js'
   },
   
   shim: {
