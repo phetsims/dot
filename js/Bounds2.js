@@ -55,9 +55,9 @@ define( function( require ) {
      *
      *             minX (x)     centerX        maxX
      *          ---------------------------------------
-     * minY (y) | upperLeft   upperCenter   upperRight
-     * centerY  | centerLeft    center      centerRight
-     * maxY     | lowerLeft   lowerCenter   lowerRight
+     * minY (y) | leftTop     centerTop     rightTop
+     * centerY  | leftCenter  center        rightCenter
+     * maxY     | leftBottom  centerBottom  rightBottom
      */
     getX: function() { return this.minX; },
     get x() { return this.getX(); },
@@ -78,25 +78,25 @@ define( function( require ) {
     getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
     get centerY() { return this.getCenterY(); },
     
-    getUpperLeft: function() { return new dot.Vector2( this.minX, this.minY ); },
-    get upperLeft() { return this.getUpperLeft(); },
-    getUpperCenter: function() { return new dot.Vector2( this.getCenterX(), this.minY ); },
-    get upperCenter() { return this.getUpperCenter(); },
-    getUpperRight: function() { return new dot.Vector2( this.maxX, this.minY ); },
-    get upperRight() { return this.getUpperRight(); },
-    getCenterLeft: function() { return new dot.Vector2( this.minX, this.getCenterY ); },
-    get centerLeft() { return this.getCenterLeft(); },
+    getLeftTop: function() { return new dot.Vector2( this.minX, this.minY ); },
+    get leftTop() { return this.getLeftTop(); },
+    getCenterTop: function() { return new dot.Vector2( this.getCenterX(), this.minY ); },
+    get centerTop() { return this.getCenterTop(); },
+    getRightTop: function() { return new dot.Vector2( this.maxX, this.minY ); },
+    get rightTop() { return this.getRightTop(); },
+    getLeftCenter: function() { return new dot.Vector2( this.minX, this.getCenterY() ); },
+    get leftCenter() { return this.getLeftCenter(); },
     getCenter: function() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); },
     get center() { return this.getCenter(); },
-    getCenterRight: function() { return new dot.Vector2( this.maxX, this.getCenterY ); },
-    get centerRight() { return this.getCenterRight(); },
-    getLowerLeft: function() { return new dot.Vector2( this.minX, this.maxY ); },
-    get lowerLeft() { return this.getLowerLeft(); },
-    getLowerCenter: function() { return new dot.Vector2( this.getCenterX(), this.maxY ); },
-    get lowerCenter() { return this.getLowerCenter(); },
-    getLowerRight: function() { return new dot.Vector2( this.maxX, this.maxY ); },
-    get lowerRight() { return this.getLowerRight(); },
-    
+    getRightCenter: function() { return new dot.Vector2( this.maxX, this.getCenterY() ); },
+    get rightCenter() { return this.getRightCenter(); },
+    getLeftBottom: function() { return new dot.Vector2( this.minX, this.maxY ); },
+    get leftBottom() { return this.getLeftBottom(); },
+    getCenterBottom: function() { return new dot.Vector2( this.getCenterX(), this.maxY ); },
+    get centerBottom() { return this.getCenterBottom(); },
+    getRightBottom: function() { return new dot.Vector2( this.maxX, this.maxY ); },
+    get rightBottom() { return this.getRightBottom(); },
+
     isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0; },
     
     isFinite: function() {
