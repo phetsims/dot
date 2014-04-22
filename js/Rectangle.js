@@ -4,7 +4,7 @@
  * A 2D rectangle-shaped bounded area, with a convenience name and constructor. Totally functionally
  * equivalent to Bounds2, but with a different constructor.
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {

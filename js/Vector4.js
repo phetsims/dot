@@ -6,7 +6,7 @@
  * TODO: sync with Vector2 changes
  * TODO: add quaternion extension
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {

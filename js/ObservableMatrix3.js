@@ -3,7 +3,7 @@
 /**
  * Observable version of the basic 3-dimensional matrix (Matrix3)
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {

@@ -3,7 +3,7 @@
 /**
  * SVD decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {

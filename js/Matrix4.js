@@ -6,7 +6,7 @@
  * TODO: consider adding affine flag if it will help performance (a la Matrix3)
  * TODO: get rotation angles
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {

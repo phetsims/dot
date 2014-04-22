@@ -3,7 +3,7 @@
 /**
  * Observable version of the basic 2-dimensional bounding box (Bounds2)
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {

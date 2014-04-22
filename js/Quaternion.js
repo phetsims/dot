@@ -5,7 +5,7 @@
  *
  * TODO: convert from JME-style parameterization into classical mathematical description?
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
