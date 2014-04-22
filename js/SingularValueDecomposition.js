@@ -1,4 +1,4 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * SVD decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
