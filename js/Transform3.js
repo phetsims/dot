@@ -36,6 +36,14 @@ define( function( require ) {
     setMatrix: function( matrix ) {
       // TODO: performance: don't notify or handle instances where the matrix is detected to be the identity matrix?
       assert && assert( matrix instanceof dot.Matrix3 );
+
+      assert && assert( matrix.isFinite(),'Matrix was suspicious' );
+
+      //Temporary solution: if the programmer tried to set the top, bottom, etc of a node without defined bounds, do a no-op
+      //In the future, this should be replaced with the assertion above, once we have tested that everything is working properly
+      if ( !matrix.isFinite() ) {
+        return;
+      }
       
       var oldMatrix = this.matrix;
       var length = this.listeners.length;

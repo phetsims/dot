@@ -11,37 +11,45 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   var Poolable = require( 'PHET_CORE/Poolable' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  
+
   var FastArray = dot.FastArray;
   
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix4' );
-  
-  dot.Matrix3 = function Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+
+  var identityFastArray = new FastArray( 9 );
+  identityFastArray[0] = 1;
+  identityFastArray[4] = 1;
+  identityFastArray[8] = 1;
+
+  var createIdentityArray = FastArray === Array ?
+                            function() {
+                              return [1, 0, 0, 0, 1, 0, 0, 0, 1];
+                            } :
+                            function() {
+                              return new FastArray( identityFastArray );
+                            };
+
+  //Create an identity matrix
+  dot.Matrix3 = function Matrix3( argumentsShouldNotExist ) {
+
+    //Make sure no clients are expecting to create a matrix with non-identity values
+    assert && assert( !argumentsShouldNotExist, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
 
     // entries stored in column-major format
-    this.entries = new FastArray( 9 ); // TODO: consider a typed array if possible (double even?) for performance and compatibility with WebGL
+    this.entries = createIdentityArray();
 
-    this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0,
-                   v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
-                   v20 || 0, v21 || 0, v22 === undefined ? 1 : v22,
-                   type );
-    
+//    this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0,
+//        v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
+//        v20 || 0, v21 || 0, v22 === undefined ? 1 : v22,
+//      type );
+
     phetAllocation && phetAllocation( 'Matrix3' );
+    this.type = Types.IDENTITY;
   };
   var Matrix3 = dot.Matrix3;
   
-  // a variety of constructing a matrix without calling rowMajor and executing a lot of tests (built for initialization speed with mutators)
-  dot.FastMatrix3 = function FastMatrix3() {
-    // not initialized, so it is faster
-    this.entries = new FastArray( 9 );
-    
-    phetAllocation && phetAllocation( 'Matrix3' );
-  };
-  var FastMatrix3 = dot.FastMatrix3;
-
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
     // NOTE: if two matrices with identical types are multiplied, the result should have the same type. if not, changed timesMatrix()!
@@ -57,20 +65,20 @@ define( function( require ) {
 
   var Types = Matrix3.Types;
 
-  Matrix3.identity = function() { return FastMatrix3.dirtyFromPool().setToIdentity(); };
-  Matrix3.translation = function( x, y ) { return FastMatrix3.dirtyFromPool().setToTranslation( x, y ); };
+  Matrix3.identity = function() { return Matrix3.dirtyFromPool().setToIdentity(); };
+  Matrix3.translation = function( x, y ) { return Matrix3.dirtyFromPool().setToTranslation( x, y ); };
   Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
-  Matrix3.scaling = function( x, y ) { return FastMatrix3.dirtyFromPool().setToScale( x, y ); };
+  Matrix3.scaling = function( x, y ) { return Matrix3.dirtyFromPool().setToScale( x, y ); };
   Matrix3.scale = Matrix3.scaling;
-  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) { return FastMatrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
-  Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return FastMatrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
+  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) { return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
+  Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return Matrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
 
   // axis is a normalized Vector3, angle in radians.
-  Matrix3.rotationAxisAngle = function( axis, angle ) { return FastMatrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
-  
-  Matrix3.rotationX = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationX( angle ); };
-  Matrix3.rotationY = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationY( angle ); };
-  Matrix3.rotationZ = function( angle ) { return FastMatrix3.dirtyFromPool().setToRotationZ( angle ); };
+  Matrix3.rotationAxisAngle = function( axis, angle ) { return Matrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
+
+  Matrix3.rotationX = function( angle ) { return Matrix3.dirtyFromPool().setToRotationX( angle ); };
+  Matrix3.rotationY = function( angle ) { return Matrix3.dirtyFromPool().setToRotationY( angle ); };
+  Matrix3.rotationZ = function( angle ) { return Matrix3.dirtyFromPool().setToRotationZ( angle ); };
   
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
@@ -82,11 +90,11 @@ define( function( require ) {
   Matrix3.rotationAroundPoint = function( angle, point ) {
     return Matrix3.rotationAround( angle, point.x, point.y );
   };
-  
-  Matrix3.fromSVGMatrix = function( svgMatrix ) { return FastMatrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
+
+  Matrix3.fromSVGMatrix = function( svgMatrix ) { return Matrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
 
   // a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-  Matrix3.rotateAToB = function( a, b ) { return FastMatrix3.dirtyFromPool().setRotationAToB( a, b ); };
+  Matrix3.rotateAToB = function( a, b ) { return Matrix3.dirtyFromPool().setRotationAToB( a, b ); };
 
   Matrix3.prototype = {
     constructor: Matrix3,
@@ -252,7 +260,7 @@ define( function( require ) {
     *----------------------------------------------------------------------------*/
     
     copy: function() {
-      return new Matrix3(
+      return Matrix3.createFromPool(
         this.m00(), this.m01(), this.m02(),
         this.m10(), this.m11(), this.m12(),
         this.m20(), this.m21(), this.m22(),
@@ -261,7 +269,7 @@ define( function( require ) {
     },
     
     plus: function( m ) {
-      return new Matrix3(
+      return Matrix3.createFromPool(
         this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
         this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
         this.m20() + m.m20(), this.m21() + m.m21(), this.m22() + m.m22()
@@ -269,7 +277,7 @@ define( function( require ) {
     },
     
     minus: function( m ) {
-      return new Matrix3(
+      return Matrix3.createFromPool(
         this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
         this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
         this.m20() - m.m20(), this.m21() - m.m21(), this.m22() - m.m22()
@@ -277,7 +285,7 @@ define( function( require ) {
     },
     
     transposed: function() {
-      return new Matrix3(
+      return Matrix3.createFromPool(
         this.m00(), this.m10(), this.m20(),
         this.m01(), this.m11(), this.m21(),
         this.m02(), this.m12(), this.m22(), ( this.type === Types.IDENTITY || this.type === Types.SCALING ) ? this.type : undefined
@@ -285,7 +293,7 @@ define( function( require ) {
     },
     
     negated: function() {
-      return new Matrix3(
+      return Matrix3.createFromPool(
         -this.m00(), -this.m01(), -this.m02(),
         -this.m10(), -this.m11(), -this.m12(),
         -this.m20(), -this.m21(), -this.m22()
@@ -299,17 +307,17 @@ define( function( require ) {
         case Types.IDENTITY:
           return this;
         case Types.TRANSLATION_2D:
-          return new Matrix3( 1, 0, -this.m02(),
+          return Matrix3.createFromPool( 1, 0, -this.m02(),
                               0, 1, -this.m12(),
                               0, 0, 1, Types.TRANSLATION_2D );
         case Types.SCALING:
-          return new Matrix3( 1 / this.m00(), 0, 0,
+          return Matrix3.createFromPool( 1 / this.m00(), 0, 0,
                               0, 1 / this.m11(), 0,
                               0, 0, 1 / this.m22(), Types.SCALING );
         case Types.AFFINE:
           det = this.getDeterminant();
           if ( det !== 0 ) {
-            return new Matrix3(
+            return Matrix3.createFromPool(
               ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
               ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
               ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
@@ -325,7 +333,7 @@ define( function( require ) {
         case Types.OTHER:
           det = this.getDeterminant();
           if ( det !== 0 ) {
-            return new Matrix3(
+            return Matrix3.createFromPool(
               ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
               ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
               ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
@@ -356,14 +364,14 @@ define( function( require ) {
         // currently two matrices of the same type will result in the same result type
         if ( this.type === Types.TRANSLATION_2D ) {
           // faster combination of translations
-          return new Matrix3( 1, 0, this.m02() + m.m02(),
-                              0, 1, this.m12() + m.m12(),
-                              0, 0, 1, Types.TRANSLATION_2D );
+          return Matrix3.createFromPool( 1, 0, this.m02() + m.m02(),
+            0, 1, this.m12() + m.m12(),
+            0, 0, 1, Types.TRANSLATION_2D );
         } else if ( this.type === Types.SCALING ) {
           // faster combination of scaling
-          return new Matrix3( this.m00() * m.m00(), 0, 0,
-                              0, this.m11() * m.m11(), 0,
-                              0, 0, 1, Types.SCALING );
+          return Matrix3.createFromPool( this.m00() * m.m00(), 0, 0,
+            0, this.m11() * m.m11(), 0,
+            0, 0, 1, Types.SCALING );
         }
       }
       
@@ -371,17 +379,17 @@ define( function( require ) {
         // currently two matrices that are anything but "other" are technically affine, and the result will be affine
         
         // affine case
-        return new Matrix3( this.m00() * m.m00() + this.m01() * m.m10(),
-                            this.m00() * m.m01() + this.m01() * m.m11(),
-                            this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
-                            this.m10() * m.m00() + this.m11() * m.m10(),
-                            this.m10() * m.m01() + this.m11() * m.m11(),
-                            this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
-                            0, 0, 1, Types.AFFINE );
+        return Matrix3.createFromPool( this.m00() * m.m00() + this.m01() * m.m10(),
+            this.m00() * m.m01() + this.m01() * m.m11(),
+            this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
+            this.m10() * m.m00() + this.m11() * m.m10(),
+            this.m10() * m.m01() + this.m11() * m.m11(),
+            this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
+          0, 0, 1, Types.AFFINE );
       }
       
       // general case
-      return new Matrix3( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
+      return Matrix3.createFromPool( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
                           this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
                           this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
                           this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
@@ -813,51 +821,39 @@ define( function( require ) {
   
   /* jshint -W064 */
   Poolable( Matrix3, {
+
+    //The default factory creates an identity matrix
     defaultFactory: function() { return new Matrix3(); },
+
     constructorDuplicateFactory: function( pool ) {
       return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
-        if ( pool.length ) {
-          return pool.pop().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
-        } else {
-          return new Matrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
-        }
+        var instance = pool.length ? pool.pop() : new Matrix3();
+        return instance.rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
       };
     }
   } );
   
-  /* jshint -W064 */
-  Poolable( FastMatrix3, {
-    // no constructor function needed, always grab a dirty one
-    defaultFactory: function() { return new FastMatrix3(); }
-  } );
-  
-  // prototype should be done by here, so now we hook it up to FastMatrix3
-  inherit( Matrix3, FastMatrix3 );
-  
   // create an immutable
-  Matrix3.IDENTITY = new Matrix3( 1, 0, 0,
-                                  0, 1, 0,
-                                  0, 0, 1,
-                                  Types.IDENTITY );
+  Matrix3.IDENTITY = Matrix3.identity();
   Matrix3.IDENTITY.makeImmutable();
-  
-  Matrix3.X_REFLECTION = new Matrix3( -1, 0, 0,
-                                       0, 1, 0,
-                                       0, 0, 1,
-                                       Types.AFFINE );
+
+  Matrix3.X_REFLECTION = Matrix3.createFromPool( -1, 0, 0,
+    0, 1, 0,
+    0, 0, 1,
+    Types.AFFINE );
   Matrix3.X_REFLECTION.makeImmutable();
-  
-  Matrix3.Y_REFLECTION = new Matrix3( 1,  0, 0,
-                                      0, -1, 0,
-                                      0,  0, 1,
-                                      Types.AFFINE );
+
+  Matrix3.Y_REFLECTION = Matrix3.createFromPool( 1, 0, 0,
+    0, -1, 0,
+    0, 0, 1,
+    Types.AFFINE );
   Matrix3.Y_REFLECTION.makeImmutable();
   
   //Shortcut for translation times a matrix (without allocating a translation matrix), see scenery#119
   Matrix3.translationTimesMatrix = function( x, y, m ) {
     var type;
     if ( m.type === Types.IDENTITY || m.type === Types.TRANSLATION_2D ) {
-      return new Matrix3( 1, 0, m.m02() + x,
+      return Matrix3.createFromPool( 1, 0, m.m02() + x,
                           0, 1, m.m12() + y,
                           0, 0, 1,
                           Types.TRANSLATION_2D );
@@ -866,10 +862,10 @@ define( function( require ) {
     } else {
       type = Types.AFFINE;
     }
-    return new Matrix3( m.m00(), m.m01(), m.m02() + x,
-                        m.m10(), m.m11(), m.m12() + y,
-                        m.m20(), m.m21(), m.m22(),
-                        type );
+    return Matrix3.createFromPool( m.m00(), m.m01(), m.m02() + x,
+      m.m10(), m.m11(), m.m12() + y,
+      m.m20(), m.m21(), m.m22(),
+      type );
   };
   
   Matrix3.printer = {
