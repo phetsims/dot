@@ -20,7 +20,10 @@ define( function( require ) {
   var Poolable = require( 'PHET_CORE/Poolable' );
   
   require( 'DOT/Vector2' );
-  
+
+  //Temporary instances to be used in the transform method.
+  var scratchVector2 = new dot.Vector2();
+
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
   dot.Bounds2 = function Bounds2( minX, minY, maxX, maxY ) {
     assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
@@ -380,7 +383,7 @@ define( function( require ) {
         Math.floor( this.maxY )
       );
     },
-    
+
     // transform a bounding box.
     // NOTE that box.transformed( matrix ).transformed( inverse ) may be larger than the original box
     transform: function( matrix ) {
@@ -393,28 +396,21 @@ define( function( require ) {
       if ( matrix.isIdentity() ) {
         return this;
       }
-      
-      var minX = Number.POSITIVE_INFINITY;
-      var minY = Number.POSITIVE_INFINITY;
-      var maxX = Number.NEGATIVE_INFINITY;
-      var maxY = Number.NEGATIVE_INFINITY;
+
+      var minX = this.minX;
+      var minY = this.minY;
+      var maxX = this.maxX;
+      var maxY = this.maxY;
+      this.set( dot.Bounds2.NOTHING );
       
       // using mutable vector so we don't create excessive instances of Vector2 during this
       // make sure all 4 corners are inside this transformed bounding box
-      var vector = new dot.Vector2();
-      
-      function withIt( vector ) {
-        minX = Math.min( minX, vector.x );
-        minY = Math.min( minY, vector.y );
-        maxX = Math.max( maxX, vector.x );
-        maxY = Math.max( maxY, vector.y );
-      }
-      
-      withIt( matrix.multiplyVector2( vector.setXY( this.minX, this.minY ) ) );
-      withIt( matrix.multiplyVector2( vector.setXY( this.minX, this.maxY ) ) );
-      withIt( matrix.multiplyVector2( vector.setXY( this.maxX, this.minY ) ) );
-      withIt( matrix.multiplyVector2( vector.setXY( this.maxX, this.maxY ) ) );
-      return this.setMinMax( minX, minY, maxX, maxY );
+
+      this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( minX, minY ) ) );
+      this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( minX, maxY ) ) );
+      this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( maxX, minY ) ) );
+      this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( maxX, maxY ) ) );
+      return this;
     },
     
     // expands on all sides by length d
