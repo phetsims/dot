@@ -26,6 +26,30 @@ define( function( require ) {
       return "[" + this.width + "w, " + this.height + "h]";
     },
     
+    set: function( dimension ) {
+      this.width = dimension.width;
+      this.height = dimension.height;
+      return this;
+    },
+    
+    setWidth: function( width ) {
+      this.width = width;
+      return this;
+    },
+    
+    setHeight: function( width ) {
+      this.width = width;
+      return this;
+    },
+    
+    copy: function( dimension ) {
+      if ( dimension ) {
+        return dimension.set( this );
+      } else {
+        return new Dimension2( this.width, this.height );
+      }
+    },
+    
     toBounds: function( x, y ) {
       x = x || 0;
       y = y || 0;
