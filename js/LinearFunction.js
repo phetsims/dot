@@ -17,7 +17,7 @@ define( function( require ) {
   
   var dot = require( 'DOT/dot' );
   
-  // imports
+  // modules
   require( 'DOT/Util' );
   
   /**
