@@ -286,6 +286,12 @@ define( function( require ) {
       }
     },
     
+    rotate: function( angle ) {
+      var newAngle = this.angle() + angle;
+      var mag = this.magnitude();
+      return this.setXY( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
+    },
+    
     setPolar: function( magnitude, angle ) {
       return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
     }
