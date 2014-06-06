@@ -122,6 +122,13 @@ define( function( require ) {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
     },
     
+    // if it's an affine matrix where the components of transforms are independent
+    // i.e. constructed from arbitrary component scaling and translation.
+    isAligned: function() {
+      // non-diagonal non-translation entries should all be zero.
+      return this.isAffine() && this.m01() === 0 && this.m10() === 0;
+    },
+    
     isFinite: function() {
       return isFinite( this.m00() ) &&
              isFinite( this.m01() ) &&
