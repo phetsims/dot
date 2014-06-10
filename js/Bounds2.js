@@ -106,6 +106,10 @@ define( function( require ) {
       return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.maxX ) && isFinite( this.maxY );
     },
     
+    hasNonzeroArea: function() {
+      return this.getWidth() > 0 && this.getHeight() > 0;
+    },
+    
     isValid: function() {
       return !this.isEmpty() && this.isFinite();
     },
