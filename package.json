@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "phetLibs": "sherpa chipper axon assert phet-core dot",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phetsims/dot.git"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-requirejs": "~0.4.0",
