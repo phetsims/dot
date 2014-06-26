@@ -254,8 +254,8 @@ define( function( require ) {
       return parseFloat( Util.toFixed( number, decimalPlaces ) );
     },
 
-    isInteger: function( number ) {
-      return Math.floor( number ) === number;
+    isInteger: function( n ) {
+      return ( typeof n === 'number' ) && ( n % 1 === 0 );
     },
 
     /*
