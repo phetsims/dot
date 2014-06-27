@@ -35,7 +35,8 @@ define( function( require ) {
             if ( point.x < p.x ) {
               p = point;
             }
-          } else {
+          }
+          else {
             minY = point.y;
             p = point;
           }
@@ -61,7 +62,7 @@ define( function( require ) {
           if ( result.length < 2 ) {
             return false;
           }
-          var cross = ccw( result[result.length-2], result[result.length-1], point );
+          var cross = ccw( result[result.length - 2], result[result.length - 1], point );
           return includeCollinear ? ( cross < 0 ) : ( cross <= 0 );
         }
 

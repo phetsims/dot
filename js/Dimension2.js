@@ -1,4 +1,3 @@
-
 // Copyright 2002-2014, University of Colorado Boulder
 
 /**
@@ -45,7 +44,8 @@ define( function( require ) {
     copy: function( dimension ) {
       if ( dimension ) {
         return dimension.set( this );
-      } else {
+      }
+      else {
         return new Dimension2( this.width, this.height );
       }
     },

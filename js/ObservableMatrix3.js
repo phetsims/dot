@@ -113,10 +113,11 @@ define( function( require ) {
     },
 
     reset: function() {
-      this.rowMajor( this._initial00, this._initial01, this._initial02,
-                     this._initial10, this._initial11, this._initial12,
-                     this._initial20, this._initial21, this._initial22,
-                     this._initialType );
+      this.rowMajor(
+        this._initial00, this._initial01, this._initial02,
+        this._initial10, this._initial11, this._initial12,
+        this._initial20, this._initial21, this._initial22,
+        this._initialType );
     },
 
     toString: dot.Matrix3.prototype.toString
@@ -130,7 +131,8 @@ define( function( require ) {
       return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
         if ( pool.length ) {
           return pool.pop().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
-        } else {
+        }
+        else {
           return new ObservableMatrix3( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
         }
       };

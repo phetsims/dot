@@ -1,4 +1,3 @@
-
 (function() {
   module( 'Dot: Complex' );
 
@@ -22,7 +21,7 @@
   } );
 
   test( 'Division', function() {
-    approximateComplexEquals( new Complex( 2, 3 ).dividedBy( new Complex( 7, -13 ) ), new Complex( -25/218, 47/218 ), 'Division' );
+    approximateComplexEquals( new Complex( 2, 3 ).dividedBy( new Complex( 7, -13 ) ), new Complex( -25 / 218, 47 / 218 ), 'Division' );
   } );
 
   test( 'Canceling', function() {

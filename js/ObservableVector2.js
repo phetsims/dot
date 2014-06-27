@@ -94,7 +94,8 @@ define( function( require ) {
       return function( x, y ) {
         if ( pool.length ) {
           return pool.pop().setXY( x, y );
-        } else {
+        }
+        else {
           return new ObservableVector2( x, y );
         }
       };

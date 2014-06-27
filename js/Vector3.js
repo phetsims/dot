@@ -75,7 +75,8 @@ define( function( require ) {
     copy: function( vector ) {
       if ( vector ) {
         return vector.set( this );
-      } else {
+      }
+      else {
         return new Vector3( this.x, this.y, this.z );
       }
     },
@@ -232,7 +233,8 @@ define( function( require ) {
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
-      } else {
+      }
+      else {
         return this.divideScalar( mag );
       }
     }

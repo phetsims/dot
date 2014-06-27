@@ -1,4 +1,3 @@
-
 // Copyright 2002-2014, University of Colorado Boulder
 
 define( function( require ) {
@@ -11,7 +10,7 @@ define( function( require ) {
   window.phetAllocation = require( 'PHET_CORE/phetAllocation' );
 
   var dot = function dot() {
-    switch ( arguments.length ) {
+    switch( arguments.length ) {
       case 2:
         return new dot.Vector2( arguments[0], arguments[1] );
       case 3:

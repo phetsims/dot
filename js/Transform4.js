@@ -117,8 +117,8 @@ define( function( require ) {
 
     transformRay: function( ray ) {
       return new dot.Ray3(
-          this.transformPosition3( ray.pos ),
-          this.transformPosition3( ray.pos.plus( ray.dir ) ).minus( this.transformPosition3( ray.pos ) ) );
+        this.transformPosition3( ray.pos ),
+        this.transformPosition3( ray.pos.plus( ray.dir ) ).minus( this.transformPosition3( ray.pos ) ) );
     },
 
     /*---------------------------------------------------------------------------*
@@ -152,8 +152,8 @@ define( function( require ) {
 
     inverseRay: function( ray ) {
       return new dot.Ray3(
-          this.inversePosition3( ray.pos ),
-          this.inversePosition3( ray.pos.plus( ray.dir ) ).minus( this.inversePosition3( ray.pos ) )
+        this.inversePosition3( ray.pos ),
+        this.inversePosition3( ray.pos.plus( ray.dir ) ).minus( this.inversePosition3( ray.pos ) )
       );
     }
   };

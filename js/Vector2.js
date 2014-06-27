@@ -68,7 +68,7 @@ define( function( require ) {
     distanceSquaredXY: function( x, y ) {
       var dx = this.x - x;
       var dy = this.y - y;
-      return dx * dx + dy * dy ;
+      return dx * dx + dy * dy;
     },
 
     dot: function( v ) {
@@ -102,7 +102,8 @@ define( function( require ) {
     copy: function( vector ) {
       if ( vector ) {
         return vector.set( this );
-      } else {
+      }
+      else {
         return new Vector2( this.x, this.y );
       }
     },
@@ -116,7 +117,8 @@ define( function( require ) {
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
-      } else {
+      }
+      else {
         return new Vector2( this.x / mag, this.y / mag );
       }
     },
@@ -151,7 +153,7 @@ define( function( require ) {
       return new Vector2( this.x - v.x, this.y - v.y );
     },
 
-    minusXY: function( x,y ) {
+    minusXY: function( x, y ) {
       return new Vector2( this.x - x, this.y - y );
     },
 
@@ -281,7 +283,8 @@ define( function( require ) {
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
-      } else {
+      }
+      else {
         return this.divideScalar( mag );
       }
     },
@@ -306,7 +309,8 @@ define( function( require ) {
       return function( x, y ) {
         if ( pool.length ) {
           return pool.pop().setXY( x, y );
-        } else {
+        }
+        else {
           return new Vector2( x, y );
         }
       };

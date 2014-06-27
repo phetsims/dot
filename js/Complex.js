@@ -52,8 +52,8 @@ define( function( require ) {
     dividedBy: function( c ) {
       var cMag = c.magnitudeSquared();
       return new Complex(
-        ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
-        ( this.imaginary * c.real - this.real * c.imaginary ) / cMag
+          ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
+          ( this.imaginary * c.real - this.real * c.imaginary ) / cMag
       );
     },
 
@@ -61,7 +61,7 @@ define( function( require ) {
     sqrt: function() {
       var mag = this.magnitude();
       return new Complex( Math.sqrt( ( mag + this.real ) / 2 ),
-                          ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
+          ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
     },
 
     conjugate: function() {

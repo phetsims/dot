@@ -359,7 +359,7 @@ define( function( require ) {
 
     solve: function( matrix ) {
       return (this.m === this.n ? (new dot.LUDecomposition( this )).solve( matrix ) :
-          (new dot.QRDecomposition( this )).solve( matrix ));
+              (new dot.QRDecomposition( this )).solve( matrix ));
     },
 
     solveTranspose: function( matrix ) {

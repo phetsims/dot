@@ -143,15 +143,18 @@ define( function( require ) {
       if ( closeX === null && closeY === null ) {
         // inside, or on the boundary
         return 0;
-      } else if ( closeX === null ) {
+      }
+      else if ( closeX === null ) {
         // vertically directly above/below
         d = closeY - point.y;
         return d * d;
-      } else if ( closeY === null ) {
+      }
+      else if ( closeY === null ) {
         // horizontally directly to the left/right
         d = closeX - point.x;
         return d * d;
-      } else {
+      }
+      else {
         // corner case
         var dx = closeX - point.x;
         var dy = closeY - point.y;
@@ -186,11 +189,14 @@ define( function( require ) {
                Math.abs( this.minY - other.minY ) < epsilon &&
                Math.abs( this.maxX - other.maxX ) < epsilon &&
                Math.abs( this.maxY - other.maxY ) < epsilon;
-      } else if ( thisFinite !== otherFinite ) {
+      }
+      else if ( thisFinite !== otherFinite ) {
         return false; // one is finite, the other is not. definitely not equal
-      } else if ( this === other ) {
+      }
+      else if ( this === other ) {
         return true; // exact same instance, must be equal
-      } else {
+      }
+      else {
         // epsilon only applies on finite dimensions. due to JS's handling of isFinite(), it's faster to check the sum of both
         return ( isFinite( this.minX + other.minX ) ? ( Math.abs( this.minX - other.minX ) < epsilon ) : ( this.minX === other.minX ) ) &&
                ( isFinite( this.minY + other.minY ) ? ( Math.abs( this.minY - other.minY ) < epsilon ) : ( this.minY === other.minY ) ) &&
@@ -207,7 +213,8 @@ define( function( require ) {
     copy: function( bounds ) {
       if ( bounds ) {
         return bounds.set( this );
-      } else {
+      }
+      else {
         return new Bounds2( this.minX, this.minY, this.maxX, this.maxY );
       }
     },
@@ -326,10 +333,22 @@ define( function( require ) {
       this.maxY = maxY;
       return this;
     },
-    setMinX: function( minX ) { this.minX = minX; return this; },
-    setMinY: function( minY ) { this.minY = minY; return this; },
-    setMaxX: function( maxX ) { this.maxX = maxX; return this; },
-    setMaxY: function( maxY ) { this.maxY = maxY; return this; },
+    setMinX: function( minX ) {
+      this.minX = minX;
+      return this;
+    },
+    setMinY: function( minY ) {
+      this.minY = minY;
+      return this;
+    },
+    setMaxX: function( maxX ) {
+      this.maxX = maxX;
+      return this;
+    },
+    setMaxY: function( maxY ) {
+      this.maxY = maxY;
+      return this;
+    },
 
     set: function( bounds ) {
       return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
@@ -486,7 +505,8 @@ define( function( require ) {
     if ( x instanceof dot.Vector2 ) {
       var p = x;
       return new Bounds2( p.x, p.y, p.x, p.y );
-    } else {
+    }
+    else {
       return new Bounds2( x, y, x, y );
     }
   };
@@ -499,7 +519,8 @@ define( function( require ) {
       return function( minX, minY, maxX, maxY ) {
         if ( pool.length ) {
           return pool.pop().setMinMax( minX, minY, maxX, maxY );
-        } else {
+        }
+        else {
           return new Bounds2( minX, minY, maxX, maxY );
         }
       };

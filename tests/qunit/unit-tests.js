@@ -1,4 +1,3 @@
-
 // path to test base, without a slash, e.g. '../../../dot/tests/qunit'
 function runDotTests( pathToTestBase ) {
   function loadTestFile( src ) {
@@ -19,4 +18,4 @@ function runDotTests( pathToTestBase ) {
   loadTestFile( 'js/transform3.js' );
   loadTestFile( 'js/modulo.js' );
   loadTestFile( 'js/linting.js' );
-};
+}

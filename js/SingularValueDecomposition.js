@@ -51,7 +51,7 @@ define( function( require ) {
     var wantv = true;
 
     var i, j, k, t, f;
-    var cs,sn;
+    var cs, sn;
 
     var hypot = dot.Matrix.hypot;
 
@@ -261,7 +261,7 @@ define( function( require ) {
           break;
         }
         if ( abs( e[k] ) <=
-           tiny + eps * (abs( s[k] ) + abs( s[k + 1] )) ) {
+             tiny + eps * (abs( s[k] ) + abs( s[k + 1] )) ) {
           e[k] = 0.0;
           break;
         }
@@ -276,7 +276,7 @@ define( function( require ) {
             break;
           }
           t = (ks !== p ? abs( e[ks] ) : 0) +
-            (ks !== k + 1 ? abs( e[ks - 1] ) : 0);
+              (ks !== k + 1 ? abs( e[ks - 1] ) : 0);
           if ( abs( s[ks] ) <= tiny + eps * t ) {
             s[ks] = 0.0;
             break;
@@ -358,7 +358,7 @@ define( function( require ) {
 
           var scale = max( max( max( max(
               abs( s[p - 1] ), abs( s[p - 2] ) ), abs( e[p - 2] ) ),
-                          abs( s[k] ) ), abs( e[k] ) );
+            abs( s[k] ) ), abs( e[k] ) );
           var sp = s[p - 1] / scale;
           var spm1 = s[p - 2] / scale;
           var epm1 = e[p - 2] / scale;

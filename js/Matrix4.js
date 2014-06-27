@@ -24,11 +24,12 @@ define( function( require ) {
     // entries stored in column-major format
     this.entries = new Float32Array( 16 );
 
-    this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0, v03 || 0,
-             v10 || 0, v11 === undefined ? 1 : v11, v12 || 0, v13 || 0,
-             v20 || 0, v21 || 0, v22 === undefined ? 1 : v22, v23 || 0,
-             v30 || 0, v31 || 0, v32 || 0, v33 === undefined ? 1 : v33,
-             type );
+    this.rowMajor(
+        v00 === undefined ? 1 : v00, v01 || 0, v02 || 0, v03 || 0,
+        v10 || 0, v11 === undefined ? 1 : v11, v12 || 0, v13 || 0,
+        v20 || 0, v21 || 0, v22 === undefined ? 1 : v22, v23 || 0,
+        v30 || 0, v31 || 0, v32 || 0, v33 === undefined ? 1 : v33,
+      type );
   };
   var Matrix4 = dot.Matrix4;
 
@@ -45,19 +46,21 @@ define( function( require ) {
   var Types = Matrix4.Types;
 
   Matrix4.identity = function() {
-    return new Matrix4( 1, 0, 0, 0,
-              0, 1, 0, 0,
-              0, 0, 1, 0,
-              0, 0, 0, 1,
-              Types.IDENTITY );
+    return new Matrix4(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
+      Types.IDENTITY );
   };
 
   Matrix4.translation = function( x, y, z ) {
-    return new Matrix4( 1, 0, 0, x,
-              0, 1, 0, y,
-              0, 0, 1, z,
-              0, 0, 0, 1,
-              Types.TRANSLATION_3D );
+    return new Matrix4(
+      1, 0, 0, x,
+      0, 1, 0, y,
+      0, 0, 1, z,
+      0, 0, 0, 1,
+      Types.TRANSLATION_3D );
   };
 
   Matrix4.translationFromVector = function( v ) { return Matrix4.translation( v.x, v.y, v.z ); };
@@ -67,11 +70,12 @@ define( function( require ) {
     y = y === undefined ? x : y;
     z = z === undefined ? x : z;
 
-    return new Matrix4( x, 0, 0, 0,
-              0, y, 0, 0,
-              0, 0, z, 0,
-              0, 0, 0, 1,
-              Types.SCALING );
+    return new Matrix4(
+      x, 0, 0, 0,
+      0, y, 0, 0,
+      0, 0, z, 0,
+      0, 0, 0, 1,
+      Types.SCALING );
   };
 
   // axis is a normalized Vector3, angle in radians.
@@ -80,11 +84,12 @@ define( function( require ) {
     var s = Math.sin( angle );
     var C = 1 - c;
 
-    return new Matrix4( axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s, 0,
-              axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s, 0,
-              axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c, 0,
-              0, 0, 0, 1,
-              Types.AFFINE );
+    return new Matrix4(
+        axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s, 0,
+        axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s, 0,
+        axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
   };
 
   // TODO: add in rotation from quaternion, and from quat + translation
@@ -93,43 +98,47 @@ define( function( require ) {
     var c = Math.cos( angle );
     var s = Math.sin( angle );
 
-    return new Matrix4( 1, 0, 0, 0,
-              0, c, -s, 0,
-              0, s, c, 0,
-              0, 0, 0, 1,
-              Types.AFFINE );
+    return new Matrix4(
+      1, 0, 0, 0,
+      0, c, -s, 0,
+      0, s, c, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
   };
 
   Matrix4.rotationY = function( angle ) {
     var c = Math.cos( angle );
     var s = Math.sin( angle );
 
-    return new Matrix4( c, 0, s, 0,
-              0, 1, 0, 0,
-              -s, 0, c, 0,
-              0, 0, 0, 1,
-              Types.AFFINE );
+    return new Matrix4(
+      c, 0, s, 0,
+      0, 1, 0, 0,
+      -s, 0, c, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
   };
 
   Matrix4.rotationZ = function( angle ) {
     var c = Math.cos( angle );
     var s = Math.sin( angle );
 
-    return new Matrix4( c, -s, 0, 0,
-              s, c, 0, 0,
-              0, 0, 1, 0,
-              0, 0, 0, 1,
-              Types.AFFINE );
+    return new Matrix4(
+      c, -s, 0, 0,
+      s, c, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
   };
 
   // aspect === width / height
   Matrix4.gluPerspective = function( fovYRadians, aspect, zNear, zFar ) {
     var cotangent = Math.cos( fovYRadians ) / Math.sin( fovYRadians );
 
-    return new Matrix4( cotangent / aspect, 0, 0, 0,
-              0, cotangent, 0, 0,
-              0, 0, ( zFar + zNear ) / ( zNear - zFar ), ( 2 * zFar * zNear ) / ( zNear - zFar ),
-              0, 0, -1, 0 );
+    return new Matrix4(
+        cotangent / aspect, 0, 0, 0,
+      0, cotangent, 0, 0,
+      0, 0, ( zFar + zNear ) / ( zNear - zFar ), ( 2 * zFar * zNear ) / ( zNear - zFar ),
+      0, 0, -1, 0 );
   };
 
   Matrix4.prototype = {
@@ -220,9 +229,10 @@ define( function( require ) {
       var m1213 = this.m12() + this.m13();
       var m2223 = this.m22() + this.m23();
       var m3233 = this.m32() + this.m33();
-      return new dot.Vector3( Math.sqrt( m0003 * m0003 + m1013 * m1013 + m2023 * m2023 + m3033 * m3033 ),
-                              Math.sqrt( m0103 * m0103 + m1113 * m1113 + m2123 * m2123 + m3133 * m3133 ),
-                              Math.sqrt( m0203 * m0203 + m1213 * m1213 + m2223 * m2223 + m3233 * m3233 ) );
+      return new dot.Vector3(
+        Math.sqrt( m0003 * m0003 + m1013 * m1013 + m2023 * m2023 + m3033 * m3033 ),
+        Math.sqrt( m0103 * m0103 + m1113 * m1113 + m2123 * m2123 + m3133 * m3133 ),
+        Math.sqrt( m0203 * m0203 + m1213 * m1213 + m2223 * m2223 + m3233 * m3233 ) );
     },
     get scaleVector() { return this.getScaleVector(); },
 
@@ -234,22 +244,23 @@ define( function( require ) {
 
       // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
       // NOTE: the toFixed calls are inlined for performance reasons
-      return 'matrix3d(' + this.entries[0].toFixed( 20 ) + ',' +
-                           this.entries[1].toFixed( 20 ) + ',' +
-                           this.entries[2].toFixed( 20 ) + ',' +
-                           this.entries[3].toFixed( 20 ) + ',' +
-                           this.entries[4].toFixed( 20 ) + ',' +
-                           this.entries[5].toFixed( 20 ) + ',' +
-                           this.entries[6].toFixed( 20 ) + ',' +
-                           this.entries[7].toFixed( 20 ) + ',' +
-                           this.entries[8].toFixed( 20 ) + ',' +
-                           this.entries[9].toFixed( 20 ) + ',' +
-                           this.entries[10].toFixed( 20 ) + ',' +
-                           this.entries[11].toFixed( 20 ) + ',' +
-                           this.entries[12].toFixed( 20 ) + ',' +
-                           this.entries[13].toFixed( 20 ) + ',' +
-                           this.entries[14].toFixed( 20 ) + ',' +
-                           this.entries[15].toFixed( 20 ) + ')';
+      return 'matrix3d(' +
+             this.entries[0].toFixed( 20 ) + ',' +
+             this.entries[1].toFixed( 20 ) + ',' +
+             this.entries[2].toFixed( 20 ) + ',' +
+             this.entries[3].toFixed( 20 ) + ',' +
+             this.entries[4].toFixed( 20 ) + ',' +
+             this.entries[5].toFixed( 20 ) + ',' +
+             this.entries[6].toFixed( 20 ) + ',' +
+             this.entries[7].toFixed( 20 ) + ',' +
+             this.entries[8].toFixed( 20 ) + ',' +
+             this.entries[9].toFixed( 20 ) + ',' +
+             this.entries[10].toFixed( 20 ) + ',' +
+             this.entries[11].toFixed( 20 ) + ',' +
+             this.entries[12].toFixed( 20 ) + ',' +
+             this.entries[13].toFixed( 20 ) + ',' +
+             this.entries[14].toFixed( 20 ) + ',' +
+             this.entries[15].toFixed( 20 ) + ')';
     },
     get cssTransform() { return this.getCSSTransform(); },
 
@@ -314,33 +325,37 @@ define( function( require ) {
     },
 
     transposed: function() {
-      return new Matrix4( this.m00(), this.m10(), this.m20(), this.m30(),
-                this.m01(), this.m11(), this.m21(), this.m31(),
-                this.m02(), this.m12(), this.m22(), this.m32(),
-                this.m03(), this.m13(), this.m23(), this.m33() );
+      return new Matrix4(
+        this.m00(), this.m10(), this.m20(), this.m30(),
+        this.m01(), this.m11(), this.m21(), this.m31(),
+        this.m02(), this.m12(), this.m22(), this.m32(),
+        this.m03(), this.m13(), this.m23(), this.m33() );
     },
 
     negated: function() {
-      return new Matrix4( -this.m00(), -this.m01(), -this.m02(), -this.m03(),
-                -this.m10(), -this.m11(), -this.m12(), -this.m13(),
-                -this.m20(), -this.m21(), -this.m22(), -this.m23(),
-                -this.m30(), -this.m31(), -this.m32(), -this.m33() );
+      return new Matrix4(
+        -this.m00(), -this.m01(), -this.m02(), -this.m03(),
+        -this.m10(), -this.m11(), -this.m12(), -this.m13(),
+        -this.m20(), -this.m21(), -this.m22(), -this.m23(),
+        -this.m30(), -this.m31(), -this.m32(), -this.m33() );
     },
 
     inverted: function() {
-      switch ( this.type ) {
+      switch( this.type ) {
         case Types.IDENTITY:
           return this;
         case Types.TRANSLATION_3D:
-          return new Matrix4( 1, 0, 0, -this.m03(),
-                              0, 1, 0, -this.m13(),
-                              0, 0, 1, -this.m23(),
-                              0, 0, 0, 1, Types.TRANSLATION_3D );
+          return new Matrix4(
+            1, 0, 0, -this.m03(),
+            0, 1, 0, -this.m13(),
+            0, 0, 1, -this.m23(),
+            0, 0, 0, 1, Types.TRANSLATION_3D );
         case Types.SCALING:
-          return new Matrix4( 1 / this.m00(), 0, 0, 0,
-                              0, 1 / this.m11(), 0, 0,
-                              0, 0, 1 / this.m22(), 0,
-                              0, 0, 0, 1 / this.m33(), Types.SCALING );
+          return new Matrix4(
+              1 / this.m00(), 0, 0, 0,
+            0, 1 / this.m11(), 0, 0,
+            0, 0, 1 / this.m22(), 0,
+            0, 0, 0, 1 / this.m33(), Types.SCALING );
         case Types.AFFINE:
         case Types.OTHER:
           var det = this.getDeterminant();
@@ -363,7 +378,8 @@ define( function( require ) {
                 ( this.m30() * this.m11() * this.m02() - this.m10() * this.m31() * this.m02() - this.m30() * this.m01() * this.m12() + this.m00() * this.m31() * this.m12() + this.m10() * this.m01() * this.m32() - this.m00() * this.m11() * this.m32() ) / det,
                 ( -this.m20() * this.m11() * this.m02() + this.m10() * this.m21() * this.m02() + this.m20() * this.m01() * this.m12() - this.m00() * this.m21() * this.m12() - this.m10() * this.m01() * this.m22() + this.m00() * this.m11() * this.m22() ) / det
             );
-          } else {
+          }
+          else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
           break; // because JSHint totally can't tell that this can't be reached
@@ -374,7 +390,7 @@ define( function( require ) {
 
     timesMatrix: function( m ) {
       // I * M === M * I === I (the identity)
-      if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
+      if ( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
         return this.type === Types.IDENTITY ? m : this;
       }
 
@@ -382,16 +398,19 @@ define( function( require ) {
         // currently two matrices of the same type will result in the same result type
         if ( this.type === Types.TRANSLATION_3D ) {
           // faster combination of translations
-          return new Matrix4( 1, 0, 0, this.m03() + m.m02(),
-                              0, 1, 0, this.m13() + m.m12(),
-                              0, 0, 1, this.m23() + m.m23(),
-                              0, 0, 0, 1, Types.TRANSLATION_3D );
-        } else if ( this.type === Types.SCALING ) {
+          return new Matrix4(
+            1, 0, 0, this.m03() + m.m02(),
+            0, 1, 0, this.m13() + m.m12(),
+            0, 0, 1, this.m23() + m.m23(),
+            0, 0, 0, 1, Types.TRANSLATION_3D );
+        }
+        else if ( this.type === Types.SCALING ) {
           // faster combination of scaling
-          return new Matrix4( this.m00() * m.m00(), 0, 0, 0,
-                              0, this.m11() * m.m11(), 0, 0,
-                              0, 0, this.m22() * m.m22(), 0,
-                              0, 0, 0, 1, Types.SCALING );
+          return new Matrix4(
+              this.m00() * m.m00(), 0, 0, 0,
+            0, this.m11() * m.m11(), 0, 0,
+            0, 0, this.m22() * m.m22(), 0,
+            0, 0, 0, 1, Types.SCALING );
         }
       }
 
@@ -399,38 +418,40 @@ define( function( require ) {
         // currently two matrices that are anything but "other" are technically affine, and the result will be affine
 
         // affine case
-        return new Matrix4( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
-                            this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
-                            this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
-                            this.m00() * m.m03() + this.m01() * m.m13() + this.m02() * m.m23() + this.m03(),
-                            this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
-                            this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
-                            this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
-                            this.m10() * m.m03() + this.m11() * m.m13() + this.m12() * m.m23() + this.m13(),
-                            this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
-                            this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
-                            this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22(),
-                            this.m20() * m.m03() + this.m21() * m.m13() + this.m22() * m.m23() + this.m23(),
-                            0, 0, 0, 1, Types.AFFINE );
+        return new Matrix4(
+            this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
+            this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
+            this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
+            this.m00() * m.m03() + this.m01() * m.m13() + this.m02() * m.m23() + this.m03(),
+            this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
+            this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
+            this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
+            this.m10() * m.m03() + this.m11() * m.m13() + this.m12() * m.m23() + this.m13(),
+            this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
+            this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
+            this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22(),
+            this.m20() * m.m03() + this.m21() * m.m13() + this.m22() * m.m23() + this.m23(),
+          0, 0, 0, 1, Types.AFFINE );
       }
 
       // general case
-      return new Matrix4( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20() + this.m03() * m.m30(),
-                this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21() + this.m03() * m.m31(),
-                this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22() + this.m03() * m.m32(),
-                this.m00() * m.m03() + this.m01() * m.m13() + this.m02() * m.m23() + this.m03() * m.m33(),
-                this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20() + this.m13() * m.m30(),
-                this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21() + this.m13() * m.m31(),
-                this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22() + this.m13() * m.m32(),
-                this.m10() * m.m03() + this.m11() * m.m13() + this.m12() * m.m23() + this.m13() * m.m33(),
-                this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20() + this.m23() * m.m30(),
-                this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21() + this.m23() * m.m31(),
-                this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() + this.m23() * m.m32(),
-                this.m20() * m.m03() + this.m21() * m.m13() + this.m22() * m.m23() + this.m23() * m.m33(),
-                this.m30() * m.m00() + this.m31() * m.m10() + this.m32() * m.m20() + this.m33() * m.m30(),
-                this.m30() * m.m01() + this.m31() * m.m11() + this.m32() * m.m21() + this.m33() * m.m31(),
-                this.m30() * m.m02() + this.m31() * m.m12() + this.m32() * m.m22() + this.m33() * m.m32(),
-                this.m30() * m.m03() + this.m31() * m.m13() + this.m32() * m.m23() + this.m33() * m.m33() );
+      return new Matrix4(
+          this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20() + this.m03() * m.m30(),
+          this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21() + this.m03() * m.m31(),
+          this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22() + this.m03() * m.m32(),
+          this.m00() * m.m03() + this.m01() * m.m13() + this.m02() * m.m23() + this.m03() * m.m33(),
+          this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20() + this.m13() * m.m30(),
+          this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21() + this.m13() * m.m31(),
+          this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22() + this.m13() * m.m32(),
+          this.m10() * m.m03() + this.m11() * m.m13() + this.m12() * m.m23() + this.m13() * m.m33(),
+          this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20() + this.m23() * m.m30(),
+          this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21() + this.m23() * m.m31(),
+          this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() + this.m23() * m.m32(),
+          this.m20() * m.m03() + this.m21() * m.m13() + this.m22() * m.m23() + this.m23() * m.m33(),
+          this.m30() * m.m00() + this.m31() * m.m10() + this.m32() * m.m20() + this.m33() * m.m30(),
+          this.m30() * m.m01() + this.m31() * m.m11() + this.m32() * m.m21() + this.m33() * m.m31(),
+          this.m30() * m.m02() + this.m31() * m.m12() + this.m32() * m.m22() + this.m33() * m.m32(),
+          this.m30() * m.m03() + this.m31() * m.m13() + this.m32() * m.m23() + this.m33() * m.m33() );
     },
 
     timesVector4: function( v ) {
@@ -466,37 +487,37 @@ define( function( require ) {
 
     getDeterminant: function() {
       return this.m03() * this.m12() * this.m21() * this.m30() -
-          this.m02() * this.m13() * this.m21() * this.m30() -
-          this.m03() * this.m11() * this.m22() * this.m30() +
-          this.m01() * this.m13() * this.m22() * this.m30() +
-          this.m02() * this.m11() * this.m23() * this.m30() -
-          this.m01() * this.m12() * this.m23() * this.m30() -
-          this.m03() * this.m12() * this.m20() * this.m31() +
-          this.m02() * this.m13() * this.m20() * this.m31() +
-          this.m03() * this.m10() * this.m22() * this.m31() -
-          this.m00() * this.m13() * this.m22() * this.m31() -
-          this.m02() * this.m10() * this.m23() * this.m31() +
-          this.m00() * this.m12() * this.m23() * this.m31() +
-          this.m03() * this.m11() * this.m20() * this.m32() -
-          this.m01() * this.m13() * this.m20() * this.m32() -
-          this.m03() * this.m10() * this.m21() * this.m32() +
-          this.m00() * this.m13() * this.m21() * this.m32() +
-          this.m01() * this.m10() * this.m23() * this.m32() -
-          this.m00() * this.m11() * this.m23() * this.m32() -
-          this.m02() * this.m11() * this.m20() * this.m33() +
-          this.m01() * this.m12() * this.m20() * this.m33() +
-          this.m02() * this.m10() * this.m21() * this.m33() -
-          this.m00() * this.m12() * this.m21() * this.m33() -
-          this.m01() * this.m10() * this.m22() * this.m33() +
-          this.m00() * this.m11() * this.m22() * this.m33();
+             this.m02() * this.m13() * this.m21() * this.m30() -
+             this.m03() * this.m11() * this.m22() * this.m30() +
+             this.m01() * this.m13() * this.m22() * this.m30() +
+             this.m02() * this.m11() * this.m23() * this.m30() -
+             this.m01() * this.m12() * this.m23() * this.m30() -
+             this.m03() * this.m12() * this.m20() * this.m31() +
+             this.m02() * this.m13() * this.m20() * this.m31() +
+             this.m03() * this.m10() * this.m22() * this.m31() -
+             this.m00() * this.m13() * this.m22() * this.m31() -
+             this.m02() * this.m10() * this.m23() * this.m31() +
+             this.m00() * this.m12() * this.m23() * this.m31() +
+             this.m03() * this.m11() * this.m20() * this.m32() -
+             this.m01() * this.m13() * this.m20() * this.m32() -
+             this.m03() * this.m10() * this.m21() * this.m32() +
+             this.m00() * this.m13() * this.m21() * this.m32() +
+             this.m01() * this.m10() * this.m23() * this.m32() -
+             this.m00() * this.m11() * this.m23() * this.m32() -
+             this.m02() * this.m11() * this.m20() * this.m33() +
+             this.m01() * this.m12() * this.m20() * this.m33() +
+             this.m02() * this.m10() * this.m21() * this.m33() -
+             this.m00() * this.m12() * this.m21() * this.m33() -
+             this.m01() * this.m10() * this.m22() * this.m33() +
+             this.m00() * this.m11() * this.m22() * this.m33();
     },
     get determinant() { return this.getDeterminant(); },
 
     toString: function() {
       return this.m00() + " " + this.m01() + " " + this.m02() + " " + this.m03() + "\n" +
-           this.m10() + " " + this.m11() + " " + this.m12() + " " + this.m13() + "\n" +
-           this.m20() + " " + this.m21() + " " + this.m22() + " " + this.m23() + "\n" +
-           this.m30() + " " + this.m31() + " " + this.m32() + " " + this.m33();
+             this.m10() + " " + this.m11() + " " + this.m12() + " " + this.m13() + "\n" +
+             this.m20() + " " + this.m21() + " " + this.m22() + " " + this.m23() + "\n" +
+             this.m30() + " " + this.m31() + " " + this.m32() + " " + this.m33();
     },
 
     makeImmutable: function() {

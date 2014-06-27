@@ -1,4 +1,3 @@
-
 (function() {
   module( 'Dot: Bounds2' );
 
@@ -56,7 +55,9 @@
   } );
 
   function A() { return new Bounds2( 0, 0, 2, 3 ); }
+
   function B() { return new Bounds2( 1, 1, 5, 4 ); }
+
   function C() { return new Bounds2( 1.5, 1.2, 5.7, 4.8 ); }
 
   test( 'Mutable / immutable versions', function() {

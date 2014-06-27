@@ -144,11 +144,14 @@ define( function( require ) {
                Math.abs( this.maxX - other.maxX ) < epsilon &&
                Math.abs( this.maxY - other.maxY ) < epsilon &&
                Math.abs( this.maxZ - other.maxZ ) < epsilon;
-      } else if ( thisFinite !== otherFinite ) {
+      }
+      else if ( thisFinite !== otherFinite ) {
         return false; // one is finite, the other is not. definitely not equal
-      } else if ( this === other ) {
+      }
+      else if ( this === other ) {
         return true; // exact same instance, must be equal
-      } else {
+      }
+      else {
         // epsilon only applies on finite dimensions. due to JS's handling of isFinite(), it's faster to check the sum of both
         return ( isFinite( this.minX + other.minX ) ? ( Math.abs( this.minX - other.minX ) < epsilon ) : ( this.minX === other.minX ) ) &&
                ( isFinite( this.minY + other.minY ) ? ( Math.abs( this.minY - other.minY ) < epsilon ) : ( this.minY === other.minY ) ) &&
@@ -167,7 +170,8 @@ define( function( require ) {
     copy: function( bounds ) {
       if ( bounds ) {
         return bounds.set( this );
-      } else {
+      }
+      else {
         return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
       }
     },
@@ -310,12 +314,30 @@ define( function( require ) {
       this.maxZ = maxZ;
       return this;
     },
-    setMinX: function( minX ) { this.minX = minX; return this; },
-    setMinY: function( minY ) { this.minY = minY; return this; },
-    setMinZ: function( minZ ) { this.minZ = minZ; return this; },
-    setMaxX: function( maxX ) { this.maxX = maxX; return this; },
-    setMaxY: function( maxY ) { this.maxY = maxY; return this; },
-    setMaxZ: function( maxZ ) { this.maxZ = maxZ; return this; },
+    setMinX: function( minX ) {
+      this.minX = minX;
+      return this;
+    },
+    setMinY: function( minY ) {
+      this.minY = minY;
+      return this;
+    },
+    setMinZ: function( minZ ) {
+      this.minZ = minZ;
+      return this;
+    },
+    setMaxX: function( maxX ) {
+      this.maxX = maxX;
+      return this;
+    },
+    setMaxY: function( maxY ) {
+      this.maxY = maxY;
+      return this;
+    },
+    setMaxZ: function( maxZ ) {
+      this.maxZ = maxZ;
+      return this;
+    },
 
     set: function( bounds ) {
       return this.setMinMax( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );

@@ -1,4 +1,3 @@
-
 // Copyright 2002-2014, University of Colorado Boulder
 
 define( [
@@ -30,7 +29,7 @@ define( [
   'DOT/Vector2',
   'DOT/Vector3',
   'DOT/Vector4'
-  ], function( dot ) {
-    'use strict';
-    return dot;
+], function( dot ) {
+  'use strict';
+  return dot;
 } );

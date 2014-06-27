@@ -116,7 +116,8 @@ define( function( require ) {
       return function( minX, minY, maxX, maxY ) {
         if ( pool.length ) {
           return pool.pop().setMinMax( minX, minY, maxX, maxY );
-        } else {
+        }
+        else {
           return new ObservableBounds2( minX, minY, maxX, maxY );
         }
       };
