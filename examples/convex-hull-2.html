@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  
+
   <title>Convex Hull 2D</title>
-  
+
   <script src="../../sherpa/lodash-2.4.1.min.js"></script>
   <script src="../build/standalone/dot.min.js"></script>
-  
+
   <style>
     html, body {
       padding: 0;
@@ -25,19 +25,19 @@
     var canvas = document.getElementById( 'canvas' );
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
+
     var context = canvas.getContext( '2d' );
-    
+
     var p = function( x, y ) { return new dot.Vector2( x, y ); }
     var points = [];
-    
+
     function drawLabel() {
       context.fillStyle = '#000';
       context.font = '20px Arial';
-      context.fillText( 'Convex hull: click to add points', 10, 30 ); 
+      context.fillText( 'Convex hull: click to add points', 10, 30 );
     }
     drawLabel();
-    
+
     document.addEventListener( 'mousemove', function( evt ) {
       context.clearRect( 0, 0, canvas.width, canvas.height );
       points.push( p( evt.clientX, evt.clientY ) );
@@ -59,10 +59,10 @@
       context.lineWidth = 1;
       context.stroke();
       points.pop();
-      
+
       drawLabel();
     } );
-    
+
     document.addEventListener( 'mousedown', function( evt ) {
       points.push( p( evt.clientX, evt.clientY ) );
     } );

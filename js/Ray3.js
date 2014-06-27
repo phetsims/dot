@@ -8,15 +8,15 @@
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   dot.Ray3 = function Ray3( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
   };
   var Ray3 = dot.Ray3;
-  
+
   Ray3.prototype = {
     constructor: Ray3,
 
@@ -32,6 +32,6 @@ define( function( require ) {
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };
-  
+
   return Ray3;
 } );

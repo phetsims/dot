@@ -8,11 +8,11 @@
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   var Float32Array = window.Float32Array || Array;
-  
+
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
   dot.QRDecomposition = function QRDecomposition( matrix ) {
@@ -176,6 +176,6 @@ define( function( require ) {
       return new dot.Matrix( X, this.n, nx ).getMatrix( 0, this.n - 1, 0, nx - 1 );
     }
   };
-  
+
   return QRDecomposition;
 } );

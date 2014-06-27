@@ -11,14 +11,14 @@
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
-  
+
   var Float32Array = window.Float32Array || Array;
-  
+
   dot.Matrix4 = function Matrix4( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
 
     // entries stored in column-major format
@@ -152,7 +152,7 @@ define( function( require ) {
       this.entries[13] = v13;
       this.entries[14] = v23;
       this.entries[15] = v33;
-      
+
       // TODO: consider performance of the affine check here
       this.type = type === undefined ? ( ( v30 === 0 && v31 === 0 && v32 === 0 && v33 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
       return this;
@@ -179,7 +179,7 @@ define( function( require ) {
     m31: function() { return this.entries[7]; },
     m32: function() { return this.entries[11]; },
     m33: function() { return this.entries[15]; },
-    
+
     isFinite: function() {
       return isFinite( this.m00() ) &&
              isFinite( this.m01() ) &&
@@ -198,13 +198,13 @@ define( function( require ) {
              isFinite( this.m32() ) &&
              isFinite( this.m33() );
     },
-    
+
     // the 3D translation, assuming multiplication with a homogeneous vector
     getTranslation: function() {
       return new dot.Vector3( this.m03(), this.m13(), this.m23() );
     },
     get translation() { return this.getTranslation(); },
-    
+
     // returns a vector that is equivalent to ( T(1,0,0).magnitude(), T(0,1,0).magnitude(), T(0,0,1).magnitude() )
     // where T is a relative transform
     getScaleVector: function() {
@@ -225,13 +225,13 @@ define( function( require ) {
                               Math.sqrt( m0203 * m0203 + m1213 * m1213 + m2223 * m2223 + m3233 * m3233 ) );
     },
     get scaleVector() { return this.getScaleVector(); },
-    
+
     getCSSTransform: function() {
       // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
-      
+
       // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
       // 20 is the largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
-      
+
       // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
       // NOTE: the toFixed calls are inlined for performance reasons
       return 'matrix3d(' + this.entries[0].toFixed( 20 ) + ',' +
@@ -252,7 +252,7 @@ define( function( require ) {
                            this.entries[15].toFixed( 20 ) + ')';
     },
     get cssTransform() { return this.getCSSTransform(); },
-    
+
     // exact equality
     equals: function( m ) {
       return this.m00() === m.m00() && this.m01() === m.m01() && this.m02() === m.m02() && this.m03() === m.m03() &&
@@ -260,7 +260,7 @@ define( function( require ) {
              this.m20() === m.m20() && this.m21() === m.m21() && this.m22() === m.m22() && this.m23() === m.m23() &&
              this.m30() === m.m30() && this.m31() === m.m31() && this.m32() === m.m32() && this.m33() === m.m33();
     },
-    
+
     // equality within a margin of error
     equalsEpsilon: function( m, epsilon ) {
       return Math.abs( this.m00() - m.m00() ) < epsilon &&
@@ -280,11 +280,11 @@ define( function( require ) {
              Math.abs( this.m32() - m.m32() ) < epsilon &&
              Math.abs( this.m33() - m.m33() ) < epsilon;
     },
-    
+
     /*---------------------------------------------------------------------------*
     * Immutable operations (returning a new matrix)
     *----------------------------------------------------------------------------*/
-    
+
     copy: function() {
       return new Matrix4(
         this.m00(), this.m01(), this.m02(), this.m03(),
@@ -294,7 +294,7 @@ define( function( require ) {
         this.type
       );
     },
-    
+
     plus: function( m ) {
       return new Matrix4(
           this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(), this.m03() + m.m03(),
@@ -377,7 +377,7 @@ define( function( require ) {
       if( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
         return this.type === Types.IDENTITY ? m : this;
       }
-      
+
       if ( this.type === m.type ) {
         // currently two matrices of the same type will result in the same result type
         if ( this.type === Types.TRANSLATION_3D ) {
@@ -394,10 +394,10 @@ define( function( require ) {
                               0, 0, 0, 1, Types.SCALING );
         }
       }
-      
+
       if ( this.type !== Types.OTHER && m.type !== Types.OTHER ) {
         // currently two matrices that are anything but "other" are technically affine, and the result will be affine
-        
+
         // affine case
         return new Matrix4( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
                             this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
@@ -413,7 +413,7 @@ define( function( require ) {
                             this.m20() * m.m03() + this.m21() * m.m13() + this.m22() * m.m23() + this.m23(),
                             0, 0, 0, 1, Types.AFFINE );
       }
-      
+
       // general case
       return new Matrix4( this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20() + this.m03() * m.m30(),
                 this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21() + this.m03() * m.m31(),
@@ -509,6 +509,6 @@ define( function( require ) {
   // create an immutable
   Matrix4.IDENTITY = new Matrix4();
   Matrix4.IDENTITY.makeImmutable();
-  
+
   return Matrix4;
 } );

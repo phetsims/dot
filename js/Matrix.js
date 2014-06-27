@@ -8,13 +8,13 @@
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   var Float32Array = window.Float32Array || Array;
-  
+
   var isArray = require( 'PHET_CORE/isArray' );
-  
+
   require( 'DOT/SingularValueDecomposition' );
   require( 'DOT/LUDecomposition' );
   require( 'DOT/QRDecomposition' );
@@ -22,7 +22,7 @@ define( function( require ) {
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
-  
+
   dot.Matrix = function Matrix( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
@@ -541,6 +541,6 @@ define( function( require ) {
 
     return new Matrix( dimension, n, data, true );
   };
-  
+
   return Matrix;
 } );

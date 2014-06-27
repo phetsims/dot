@@ -10,9 +10,9 @@
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   require( 'DOT/Util' );
   require( 'DOT/Vector2' );
   require( 'DOT/Vector4' );
@@ -37,12 +37,12 @@ define( function( require ) {
     magnitudeSquared: function() {
       return this.dot( this );
     },
-    
+
     // the distance between this vector (treated as a point) and another point
     distance: function( point ) {
       return this.minus( point ).magnitude();
     },
-    
+
     // the squared distance between this vector (treated as a point) and another point
     distanceSquared: function( point ) {
       return this.minus( point ).magnitudeSquared();
@@ -51,15 +51,15 @@ define( function( require ) {
     dot: function( v ) {
       return this.x * v.x + this.y * v.y + this.z * v.z;
     },
-    
+
     isFinite: function() {
       return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z );
     },
-    
+
     equals: function( other ) {
       return this.x === other.x && this.y === other.y && this.z === other.z;
     },
-    
+
     equalsEpsilon: function( other, epsilon ) {
       if ( !epsilon ) {
         epsilon = 0;
@@ -70,7 +70,7 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Immutables
      *----------------------------------------------------------------------------*/
-    
+
     // create a copy, or if a vector is passed in, set that vector to our value
     copy: function( vector ) {
       if ( vector ) {
@@ -139,12 +139,12 @@ define( function( require ) {
     angleBetween: function( v ) {
       return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
-    
+
     // linear interpolation from this (ratio=0) to vector (ratio=1)
     blend: function( vector, ratio ) {
       return this.plus( vector.minus( this ).times( ratio ) );
     },
-    
+
     // average position between this and the provided vector
     average: function( vector ) {
       return this.blend( vector, 0.5 );
@@ -165,7 +165,7 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Mutables
      *----------------------------------------------------------------------------*/
-    
+
     // our core mutables, all mutation should go through these
     setXYZ: function( x, y, z ) {
       this.x = x;
@@ -185,7 +185,7 @@ define( function( require ) {
       this.z = z;
       return this;
     },
-    
+
     set: function( v ) {
       return this.setXYZ( v.x, v.y, v.z );
     },
@@ -205,11 +205,11 @@ define( function( require ) {
     subtractScalar: function( scalar ) {
       return this.setXYZ( this.x - scalar, this.y - scalar, this.z - scalar );
     },
-    
+
     multiplyScalar: function( scalar ) {
       return this.setXYZ( this.x * scalar, this.y * scalar, this.z * scalar );
     },
-    
+
     multiply: function( scalar ) {
       // make sure it's not a vector!
       assert && assert( scalar.dimension === undefined );
@@ -227,7 +227,7 @@ define( function( require ) {
     negate: function() {
       return this.setXYZ( -this.x, -this.y, -this.z );
     },
-    
+
     normalize: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
@@ -269,6 +269,6 @@ define( function( require ) {
   Vector3.X_UNIT = new Immutable( 1, 0, 0 );
   Vector3.Y_UNIT = new Immutable( 0, 1, 0 );
   Vector3.Z_UNIT = new Immutable( 0, 0, 1 );
-  
+
   return Vector3;
 } );

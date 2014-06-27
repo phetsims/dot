@@ -14,12 +14,12 @@
  */
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   // modules
   require( 'DOT/Util' );
-  
+
   /**
    * @param {Number} a1
    * @param {Number} a2
@@ -29,7 +29,7 @@ define( function( require ) {
    * @constructor
    */
   dot.LinearFunction = function LinearFunction( a1, a2, b1, b2, clamp ) {
-    
+
     clamp = _.isUndefined( clamp ) ? false : clamp;
 
     /*
@@ -46,7 +46,7 @@ define( function( require ) {
       }
       return b3;
     };
-    
+
     // Maps from a to b.
     var evaluate = function( a3 ) {
       return map( a1, a2, b1, b2, a3, clamp );
@@ -56,9 +56,9 @@ define( function( require ) {
     evaluate.inverse = function( b3 ) {
       return map( b1, b2, a1, a2, b3, clamp );
     };
-    
+
     return evaluate; // return the evaluation function, so we use sites look like: f(a) f.inverse(b)
   };
-  
+
   return dot.LinearFunction;
 } );

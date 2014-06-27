@@ -928,6 +928,6 @@ define( function( require ) {
       }
     }
   };
-  
+
   return EigenvalueDecomposition;
 } );

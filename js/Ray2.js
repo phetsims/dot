@@ -8,15 +8,15 @@
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
 
   dot.Ray2 = function Ray2( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
-    
+
     assert && assert( Math.abs( dir.magnitude() - 1 ) < 0.01 );
-    
+
     phetAllocation && phetAllocation( 'Ray2' );
   };
   var Ray2 = dot.Ray2;
@@ -36,6 +36,6 @@ define( function( require ) {
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };
-  
+
   return Ray2;
 } );
