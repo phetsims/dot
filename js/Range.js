@@ -37,6 +37,15 @@ define( function( require ) {
       return ( value >= this.min ) && ( value <= this.max );
     },
 
+    /**
+     * Does this range contain the specified range?
+     * @param {Range} range
+     * @returns {boolean}
+     */
+    containsRange: function( range ) {
+      return this.min <= range.min && this.max >= range.max;
+    },
+
     intersects: function( range ) {
       return ( this.max >= range.min ) && ( range.max >= this.min );
     },
