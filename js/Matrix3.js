@@ -129,6 +129,15 @@ define( function( require ) {
       return this.isAffine() && this.m01() === 0 && this.m10() === 0;
     },
 
+    // if it's an affine matrix where the components of transforms are independent, but may be switched (unlike isAligned)
+    // i.e. the 2x2 rotational sub-matrix is of one of the two forms:
+    // A 0  or  0  A
+    // 0 B      B  0
+    // This means that moving a transformed point by (x,0) or (0,y) will result in a motion along one of the axes.
+    isAxisAligned: function() {
+      return this.isAffine() && ( ( this.m01() === 0 && this.m10() === 0 ) || ( this.m00() === 0 && this.m11() === 0 ) );
+    },
+
     isFinite: function() {
       return isFinite( this.m00() ) &&
              isFinite( this.m01() ) &&
