@@ -75,6 +75,11 @@ define( function( require ) {
       return 180 * radians / Math.PI;
     },
 
+    // find the greatest common denominator using the classic algorithm
+    gcd: function( a, b ) {
+      return b === 0 ? a : this.gcd( b, a % b );
+    },
+
     // intersection between the line from p1-p2 and the line from p3-p4
     lineLineIntersection: function( p1, p2, p3, p4 ) {
       var x12 = p1.x - p2.x;
