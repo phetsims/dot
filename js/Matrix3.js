@@ -229,7 +229,7 @@ define( function( require ) {
         case Types.IDENTITY:
           return '';
         case Types.TRANSLATION_2D:
-          return 'translate(' + svgNumber( this.entries[6] ) + ',' + this.entries[7] + ')';
+          return 'translate(' + svgNumber( this.entries[6] ) + ',' + svgNumber( this.entries[7] ) + ')';
         case Types.SCALING:
           return 'scale(' + svgNumber( this.entries[0] ) + ( this.entries[0] === this.entries[4] ? '' : ',' + svgNumber( this.entries[4] ) ) + ')';
         default:
