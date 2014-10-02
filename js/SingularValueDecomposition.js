@@ -515,4 +515,6 @@ define( function( require ) {
       return r;
     }
   };
+
+  return SingularValueDecomposition;
 } );
