@@ -1,4 +1,6 @@
-// Copyright 2002-2014, University of Colorado Boulder
+/*
+ * Copyright 2002-2014, University of Colorado Boulder
+ */
 
 /**
  * A numeric range.
@@ -31,6 +33,10 @@ define( function( require ) {
 
     getLength: function() {
       return this.max - this.min;
+    },
+
+    getCenter: function() {
+      return (this.max + this.min) / 2;
     },
 
     contains: function( value ) {
