@@ -28,6 +28,11 @@ define( function( require ) {
       return this.pos.plus( this.dir.timesScalar( distance ) );
     },
 
+    // @param {Plane3} plane
+    distanceToPlane: function( plane ) {
+      return ( plane.distance - this.pos.dot( plane.normal ) ) / this.dir.dot( plane.normal );
+    },
+
     toString: function() {
       return this.pos.toString() + " => " + this.dir.toString();
     }
