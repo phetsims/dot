@@ -56,6 +56,14 @@ define( function( require ) {
       return ( this.max >= range.min ) && ( range.max >= this.min );
     },
 
+    /**
+     * Do the two ranges overlap with one another?  Note that this assumes that
+     * this is a open interval.
+     */
+    intersectsExclusive: function( range ) {
+      return ( this.max > range.min ) && ( range.max > this.min );
+    },
+
     toString: function() {
       return "[Range (min:" + this.min + " max:" + this.max + " defaultValue:" + this.defaultValue + ")]";
     }
