@@ -245,6 +245,9 @@ define( function( require ) {
       var kase;
 
       // Here is where a test for too many iterations would go.
+      if ( iter > 500 ) {
+        break;
+      }
 
       // This section of the program inspects for
       // negligible elements in the s and e arrays.  On
