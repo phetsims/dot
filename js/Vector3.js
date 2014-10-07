@@ -240,6 +240,19 @@ define( function( require ) {
     }
   };
 
+  /**
+   * Spherical linear interpolation between two unit vectors.
+   *
+   * @param {Vector3} start - Start unit vector
+   * @param {Vector3} end - End unit vector
+   * @param {number} ratio  - Between 0 (at start vector) and 1 (at end vector)
+   * @return Spherical linear interpolation between the start and end
+   */
+  Vector3.slerp = function( start, end, ratio ) {
+    // NOTE: we can't create a require() loop here
+    return dot.Quaternion.slerp( new dot.Quaternion(), dot.Quaternion.getRotationQuaternion( start, end ), ratio ).timesVector3( start );
+  };
+
   /*---------------------------------------------------------------------------*
    * Immutable Vector form
    *----------------------------------------------------------------------------*/
