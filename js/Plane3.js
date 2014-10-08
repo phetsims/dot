@@ -11,6 +11,7 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
+  var Vector3 = require( 'DOT/Vector3' );
 
   /*
    * @constructor
@@ -40,9 +41,9 @@ define( function( require ) {
     }
   };
 
-  Plane3.XY = new Plane3( dot( 0, 0, 1 ), 0 );
-  Plane3.XZ = new Plane3( dot( 0, 1, 0 ), 0 );
-  Plane3.YZ = new Plane3( dot( 1, 0, 0 ), 0 );
+  Plane3.XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
+  Plane3.XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
+  Plane3.YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );
 
   /*
    * @param {Vector3} a - first point
