@@ -325,7 +325,7 @@ define( function( require ) {
     * Mutable operations
     *----------------------------------------------------------------------------*/
 
-    // mutable core opreations (all other mutations should be called through these)
+    // mutable core operations (all other mutations should be called through these)
     setMinMax: function( minX, minY, maxX, maxY ) {
       this.minX = minX;
       this.minY = minY;
