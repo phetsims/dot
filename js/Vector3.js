@@ -40,12 +40,15 @@ define( function( require ) {
 
     // the distance between this vector (treated as a point) and another point
     distance: function( point ) {
-      return this.minus( point ).magnitude();
+      return Math.sqrt( this.distanceSquared( point ) );
     },
 
     // the squared distance between this vector (treated as a point) and another point
     distanceSquared: function( point ) {
-      return this.minus( point ).magnitudeSquared();
+      var dx = this.x - point.x;
+      var dy = this.y - point.y;
+      var dz = this.z - point.z;
+      return dx * dx + dy * dy + dz * dz;
     },
 
     dot: function( v ) {
@@ -97,6 +100,10 @@ define( function( require ) {
       else {
         return new Vector3( this.x / mag, this.y / mag, this.z / mag );
       }
+    },
+
+    withMagnitude: function( magnitude ) {
+      return this.copy().setMagnitude( magnitude );
     },
 
     timesScalar: function( scalar ) {
@@ -189,6 +196,12 @@ define( function( require ) {
 
     set: function( v ) {
       return this.setXYZ( v.x, v.y, v.z );
+    },
+
+    // sets the magnitude of the vector, keeping the same direction (though a negative magnitude will flip the vector direction)
+    setMagnitude: function( m ) {
+      var scale = m / this.magnitude();
+      return this.multiplyScalar( scale );
     },
 
     add: function( v ) {
