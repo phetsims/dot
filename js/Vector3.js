@@ -102,6 +102,10 @@ define( function( require ) {
       }
     },
 
+    withMagnitude: function( magnitude ) {
+      return this.copy().setMagnitude( magnitude );
+    },
+
     timesScalar: function( scalar ) {
       return new Vector3( this.x * scalar, this.y * scalar, this.z * scalar );
     },
@@ -192,6 +196,12 @@ define( function( require ) {
 
     set: function( v ) {
       return this.setXYZ( v.x, v.y, v.z );
+    },
+
+    // sets the magnitude of the vector, keeping the same direction (though a negative magnitude will flip the vector direction)
+    setMagnitude: function( m ) {
+      var scale = m / this.magnitude();
+      return this.multiplyScalar( scale );
     },
 
     add: function( v ) {

@@ -123,6 +123,10 @@ define( function( require ) {
       }
     },
 
+    withMagnitude: function( magnitude ) {
+      return this.copy().setMagnitude( magnitude );
+    },
+
     timesScalar: function( scalar ) {
       return new Vector2( this.x * scalar, this.y * scalar );
     },
