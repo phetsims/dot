@@ -136,8 +136,11 @@ define( function( require ) {
       return result;
     },
 
-    transpose: function() {
-      var result = new Matrix( this.n, this.m );
+    // allow passing in a pre-constructed matrix
+    transpose: function( result ) {
+      result = result || new Matrix( this.n, this.m );
+      assert && assert( result.m === this.n );
+      assert && assert( result.n === this.m );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           result.entries[result.index( j, i )] = this.entries[this.index( i, j )];
@@ -424,6 +427,24 @@ define( function( require ) {
     extractVector4: function( column ) {
       assert && assert( this.m === 4 ); // rows should match vector dimension
       return new dot.Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
+    },
+
+    // Sets the current matrix to the values of the listed column vectors (Vector3).
+    setVectors3: function( vectors ) {
+      var m = 3;
+      var n = vectors.length;
+
+      assert && assert( this.m === m );
+      assert && assert( this.n === n );
+
+      for ( var i = 0; i < n; i++ ) {
+        var vector = vectors[i];
+        this.entries[i] = vector.x;
+        this.entries[i + n] = vector.y;
+        this.entries[i + 2 * n] = vector.z;
+      }
+
+      return this;
     },
 
     isMatrix: true
