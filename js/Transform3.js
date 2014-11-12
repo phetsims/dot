@@ -168,7 +168,6 @@ define( function( require ) {
 
     transformX: function( x ) {
       var m = this.getMatrix();
-      // TODO: ensure assertions are stripped out
       assert && assert( !m.m01(), 'Transforming an X value with a rotation/shear is ill-defined' );
       return m.m00() * x + m.m02();
     },
