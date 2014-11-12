@@ -1,19 +1,19 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * An immutable permutation that can permute an array
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   var isArray = require( 'PHET_CORE/isArray' );
   require( 'DOT/Util' ); // for rangeInclusive
-  
+
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
   var Permutation = dot.Permutation = function Permutation( indices ) {
     this.indices = indices;
@@ -136,6 +136,6 @@ define( function( require ) {
 
     console.log( Permutation.permutations( 4 ).toString() );
   };
-  
+
   return Permutation;
 } );

@@ -1,5 +1,4 @@
-
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 define( [
   'DOT/dot',
@@ -18,19 +17,21 @@ define( [
   'DOT/ObservableMatrix3',
   'DOT/ObservableVector2',
   'DOT/Permutation',
+  'DOT/Plane3',
   'DOT/QRDecomposition',
   'DOT/Quaternion',
   'DOT/Ray2',
   'DOT/Ray3',
   'DOT/Rectangle',
   'DOT/SingularValueDecomposition',
+  'DOT/Sphere3',
   'DOT/Transform3',
   'DOT/Transform4',
   'DOT/Util',
   'DOT/Vector2',
   'DOT/Vector3',
   'DOT/Vector4'
-  ], function( dot ) {
-    'use strict';
-    return dot;
+], function( dot ) {
+  'use strict';
+  return dot;
 } );

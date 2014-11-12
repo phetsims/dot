@@ -1,18 +1,18 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * SVD decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   var Float32Array = window.Float32Array || Array;
-  
+
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
   dot.SingularValueDecomposition = function SingularValueDecomposition( matrix ) {
@@ -51,7 +51,7 @@ define( function( require ) {
     var wantv = true;
 
     var i, j, k, t, f;
-    var cs,sn;
+    var cs, sn;
 
     var hypot = dot.Matrix.hypot;
 
@@ -245,6 +245,9 @@ define( function( require ) {
       var kase;
 
       // Here is where a test for too many iterations would go.
+      if ( iter > 500 ) {
+        break;
+      }
 
       // This section of the program inspects for
       // negligible elements in the s and e arrays.  On
@@ -261,7 +264,7 @@ define( function( require ) {
           break;
         }
         if ( abs( e[k] ) <=
-           tiny + eps * (abs( s[k] ) + abs( s[k + 1] )) ) {
+             tiny + eps * (abs( s[k] ) + abs( s[k + 1] )) ) {
           e[k] = 0.0;
           break;
         }
@@ -276,7 +279,7 @@ define( function( require ) {
             break;
           }
           t = (ks !== p ? abs( e[ks] ) : 0) +
-            (ks !== k + 1 ? abs( e[ks - 1] ) : 0);
+              (ks !== k + 1 ? abs( e[ks - 1] ) : 0);
           if ( abs( s[ks] ) <= tiny + eps * t ) {
             s[ks] = 0.0;
             break;
@@ -358,7 +361,7 @@ define( function( require ) {
 
           var scale = max( max( max( max(
               abs( s[p - 1] ), abs( s[p - 2] ) ), abs( e[p - 2] ) ),
-                          abs( s[k] ) ), abs( e[k] ) );
+            abs( s[k] ) ), abs( e[k] ) );
           var sp = s[p - 1] / scale;
           var spm1 = s[p - 2] / scale;
           var epm1 = e[p - 2] / scale;
@@ -515,4 +518,6 @@ define( function( require ) {
       return r;
     }
   };
+
+  return SingularValueDecomposition;
 } );

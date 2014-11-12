@@ -1,4 +1,4 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * Eigensystem decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
@@ -18,7 +18,7 @@
  * conditioned, or even singular, so the validity of the equation
  * A = V*D*inverse(V) depends upon V.cond().
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
@@ -928,6 +928,6 @@ define( function( require ) {
       }
     }
   };
-  
+
   return EigenvalueDecomposition;
 } );

@@ -1,20 +1,20 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * Arbitrary-dimensional matrix, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   var Float32Array = window.Float32Array || Array;
-  
+
   var isArray = require( 'PHET_CORE/isArray' );
-  
+
   require( 'DOT/SingularValueDecomposition' );
   require( 'DOT/LUDecomposition' );
   require( 'DOT/QRDecomposition' );
@@ -22,7 +22,7 @@ define( function( require ) {
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
-  
+
   dot.Matrix = function Matrix( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
@@ -136,8 +136,11 @@ define( function( require ) {
       return result;
     },
 
-    transpose: function() {
-      var result = new Matrix( this.n, this.m );
+    // allow passing in a pre-constructed matrix
+    transpose: function( result ) {
+      result = result || new Matrix( this.n, this.m );
+      assert && assert( result.m === this.n );
+      assert && assert( result.n === this.m );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           result.entries[result.index( j, i )] = this.entries[this.index( i, j )];
@@ -359,7 +362,7 @@ define( function( require ) {
 
     solve: function( matrix ) {
       return (this.m === this.n ? (new dot.LUDecomposition( this )).solve( matrix ) :
-          (new dot.QRDecomposition( this )).solve( matrix ));
+              (new dot.QRDecomposition( this )).solve( matrix ));
     },
 
     solveTranspose: function( matrix ) {
@@ -424,6 +427,24 @@ define( function( require ) {
     extractVector4: function( column ) {
       assert && assert( this.m === 4 ); // rows should match vector dimension
       return new dot.Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
+    },
+
+    // Sets the current matrix to the values of the listed column vectors (Vector3).
+    setVectors3: function( vectors ) {
+      var m = 3;
+      var n = vectors.length;
+
+      assert && assert( this.m === m );
+      assert && assert( this.n === n );
+
+      for ( var i = 0; i < n; i++ ) {
+        var vector = vectors[i];
+        this.entries[i] = vector.x;
+        this.entries[i + n] = vector.y;
+        this.entries[i + 2 * n] = vector.z;
+      }
+
+      return this;
     },
 
     isMatrix: true
@@ -541,6 +562,6 @@ define( function( require ) {
 
     return new Matrix( dimension, n, data, true );
   };
-  
+
   return Matrix;
 } );

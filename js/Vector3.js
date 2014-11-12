@@ -1,18 +1,18 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * Basic 3-dimensional vector
  *
  * TODO: sync with Vector2 changes
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   require( 'DOT/Util' );
   require( 'DOT/Vector2' );
   require( 'DOT/Vector4' );
@@ -37,29 +37,32 @@ define( function( require ) {
     magnitudeSquared: function() {
       return this.dot( this );
     },
-    
+
     // the distance between this vector (treated as a point) and another point
     distance: function( point ) {
-      return this.minus( point ).magnitude();
+      return Math.sqrt( this.distanceSquared( point ) );
     },
-    
+
     // the squared distance between this vector (treated as a point) and another point
     distanceSquared: function( point ) {
-      return this.minus( point ).magnitudeSquared();
+      var dx = this.x - point.x;
+      var dy = this.y - point.y;
+      var dz = this.z - point.z;
+      return dx * dx + dy * dy + dz * dz;
     },
 
     dot: function( v ) {
       return this.x * v.x + this.y * v.y + this.z * v.z;
     },
-    
+
     isFinite: function() {
       return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z );
     },
-    
+
     equals: function( other ) {
       return this.x === other.x && this.y === other.y && this.z === other.z;
     },
-    
+
     equalsEpsilon: function( other, epsilon ) {
       if ( !epsilon ) {
         epsilon = 0;
@@ -70,12 +73,13 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Immutables
      *----------------------------------------------------------------------------*/
-    
+
     // create a copy, or if a vector is passed in, set that vector to our value
     copy: function( vector ) {
       if ( vector ) {
         return vector.set( this );
-      } else {
+      }
+      else {
         return new Vector3( this.x, this.y, this.z );
       }
     },
@@ -96,6 +100,10 @@ define( function( require ) {
       else {
         return new Vector3( this.x / mag, this.y / mag, this.z / mag );
       }
+    },
+
+    withMagnitude: function( magnitude ) {
+      return this.copy().setMagnitude( magnitude );
     },
 
     timesScalar: function( scalar ) {
@@ -139,12 +147,12 @@ define( function( require ) {
     angleBetween: function( v ) {
       return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
     },
-    
+
     // linear interpolation from this (ratio=0) to vector (ratio=1)
     blend: function( vector, ratio ) {
       return this.plus( vector.minus( this ).times( ratio ) );
     },
-    
+
     // average position between this and the provided vector
     average: function( vector ) {
       return this.blend( vector, 0.5 );
@@ -165,7 +173,7 @@ define( function( require ) {
     /*---------------------------------------------------------------------------*
      * Mutables
      *----------------------------------------------------------------------------*/
-    
+
     // our core mutables, all mutation should go through these
     setXYZ: function( x, y, z ) {
       this.x = x;
@@ -185,9 +193,15 @@ define( function( require ) {
       this.z = z;
       return this;
     },
-    
+
     set: function( v ) {
       return this.setXYZ( v.x, v.y, v.z );
+    },
+
+    // sets the magnitude of the vector, keeping the same direction (though a negative magnitude will flip the vector direction)
+    setMagnitude: function( m ) {
+      var scale = m / this.magnitude();
+      return this.multiplyScalar( scale );
     },
 
     add: function( v ) {
@@ -205,11 +219,11 @@ define( function( require ) {
     subtractScalar: function( scalar ) {
       return this.setXYZ( this.x - scalar, this.y - scalar, this.z - scalar );
     },
-    
+
     multiplyScalar: function( scalar ) {
       return this.setXYZ( this.x * scalar, this.y * scalar, this.z * scalar );
     },
-    
+
     multiply: function( scalar ) {
       // make sure it's not a vector!
       assert && assert( scalar.dimension === undefined );
@@ -227,15 +241,29 @@ define( function( require ) {
     negate: function() {
       return this.setXYZ( -this.x, -this.y, -this.z );
     },
-    
+
     normalize: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
         throw new Error( "Cannot normalize a zero-magnitude vector" );
-      } else {
+      }
+      else {
         return this.divideScalar( mag );
       }
     }
+  };
+
+  /**
+   * Spherical linear interpolation between two unit vectors.
+   *
+   * @param {Vector3} start - Start unit vector
+   * @param {Vector3} end - End unit vector
+   * @param {number} ratio  - Between 0 (at start vector) and 1 (at end vector)
+   * @return Spherical linear interpolation between the start and end
+   */
+  Vector3.slerp = function( start, end, ratio ) {
+    // NOTE: we can't create a require() loop here
+    return dot.Quaternion.slerp( new dot.Quaternion(), dot.Quaternion.getRotationQuaternion( start, end ), ratio ).timesVector3( start );
   };
 
   /*---------------------------------------------------------------------------*
@@ -269,6 +297,6 @@ define( function( require ) {
   Vector3.X_UNIT = new Immutable( 1, 0, 0 );
   Vector3.Y_UNIT = new Immutable( 0, 1, 0 );
   Vector3.Z_UNIT = new Immutable( 0, 0, 1 );
-  
+
   return Vector3;
 } );

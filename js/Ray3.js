@@ -1,22 +1,22 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * 3-dimensional ray
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   dot.Ray3 = function Ray3( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
   };
   var Ray3 = dot.Ray3;
-  
+
   Ray3.prototype = {
     constructor: Ray3,
 
@@ -28,10 +28,15 @@ define( function( require ) {
       return this.pos.plus( this.dir.timesScalar( distance ) );
     },
 
+    // @param {Plane3} plane
+    distanceToPlane: function( plane ) {
+      return ( plane.distance - this.pos.dot( plane.normal ) ) / this.dir.dot( plane.normal );
+    },
+
     toString: function() {
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };
-  
+
   return Ray3;
 } );

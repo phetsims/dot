@@ -1,11 +1,13 @@
-// Copyright 2002-2013, University of Colorado Boulder
+/*
+ * Copyright 2002-2014, University of Colorado Boulder
+ */
 
 /**
  * A numeric range.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
-define( function ( require ) {
+define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
@@ -26,22 +28,43 @@ define( function ( require ) {
     constructor: Range,
 
     copy: function() {
-       return new Range( this.min, this.max, this.defaultValue );
+      return new Range( this.min, this.max, this.defaultValue );
     },
 
-    getLength: function () {
+    getLength: function() {
       return this.max - this.min;
     },
 
-    contains: function ( value ) {
+    getCenter: function() {
+      return (this.max + this.min) / 2;
+    },
+
+    contains: function( value ) {
       return ( value >= this.min ) && ( value <= this.max );
     },
 
-    intersects: function ( range ) {
+    /**
+     * Does this range contain the specified range?
+     * @param {Range} range
+     * @returns {boolean}
+     */
+    containsRange: function( range ) {
+      return this.min <= range.min && this.max >= range.max;
+    },
+
+    intersects: function( range ) {
       return ( this.max >= range.min ) && ( range.max >= this.min );
     },
 
-    toString: function () {
+    /**
+     * Do the two ranges overlap with one another?  Note that this assumes that
+     * this is a open interval.
+     */
+    intersectsExclusive: function( range ) {
+      return ( this.max > range.min ) && ( range.max > this.min );
+    },
+
+    toString: function() {
       return "[Range (min:" + this.min + " max:" + this.max + " defaultValue:" + this.defaultValue + ")]";
     }
   };

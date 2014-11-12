@@ -1,18 +1,18 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * QR decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
-  
+
   var Float32Array = window.Float32Array || Array;
-  
+
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
   dot.QRDecomposition = function QRDecomposition( matrix ) {
@@ -176,6 +176,6 @@ define( function( require ) {
       return new dot.Matrix( X, this.n, nx ).getMatrix( 0, this.n - 1, 0, nx - 1 );
     }
   };
-  
+
   return QRDecomposition;
 } );

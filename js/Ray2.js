@@ -1,22 +1,22 @@
-// Copyright 2002-2013, University of Colorado Boulder
+// Copyright 2002-2014, University of Colorado Boulder
 
 /**
  * 2-dimensional ray
  *
- * @author Jonathan Olson <olsonsjc@gmail.com>
+ * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
 define( function( require ) {
   'use strict';
-  
+
   var dot = require( 'DOT/dot' );
 
   dot.Ray2 = function Ray2( pos, dir ) {
     this.pos = pos;
     this.dir = dir;
-    
+
     assert && assert( Math.abs( dir.magnitude() - 1 ) < 0.01 );
-    
+
     phetAllocation && phetAllocation( 'Ray2' );
   };
   var Ray2 = dot.Ray2;
@@ -36,6 +36,6 @@ define( function( require ) {
       return this.pos.toString() + " => " + this.dir.toString();
     }
   };
-  
+
   return Ray2;
 } );
