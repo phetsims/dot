@@ -171,6 +171,15 @@ define( function( require ) {
       return this.rowMajor( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type );
     },
 
+    set: function( matrix ) {
+      return this.rowMajor(
+        matrix.m00(), matrix.m01(), matrix.m02(), matrix.m03(),
+        matrix.m10(), matrix.m11(), matrix.m12(), matrix.m13(),
+        matrix.m20(), matrix.m21(), matrix.m22(), matrix.m23(),
+        matrix.m30(), matrix.m31(), matrix.m32(), matrix.m33(),
+        matrix.type );
+    },
+
     // convenience getters. inline usages of these when performance is critical? TODO: test performance of inlining these, with / without closure compiler
     m00: function() { return this.entries[0]; },
     m01: function() { return this.entries[4]; },

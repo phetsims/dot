@@ -184,6 +184,14 @@ define( function( require ) {
         0, 0, 0, 1 );
     },
 
+    toAffineMatrix4: function() {
+      return new dot.Matrix4(
+        this.m00(), this.m01(), 0, this.m02(),
+        this.m10(), this.m11(), 0, this.m12(),
+        0, 0, 1, 0,
+        0, 0, 0, 1 );
+    },
+
     toString: function() {
       return this.m00() + ' ' + this.m01() + ' ' + this.m02() + '\n' +
              this.m10() + ' ' + this.m11() + ' ' + this.m12() + '\n' +
