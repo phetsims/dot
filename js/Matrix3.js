@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
 
   var FastArray = dot.FastArray;
 
@@ -877,7 +877,7 @@ define( function( require ) {
   };
 
   /* jshint -W064 */
-  Poolable( Matrix3, {
+  PoolableMixin( Matrix3, {
 
     //The default factory creates an identity matrix
     defaultFactory: function() { return new Matrix3(); },

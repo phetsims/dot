@@ -13,7 +13,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var extend = require( 'PHET_CORE/extend' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
   var Property = require( 'AXON/Property' );
   require( 'DOT/Bounds2' );
 
@@ -110,7 +110,7 @@ define( function( require ) {
 
   // experimental object pooling
   /* jshint -W064 */
-  Poolable( ObservableBounds2, {
+  PoolableMixin( ObservableBounds2, {
     defaultFactory: function() { return new ObservableBounds2(); },
     constructorDuplicateFactory: function( pool ) {
       return function( minX, minY, maxX, maxY ) {
