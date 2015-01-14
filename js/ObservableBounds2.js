@@ -32,8 +32,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Overriding the core mutable methods (any mutable operation should call one of these)
-    *----------------------------------------------------------------------------*/
+     * Overriding the core mutable methods (any mutable operation should call one of these)
+     *----------------------------------------------------------------------------*/
     setMinMax: function( minX, minY, maxX, maxY ) {
       if ( this.minX !== minX || this.minY !== minY || this.maxX !== maxX || this.maxY !== maxY ) {
         this._oldValue.minX = this.minX;

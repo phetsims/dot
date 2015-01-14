@@ -62,10 +62,10 @@ define( function( require ) {
 
       // JME-style
       return new Quaternion(
-          this.x * quat.w - this.z * quat.y + this.y * quat.z + this.w * quat.x,
-          -this.x * quat.z + this.y * quat.w + this.z * quat.x + this.w * quat.y,
-          this.x * quat.y - this.y * quat.x + this.z * quat.w + this.w * quat.z,
-          -this.x * quat.x - this.y * quat.y - this.z * quat.z + this.w * quat.w
+        this.x * quat.w - this.z * quat.y + this.y * quat.z + this.w * quat.x,
+        -this.x * quat.z + this.y * quat.w + this.z * quat.x + this.w * quat.y,
+        this.x * quat.y - this.y * quat.x + this.z * quat.w + this.w * quat.z,
+        -this.x * quat.x - this.y * quat.y - this.z * quat.z + this.w * quat.w
       );
 
       /*
@@ -87,9 +87,9 @@ define( function( require ) {
 
       // TODO: optimization?
       return new dot.Vector3(
-          this.w * this.w * v.x + 2 * this.y * this.w * v.z - 2 * this.z * this.w * v.y + this.x * this.x * v.x + 2 * this.y * this.x * v.y + 2 * this.z * this.x * v.z - this.z * this.z * v.x - this.y * this.y * v.x,
-          2 * this.x * this.y * v.x + this.y * this.y * v.y + 2 * this.z * this.y * v.z + 2 * this.w * this.z * v.x - this.z * this.z * v.y + this.w * this.w * v.y - 2 * this.x * this.w * v.z - this.x * this.x * v.y,
-          2 * this.x * this.z * v.x + 2 * this.y * this.z * v.y + this.z * this.z * v.z - 2 * this.w * this.y * v.x - this.y * this.y * v.z + 2 * this.w * this.x * v.y - this.x * this.x * v.z + this.w * this.w * v.z
+        this.w * this.w * v.x + 2 * this.y * this.w * v.z - 2 * this.z * this.w * v.y + this.x * this.x * v.x + 2 * this.y * this.x * v.y + 2 * this.z * this.x * v.z - this.z * this.z * v.x - this.y * this.y * v.x,
+        2 * this.x * this.y * v.x + this.y * this.y * v.y + 2 * this.z * this.y * v.z + 2 * this.w * this.z * v.x - this.z * this.z * v.y + this.w * this.w * v.y - 2 * this.x * this.w * v.z - this.x * this.x * v.y,
+        2 * this.x * this.z * v.x + 2 * this.y * this.z * v.y + this.z * this.z * v.z - 2 * this.w * this.y * v.x - this.y * this.y * v.z + 2 * this.w * this.x * v.y - this.x * this.x * v.z + this.w * this.w * v.z
       );
     },
 
@@ -128,15 +128,15 @@ define( function( require ) {
       var zw = this.w * this.z * flip;
 
       return dot.Matrix3.dirtyFromPool().columnMajor(
-          1 - ( yy + zz ),
+        1 - ( yy + zz ),
         ( xy + zw ),
         ( xz - yw ),
         ( xy - zw ),
-          1 - ( xx + zz ),
+        1 - ( xx + zz ),
         ( yz + xw ),
         ( xz + yw ),
         ( yz - xw ),
-          1 - ( xx + yy )
+        1 - ( xx + yy )
       );
     }
   };
@@ -155,10 +155,10 @@ define( function( require ) {
     var d = sinRoll * cosPitch;
 
     return new Quaternion(
-        a * sinYaw + b * cosYaw,
-        d * cosYaw + c * sinYaw,
-        c * cosYaw - d * sinYaw,
-        a * cosYaw - b * sinYaw
+      a * sinYaw + b * cosYaw,
+      d * cosYaw + c * sinYaw,
+      c * cosYaw - d * sinYaw,
+      a * cosYaw - b * sinYaw
     );
   };
 
@@ -181,37 +181,37 @@ define( function( require ) {
     if ( trace >= 0 ) {
       sqt = Math.sqrt( trace + 1 );
       return new Quaternion(
-          ( v21 - v12 ) * 0.5 / sqt,
-          ( v02 - v20 ) * 0.5 / sqt,
-          ( v10 - v01 ) * 0.5 / sqt,
-          0.5 * sqt
+        ( v21 - v12 ) * 0.5 / sqt,
+        ( v02 - v20 ) * 0.5 / sqt,
+        ( v10 - v01 ) * 0.5 / sqt,
+        0.5 * sqt
       );
     }
     else if ( ( v00 > v11 ) && ( v00 > v22 ) ) {
       sqt = Math.sqrt( 1 + v00 - v11 - v22 );
       return new Quaternion(
-          sqt * 0.5,
-          ( v10 + v01 ) * 0.5 / sqt,
-          ( v02 + v20 ) * 0.5 / sqt,
-          ( v21 - v12 ) * 0.5 / sqt
+        sqt * 0.5,
+        ( v10 + v01 ) * 0.5 / sqt,
+        ( v02 + v20 ) * 0.5 / sqt,
+        ( v21 - v12 ) * 0.5 / sqt
       );
     }
     else if ( v11 > v22 ) {
       sqt = Math.sqrt( 1 + v11 - v00 - v22 );
       return new Quaternion(
-          ( v10 + v01 ) * 0.5 / sqt,
-          sqt * 0.5,
-          ( v21 + v12 ) * 0.5 / sqt,
-          ( v02 - v20 ) * 0.5 / sqt
+        ( v10 + v01 ) * 0.5 / sqt,
+        sqt * 0.5,
+        ( v21 + v12 ) * 0.5 / sqt,
+        ( v02 - v20 ) * 0.5 / sqt
       );
     }
     else {
       sqt = Math.sqrt( 1 + v22 - v00 - v11 );
       return new Quaternion(
-          ( v02 + v20 ) * 0.5 / sqt,
-          ( v21 + v12 ) * 0.5 / sqt,
-          sqt * 0.5,
-          ( v10 - v01 ) * 0.5 / sqt
+        ( v02 + v20 ) * 0.5 / sqt,
+        ( v21 + v12 ) * 0.5 / sqt,
+        sqt * 0.5,
+        ( v10 - v01 ) * 0.5 / sqt
       );
     }
   };
@@ -256,10 +256,10 @@ define( function( require ) {
     }
 
     return new Quaternion(
-        ratioA * a.x + ratioB * b.x,
-        ratioA * a.y + ratioB * b.y,
-        ratioA * a.z + ratioB * b.z,
-        ratioA * a.w + ratioB * b.w
+      ratioA * a.x + ratioB * b.x,
+      ratioA * a.y + ratioB * b.y,
+      ratioA * a.z + ratioB * b.z,
+      ratioA * a.w + ratioB * b.w
     );
   };
 

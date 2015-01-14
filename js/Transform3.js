@@ -30,8 +30,8 @@ define( function( require ) {
     constructor: Transform3,
 
     /*---------------------------------------------------------------------------*
-    * mutators
-    *----------------------------------------------------------------------------*/
+     * mutators
+     *----------------------------------------------------------------------------*/
 
     setMatrix: function( matrix ) {
       // TODO: performance: don't notify or handle instances where the matrix is detected to be the identity matrix?
@@ -51,7 +51,7 @@ define( function( require ) {
 
       // notify listeners before the change
       for ( i = 0; i < length; i++ ) {
-        this.listeners[i].before( matrix, oldMatrix );
+        this.listeners[ i ].before( matrix, oldMatrix );
       }
 
       this.matrix = matrix;
@@ -63,7 +63,7 @@ define( function( require ) {
 
       // notify listeners after the change
       for ( i = 0; i < length; i++ ) {
-        this.listeners[i].after( matrix, oldMatrix );
+        this.listeners[ i ].after( matrix, oldMatrix );
       }
     },
 
@@ -93,8 +93,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * getters
-    *----------------------------------------------------------------------------*/
+     * getters
+     *----------------------------------------------------------------------------*/
 
     // uses the same matrices, for use cases where the matrices are considered immutable
     copy: function() {
@@ -261,8 +261,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * listeners
-    *----------------------------------------------------------------------------*/
+     * listeners
+     *----------------------------------------------------------------------------*/
 
     // note: listener.before( matrix, oldMatrix ) will be called before the change, listener.after( matrix, oldMatrix ) will be called after
     addTransformListener: function( listener ) {

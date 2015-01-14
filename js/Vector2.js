@@ -333,7 +333,7 @@ define( function( require ) {
 
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
-    Immutable.prototype[mutableFunctionName] = function() {
+    Immutable.prototype[ mutableFunctionName ] = function() {
       throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector2" );
     };
   };

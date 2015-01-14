@@ -43,8 +43,8 @@ define( function( require ) {
     dimension: 2,
 
     /*---------------------------------------------------------------------------*
-    * Properties
-    *----------------------------------------------------------------------------*/
+     * Properties
+     *----------------------------------------------------------------------------*/
 
     getWidth: function() { return this.maxX - this.minX; },
     get width() { return this.getWidth(); },
@@ -206,8 +206,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Immutable operations
-    *----------------------------------------------------------------------------*/
+     * Immutable operations
+     *----------------------------------------------------------------------------*/
 
     // create a copy, or if bounds is passed in, set that bounds to our value
     copy: function( bounds ) {
@@ -322,8 +322,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Mutable operations
-    *----------------------------------------------------------------------------*/
+     * Mutable operations
+     *----------------------------------------------------------------------------*/
 
     // mutable core operations (all other mutations should be called through these)
     setMinMax: function( minX, minY, maxX, maxY ) {

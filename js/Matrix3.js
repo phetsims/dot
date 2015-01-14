@@ -19,13 +19,13 @@ define( function( require ) {
   require( 'DOT/Matrix4' );
 
   var identityFastArray = new FastArray( 9 );
-  identityFastArray[0] = 1;
-  identityFastArray[4] = 1;
-  identityFastArray[8] = 1;
+  identityFastArray[ 0 ] = 1;
+  identityFastArray[ 4 ] = 1;
+  identityFastArray[ 8 ] = 1;
 
   var createIdentityArray = FastArray === Array ?
                             function() {
-                              return [1, 0, 0, 0, 1, 0, 0, 0, 1];
+                              return [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
                             } :
                             function() {
                               return new FastArray( identityFastArray );
@@ -100,19 +100,19 @@ define( function( require ) {
     constructor: Matrix3,
 
     /*---------------------------------------------------------------------------*
-    * "Properties"
-    *----------------------------------------------------------------------------*/
+     * "Properties"
+     *----------------------------------------------------------------------------*/
 
     // convenience getters. inline usages of these when performance is critical? TODO: test performance of inlining these, with / without closure compiler
-    m00: function() { return this.entries[0]; },
-    m01: function() { return this.entries[3]; },
-    m02: function() { return this.entries[6]; },
-    m10: function() { return this.entries[1]; },
-    m11: function() { return this.entries[4]; },
-    m12: function() { return this.entries[7]; },
-    m20: function() { return this.entries[2]; },
-    m21: function() { return this.entries[5]; },
-    m22: function() { return this.entries[8]; },
+    m00: function() { return this.entries[ 0 ]; },
+    m01: function() { return this.entries[ 3 ]; },
+    m02: function() { return this.entries[ 6 ]; },
+    m10: function() { return this.entries[ 1 ]; },
+    m11: function() { return this.entries[ 4 ]; },
+    m12: function() { return this.entries[ 7 ]; },
+    m20: function() { return this.entries[ 2 ]; },
+    m21: function() { return this.entries[ 5 ]; },
+    m22: function() { return this.entries[ 8 ]; },
 
     isIdentity: function() {
       return this.type === Types.IDENTITY || this.equals( Matrix3.IDENTITY );
@@ -220,7 +220,7 @@ define( function( require ) {
 
       // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
       // NOTE: the toFixed calls are inlined for performance reasons
-      return 'matrix(' + this.entries[0].toFixed( 20 ) + ',' + this.entries[1].toFixed( 20 ) + ',' + this.entries[3].toFixed( 20 ) + ',' + this.entries[4].toFixed( 20 ) + ',' + this.entries[6].toFixed( 20 ) + ',' + this.entries[7].toFixed( 20 ) + ')';
+      return 'matrix(' + this.entries[ 0 ].toFixed( 20 ) + ',' + this.entries[ 1 ].toFixed( 20 ) + ',' + this.entries[ 3 ].toFixed( 20 ) + ',' + this.entries[ 4 ].toFixed( 20 ) + ',' + this.entries[ 6 ].toFixed( 20 ) + ',' + this.entries[ 7 ].toFixed( 20 ) + ')';
     },
     get cssTransform() { return this.getCSSTransform(); },
 
@@ -237,11 +237,11 @@ define( function( require ) {
         case Types.IDENTITY:
           return '';
         case Types.TRANSLATION_2D:
-          return 'translate(' + svgNumber( this.entries[6] ) + ',' + svgNumber( this.entries[7] ) + ')';
+          return 'translate(' + svgNumber( this.entries[ 6 ] ) + ',' + svgNumber( this.entries[ 7 ] ) + ')';
         case Types.SCALING:
-          return 'scale(' + svgNumber( this.entries[0] ) + ( this.entries[0] === this.entries[4] ? '' : ',' + svgNumber( this.entries[4] ) ) + ')';
+          return 'scale(' + svgNumber( this.entries[ 0 ] ) + ( this.entries[ 0 ] === this.entries[ 4 ] ? '' : ',' + svgNumber( this.entries[ 4 ] ) ) + ')';
         default:
-          return 'matrix(' + svgNumber( this.entries[0] ) + ',' + svgNumber( this.entries[1] ) + ',' + svgNumber( this.entries[3] ) + ',' + svgNumber( this.entries[4] ) + ',' + svgNumber( this.entries[6] ) + ',' + svgNumber( this.entries[7] ) + ')';
+          return 'matrix(' + svgNumber( this.entries[ 0 ] ) + ',' + svgNumber( this.entries[ 1 ] ) + ',' + svgNumber( this.entries[ 3 ] ) + ',' + svgNumber( this.entries[ 4 ] ) + ',' + svgNumber( this.entries[ 6 ] ) + ',' + svgNumber( this.entries[ 7 ] ) + ')';
       }
     },
     get svgTransform() { return this.getSVGTransform(); },
@@ -257,7 +257,7 @@ define( function( require ) {
         '-webkit-backface-visibility': 'hidden',
 
         '-webkit-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
-        '-moz-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
+        '-moz-transform':    transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
         '-ms-transform': transformCSS,
         '-o-transform': transformCSS,
         'transform': transformCSS,
@@ -282,8 +282,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Immutable operations (returns a new matrix)
-    *----------------------------------------------------------------------------*/
+     * Immutable operations (returns a new matrix)
+     *----------------------------------------------------------------------------*/
 
     copy: function() {
       return Matrix3.createFromPool(
@@ -296,17 +296,17 @@ define( function( require ) {
 
     plus: function( m ) {
       return Matrix3.createFromPool(
-          this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
-          this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
-          this.m20() + m.m20(), this.m21() + m.m21(), this.m22() + m.m22()
+        this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
+        this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
+        this.m20() + m.m20(), this.m21() + m.m21(), this.m22() + m.m22()
       );
     },
 
     minus: function( m ) {
       return Matrix3.createFromPool(
-          this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
-          this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
-          this.m20() - m.m20(), this.m21() - m.m21(), this.m22() - m.m22()
+        this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
+        this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
+        this.m20() - m.m20(), this.m21() - m.m21(), this.m22() - m.m22()
       );
     },
 
@@ -339,19 +339,19 @@ define( function( require ) {
             0, 0, 1, Types.TRANSLATION_2D );
         case Types.SCALING:
           return Matrix3.createFromPool(
-              1 / this.m00(), 0, 0,
+            1 / this.m00(), 0, 0,
             0, 1 / this.m11(), 0,
             0, 0, 1 / this.m22(), Types.SCALING );
         case Types.AFFINE:
           det = this.getDeterminant();
           if ( det !== 0 ) {
             return Matrix3.createFromPool(
-                ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
-                ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
-                ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
-                ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
-                ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
-                ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
+              ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
+              ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
+              ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
+              ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
+              ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
+              ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
               0, 0, 1, Types.AFFINE
             );
           }
@@ -363,15 +363,15 @@ define( function( require ) {
           det = this.getDeterminant();
           if ( det !== 0 ) {
             return Matrix3.createFromPool(
-                ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
-                ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
-                ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
-                ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
-                ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
-                ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
-                ( -this.m11() * this.m20() + this.m10() * this.m21() ) / det,
-                ( this.m01() * this.m20() - this.m00() * this.m21() ) / det,
-                ( -this.m01() * this.m10() + this.m00() * this.m11() ) / det,
+              ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
+              ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
+              ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
+              ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
+              ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
+              ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
+              ( -this.m11() * this.m20() + this.m10() * this.m21() ) / det,
+              ( this.m01() * this.m20() - this.m00() * this.m21() ) / det,
+              ( -this.m01() * this.m10() + this.m00() * this.m11() ) / det,
               Types.OTHER
             );
           }
@@ -402,7 +402,7 @@ define( function( require ) {
         else if ( this.type === Types.SCALING ) {
           // faster combination of scaling
           return Matrix3.createFromPool(
-              this.m00() * m.m00(), 0, 0,
+            this.m00() * m.m00(), 0, 0,
             0, this.m11() * m.m11(), 0,
             0, 0, 1, Types.SCALING );
         }
@@ -413,31 +413,31 @@ define( function( require ) {
 
         // affine case
         return Matrix3.createFromPool(
-            this.m00() * m.m00() + this.m01() * m.m10(),
-            this.m00() * m.m01() + this.m01() * m.m11(),
-            this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
-            this.m10() * m.m00() + this.m11() * m.m10(),
-            this.m10() * m.m01() + this.m11() * m.m11(),
-            this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
+          this.m00() * m.m00() + this.m01() * m.m10(),
+          this.m00() * m.m01() + this.m01() * m.m11(),
+          this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
+          this.m10() * m.m00() + this.m11() * m.m10(),
+          this.m10() * m.m01() + this.m11() * m.m11(),
+          this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
           0, 0, 1, Types.AFFINE );
       }
 
       // general case
       return Matrix3.createFromPool(
-          this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
-          this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
-          this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
-          this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
-          this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
-          this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
-          this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
-          this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
-          this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
+        this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
+        this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
+        this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
+        this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
+        this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
+        this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
+        this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
+        this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
+        this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
     },
 
     /*---------------------------------------------------------------------------*
-    * Immutable operations (returns new form of a parameter)
-    *----------------------------------------------------------------------------*/
+     * Immutable operations (returns new form of a parameter)
+     *----------------------------------------------------------------------------*/
 
     timesVector2: function( v ) {
       var x = this.m00() * v.x + this.m01() * v.y + this.m02();
@@ -466,20 +466,20 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Mutable operations (changes this matrix)
-    *----------------------------------------------------------------------------*/
+     * Mutable operations (changes this matrix)
+     *----------------------------------------------------------------------------*/
 
     // every mutable method goes through rowMajor
     rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
-      this.entries[0] = v00;
-      this.entries[1] = v10;
-      this.entries[2] = v20;
-      this.entries[3] = v01;
-      this.entries[4] = v11;
-      this.entries[5] = v21;
-      this.entries[6] = v02;
-      this.entries[7] = v12;
-      this.entries[8] = v22;
+      this.entries[ 0 ] = v00;
+      this.entries[ 1 ] = v10;
+      this.entries[ 2 ] = v20;
+      this.entries[ 3 ] = v01;
+      this.entries[ 4 ] = v11;
+      this.entries[ 5 ] = v21;
+      this.entries[ 6 ] = v02;
+      this.entries[ 7 ] = v12;
+      this.entries[ 8 ] = v22;
 
       // TODO: consider performance of the affine check here
       this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
@@ -507,17 +507,17 @@ define( function( require ) {
 
     add: function( m ) {
       return this.rowMajor(
-          this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
-          this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
-          this.m20() + m.m20(), this.m21() + m.m21(), this.m22() + m.m22()
+        this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
+        this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
+        this.m20() + m.m20(), this.m21() + m.m21(), this.m22() + m.m22()
       );
     },
 
     subtract: function( m ) {
       return this.rowMajor(
-          this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
-          this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
-          this.m20() - m.m20(), this.m21() - m.m21(), this.m22() - m.m22()
+        this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
+        this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
+        this.m20() - m.m20(), this.m21() - m.m21(), this.m22() - m.m22()
       );
     },
 
@@ -551,19 +551,19 @@ define( function( require ) {
             0, 0, 1, Types.TRANSLATION_2D );
         case Types.SCALING:
           return this.rowMajor(
-              1 / this.m00(), 0, 0,
+            1 / this.m00(), 0, 0,
             0, 1 / this.m11(), 0,
             0, 0, 1 / this.m22(), Types.SCALING );
         case Types.AFFINE:
           det = this.getDeterminant();
           if ( det !== 0 ) {
             return this.rowMajor(
-                ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
-                ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
-                ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
-                ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
-                ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
-                ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
+              ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
+              ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
+              ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
+              ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
+              ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
+              ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
               0, 0, 1, Types.AFFINE
             );
           }
@@ -575,15 +575,15 @@ define( function( require ) {
           det = this.getDeterminant();
           if ( det !== 0 ) {
             return this.rowMajor(
-                ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
-                ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
-                ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
-                ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
-                ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
-                ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
-                ( -this.m11() * this.m20() + this.m10() * this.m21() ) / det,
-                ( this.m01() * this.m20() - this.m00() * this.m21() ) / det,
-                ( -this.m01() * this.m10() + this.m00() * this.m11() ) / det,
+              ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
+              ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
+              ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
+              ( this.m12() * this.m20() - this.m10() * this.m22() ) / det,
+              ( -this.m02() * this.m20() + this.m00() * this.m22() ) / det,
+              ( this.m02() * this.m10() - this.m00() * this.m12() ) / det,
+              ( -this.m11() * this.m20() + this.m10() * this.m21() ) / det,
+              ( this.m01() * this.m20() - this.m00() * this.m21() ) / det,
+              ( -this.m01() * this.m10() + this.m00() * this.m11() ) / det,
               Types.OTHER
             );
           }
@@ -621,7 +621,7 @@ define( function( require ) {
         else if ( this.type === Types.SCALING ) {
           // faster combination of scaling
           return this.rowMajor(
-              this.m00() * m.m00(), 0, 0,
+            this.m00() * m.m00(), 0, 0,
             0, this.m11() * m.m11(), 0,
             0, 0, 1, Types.SCALING );
         }
@@ -632,26 +632,26 @@ define( function( require ) {
 
         // affine case
         return this.rowMajor(
-            this.m00() * m.m00() + this.m01() * m.m10(),
-            this.m00() * m.m01() + this.m01() * m.m11(),
-            this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
-            this.m10() * m.m00() + this.m11() * m.m10(),
-            this.m10() * m.m01() + this.m11() * m.m11(),
-            this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
+          this.m00() * m.m00() + this.m01() * m.m10(),
+          this.m00() * m.m01() + this.m01() * m.m11(),
+          this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
+          this.m10() * m.m00() + this.m11() * m.m10(),
+          this.m10() * m.m01() + this.m11() * m.m11(),
+          this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
           0, 0, 1, Types.AFFINE );
       }
 
       // general case
       return this.rowMajor(
-          this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
-          this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
-          this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
-          this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
-          this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
-          this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
-          this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
-          this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
-          this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
+        this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
+        this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
+        this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
+        this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
+        this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
+        this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
+        this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
+        this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
+        this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
     },
 
     setToIdentity: function() {
@@ -693,9 +693,9 @@ define( function( require ) {
       var C = 1 - c;
 
       return this.rowMajor(
-          axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s,
-          axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s,
-          axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c,
+        axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s,
+        axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s,
+        axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c,
         Types.OTHER );
     },
 
@@ -789,15 +789,15 @@ define( function( require ) {
         c3 = c1 * c2 * u.dot( v );
 
         return this.rowMajor(
-            -c1 * u.x * u.x - c2 * v.x * v.x + c3 * v.x * u.x + 1,
-            -c1 * u.x * u.y - c2 * v.x * v.y + c3 * v.x * u.y,
-            -c1 * u.x * u.z - c2 * v.x * v.z + c3 * v.x * u.z,
-            -c1 * u.y * u.x - c2 * v.y * v.x + c3 * v.y * u.x,
-            -c1 * u.y * u.y - c2 * v.y * v.y + c3 * v.y * u.y + 1,
-            -c1 * u.y * u.z - c2 * v.y * v.z + c3 * v.y * u.z,
-            -c1 * u.z * u.x - c2 * v.z * v.x + c3 * v.z * u.x,
-            -c1 * u.z * u.y - c2 * v.z * v.y + c3 * v.z * u.y,
-            -c1 * u.z * u.z - c2 * v.z * v.z + c3 * v.z * u.z + 1
+          -c1 * u.x * u.x - c2 * v.x * v.x + c3 * v.x * u.x + 1,
+          -c1 * u.x * u.y - c2 * v.x * v.y + c3 * v.x * u.y,
+          -c1 * u.x * u.z - c2 * v.x * v.z + c3 * v.x * u.z,
+          -c1 * u.y * u.x - c2 * v.y * v.x + c3 * v.y * u.x,
+          -c1 * u.y * u.y - c2 * v.y * v.y + c3 * v.y * u.y + 1,
+          -c1 * u.y * u.z - c2 * v.y * v.z + c3 * v.y * u.z,
+          -c1 * u.z * u.x - c2 * v.z * v.x + c3 * v.z * u.x,
+          -c1 * u.z * u.y - c2 * v.z * v.y + c3 * v.z * u.y,
+          -c1 * u.z * u.z - c2 * v.z * v.z + c3 * v.z * u.z + 1
         );
       }
       else {
@@ -811,52 +811,52 @@ define( function( require ) {
         hvyz = hvz * v.y;
 
         return this.rowMajor(
-            e + hvx * v.x, hvxy - v.z, hvxz + v.y,
-            hvxy + v.z, e + h * v.y * v.y, hvyz - v.x,
-            hvxz - v.y, hvyz + v.x, e + hvz * v.z
+          e + hvx * v.x, hvxy - v.z, hvxz + v.y,
+          hvxy + v.z, e + h * v.y * v.y, hvyz - v.x,
+          hvxz - v.y, hvyz + v.x, e + hvz * v.z
         );
       }
     },
 
     /*---------------------------------------------------------------------------*
-    * Mutable operations (changes the parameter)
-    *----------------------------------------------------------------------------*/
+     * Mutable operations (changes the parameter)
+     *----------------------------------------------------------------------------*/
 
     multiplyVector2: function( v ) {
       return v.setXY(
-          this.m00() * v.x + this.m01() * v.y + this.m02(),
-          this.m10() * v.x + this.m11() * v.y + this.m12() );
+        this.m00() * v.x + this.m01() * v.y + this.m02(),
+        this.m10() * v.x + this.m11() * v.y + this.m12() );
     },
 
     multiplyVector3: function( v ) {
       return v.setXYZ(
-          this.m00() * v.x + this.m01() * v.y + this.m02() * v.z,
-          this.m10() * v.x + this.m11() * v.y + this.m12() * v.z,
-          this.m20() * v.x + this.m21() * v.y + this.m22() * v.z );
+        this.m00() * v.x + this.m01() * v.y + this.m02() * v.z,
+        this.m10() * v.x + this.m11() * v.y + this.m12() * v.z,
+        this.m20() * v.x + this.m21() * v.y + this.m22() * v.z );
     },
 
     multiplyTransposeVector2: function( v ) {
       return v.setXY(
-          this.m00() * v.x + this.m10() * v.y,
-          this.m01() * v.x + this.m11() * v.y );
+        this.m00() * v.x + this.m10() * v.y,
+        this.m01() * v.x + this.m11() * v.y );
     },
 
     multiplyRelativeVector2: function( v ) {
       return v.setXY(
-          this.m00() * v.x + this.m01() * v.y,
-          this.m10() * v.y + this.m11() * v.y );
+        this.m00() * v.x + this.m01() * v.y,
+        this.m10() * v.y + this.m11() * v.y );
     },
 
     // sets the transform of a Canvas 2D rendering context to the affine part of this matrix
     canvasSetTransform: function( context ) {
       context.setTransform(
         // inlined array entries
-        this.entries[0],
-        this.entries[1],
-        this.entries[3],
-        this.entries[4],
-        this.entries[6],
-        this.entries[7]
+        this.entries[ 0 ],
+        this.entries[ 1 ],
+        this.entries[ 3 ],
+        this.entries[ 4 ],
+        this.entries[ 6 ],
+        this.entries[ 7 ]
       );
     },
 
@@ -865,12 +865,12 @@ define( function( require ) {
       if ( this.type !== Types.IDENTITY ) {
         context.transform(
           // inlined array entries
-          this.entries[0],
-          this.entries[1],
-          this.entries[3],
-          this.entries[4],
-          this.entries[6],
-          this.entries[7]
+          this.entries[ 0 ],
+          this.entries[ 1 ],
+          this.entries[ 3 ],
+          this.entries[ 4 ],
+          this.entries[ 6 ],
+          this.entries[ 7 ]
         );
       }
     }

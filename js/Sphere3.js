@@ -106,8 +106,8 @@ define( function( require ) {
       var centerToRayDistSq = centerToRay.magnitudeSquared();
       var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - this.radius * this.radius );
       if ( det < epsilon ) {
-          // ray misses sphere entirely
-          return [];
+        // ray misses sphere entirely
+        return [];
       }
 
       var base = raydir.dot( this.center ) - raydir.dot( pos );
@@ -120,8 +120,8 @@ define( function( require ) {
       var tb = base + sqt;
 
       if ( tb < epsilon ) {
-          // sphere is behind ray, so don't return an intersection
-          return [];
+        // sphere is behind ray, so don't return an intersection
+        return [];
       }
 
       var hitPositionB = ray.pointAtDistance( tb );
@@ -143,16 +143,16 @@ define( function( require ) {
         fromOutside: true
       };
       if ( ta < epsilon ) {
-          // we are inside the sphere
-          // in => out
+        // we are inside the sphere
+        // in => out
 
-          return [resultB, resultA];
+        return [ resultB, resultA ];
       }
       else {
-          // two possible hits
+        // two possible hits
 
-          // close hit, we have out => in
-          return [resultA, resultB];
+        // close hit, we have out => in
+        return [ resultA, resultB ];
       }
     }
   };

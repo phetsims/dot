@@ -35,32 +35,32 @@ define( function( require ) {
       // Compute 2-norm of k-th column without under/overflow.
       var nrm = 0;
       for ( i = k; i < m; i++ ) {
-        nrm = dot.Matrix.hypot( nrm, QR[this.matrix.index( i, k )] );
+        nrm = dot.Matrix.hypot( nrm, QR[ this.matrix.index( i, k ) ] );
       }
 
       if ( nrm !== 0.0 ) {
         // Form k-th Householder vector.
-        if ( QR[this.matrix.index( k, k )] < 0 ) {
+        if ( QR[ this.matrix.index( k, k ) ] < 0 ) {
           nrm = -nrm;
         }
         for ( i = k; i < m; i++ ) {
-          QR[this.matrix.index( i, k )] /= nrm;
+          QR[ this.matrix.index( i, k ) ] /= nrm;
         }
-        QR[this.matrix.index( k, k )] += 1.0;
+        QR[ this.matrix.index( k, k ) ] += 1.0;
 
         // Apply transformation to remaining columns.
         for ( j = k + 1; j < n; j++ ) {
           var s = 0.0;
           for ( i = k; i < m; i++ ) {
-            s += QR[this.matrix.index( i, k )] * QR[this.matrix.index( i, j )];
+            s += QR[ this.matrix.index( i, k ) ] * QR[ this.matrix.index( i, j ) ];
           }
-          s = -s / QR[this.matrix.index( k, k )];
+          s = -s / QR[ this.matrix.index( k, k ) ];
           for ( i = k; i < m; i++ ) {
-            QR[this.matrix.index( i, j )] += s * QR[this.matrix.index( i, k )];
+            QR[ this.matrix.index( i, j ) ] += s * QR[ this.matrix.index( i, k ) ];
           }
         }
       }
-      this.Rdiag[k] = -nrm;
+      this.Rdiag[ k ] = -nrm;
     }
   };
   var QRDecomposition = dot.QRDecomposition;
@@ -70,7 +70,7 @@ define( function( require ) {
 
     isFullRank: function() {
       for ( var j = 0; j < this.n; j++ ) {
-        if ( this.Rdiag[j] === 0 ) {
+        if ( this.Rdiag[ j ] === 0 ) {
           return false;
         }
       }
@@ -82,10 +82,10 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i >= j ) {
-            result.entries[result.index( i, j )] = this.QR[this.matrix.index( i, j )];
+            result.entries[ result.index( i, j ) ] = this.QR[ this.matrix.index( i, j ) ];
           }
           else {
-            result.entries[result.index( i, j )] = 0.0;
+            result.entries[ result.index( i, j ) ] = 0.0;
           }
         }
       }
@@ -97,13 +97,13 @@ define( function( require ) {
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i < j ) {
-            result.entries[result.index( i, j )] = this.QR[this.matrix.index( i, j )];
+            result.entries[ result.index( i, j ) ] = this.QR[ this.matrix.index( i, j ) ];
           }
           else if ( i === j ) {
-            result.entries[result.index( i, j )] = this.Rdiag[i];
+            result.entries[ result.index( i, j ) ] = this.Rdiag[ i ];
           }
           else {
-            result.entries[result.index( i, j )] = 0.0;
+            result.entries[ result.index( i, j ) ] = 0.0;
           }
         }
       }
@@ -115,18 +115,18 @@ define( function( require ) {
       var result = new dot.Matrix( this.m, this.n );
       for ( k = this.n - 1; k >= 0; k-- ) {
         for ( i = 0; i < this.m; i++ ) {
-          result.entries[result.index( i, k )] = 0.0;
+          result.entries[ result.index( i, k ) ] = 0.0;
         }
-        result.entries[result.index( k, k )] = 1.0;
+        result.entries[ result.index( k, k ) ] = 1.0;
         for ( j = k; j < this.n; j++ ) {
-          if ( this.QR[this.matrix.index( k, k )] !== 0 ) {
+          if ( this.QR[ this.matrix.index( k, k ) ] !== 0 ) {
             var s = 0.0;
             for ( i = k; i < this.m; i++ ) {
-              s += this.QR[this.matrix.index( i, k )] * result.entries[result.index( i, j )];
+              s += this.QR[ this.matrix.index( i, k ) ] * result.entries[ result.index( i, j ) ];
             }
-            s = -s / this.QR[this.matrix.index( k, k )];
+            s = -s / this.QR[ this.matrix.index( k, k ) ];
             for ( i = k; i < this.m; i++ ) {
-              result.entries[result.index( i, j )] += s * this.QR[this.matrix.index( i, k )];
+              result.entries[ result.index( i, j ) ] += s * this.QR[ this.matrix.index( i, k ) ];
             }
           }
         }
@@ -153,11 +153,11 @@ define( function( require ) {
         for ( j = 0; j < nx; j++ ) {
           var s = 0.0;
           for ( i = k; i < this.m; i++ ) {
-            s += this.QR[this.matrix.index( i, k )] * X[matrix.index( i, j )];
+            s += this.QR[ this.matrix.index( i, k ) ] * X[ matrix.index( i, j ) ];
           }
-          s = -s / this.QR[this.matrix.index( k, k )];
+          s = -s / this.QR[ this.matrix.index( k, k ) ];
           for ( i = k; i < this.m; i++ ) {
-            X[matrix.index( i, j )] += s * this.QR[this.matrix.index( i, k )];
+            X[ matrix.index( i, j ) ] += s * this.QR[ this.matrix.index( i, k ) ];
           }
         }
       }
@@ -165,11 +165,11 @@ define( function( require ) {
       // Solve R*X = Y;
       for ( k = this.n - 1; k >= 0; k-- ) {
         for ( j = 0; j < nx; j++ ) {
-          X[matrix.index( k, j )] /= this.Rdiag[k];
+          X[ matrix.index( k, j ) ] /= this.Rdiag[ k ];
         }
         for ( i = 0; i < k; i++ ) {
           for ( j = 0; j < nx; j++ ) {
-            X[matrix.index( i, j )] -= X[matrix.index( k, j )] * this.QR[this.matrix.index( i, k )];
+            X[ matrix.index( i, j ) ] -= X[ matrix.index( k, j ) ] * this.QR[ this.matrix.index( i, k ) ];
           }
         }
       }

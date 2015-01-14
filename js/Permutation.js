@@ -24,7 +24,7 @@ define( function( require ) {
     assert && assert( size >= 0 );
     var indices = new Array( size );
     for ( var i = 0; i < size; i++ ) {
-      indices[i] = i;
+      indices[ i ] = i;
     }
     return new Permutation( indices );
   };
@@ -51,7 +51,7 @@ define( function( require ) {
     }
     else {
       for ( var i = 0; i < array.length; i++ ) {
-        var element = array[i];
+        var element = array[ i ];
 
         // remove the element from the array
         var nextArray = array.slice( 0 );
@@ -86,7 +86,7 @@ define( function( require ) {
         // permute it as an array
         var result = new Array( arrayOrInt.length );
         for ( var i = 0; i < arrayOrInt.length; i++ ) {
-          result[i] = arrayOrInt[ this.indices[i] ];
+          result[ i ] = arrayOrInt[ this.indices[ i ] ];
         }
         return result;
       }
@@ -100,7 +100,7 @@ define( function( require ) {
     inverted: function() {
       var newPermutation = new Array( this.size() );
       for ( var i = 0; i < this.size(); i++ ) {
-        newPermutation[this.indices[i]] = i;
+        newPermutation[ this.indices[ i ] ] = i;
       }
       return new Permutation( newPermutation );
     },
@@ -113,7 +113,7 @@ define( function( require ) {
         var newPermutation = oldIndices.slice( 0 );
 
         for ( var i = 0; i < indices.length; i++ ) {
-          newPermutation[indices[i]] = oldIndices[integers[i]];
+          newPermutation[ indices[ i ] ] = oldIndices[ integers[ i ] ];
         }
         result.push( new Permutation( newPermutation ) );
       } );

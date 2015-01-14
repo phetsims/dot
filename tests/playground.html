@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
 
@@ -16,24 +16,25 @@
 
 </head>
 <body>
-  <script>
-    window.assertions.enableAssert();
-    window.assertions.enableAssertSlow();
+<script>
+  window.assertions.enableAssert();
+  window.assertions.enableAssertSlow();
 
-    // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
-    function check() {
-      if ( window.loadedDotConfig ) {
-        require( [ 'main', 'PHET_CORE/main' ], function( dot, core ) {
-          window.dot = dot;
-          window.core = core;
+  // we need to wait until our config file is loaded before our require statement. apparently this was not guaranteed
+  function check() {
+    if ( window.loadedDotConfig ) {
+      require( [ 'main', 'PHET_CORE/main' ], function( dot, core ) {
+        window.dot = dot;
+        window.core = core;
 
-          console.log( 'loaded' );
-        } );
-      } else {
-        setTimeout( check, 4 );
-      }
+        console.log( 'loaded' );
+      } );
     }
-    setTimeout( check, 4 );
-  </script>
+    else {
+      setTimeout( check, 4 );
+    }
+  }
+  setTimeout( check, 4 );
+</script>
 </body>
 </html>

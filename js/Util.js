@@ -57,7 +57,7 @@ define( function( require ) {
       }
       var result = new Array( b - a + 1 );
       for ( var i = a; i <= b; i++ ) {
-        result[i - a] = i;
+        result[ i - a ] = i;
       }
       return result;
     },
@@ -93,8 +93,8 @@ define( function( require ) {
       var b = p3.x * p4.y - p3.y * p4.x;
 
       return new dot.Vector2(
-          ( a * x34 - x12 * b ) / denom,
-          ( a * y34 - y12 * b ) / denom
+        ( a * x34 - x12 * b ) / denom,
+        ( a * y34 - y12 * b ) / denom
       );
     },
 
@@ -177,8 +177,8 @@ define( function( require ) {
       // TODO: how to handle if discriminant is 0? give unique root or double it?
       // TODO: probably just use Complex for the future
       return [
-          ( -b - sqrt ) / ( 2 * a ),
-          ( -b + sqrt ) / ( 2 * a )
+        ( -b - sqrt ) / ( 2 * a ),
+        ( -b + sqrt ) / ( 2 * a )
       ];
     },
 
@@ -224,9 +224,9 @@ define( function( require ) {
         qX = Math.acos( r / Math.sqrt( qX ) );
         var rr = 2 * Math.sqrt( -q );
         return [
-            -b3 + rr * Math.cos( qX / 3 ),
-            -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
-            -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
+          -b3 + rr * Math.cos( qX / 3 ),
+          -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
+          -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
         ];
       }
     },

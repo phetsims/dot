@@ -32,8 +32,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Overriding the core mutable methods (any mutable operation should call one of these)
-    *----------------------------------------------------------------------------*/
+     * Overriding the core mutable methods (any mutable operation should call one of these)
+     *----------------------------------------------------------------------------*/
     setXY: function( x, y ) {
       if ( this.x !== x || this.y !== y ) {
         this._oldValue.x = this.x;

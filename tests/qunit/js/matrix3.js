@@ -272,8 +272,8 @@
     equal( count, currentCount, 'change guard on reset' );
 
     currentCount = count;
-    b.entries[0] = 7;
+    b.entries[ 0 ] = 7;
     equal( count, currentCount, 'no notifications on manual set' );
-    b.entries[0] = 1;
+    b.entries[ 0 ] = 1;
   } );
 })();

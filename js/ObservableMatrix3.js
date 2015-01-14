@@ -33,46 +33,46 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Overriding the core mutable methods (any mutable operation should call one of these)
-    *----------------------------------------------------------------------------*/
+     * Overriding the core mutable methods (any mutable operation should call one of these)
+     *----------------------------------------------------------------------------*/
     // every mutable method goes through rowMajor
     rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
       var skip = this._skipChecks;
       var modified = skip ||
-                     v00 !== this.entries[0] ||
-                     v10 !== this.entries[1] ||
-                     v20 !== this.entries[2] ||
-                     v01 !== this.entries[3] ||
-                     v11 !== this.entries[4] ||
-                     v21 !== this.entries[5] ||
-                     v02 !== this.entries[6] ||
-                     v12 !== this.entries[7] ||
-                     v22 !== this.entries[8] ||
+                     v00 !== this.entries[ 0 ] ||
+                     v10 !== this.entries[ 1 ] ||
+                     v20 !== this.entries[ 2 ] ||
+                     v01 !== this.entries[ 3 ] ||
+                     v11 !== this.entries[ 4 ] ||
+                     v21 !== this.entries[ 5 ] ||
+                     v02 !== this.entries[ 6 ] ||
+                     v12 !== this.entries[ 7 ] ||
+                     v22 !== this.entries[ 8 ] ||
                      type !== this.type;
       if ( modified ) {
 
         if ( !skip && this._oldValue ) {
-          this._oldValue.entries[0] = this.entries[0];
-          this._oldValue.entries[1] = this.entries[1];
-          this._oldValue.entries[2] = this.entries[2];
-          this._oldValue.entries[3] = this.entries[3];
-          this._oldValue.entries[4] = this.entries[4];
-          this._oldValue.entries[5] = this.entries[5];
-          this._oldValue.entries[6] = this.entries[6];
-          this._oldValue.entries[7] = this.entries[7];
-          this._oldValue.entries[8] = this.entries[8];
+          this._oldValue.entries[ 0 ] = this.entries[ 0 ];
+          this._oldValue.entries[ 1 ] = this.entries[ 1 ];
+          this._oldValue.entries[ 2 ] = this.entries[ 2 ];
+          this._oldValue.entries[ 3 ] = this.entries[ 3 ];
+          this._oldValue.entries[ 4 ] = this.entries[ 4 ];
+          this._oldValue.entries[ 5 ] = this.entries[ 5 ];
+          this._oldValue.entries[ 6 ] = this.entries[ 6 ];
+          this._oldValue.entries[ 7 ] = this.entries[ 7 ];
+          this._oldValue.entries[ 8 ] = this.entries[ 8 ];
           this._oldValue.type = this.type;
         }
 
-        this.entries[0] = v00;
-        this.entries[1] = v10;
-        this.entries[2] = v20;
-        this.entries[3] = v01;
-        this.entries[4] = v11;
-        this.entries[5] = v21;
-        this.entries[6] = v02;
-        this.entries[7] = v12;
-        this.entries[8] = v22;
+        this.entries[ 0 ] = v00;
+        this.entries[ 1 ] = v10;
+        this.entries[ 2 ] = v20;
+        this.entries[ 3 ] = v01;
+        this.entries[ 4 ] = v11;
+        this.entries[ 5 ] = v21;
+        this.entries[ 6 ] = v02;
+        this.entries[ 7 ] = v12;
+        this.entries[ 8 ] = v22;
 
         // TODO: consider performance of the affine check here
         this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? dot.Matrix3.Types.AFFINE : dot.Matrix3.Types.OTHER ) : type;
