@@ -46,12 +46,12 @@ define( function( require ) {
         assert && assert( filler.length === size );
 
         for ( i = 0; i < size; i++ ) {
-          this.entries[i] = filler[i];
+          this.entries[ i ] = filler[ i ];
         }
       }
       else {
         for ( i = 0; i < size; i++ ) {
-          this.entries[i] = filler;
+          this.entries[ i ] = filler;
         }
       }
     }
@@ -81,7 +81,7 @@ define( function( require ) {
     copy: function() {
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.size; i++ ) {
-        result.entries[i] = this.entries[i];
+        result.entries[ i ] = this.entries[ i ];
       }
       return result;
     },
@@ -108,18 +108,18 @@ define( function( require ) {
     },
 
     get: function( i, j ) {
-      return this.entries[this.index( i, j )];
+      return this.entries[ this.index( i, j ) ];
     },
 
     set: function( i, j, s ) {
-      this.entries[this.index( i, j )] = s;
+      this.entries[ this.index( i, j ) ] = s;
     },
 
     getMatrix: function( i0, i1, j0, j1 ) {
       var result = new Matrix( i1 - i0 + 1, j1 - j0 + 1 );
       for ( var i = i0; i <= i1; i++ ) {
         for ( var j = j0; j <= j1; j++ ) {
-          result.entries[result.index( i - i0, j - j0 )] = this.entries[this.index( i, j )];
+          result.entries[ result.index( i - i0, j - j0 ) ] = this.entries[ this.index( i, j ) ];
         }
       }
       return result;
@@ -130,7 +130,7 @@ define( function( require ) {
       var result = new Matrix( r.length, j1 - j0 + 1 );
       for ( var i = 0; i < r.length; i++ ) {
         for ( var j = j0; j <= j1; j++ ) {
-          result.entries[result.index( i, j - j0 )] = this.entries[this.index( r[i], j )];
+          result.entries[ result.index( i, j - j0 ) ] = this.entries[ this.index( r[ i ], j ) ];
         }
       }
       return result;
@@ -143,7 +143,7 @@ define( function( require ) {
       assert && assert( result.n === this.m );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
-          result.entries[result.index( j, i )] = this.entries[this.index( i, j )];
+          result.entries[ result.index( j, i ) ] = this.entries[ this.index( i, j ) ];
         }
       }
       return result;
@@ -191,7 +191,7 @@ define( function( require ) {
       var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
-          result.entries[result.index( i, j )] = -this.entries[ this.index( i, j ) ];
+          result.entries[ result.index( i, j ) ] = -this.entries[ this.index( i, j ) ];
         }
       }
       return result;
@@ -203,7 +203,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = result.index( i, j );
-          result.entries[index] = this.entries[index] + matrix.entries[index];
+          result.entries[ index ] = this.entries[ index ] + matrix.entries[ index ];
         }
       }
       return result;
@@ -215,7 +215,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = result.index( i, j );
-          this.entries[index] = this.entries[index] + matrix.entries[index];
+          this.entries[ index ] = this.entries[ index ] + matrix.entries[ index ];
         }
       }
       return this;
@@ -227,7 +227,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          result.entries[index] = this.entries[index] - matrix.entries[index];
+          result.entries[ index ] = this.entries[ index ] - matrix.entries[ index ];
         }
       }
       return result;
@@ -238,7 +238,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          this.entries[index] = this.entries[index] - matrix.entries[index];
+          this.entries[ index ] = this.entries[ index ] - matrix.entries[ index ];
         }
       }
       return this;
@@ -250,7 +250,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = result.index( i, j );
-          result.entries[index] = this.entries[index] * matrix.entries[index];
+          result.entries[ index ] = this.entries[ index ] * matrix.entries[ index ];
         }
       }
       return result;
@@ -261,7 +261,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          this.entries[index] = this.entries[index] * matrix.entries[index];
+          this.entries[ index ] = this.entries[ index ] * matrix.entries[ index ];
         }
       }
       return this;
@@ -273,7 +273,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          result.entries[index] = this.entries[index] / matrix.entries[index];
+          result.entries[ index ] = this.entries[ index ] / matrix.entries[ index ];
         }
       }
       return result;
@@ -284,7 +284,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          this.entries[index] = this.entries[index] / matrix.entries[index];
+          this.entries[ index ] = this.entries[ index ] / matrix.entries[ index ];
         }
       }
       return this;
@@ -296,7 +296,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          result.entries[index] = matrix.entries[index] / this.entries[index];
+          result.entries[ index ] = matrix.entries[ index ] / this.entries[ index ];
         }
       }
       return result;
@@ -307,7 +307,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          this.entries[index] = matrix.entries[index] / this.entries[index];
+          this.entries[ index ] = matrix.entries[ index ] / this.entries[ index ];
         }
       }
       return this;
@@ -326,14 +326,14 @@ define( function( require ) {
         var matrixcolj = new Float32Array( this.n );
         for ( j = 0; j < matrix.n; j++ ) {
           for ( k = 0; k < this.n; k++ ) {
-            matrixcolj[k] = matrix.entries[ matrix.index( k, j ) ];
+            matrixcolj[ k ] = matrix.entries[ matrix.index( k, j ) ];
           }
           for ( i = 0; i < this.m; i++ ) {
             s = 0;
             for ( k = 0; k < this.n; k++ ) {
-              s += this.entries[this.index( i, k )] * matrixcolj[k];
+              s += this.entries[ this.index( i, k ) ] * matrixcolj[ k ];
             }
-            result.entries[result.index( i, j )] = s;
+            result.entries[ result.index( i, j ) ] = s;
           }
         }
         return result;
@@ -343,7 +343,7 @@ define( function( require ) {
         result = new Matrix( this.m, this.n );
         for ( i = 0; i < this.m; i++ ) {
           for ( j = 0; j < this.n; j++ ) {
-            result.entries[result.index( i, j )] = s * this.entries[this.index( i, j )];
+            result.entries[ result.index( i, j ) ] = s * this.entries[ this.index( i, j ) ];
           }
         }
         return result;
@@ -354,7 +354,7 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           var index = this.index( i, j );
-          this.entries[index] = s * this.entries[index];
+          this.entries[ index ] = s * this.entries[ index ];
         }
       }
       return this;
@@ -438,10 +438,10 @@ define( function( require ) {
       assert && assert( this.n === n );
 
       for ( var i = 0; i < n; i++ ) {
-        var vector = vectors[i];
-        this.entries[i] = vector.x;
-        this.entries[i + n] = vector.y;
-        this.entries[i + 2 * n] = vector.z;
+        var vector = vectors[ i ];
+        this.entries[ i ] = vector.x;
+        this.entries[ i + n ] = vector.y;
+        this.entries[ i + 2 * n ] = vector.z;
       }
 
       return this;
@@ -454,22 +454,22 @@ define( function( require ) {
     var result = new Matrix( m, n );
     for ( var i = 0; i < m; i++ ) {
       for ( var j = 0; j < n; j++ ) {
-        result.entries[result.index( i, j )] = (i === j ? 1.0 : 0.0);
+        result.entries[ result.index( i, j ) ] = (i === j ? 1.0 : 0.0);
       }
     }
     return result;
   };
 
   Matrix.rowVector2 = function( vector ) {
-    return new Matrix( 1, 2, [vector.x, vector.y] );
+    return new Matrix( 1, 2, [ vector.x, vector.y ] );
   };
 
   Matrix.rowVector3 = function( vector ) {
-    return new Matrix( 1, 3, [vector.x, vector.y, vector.z] );
+    return new Matrix( 1, 3, [ vector.x, vector.y, vector.z ] );
   };
 
   Matrix.rowVector4 = function( vector ) {
-    return new Matrix( 1, 4, [vector.x, vector.y, vector.z, vector.w] );
+    return new Matrix( 1, 4, [ vector.x, vector.y, vector.z, vector.w ] );
   };
 
   Matrix.rowVector = function( vector ) {
@@ -488,15 +488,15 @@ define( function( require ) {
   };
 
   Matrix.columnVector2 = function( vector ) {
-    return new Matrix( 2, 1, [vector.x, vector.y] );
+    return new Matrix( 2, 1, [ vector.x, vector.y ] );
   };
 
   Matrix.columnVector3 = function( vector ) {
-    return new Matrix( 3, 1, [vector.x, vector.y, vector.z] );
+    return new Matrix( 3, 1, [ vector.x, vector.y, vector.z ] );
   };
 
   Matrix.columnVector4 = function( vector ) {
-    return new Matrix( 4, 1, [vector.x, vector.y, vector.z, vector.w] );
+    return new Matrix( 4, 1, [ vector.x, vector.y, vector.z, vector.w ] );
   };
 
   Matrix.columnVector = function( vector ) {
@@ -524,9 +524,9 @@ define( function( require ) {
     var data = new Float32Array( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
-      var vector = vectors[i];
-      data[i] = vector.x;
-      data[i + n] = vector.y;
+      var vector = vectors[ i ];
+      data[ i ] = vector.x;
+      data[ i + n ] = vector.y;
     }
 
     return new Matrix( dimension, n, data, true );
@@ -538,10 +538,10 @@ define( function( require ) {
     var data = new Float32Array( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
-      var vector = vectors[i];
-      data[i] = vector.x;
-      data[i + n] = vector.y;
-      data[i + 2 * n] = vector.z;
+      var vector = vectors[ i ];
+      data[ i ] = vector.x;
+      data[ i + n ] = vector.y;
+      data[ i + 2 * n ] = vector.z;
     }
 
     return new Matrix( dimension, n, data, true );
@@ -553,11 +553,11 @@ define( function( require ) {
     var data = new Float32Array( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
-      var vector = vectors[i];
-      data[i] = vector.x;
-      data[i + n] = vector.y;
-      data[i + 2 * n] = vector.z;
-      data[i + 3 * n] = vector.w;
+      var vector = vectors[ i ];
+      data[ i ] = vector.x;
+      data[ i + n ] = vector.y;
+      data[ i + 2 * n ] = vector.z;
+      data[ i + 3 * n ] = vector.w;
     }
 
     return new Matrix( dimension, n, data, true );

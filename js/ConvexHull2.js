@@ -52,7 +52,7 @@ define( function( require ) {
       points.splice( _.indexOf( points, p ), 1 );
 
       // our result array
-      var result = [p];
+      var result = [ p ];
 
       _.each( points, function( point ) {
         // ignore points equal to our starting point
@@ -62,7 +62,7 @@ define( function( require ) {
           if ( result.length < 2 ) {
             return false;
           }
-          var cross = ccw( result[result.length - 2], result[result.length - 1], point );
+          var cross = ccw( result[ result.length - 2 ], result[ result.length - 1 ], point );
           return includeCollinear ? ( cross < 0 ) : ( cross <= 0 );
         }
 

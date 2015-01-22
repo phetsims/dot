@@ -29,7 +29,7 @@ define( function( require ) {
     var n = this.n;
     this.piv = new Uint32Array( m );
     for ( i = 0; i < m; i++ ) {
-      this.piv[i] = i;
+      this.piv[ i ] = i;
     }
     this.pivsign = 1;
     var LUcolj = new Float32Array( m );
@@ -40,7 +40,7 @@ define( function( require ) {
 
       // Make a copy of the j-th column to localize references.
       for ( i = 0; i < m; i++ ) {
-        LUcolj[i] = LU[matrix.index( i, j )];
+        LUcolj[ i ] = LU[ matrix.index( i, j ) ];
       }
 
       // Apply previous transformations.
@@ -51,18 +51,18 @@ define( function( require ) {
         var s = 0.0;
         for ( k = 0; k < kmax; k++ ) {
           var ik = matrix.index( i, k );
-          s += LU[ik] * LUcolj[k];
+          s += LU[ ik ] * LUcolj[ k ];
         }
 
-        LUcolj[i] -= s;
-        LU[matrix.index( i, j )] = LUcolj[i];
+        LUcolj[ i ] -= s;
+        LU[ matrix.index( i, j ) ] = LUcolj[ i ];
       }
 
       // Find pivot and exchange if necessary.
 
       var p = j;
       for ( i = j + 1; i < m; i++ ) {
-        if ( Math.abs( LUcolj[i] ) > Math.abs( LUcolj[p] ) ) {
+        if ( Math.abs( LUcolj[ i ] ) > Math.abs( LUcolj[ p ] ) ) {
           p = i;
         }
       }
@@ -70,21 +70,21 @@ define( function( require ) {
         for ( k = 0; k < n; k++ ) {
           var pk = matrix.index( p, k );
           var jk = matrix.index( j, k );
-          var t = LU[pk];
-          LU[pk] = LU[jk];
-          LU[jk] = t;
+          var t = LU[ pk ];
+          LU[ pk ] = LU[ jk ];
+          LU[ jk ] = t;
         }
-        k = this.piv[p];
-        this.piv[p] = this.piv[j];
-        this.piv[j] = k;
+        k = this.piv[ p ];
+        this.piv[ p ] = this.piv[ j ];
+        this.piv[ j ] = k;
         this.pivsign = -this.pivsign;
       }
 
       // Compute multipliers.
 
-      if ( j < m && LU[this.matrix.index( j, j )] !== 0.0 ) {
+      if ( j < m && LU[ this.matrix.index( j, j ) ] !== 0.0 ) {
         for ( i = j + 1; i < m; i++ ) {
-          LU[matrix.index( i, j )] /= LU[matrix.index( j, j )];
+          LU[ matrix.index( i, j ) ] /= LU[ matrix.index( j, j ) ];
         }
       }
     }
@@ -97,7 +97,7 @@ define( function( require ) {
     isNonsingular: function() {
       for ( var j = 0; j < this.n; j++ ) {
         var index = this.matrix.index( j, j );
-        if ( this.LU[index] === 0 ) {
+        if ( this.LU[ index ] === 0 ) {
           return false;
         }
       }
@@ -109,13 +109,13 @@ define( function( require ) {
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i > j ) {
-            result.entries[result.index( i, j )] = this.LU[this.matrix.index( i, j )];
+            result.entries[ result.index( i, j ) ] = this.LU[ this.matrix.index( i, j ) ];
           }
           else if ( i === j ) {
-            result.entries[result.index( i, j )] = 1.0;
+            result.entries[ result.index( i, j ) ] = 1.0;
           }
           else {
-            result.entries[result.index( i, j )] = 0.0;
+            result.entries[ result.index( i, j ) ] = 0.0;
           }
         }
       }
@@ -127,10 +127,10 @@ define( function( require ) {
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
           if ( i <= j ) {
-            result.entries[result.index( i, j )] = this.LU[this.matrix.index( i, j )];
+            result.entries[ result.index( i, j ) ] = this.LU[ this.matrix.index( i, j ) ];
           }
           else {
-            result.entries[result.index( i, j )] = 0.0;
+            result.entries[ result.index( i, j ) ] = 0.0;
           }
         }
       }
@@ -140,7 +140,7 @@ define( function( require ) {
     getPivot: function() {
       var p = new Uint32Array( this.m );
       for ( var i = 0; i < this.m; i++ ) {
-        p[i] = this.piv[i];
+        p[ i ] = this.piv[ i ];
       }
       return p;
     },
@@ -148,7 +148,7 @@ define( function( require ) {
     getDoublePivot: function() {
       var vals = new Float32Array( this.m );
       for ( var i = 0; i < this.m; i++ ) {
-        vals[i] = this.piv[i];
+        vals[ i ] = this.piv[ i ];
       }
       return vals;
     },
@@ -159,7 +159,7 @@ define( function( require ) {
       }
       var d = this.pivsign;
       for ( var j = 0; j < this.n; j++ ) {
-        d *= this.LU[this.matrix.index( j, j )];
+        d *= this.LU[ this.matrix.index( j, j ) ];
       }
       return d;
     },
@@ -181,7 +181,7 @@ define( function( require ) {
       for ( k = 0; k < this.n; k++ ) {
         for ( i = k + 1; i < this.n; i++ ) {
           for ( j = 0; j < nx; j++ ) {
-            Xmat.entries[Xmat.index( i, j )] -= Xmat.entries[Xmat.index( k, j )] * this.LU[this.matrix.index( i, k )];
+            Xmat.entries[ Xmat.index( i, j ) ] -= Xmat.entries[ Xmat.index( k, j ) ] * this.LU[ this.matrix.index( i, k ) ];
           }
         }
       }
@@ -189,11 +189,11 @@ define( function( require ) {
       // Solve U*X = Y;
       for ( k = this.n - 1; k >= 0; k-- ) {
         for ( j = 0; j < nx; j++ ) {
-          Xmat.entries[Xmat.index( k, j )] /= this.LU[this.matrix.index( k, k )];
+          Xmat.entries[ Xmat.index( k, j ) ] /= this.LU[ this.matrix.index( k, k ) ];
         }
         for ( i = 0; i < k; i++ ) {
           for ( j = 0; j < nx; j++ ) {
-            Xmat.entries[Xmat.index( i, j )] -= Xmat.entries[Xmat.index( k, j )] * this.LU[this.matrix.index( i, k )];
+            Xmat.entries[ Xmat.index( i, j ) ] -= Xmat.entries[ Xmat.index( k, j ) ] * this.LU[ this.matrix.index( i, k ) ];
           }
         }
       }

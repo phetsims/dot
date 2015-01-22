@@ -66,40 +66,40 @@ define( function( require ) {
         // Compute the transformation for the k-th column and
         // place the k-th diagonal in s[k].
         // Compute 2-norm of k-th column without under/overflow.
-        s[k] = 0;
+        s[ k ] = 0;
         for ( i = k; i < m; i++ ) {
-          s[k] = hypot( s[k], A[i * n + k] );
+          s[ k ] = hypot( s[ k ], A[ i * n + k ] );
         }
-        if ( s[k] !== 0.0 ) {
-          if ( A[k * n + k] < 0.0 ) {
-            s[k] = -s[k];
+        if ( s[ k ] !== 0.0 ) {
+          if ( A[ k * n + k ] < 0.0 ) {
+            s[ k ] = -s[ k ];
           }
           for ( i = k; i < m; i++ ) {
-            A[i * n + k] /= s[k];
+            A[ i * n + k ] /= s[ k ];
           }
-          A[k * n + k] += 1.0;
+          A[ k * n + k ] += 1.0;
         }
-        s[k] = -s[k];
+        s[ k ] = -s[ k ];
       }
       for ( j = k + 1; j < n; j++ ) {
-        if ( (k < nct) && (s[k] !== 0.0) ) {
+        if ( (k < nct) && (s[ k ] !== 0.0) ) {
 
           // Apply the transformation.
 
           t = 0;
           for ( i = k; i < m; i++ ) {
-            t += A[i * n + k] * A[i * n + j];
+            t += A[ i * n + k ] * A[ i * n + j ];
           }
-          t = -t / A[k * n + k];
+          t = -t / A[ k * n + k ];
           for ( i = k; i < m; i++ ) {
-            A[i * n + j] += t * A[i * n + k];
+            A[ i * n + j ] += t * A[ i * n + k ];
           }
         }
 
         // Place the k-th row of A into e for the
         // subsequent calculation of the row transformation.
 
-        e[j] = A[k * n + j];
+        e[ j ] = A[ k * n + j ];
       }
       if ( wantu && (k < nct) ) {
 
@@ -107,7 +107,7 @@ define( function( require ) {
         // multiplication.
 
         for ( i = k; i < m; i++ ) {
-          U[i * nu + k] = A[i * n + k];
+          U[ i * nu + k ] = A[ i * n + k ];
         }
       }
       if ( k < nrt ) {
@@ -115,36 +115,36 @@ define( function( require ) {
         // Compute the k-th row transformation and place the
         // k-th super-diagonal in e[k].
         // Compute 2-norm without under/overflow.
-        e[k] = 0;
+        e[ k ] = 0;
         for ( i = k + 1; i < n; i++ ) {
-          e[k] = hypot( e[k], e[i] );
+          e[ k ] = hypot( e[ k ], e[ i ] );
         }
-        if ( e[k] !== 0.0 ) {
-          if ( e[k + 1] < 0.0 ) {
-            e[k] = -e[k];
+        if ( e[ k ] !== 0.0 ) {
+          if ( e[ k + 1 ] < 0.0 ) {
+            e[ k ] = -e[ k ];
           }
           for ( i = k + 1; i < n; i++ ) {
-            e[i] /= e[k];
+            e[ i ] /= e[ k ];
           }
-          e[k + 1] += 1.0;
+          e[ k + 1 ] += 1.0;
         }
-        e[k] = -e[k];
-        if ( (k + 1 < m) && (e[k] !== 0.0) ) {
+        e[ k ] = -e[ k ];
+        if ( (k + 1 < m) && (e[ k ] !== 0.0) ) {
 
           // Apply the transformation.
 
           for ( i = k + 1; i < m; i++ ) {
-            work[i] = 0.0;
+            work[ i ] = 0.0;
           }
           for ( j = k + 1; j < n; j++ ) {
             for ( i = k + 1; i < m; i++ ) {
-              work[i] += e[j] * A[i * n + j];
+              work[ i ] += e[ j ] * A[ i * n + j ];
             }
           }
           for ( j = k + 1; j < n; j++ ) {
-            t = -e[j] / e[k + 1];
+            t = -e[ j ] / e[ k + 1 ];
             for ( i = k + 1; i < m; i++ ) {
-              A[i * n + j] += t * work[i];
+              A[ i * n + j ] += t * work[ i ];
             }
           }
         }
@@ -154,7 +154,7 @@ define( function( require ) {
           // back multiplication.
 
           for ( i = k + 1; i < n; i++ ) {
-            V[i * n + k] = e[i];
+            V[ i * n + k ] = e[ i ];
           }
         }
       }
@@ -164,50 +164,50 @@ define( function( require ) {
 
     var p = min( n, m + 1 );
     if ( nct < n ) {
-      s[nct] = A[nct * n + nct];
+      s[ nct ] = A[ nct * n + nct ];
     }
     if ( m < p ) {
-      s[p - 1] = 0.0;
+      s[ p - 1 ] = 0.0;
     }
     if ( nrt + 1 < p ) {
-      e[nrt] = A[nrt * n + p - 1];
+      e[ nrt ] = A[ nrt * n + p - 1 ];
     }
-    e[p - 1] = 0.0;
+    e[ p - 1 ] = 0.0;
 
     // If required, generate U.
 
     if ( wantu ) {
       for ( j = nct; j < nu; j++ ) {
         for ( i = 0; i < m; i++ ) {
-          U[i * nu + j] = 0.0;
+          U[ i * nu + j ] = 0.0;
         }
-        U[j * nu + j] = 1.0;
+        U[ j * nu + j ] = 1.0;
       }
       for ( k = nct - 1; k >= 0; k-- ) {
-        if ( s[k] !== 0.0 ) {
+        if ( s[ k ] !== 0.0 ) {
           for ( j = k + 1; j < nu; j++ ) {
             t = 0;
             for ( i = k; i < m; i++ ) {
-              t += U[i * nu + k] * U[i * nu + j];
+              t += U[ i * nu + k ] * U[ i * nu + j ];
             }
-            t = -t / U[k * nu + k];
+            t = -t / U[ k * nu + k ];
             for ( i = k; i < m; i++ ) {
-              U[i * nu + j] += t * U[i * nu + k];
+              U[ i * nu + j ] += t * U[ i * nu + k ];
             }
           }
           for ( i = k; i < m; i++ ) {
-            U[i * nu + k] = -U[i * nu + k];
+            U[ i * nu + k ] = -U[ i * nu + k ];
           }
-          U[k * nu + k] = 1.0 + U[k * nu + k];
+          U[ k * nu + k ] = 1.0 + U[ k * nu + k ];
           for ( i = 0; i < k - 1; i++ ) {
-            U[i * nu + k] = 0.0;
+            U[ i * nu + k ] = 0.0;
           }
         }
         else {
           for ( i = 0; i < m; i++ ) {
-            U[i * nu + k] = 0.0;
+            U[ i * nu + k ] = 0.0;
           }
-          U[k * nu + k] = 1.0;
+          U[ k * nu + k ] = 1.0;
         }
       }
     }
@@ -216,22 +216,22 @@ define( function( require ) {
 
     if ( wantv ) {
       for ( k = n - 1; k >= 0; k-- ) {
-        if ( (k < nrt) && (e[k] !== 0.0) ) {
+        if ( (k < nrt) && (e[ k ] !== 0.0) ) {
           for ( j = k + 1; j < nu; j++ ) {
             t = 0;
             for ( i = k + 1; i < n; i++ ) {
-              t += V[i * n + k] * V[i * n + j];
+              t += V[ i * n + k ] * V[ i * n + j ];
             }
-            t = -t / V[(k + 1) * n + k];
+            t = -t / V[ (k + 1) * n + k ];
             for ( i = k + 1; i < n; i++ ) {
-              V[i * n + j] += t * V[i * n + k];
+              V[ i * n + j ] += t * V[ i * n + k ];
             }
           }
         }
         for ( i = 0; i < n; i++ ) {
-          V[i * n + k] = 0.0;
+          V[ i * n + k ] = 0.0;
         }
-        V[k * n + k] = 1.0;
+        V[ k * n + k ] = 1.0;
       }
     }
 
@@ -263,9 +263,9 @@ define( function( require ) {
         if ( k === -1 ) {
           break;
         }
-        if ( abs( e[k] ) <=
-             tiny + eps * (abs( s[k] ) + abs( s[k + 1] )) ) {
-          e[k] = 0.0;
+        if ( abs( e[ k ] ) <=
+             tiny + eps * (abs( s[ k ] ) + abs( s[ k + 1 ] )) ) {
+          e[ k ] = 0.0;
           break;
         }
       }
@@ -278,10 +278,10 @@ define( function( require ) {
           if ( ks === k ) {
             break;
           }
-          t = (ks !== p ? abs( e[ks] ) : 0) +
-              (ks !== k + 1 ? abs( e[ks - 1] ) : 0);
-          if ( abs( s[ks] ) <= tiny + eps * t ) {
-            s[ks] = 0.0;
+          t = (ks !== p ? abs( e[ ks ] ) : 0) +
+              (ks !== k + 1 ? abs( e[ ks - 1 ] ) : 0);
+          if ( abs( s[ ks ] ) <= tiny + eps * t ) {
+            s[ ks ] = 0.0;
             break;
           }
         }
@@ -306,22 +306,22 @@ define( function( require ) {
 
         case 1:
         {
-          f = e[p - 2];
-          e[p - 2] = 0.0;
+          f = e[ p - 2 ];
+          e[ p - 2 ] = 0.0;
           for ( j = p - 2; j >= k; j-- ) {
-            t = hypot( s[j], f );
-            cs = s[j] / t;
+            t = hypot( s[ j ], f );
+            cs = s[ j ] / t;
             sn = f / t;
-            s[j] = t;
+            s[ j ] = t;
             if ( j !== k ) {
-              f = -sn * e[j - 1];
-              e[j - 1] = cs * e[j - 1];
+              f = -sn * e[ j - 1 ];
+              e[ j - 1 ] = cs * e[ j - 1 ];
             }
             if ( wantv ) {
               for ( i = 0; i < n; i++ ) {
-                t = cs * V[i * n + j] + sn * V[i * n + p - 1];
-                V[i * n + p - 1] = -sn * V[i * n + j] + cs * V[i * n + p - 1];
-                V[i * n + j] = t;
+                t = cs * V[ i * n + j ] + sn * V[ i * n + p - 1 ];
+                V[ i * n + p - 1 ] = -sn * V[ i * n + j ] + cs * V[ i * n + p - 1 ];
+                V[ i * n + j ] = t;
               }
             }
           }
@@ -332,20 +332,20 @@ define( function( require ) {
 
         case 2:
         {
-          f = e[k - 1];
-          e[k - 1] = 0.0;
+          f = e[ k - 1 ];
+          e[ k - 1 ] = 0.0;
           for ( j = k; j < p; j++ ) {
-            t = hypot( s[j], f );
-            cs = s[j] / t;
+            t = hypot( s[ j ], f );
+            cs = s[ j ] / t;
             sn = f / t;
-            s[j] = t;
-            f = -sn * e[j];
-            e[j] = cs * e[j];
+            s[ j ] = t;
+            f = -sn * e[ j ];
+            e[ j ] = cs * e[ j ];
             if ( wantu ) {
               for ( i = 0; i < m; i++ ) {
-                t = cs * U[i * nu + j] + sn * U[i * nu + k - 1];
-                U[i * nu + k - 1] = -sn * U[i * nu + j] + cs * U[i * nu + k - 1];
-                U[i * nu + j] = t;
+                t = cs * U[ i * nu + j ] + sn * U[ i * nu + k - 1 ];
+                U[ i * nu + k - 1 ] = -sn * U[ i * nu + j ] + cs * U[ i * nu + k - 1 ];
+                U[ i * nu + j ] = t;
               }
             }
           }
@@ -360,13 +360,13 @@ define( function( require ) {
           // Calculate the shift.
 
           var scale = max( max( max( max(
-              abs( s[p - 1] ), abs( s[p - 2] ) ), abs( e[p - 2] ) ),
-            abs( s[k] ) ), abs( e[k] ) );
-          var sp = s[p - 1] / scale;
-          var spm1 = s[p - 2] / scale;
-          var epm1 = e[p - 2] / scale;
-          var sk = s[k] / scale;
-          var ek = e[k] / scale;
+              abs( s[ p - 1 ] ), abs( s[ p - 2 ] ) ), abs( e[ p - 2 ] ) ),
+            abs( s[ k ] ) ), abs( e[ k ] ) );
+          var sp = s[ p - 1 ] / scale;
+          var spm1 = s[ p - 2 ] / scale;
+          var epm1 = e[ p - 2 ] / scale;
+          var sk = s[ k ] / scale;
+          var ek = e[ k ] / scale;
           var b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
           var c = (sp * epm1) * (sp * epm1);
           var shift = 0.0;
@@ -387,36 +387,36 @@ define( function( require ) {
             cs = f / t;
             sn = g / t;
             if ( j !== k ) {
-              e[j - 1] = t;
+              e[ j - 1 ] = t;
             }
-            f = cs * s[j] + sn * e[j];
-            e[j] = cs * e[j] - sn * s[j];
-            g = sn * s[j + 1];
-            s[j + 1] = cs * s[j + 1];
+            f = cs * s[ j ] + sn * e[ j ];
+            e[ j ] = cs * e[ j ] - sn * s[ j ];
+            g = sn * s[ j + 1 ];
+            s[ j + 1 ] = cs * s[ j + 1 ];
             if ( wantv ) {
               for ( i = 0; i < n; i++ ) {
-                t = cs * V[i * n + j] + sn * V[i * n + j + 1];
-                V[i * n + j + 1] = -sn * V[i * n + j] + cs * V[i * n + j + 1];
-                V[i * n + j] = t;
+                t = cs * V[ i * n + j ] + sn * V[ i * n + j + 1 ];
+                V[ i * n + j + 1 ] = -sn * V[ i * n + j ] + cs * V[ i * n + j + 1 ];
+                V[ i * n + j ] = t;
               }
             }
             t = hypot( f, g );
             cs = f / t;
             sn = g / t;
-            s[j] = t;
-            f = cs * e[j] + sn * s[j + 1];
-            s[j + 1] = -sn * e[j] + cs * s[j + 1];
-            g = sn * e[j + 1];
-            e[j + 1] = cs * e[j + 1];
+            s[ j ] = t;
+            f = cs * e[ j ] + sn * s[ j + 1 ];
+            s[ j + 1 ] = -sn * e[ j ] + cs * s[ j + 1 ];
+            g = sn * e[ j + 1 ];
+            e[ j + 1 ] = cs * e[ j + 1 ];
             if ( wantu && (j < m - 1) ) {
               for ( i = 0; i < m; i++ ) {
-                t = cs * U[i * nu + j] + sn * U[i * nu + j + 1];
-                U[i * nu + j + 1] = -sn * U[i * nu + j] + cs * U[i * nu + j + 1];
-                U[i * nu + j] = t;
+                t = cs * U[ i * nu + j ] + sn * U[ i * nu + j + 1 ];
+                U[ i * nu + j + 1 ] = -sn * U[ i * nu + j ] + cs * U[ i * nu + j + 1 ];
+                U[ i * nu + j ] = t;
               }
             }
           }
-          e[p - 2] = f;
+          e[ p - 2 ] = f;
           iter = iter + 1;
         }
           break;
@@ -428,11 +428,11 @@ define( function( require ) {
 
           // Make the singular values positive.
 
-          if ( s[k] <= 0.0 ) {
-            s[k] = (s[k] < 0.0 ? -s[k] : 0.0);
+          if ( s[ k ] <= 0.0 ) {
+            s[ k ] = (s[ k ] < 0.0 ? -s[ k ] : 0.0);
             if ( wantv ) {
               for ( i = 0; i <= pp; i++ ) {
-                V[i * n + k] = -V[i * n + k];
+                V[ i * n + k ] = -V[ i * n + k ];
               }
             }
           }
@@ -440,24 +440,24 @@ define( function( require ) {
           // Order the singular values.
 
           while ( k < pp ) {
-            if ( s[k] >= s[k + 1] ) {
+            if ( s[ k ] >= s[ k + 1 ] ) {
               break;
             }
-            t = s[k];
-            s[k] = s[k + 1];
-            s[k + 1] = t;
+            t = s[ k ];
+            s[ k ] = s[ k + 1 ];
+            s[ k + 1 ] = t;
             if ( wantv && (k < n - 1) ) {
               for ( i = 0; i < n; i++ ) {
-                t = V[i * n + k + 1];
-                V[i * n + k + 1] = V[i * n + k];
-                V[i * n + k] = t;
+                t = V[ i * n + k + 1 ];
+                V[ i * n + k + 1 ] = V[ i * n + k ];
+                V[ i * n + k ] = t;
               }
             }
             if ( wantu && (k < m - 1) ) {
               for ( i = 0; i < m; i++ ) {
-                t = U[i * nu + k + 1];
-                U[i * nu + k + 1] = U[i * nu + k];
-                U[i * nu + k] = t;
+                t = U[ i * nu + k + 1 ];
+                U[ i * nu + k + 1 ] = U[ i * nu + k ];
+                U[ i * nu + k ] = t;
               }
             }
             k++;
@@ -490,28 +490,28 @@ define( function( require ) {
       var result = new dot.Matrix( this.n, this.n );
       for ( var i = 0; i < this.n; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
-          result.entries[result.index( i, j )] = 0.0;
+          result.entries[ result.index( i, j ) ] = 0.0;
         }
-        result.entries[result.index( i, i )] = this.s[i];
+        result.entries[ result.index( i, i ) ] = this.s[ i ];
       }
       return result;
     },
 
     norm2: function() {
-      return this.s[0];
+      return this.s[ 0 ];
     },
 
     cond: function() {
-      return this.s[0] / this.s[Math.min( this.m, this.n ) - 1];
+      return this.s[ 0 ] / this.s[ Math.min( this.m, this.n ) - 1 ];
     },
 
     rank: function() {
       // changed to 23 from 52 (bits of mantissa), since we are using floats here!
       var eps = Math.pow( 2.0, -23.0 );
-      var tol = Math.max( this.m, this.n ) * this.s[0] * eps;
+      var tol = Math.max( this.m, this.n ) * this.s[ 0 ] * eps;
       var r = 0;
       for ( var i = 0; i < this.s.length; i++ ) {
-        if ( this.s[i] > tol ) {
+        if ( this.s[ i ] > tol ) {
           r++;
         }
       }

@@ -12,7 +12,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
 
   var inherit = require( 'PHET_CORE/inherit' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
 
@@ -307,7 +307,7 @@ define( function( require ) {
 
   // experimental object pooling
   /* jshint -W064 */
-  Poolable( Vector2, {
+  PoolableMixin( Vector2, {
     defaultFactory: function() { return new Vector2(); },
     constructorDuplicateFactory: function( pool ) {
       return function( x, y ) {
@@ -333,7 +333,7 @@ define( function( require ) {
 
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
-    Immutable.prototype[mutableFunctionName] = function() {
+    Immutable.prototype[ mutableFunctionName ] = function() {
       throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector2" );
     };
   };

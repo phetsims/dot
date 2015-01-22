@@ -86,9 +86,9 @@ define( function( require ) {
 
     cross: function( v ) {
       return new Vector3(
-          this.y * v.z - this.z * v.y,
-          this.z * v.x - this.x * v.z,
-          this.x * v.y - this.y * v.x
+        this.y * v.z - this.z * v.y,
+        this.z * v.x - this.x * v.z,
+        this.x * v.y - this.y * v.x
       );
     },
 
@@ -281,7 +281,7 @@ define( function( require ) {
 
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
-    Immutable.prototype[mutableFunctionName] = function() {
+    Immutable.prototype[ mutableFunctionName ] = function() {
       throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector3" );
     };
   };

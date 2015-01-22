@@ -37,9 +37,9 @@
   test( 'rangeInclusive', function() {
     var arr = dot.rangeInclusive( 2, 4 );
     equal( arr.length, 3 );
-    equal( arr[0], 2 );
-    equal( arr[1], 3 );
-    equal( arr[2], 4 );
+    equal( arr[ 0 ], 2 );
+    equal( arr[ 1 ], 3 );
+    equal( arr[ 2 ], 4 );
 
     arr = dot.rangeInclusive( 4, 2 );
     equal( arr.length, 0 );
@@ -48,7 +48,7 @@
   test( 'rangeExclusive', function() {
     var arr = dot.rangeExclusive( 2, 4 );
     equal( arr.length, 1 );
-    equal( arr[0], 3 );
+    equal( arr[ 0 ], 3 );
 
     arr = dot.rangeExclusive( 4, 2 );
     equal( arr.length, 0 );

@@ -13,7 +13,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var extend = require( 'PHET_CORE/extend' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
   var Property = require( 'AXON/Property' );
   require( 'DOT/Vector2' );
 
@@ -32,8 +32,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Overriding the core mutable methods (any mutable operation should call one of these)
-    *----------------------------------------------------------------------------*/
+     * Overriding the core mutable methods (any mutable operation should call one of these)
+     *----------------------------------------------------------------------------*/
     setXY: function( x, y ) {
       if ( this.x !== x || this.y !== y ) {
         this._oldValue.x = this.x;
@@ -88,7 +88,7 @@ define( function( require ) {
 
   // experimental object pooling
   /* jshint -W064 */
-  Poolable( ObservableVector2, {
+  PoolableMixin( ObservableVector2, {
     defaultFactory: function() { return new ObservableVector2(); },
     constructorDuplicateFactory: function( pool ) {
       return function( x, y ) {

@@ -17,7 +17,7 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
 
   require( 'DOT/Vector2' );
 
@@ -43,8 +43,8 @@ define( function( require ) {
     dimension: 2,
 
     /*---------------------------------------------------------------------------*
-    * Properties
-    *----------------------------------------------------------------------------*/
+     * Properties
+     *----------------------------------------------------------------------------*/
 
     getWidth: function() { return this.maxX - this.minX; },
     get width() { return this.getWidth(); },
@@ -206,8 +206,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Immutable operations
-    *----------------------------------------------------------------------------*/
+     * Immutable operations
+     *----------------------------------------------------------------------------*/
 
     // create a copy, or if bounds is passed in, set that bounds to our value
     copy: function( bounds ) {
@@ -322,8 +322,8 @@ define( function( require ) {
     },
 
     /*---------------------------------------------------------------------------*
-    * Mutable operations
-    *----------------------------------------------------------------------------*/
+     * Mutable operations
+     *----------------------------------------------------------------------------*/
 
     // mutable core operations (all other mutations should be called through these)
     setMinMax: function( minX, minY, maxX, maxY ) {
@@ -513,7 +513,7 @@ define( function( require ) {
 
   // experimental object pooling
   /* jshint -W064 */
-  Poolable( Bounds2, {
+  PoolableMixin( Bounds2, {
     defaultFactory: function() { return Bounds2.NOTHING.copy(); },
     constructorDuplicateFactory: function( pool ) {
       return function( minX, minY, maxX, maxY ) {
