@@ -1,7 +1,5 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
-window.loadedDotConfig = true;
-
 require.config( {
   deps: [ 'main', 'PHET_CORE/main' ],
 
