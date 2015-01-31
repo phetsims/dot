@@ -13,7 +13,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix3' );
   require( 'DOT/Util' );
@@ -263,9 +263,7 @@ define( function( require ) {
     );
   };
 
-  // experimental object pooling
-  /* jshint -W064 */
-  PoolableMixin( Quaternion, {
+  Poolable.mixin( Quaternion, {
     defaultFactory: function() { return new Quaternion(); },
     constructorDuplicateFactory: function( pool ) {
       return function( x, y, z, w ) {

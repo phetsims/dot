@@ -12,7 +12,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
 
   var inherit = require( 'PHET_CORE/inherit' );
-  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
 
@@ -305,9 +305,7 @@ define( function( require ) {
 
   };
 
-  // experimental object pooling
-  /* jshint -W064 */
-  PoolableMixin( Vector2, {
+  Poolable.mixin( Vector2, {
     defaultFactory: function() { return new Vector2(); },
     constructorDuplicateFactory: function( pool ) {
       return function( x, y ) {
