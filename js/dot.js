@@ -25,6 +25,11 @@ define( function( require ) {
   // TODO: performance: check browser speed to compare how fast this is. We may need to add a 32 option for GL ES.
   dot.FastArray = window.Float64Array ? window.Float64Array : window.Array;
 
+  // store a reference on the PhET namespace if it exists
+  if ( window.phet ) {
+    window.phet.dot = dot;
+  }
+
   // will be filled in by other modules
   return dot;
 } );
