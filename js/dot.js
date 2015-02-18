@@ -6,6 +6,9 @@ define( function( require ) {
   // object allocation tracking
   window.phetAllocation = require( 'PHET_CORE/phetAllocation' );
 
+  // workaround for Axon, since it needs window.arch to be defined
+  window.arch = window.arch || null;
+
   var dot = function dot() {
     switch( arguments.length ) {
       case 2:
@@ -21,6 +24,11 @@ define( function( require ) {
 
   // TODO: performance: check browser speed to compare how fast this is. We may need to add a 32 option for GL ES.
   dot.FastArray = window.Float64Array ? window.Float64Array : window.Array;
+
+  // store a reference on the PhET namespace if it exists
+  if ( window.phet ) {
+    window.phet.dot = dot;
+  }
 
   // will be filled in by other modules
   return dot;

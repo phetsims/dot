@@ -13,7 +13,7 @@ define( function( require ) {
 
   var inherit = require( 'PHET_CORE/inherit' );
   var extend = require( 'PHET_CORE/extend' );
-  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   var Property = require( 'AXON/Property' );
   require( 'DOT/Matrix3' );
 
@@ -123,9 +123,7 @@ define( function( require ) {
     toString: dot.Matrix3.prototype.toString
   } ) );
 
-  // experimental object pooling
-  /* jshint -W064 */
-  PoolableMixin( ObservableMatrix3, {
+  Poolable.mixin( ObservableMatrix3, {
     defaultFactory: function() { return new ObservableMatrix3(); },
     constructorDuplicateFactory: function( pool ) {
       return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {

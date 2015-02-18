@@ -17,7 +17,7 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var PoolableMixin = require( 'PHET_CORE/PoolableMixin' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
 
   require( 'DOT/Vector2' );
 
@@ -511,9 +511,7 @@ define( function( require ) {
     }
   };
 
-  // experimental object pooling
-  /* jshint -W064 */
-  PoolableMixin( Bounds2, {
+  Poolable.mixin( Bounds2, {
     defaultFactory: function() { return Bounds2.NOTHING.copy(); },
     constructorDuplicateFactory: function( pool ) {
       return function( minX, minY, maxX, maxY ) {
