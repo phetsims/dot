@@ -171,8 +171,7 @@ define( function( require ) {
 
     // angle in radians for the 2d rotation from this matrix, between pi, -pi
     getRotation: function() {
-      var transformedVector = this.timesVector2( dot.Vector2.X_UNIT ).minus( this.timesVector2( dot.Vector2.ZERO ) );
-      return Math.atan2( transformedVector.y, transformedVector.x );
+      return Math.atan2( this.m10(), this.m00() );
     },
     get rotation() { return this.getRotation(); },
 
