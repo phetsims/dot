@@ -9,75 +9,125 @@
 define( function( require ) {
   'use strict';
 
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Events = require( 'AXON/Events' );
   var dot = require( 'DOT/dot' );
 
   require( 'DOT/Matrix3' );
   require( 'DOT/Vector2' );
   require( 'DOT/Ray2' );
 
-  // takes a 4x4 matrix
-  dot.Transform3 = function Transform3( matrix ) {
-    this.listeners = [];
+  var scratchMatrix = new dot.Matrix3();
 
-    // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
-    this.setMatrix( matrix === undefined ? dot.Matrix3.IDENTITY : matrix );
+  function checkMatrix( matrix ) {
+    return ( matrix instanceof dot.Matrix3 ) && matrix.isFinite();
+  }
+
+  /**
+   * @param {Matrix3} matrix
+   */
+  dot.Transform3 = function Transform3( matrix ) {
+    Events.call( this );
+
+    this.matrix = dot.Matrix3.IDENTITY.copy();
+
+    this.inverse = dot.Matrix3.IDENTITY.copy();
+    this.matrixTransposed = dot.Matrix3.IDENTITY.copy();
+    this.inverseTransposed = dot.Matrix3.IDENTITY.copy();
+
+    // all three dependent matrices are valid at the start since everything is the identity matrix!
+    this.inverseValid = true;
+    this.transposeValid = true;
+    this.inverseTransposeValid = true;
+
+    if ( matrix ) {
+      this.setMatrix( matrix );
+    }
 
     phetAllocation && phetAllocation( 'Transform3' );
   };
   var Transform3 = dot.Transform3;
 
-  Transform3.prototype = {
-    constructor: Transform3,
-
+  inherit( Events, Transform3, {
     /*---------------------------------------------------------------------------*
      * mutators
      *----------------------------------------------------------------------------*/
 
+    /**
+     * Sets the value of the matrix directly from a Matrix3. Does not change the Matrix3 instance of this Transform3.
+     *
+     * @param {Matrix3} matrix
+     */
     setMatrix: function( matrix ) {
-      // TODO: performance: don't notify or handle instances where the matrix is detected to be the identity matrix?
-      assert && assert( matrix instanceof dot.Matrix3 );
+      assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
 
-      assert && assert( matrix.isFinite(), 'Matrix was suspicious' );
+      // copy the matrix over to our matrix
+      this.matrix.set( matrix );
 
-      //Temporary solution: if the programmer tried to set the top, bottom, etc of a node without defined bounds, do a no-op
-      //In the future, this should be replaced with the assertion above, once we have tested that everything is working properly
-      if ( !matrix.isFinite() ) {
-        return;
-      }
-
-      var oldMatrix = this.matrix;
-      var length = this.listeners.length;
-      var i;
-
-      // notify listeners before the change
-      for ( i = 0; i < length; i++ ) {
-        this.listeners[ i ].before( matrix, oldMatrix );
-      }
-
-      this.matrix = matrix;
-
-      // compute these lazily
-      this.inverse = null;
-      this.matrixTransposed = null;
-      this.inverseTransposed = null;
-
-      // notify listeners after the change
-      for ( i = 0; i < length; i++ ) {
-        this.listeners[ i ].after( matrix, oldMatrix );
-      }
+      // set flags and notify
+      this.invalidate();
     },
 
+    /**
+     * This should be called after our internal matrix is changed. It marks the other dependent matrices as invalid,
+     * and sends out notifications of the change
+     */
+    invalidate: function() {
+      // sanity check
+      assert && assert( this.matrix.isFinite() );
+
+      // dependent matrices now invalid
+      this.inverseValid = false;
+      this.transposeValid = false;
+      this.inverseTransposeValid = false;
+
+      this.trigger0( 'change' );
+    },
+
+    /**
+     * this.matrix = matrix * this.matrix
+     *
+     * @param {Matrix3} matrix
+     */
     prepend: function( matrix ) {
-      this.setMatrix( matrix.timesMatrix( this.matrix ) );
+      assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
+
+      // In the absence of a prepend-multiply function in Matrix3, copy over to a scratch matrix instead
+      // TODO: implement a prepend-multiply directly in Matrix3 for a performance increase
+      scratchMatrix.set( this.matrix );
+      this.matrix.set( matrix );
+      this.matrix.multiplyMatrix( scratchMatrix );
+
+      // set flags and notify
+      this.invalidate();
     },
 
-    //Simpler case of prepending a translation without having to allocate a matrix for it, see scenery#119
+    /**
+     * this.matrix = translation( x, y ) * this.matrix, see (scenery#119)
+     *
+     * @param {Matrix3} matrix
+     */
     prependTranslation: function( x, y ) {
-      this.setMatrix( dot.Matrix3.translationTimesMatrix( x, y, this.matrix ) );
+      assert && assert( typeof x === 'number' && typeof y === 'number' && isFinite( x ) && isFinite( y ) );
+
+      this.matrix.prependTranslation( x, y );
+
+      // set flags and notify
+      this.invalidate();
     },
 
+    /**
+     * this.matrix = this.matrix * matrix
+     *
+     * @param {Matrix3} matrix
+     */
     append: function( matrix ) {
-      this.setMatrix( this.matrix.timesMatrix( matrix ) );
+      assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
+
+      this.matrix.multiplyMatrix( matrix );
+
+      // set flags and notify
+      this.invalidate();
     },
 
     prependTransform: function( transform ) {
@@ -96,20 +146,16 @@ define( function( require ) {
      * getters
      *----------------------------------------------------------------------------*/
 
-    // uses the same matrices, for use cases where the matrices are considered immutable
     copy: function() {
       var transform = new Transform3( this.matrix );
+
       transform.inverse = this.inverse;
       transform.matrixTransposed = this.matrixTransposed;
       transform.inverseTransposed = this.inverseTransposed;
-    },
 
-    // copies matrices, for use cases where the matrices are considered mutable
-    deepCopy: function() {
-      var transform = new Transform3( this.matrix.copy() );
-      transform.inverse = this.inverse ? this.inverse.copy() : null;
-      transform.matrixTransposed = this.matrixTransposed ? this.matrixTransposed.copy() : null;
-      transform.inverseTransposed = this.inverseTransposed ? this.inverseTransposed.copy() : null;
+      transform.inverseValid = this.inverseValid;
+      transform.transposeValid = this.transposeValid;
+      transform.inverseTransposeValid = this.inverseTransposeValid;
     },
 
     getMatrix: function() {
@@ -117,26 +163,36 @@ define( function( require ) {
     },
 
     getInverse: function() {
-      if ( this.inverse === null ) {
-        this.inverse = this.matrix.inverted();
+      if ( !this.inverseValid ) {
+        this.inverseValid = true;
+
+        this.inverse.set( this.matrix );
+        this.inverse.invert();
       }
       return this.inverse;
     },
 
     getMatrixTransposed: function() {
-      if ( this.matrixTransposed === null ) {
-        this.matrixTransposed = this.matrix.transposed();
+      if ( !this.transposeValid ) {
+        this.transposeValid = true;
+
+        this.matrixTransposed.set( this.matrix );
+        this.matrixTransposed.transpose();
       }
       return this.matrixTransposed;
     },
 
     getInverseTransposed: function() {
-      if ( this.inverseTransposed === null ) {
-        this.inverseTransposed = this.getInverse().transposed();
+      if ( !this.inverseTransposeValid ) {
+        this.inverseTransposeValid = true;
+
+        this.inverseTransposed.set( this.getInverse() ); // triggers inverse to be valid
+        this.inverseTransposed.transpose();
       }
       return this.inverseTransposed;
     },
 
+    // false is "inconclusive"
     isIdentity: function() {
       return this.matrix.type === dot.Matrix3.Types.IDENTITY;
     },
@@ -258,29 +314,8 @@ define( function( require ) {
 
     inverseRay2: function( ray ) {
       return new dot.Ray2( this.inversePosition2( ray.pos ), this.inverseDelta2( ray.dir ).normalized() );
-    },
-
-    /*---------------------------------------------------------------------------*
-     * listeners
-     *----------------------------------------------------------------------------*/
-
-    // note: listener.before( matrix, oldMatrix ) will be called before the change, listener.after( matrix, oldMatrix ) will be called after
-    addTransformListener: function( listener ) {
-      assert && assert( !_.contains( this.listeners, listener ) );
-      this.listeners.push( listener );
-    },
-
-    // useful for making sure the listener is triggered first
-    prependTransformListener: function( listener ) {
-      assert && assert( !_.contains( this.listeners, listener ) );
-      this.listeners.unshift( listener );
-    },
-
-    removeTransformListener: function( listener ) {
-      assert && assert( _.contains( this.listeners, listener ) );
-      this.listeners.splice( _.indexOf( this.listeners, listener ), 1 );
     }
-  };
+  } );
 
   return Transform3;
 } );

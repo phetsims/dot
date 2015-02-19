@@ -118,6 +118,11 @@ define( function( require ) {
       return this.type === Types.IDENTITY || this.equals( Matrix3.IDENTITY );
     },
 
+    // returning false means "inconclusive, may be identity or not"
+    isFastIdentity: function() {
+      return this.type === Types.IDENTITY;
+    },
+
     isAffine: function() {
       return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
     },
@@ -493,6 +498,17 @@ define( function( require ) {
         matrix.type );
     },
 
+    // component setters
+    set00: function( value ) { this.entries[ 0 ] = value; return this; },
+    set01: function( value ) { this.entries[ 3 ] = value; return this; },
+    set02: function( value ) { this.entries[ 6 ] = value; return this; },
+    set10: function( value ) { this.entries[ 1 ] = value; return this; },
+    set11: function( value ) { this.entries[ 4 ] = value; return this; },
+    set12: function( value ) { this.entries[ 7 ] = value; return this; },
+    set20: function( value ) { this.entries[ 2 ] = value; return this; },
+    set21: function( value ) { this.entries[ 5 ] = value; return this; },
+    set22: function( value ) { this.entries[ 8 ] = value; return this; },
+
     makeImmutable: function() {
       this.rowMajor = function() {
         throw new Error( 'Cannot modify immutable matrix' );
@@ -651,6 +667,22 @@ define( function( require ) {
         this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
         this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
         this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
+    },
+
+    prependTranslation: function( x, y ) {
+      this.set02( this.m02() + x );
+      this.set12( this.m12() + y );
+
+      if ( this.type === Types.IDENTITY || this.type === Types.TRANSLATION_2D ) {
+        this.type = Types.TRANSLATION_2D;
+      }
+      else if ( this.type === Types.OTHER ) {
+        this.type = Types.OTHER;
+      }
+      else {
+        this.type = Types.AFFINE;
+      }
+      return this; // for chaining
     },
 
     setToIdentity: function() {
@@ -892,13 +924,15 @@ define( function( require ) {
   Matrix3.IDENTITY = Matrix3.identity();
   Matrix3.IDENTITY.makeImmutable();
 
-  Matrix3.X_REFLECTION = Matrix3.createFromPool( -1, 0, 0,
+  Matrix3.X_REFLECTION = Matrix3.createFromPool(
+    -1, 0, 0,
     0, 1, 0,
     0, 0, 1,
     Types.AFFINE );
   Matrix3.X_REFLECTION.makeImmutable();
 
-  Matrix3.Y_REFLECTION = Matrix3.createFromPool( 1, 0, 0,
+  Matrix3.Y_REFLECTION = Matrix3.createFromPool(
+    1, 0, 0,
     0, -1, 0,
     0, 0, 1,
     Types.AFFINE );
@@ -920,7 +954,8 @@ define( function( require ) {
     else {
       type = Types.AFFINE;
     }
-    return Matrix3.createFromPool( m.m00(), m.m01(), m.m02() + x,
+    return Matrix3.createFromPool(
+      m.m00(), m.m01(), m.m02() + x,
       m.m10(), m.m11(), m.m12() + y,
       m.m20(), m.m21(), m.m22(),
       type );

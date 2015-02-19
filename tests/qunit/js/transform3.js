@@ -89,4 +89,50 @@
       var y = t2.transformDeltaY( 5 );
     } );
   } );
+
+  test( 'Transform setMatrix ensuring matrix instance equivalence', function() {
+    var t = new Transform3();
+
+    var m = t.getMatrix();
+
+    t.setMatrix( Matrix3.createFromPool( 1, 2, 3, 4, 5, 6, 7, 8, 9 ) );
+    equal( t.getMatrix(), m );
+    equal( t.getMatrix().m00(), 1 );
+    equal( t.getMatrix().m01(), 2 );
+    t.setMatrix( Matrix3.createFromPool( 9, 8, 7, 6, 5, 4, 3, 2, 1 ) );
+    equal( t.getMatrix(), m );
+    equal( t.getMatrix().m00(), 9 );
+    equal( t.getMatrix().m01(), 8 );
+  } );
+
+  test( 'Transform event firing', function() {
+    var t = new Transform3();
+
+    var count = 0;
+
+    t.on( 'change', function() { count += 1; } );
+    equal( count, 0 );
+    t.setMatrix( Matrix3.rotation2( Math.PI / 2 ) );
+    equal( count, 1 );
+    t.prepend( Matrix3.rotation2( Math.PI / 2 ) );
+    equal( count, 2 );
+    t.prependTranslation( 1, 2 );
+    equal( count, 3 );
+    t.append( Matrix3.rotation2( Math.PI / 2 ) );
+    equal( count, 4 );
+  } );
+
+  test( 'Transform inverse validation', function() {
+    var t = new Transform3();
+
+    ok( t.transformPosition2( dot( 2, 4 ) ).equals( dot( 2, 4 ) ) );
+    ok( t.inversePosition2( dot( 2, 4 ) ).equals( dot( 2, 4 ) ) );
+    t.getMatrix().setToScale( 4, 2 );
+    t.invalidate();
+    ok( t.transformPosition2( dot( 2, 4 ) ).equals( dot( 8, 8 ) ) );
+    ok( t.inversePosition2( dot( 2, 4 ) ).equals( dot( 0.5, 2 ) ) );
+    t.append( Matrix3.rotation2( Math.PI / 2 ) );
+    ok( t.transformPosition2( dot( 2, 4 ) ).equalsEpsilon( dot( -16, 4 ), epsilon ) );
+    ok( t.inversePosition2( dot( 2, 4 ) ).equalsEpsilon( dot( 2, -0.5 ), epsilon ) );
+  } );
 })();

@@ -1,7 +1,7 @@
 // Copyright 2002-2014, University of Colorado Boulder
 
 require.config( {
-  deps: [ 'main', 'PHET_CORE/main' ],
+  deps: [ 'main', 'PHET_CORE/main', 'AXON/main' ],
 
   paths: {
     underscore: '../../sherpa/lodash-2.4.1',
