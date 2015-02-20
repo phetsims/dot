@@ -25,10 +25,10 @@ define( function( require ) {
     this.entries = new Float32Array( 16 );
 
     this.rowMajor(
-      v00 === undefined ? 1 : v00, v01 || 0, v02 || 0, v03 || 0,
-      v10 || 0, v11 === undefined ? 1 : v11, v12 || 0, v13 || 0,
-      v20 || 0, v21 || 0, v22 === undefined ? 1 : v22, v23 || 0,
-      v30 || 0, v31 || 0, v32 || 0, v33 === undefined ? 1 : v33,
+      v00 !== undefined ? v00 : 1, v01 !== undefined ? v01 : 0, v02 !== undefined ? v02 : 0, v03 !== undefined ? v03 : 0,
+      v10 !== undefined ? v10 : 0, v11 !== undefined ? v11 : 1, v12 !== undefined ? v12 : 0, v13 !== undefined ? v13 : 0,
+      v20 !== undefined ? v20 : 0, v21 !== undefined ? v21 : 0, v22 !== undefined ? v22 : 1, v23 !== undefined ? v23 : 0,
+      v30 !== undefined ? v30 : 0, v31 !== undefined ? v31 : 0, v32 !== undefined ? v32 : 0, v33 !== undefined ? v33 : 1,
       type );
   };
   var Matrix4 = dot.Matrix4;

@@ -18,8 +18,8 @@ define( function( require ) {
 
   dot.Vector2 = function Vector2( x, y ) {
     // allow optional parameters
-    this.x = x || 0;
-    this.y = y || 0;
+    this.x = x !== undefined ? x : 0;
+    this.y = y !== undefined ? y : 0;
 
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );

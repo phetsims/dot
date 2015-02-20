@@ -40,11 +40,6 @@ define( function( require ) {
     // entries stored in column-major format
     this.entries = createIdentityArray();
 
-//    this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0,
-//        v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
-//        v20 || 0, v21 || 0, v22 === undefined ? 1 : v22,
-//      type );
-
     phetAllocation && phetAllocation( 'Matrix3' );
     this.type = Types.IDENTITY;
   };

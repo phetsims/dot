@@ -51,8 +51,8 @@ define( function( require ) {
     },
 
     toBounds: function( x, y ) {
-      x = x || 0;
-      y = y || 0;
+      x = x !== undefined ? x : 0;
+      y = y !== undefined ? y : 0;
       return new dot.Bounds2( x, y, this.width + x, this.height + y );
     },
 

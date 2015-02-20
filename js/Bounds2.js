@@ -180,7 +180,7 @@ define( function( require ) {
     },
 
     equalsEpsilon: function( other, epsilon ) {
-      epsilon = epsilon || 0;
+      epsilon = epsilon !== undefined ? epsilon : 0;
       var thisFinite = this.isFinite();
       var otherFinite = other.isFinite();
       if ( thisFinite && otherFinite ) {

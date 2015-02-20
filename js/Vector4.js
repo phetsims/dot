@@ -19,9 +19,9 @@ define( function( require ) {
 
   dot.Vector4 = function Vector4( x, y, z, w ) {
     // allow optional parameters
-    this.x = x || 0;
-    this.y = y || 0;
-    this.z = z || 0;
+    this.x = x !== undefined ? x : 0;
+    this.y = y !== undefined ? y : 0;
+    this.z = z !== undefined ? z : 0;
     this.w = w !== undefined ? w : 1; // since w could be zero!
   };
   var Vector4 = dot.Vector4;
@@ -239,9 +239,9 @@ define( function( require ) {
    * Immutable Vector form
    *----------------------------------------------------------------------------*/
   Vector4.Immutable = function( x, y, z, w ) {
-    this.x = x || 0;
-    this.y = y || 0;
-    this.z = z || 0;
+    this.x = x !== undefined ? x : 0;
+    this.y = y !== undefined ? y : 0;
+    this.z = z !== undefined ? z : 0;
     this.w = w !== undefined ? w : 1;
   };
   var Immutable = Vector4.Immutable;

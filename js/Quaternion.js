@@ -31,9 +31,9 @@ define( function( require ) {
     isQuaternion: true,
 
     setXYZW: function( x, y, z, w ) {
-      this.x = x || 0;
-      this.y = y || 0;
-      this.z = z || 0;
+      this.x = x !== undefined ? x : 0;
+      this.y = y !== undefined ? y : 0;
+      this.z = z !== undefined ? z : 0;
       this.w = w !== undefined ? w : 1;
     },
 
