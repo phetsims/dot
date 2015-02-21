@@ -844,6 +844,20 @@ define( function( require ) {
       }
     },
 
+    setTo32Bit: function() {
+      if ( window.Float32Array ) {
+        this.entries = new window.Float32Array( this.entries );
+      }
+      return this;
+    },
+
+    setTo64Bit: function() {
+      if ( window.Float64Array ) {
+        this.entries = new window.Float64Array( this.entries );
+      }
+      return this;
+    },
+
     /*---------------------------------------------------------------------------*
      * Mutable operations (changes the parameter)
      *----------------------------------------------------------------------------*/
