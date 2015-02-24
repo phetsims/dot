@@ -529,5 +529,18 @@ define( function( require ) {
   Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
   Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
 
+  function catchImmutableSetterLowHangingFruit( bounds ) {
+    bounds.setMinMax = function() { throw new Error( 'Attempt to set \"setMinMax\" of an immutable Bounds2 object' ); };
+    bounds.set = function() { throw new Error( 'Attempt to set \"set\" of an immutable Bounds2 object' ); };
+    bounds.includeBounds = function() { throw new Error( 'Attempt to set \"includeBounds\" of an immutable Bounds2 object' ); };
+    bounds.constrainBounds = function() { throw new Error( 'Attempt to set \"constrainBounds\" of an immutable Bounds2 object' ); };
+    bounds.addCoordinates = function() { throw new Error( 'Attempt to set \"addCoordinates\" of an immutable Bounds2 object' ); };
+    bounds.transform = function() { throw new Error( 'Attempt to set \"transform\" of an immutable Bounds2 object' ); };
+  }
+  if ( assert ) {
+    catchImmutableSetterLowHangingFruit( Bounds2.EVERYTHING );
+    catchImmutableSetterLowHangingFruit( Bounds2.NOTHING );
+  }
+
   return Bounds2;
 } );
