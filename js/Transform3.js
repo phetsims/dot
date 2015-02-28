@@ -108,7 +108,8 @@ define( function( require ) {
      * @param {Matrix3} matrix
      */
     prependTranslation: function( x, y ) {
-      assert && assert( typeof x === 'number' && typeof y === 'number' && isFinite( x ) && isFinite( y ) );
+      assert && assert( typeof x === 'number' && typeof y === 'number' && isFinite( x ) && isFinite( y ),
+        'Attempted to prepend non-finite or non-number (x,y) to the transform' );
 
       this.matrix.prependTranslation( x, y );
 
