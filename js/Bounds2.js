@@ -100,8 +100,16 @@ define( function( require ) {
     getRightBottom: function() { return new dot.Vector2( this.maxX, this.maxY ); },
     get rightBottom() { return this.getRightBottom(); },
 
+    /**
+     * @returns Whether we have negative width or height. Bounds2.NOTHING is a prime example of an empty Bounds2.
+     *          Bounds with width === height === 0 are considered not empty, since they include the single (0,0) point.
+     */
     isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0; },
 
+    /**
+     * @returns Whether our minimums and maximums are all finite numbers. This will exclude Bounds2.NOTHING and
+     *          Bounds2.EVERYTHING
+     */
     isFinite: function() {
       return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.maxX ) && isFinite( this.maxY );
     },
@@ -525,9 +533,15 @@ define( function( require ) {
     }
   } );
 
-  // specific bounds useful for operations
-  Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
+  // A constant Bounds2 with min: Infinity, max: -Infinity that represents "no bounds whatsoever".
+  // This allows us to union (union()/includeBounds()) any other Bounds2 with NOTHING and get the original Bounds2 back.
+  // Additionally, intersections with NOTHING will always return a Bounds2 equivalent to NOTHING.
   Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
+
+  // A constant Bounds2 with min: -Infinity, max: Infinity that represents "all bounds".
+  // This allows us to intersect (intersection()/constrainBounds()) any bounds with EVERYTHING and get the original
+  // Bounds2 back. Additionally, unions will always return a Bounds2 equivalent to EVERYTHING.
+  Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
   function catchImmutableSetterLowHangingFruit( bounds ) {
     bounds.setMinMax = function() { throw new Error( 'Attempt to set \"setMinMax\" of an immutable Bounds2 object' ); };
