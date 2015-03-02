@@ -2,7 +2,7 @@
   "name": "dot",
   "version": "0.0.0",
   "license": "MIT",
-  "phetLibs": "sherpa chipper axon assert phet-core dot",
+  "phetLibs": "dot assert axon chipper phet-core sherpa",
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/dot.git"
