@@ -1,16 +1,13 @@
-Dot - PhET's Math Library
-=========================
+dot
+=====
 
-See the website with documentation and examples at http://phetsims.github.io/dot/
+A math library with a focus on mutable and immutable linear algebra for 2D and 3D applications.
 
 By PhET Interactive Simulations
 http://phet.colorado.edu/
 
-NOTE: This repository has dependencies on other repositories. Those repositories
-much be checked out as siblings to this repository in your directory structure.
+### Documentation
+See the website with documentation and examples at http://phetsims.github.io/dot/
 
-Third-Party Dependencies
-=============
-
-This repository uses third-party libraries.
-Those libraries and their licenses are available in: https://github.com/phetsims/sherpa.
+### License
+See the [license](LICENSE)
