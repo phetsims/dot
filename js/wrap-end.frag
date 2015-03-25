@@ -1,1 +1,1 @@
- window.dot = require( 'main' ); window.core = require( 'PHET_CORE/main' ); }());
+ window.dot = require( 'main' ); window.phetCore = require( 'PHET_CORE/main' ); }());

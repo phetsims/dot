@@ -41,9 +41,9 @@
 <script src="../../../sherpa/qunit-1.14.0.js"></script>
 <script>
   require( [ 'config' ], function() {
-    require( [ 'main', 'PHET_CORE/main' ], function( dot, core ) {
+    require( [ 'main', 'PHET_CORE/main' ], function( dot, phetCore ) {
       window.dot = dot;
-      window.core = core;
+      window.phetCore = phetCore;
 
       runDotTests( '.' );
       runPhetCoreTests( '../../../phet-core/tests/qunit' );

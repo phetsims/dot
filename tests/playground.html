@@ -22,9 +22,9 @@
   window.assertions.enableAssertSlow();
 
   require( [ 'config' ], function() {
-    require( [ 'main', 'PHET_CORE/main' ], function( dot, core ) {
+    require( [ 'main', 'PHET_CORE/main' ], function( dot, phetCore ) {
       window.dot = dot;
-      window.core = core;
+      window.phetCore = phetCore;
 
       console.log( 'loaded' );
     } );
