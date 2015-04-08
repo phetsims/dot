@@ -2,6 +2,7 @@
 
 define( [
   'DOT/dot',
+  'DOT/BinPacker',
   'DOT/Bounds2',
   'DOT/Bounds3',
   'DOT/Complex',
