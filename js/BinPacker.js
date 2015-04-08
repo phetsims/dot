@@ -34,6 +34,8 @@ define( function( require ) {
      *
      * @param {number} width
      * @param {number} height
+     *
+     * @returns {Bin | null}
      */
     allocate: function( width, height ) {
       // find a leaf bin that has available room (or null)
