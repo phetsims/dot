@@ -145,6 +145,18 @@
     bins.push( p.allocate( 0.020921604009345174, 0.272700310839961 ) );
 
     checkNoOverlappingBins( bins, bounds );
+
+    // remove all bins
+    for ( var i = 0; i < bins.length; i ++ ) {
+      if ( bins[i] ) {
+        p.deallocate( bins[i] );
+        bins[i] = null;
+      }
+    }
+
+    // once empty, ensure we can allocate the full thing
+    var fullBin = p.allocate( 1, 1 );
+    ok( fullBin, 'Allocation of full bin' );
   } );
 
 })();
