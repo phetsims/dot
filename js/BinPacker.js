@@ -30,7 +30,7 @@ define( function( require ) {
 
   inherit( Object, dot.BinPacker, {
     /**
-     * Allocates a region with the specified width and height if possible (returning a {Bin}), otherwise returns null.
+     * Allocates a bin with the specified width and height if possible (returning a {Bin}), otherwise returns null.
      *
      * @param {number} width
      * @param {number} height
@@ -53,11 +53,16 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Deallocates a bin, so that its area can be reused by future allocations.
+     *
+     * @param {Bin} bin - The bin that was returned from allocate().
+     */
     deallocate: function( bin ) {
       bin.unuse();
     },
 
-    // for debugging purposes
+    // @private, for debugging purposes
     toString: function() {
       var result = '';
 
@@ -81,16 +86,17 @@ define( function( require ) {
    * @param {Bounds2} bounds
    */
   dot.BinPacker.Bin = function Bin( bounds, parent ) {
-    this.bounds = bounds; // {Bounds2} our containing bounds
-    this.parent = parent; // {Bin || null} parent bin, if applicable
+    this.bounds = bounds; // @public {Bounds2} our containing bounds
+    this.parent = parent; // @private {Bin || null} parent bin, if applicable
 
-    this.isSplit = false; // {boolean} whether our children are responsible for our area
-    this.isUsed = false; // {boolean} whether we are marked as a bin that is used
-    this.children = []; // {Array.<Bin>}
+    this.isSplit = false; // @private {boolean} whether our children are responsible for our area
+    this.isUsed = false; // @private {boolean} whether we are marked as a bin that is used
+    this.children = []; // @private {Array.<Bin>}
   };
   inherit( Object, dot.BinPacker.Bin, {
 
     /**
+     * @private
      * Finds an unused bin with open area that is at least width-x-height in size.
      *
      * @param {number} width
@@ -126,6 +132,7 @@ define( function( require ) {
     },
 
     /**
+     * @private
      * Splits this bin into multiple child bins, and returns the child with the dimensions (width,height).
      *
      * @param {number} width
@@ -185,6 +192,7 @@ define( function( require ) {
     },
 
     /**
+     * @private
      * Mark this bin as used.
      */
     use: function() {
@@ -194,6 +202,10 @@ define( function( require ) {
       this.isUsed = true;
     },
 
+    /**
+     * @private
+     * Mark this bin as not used, and attempt to collapse split parents if all children are unused.
+     */
     unuse: function() {
       assert && assert( this.isUsed, 'Can only unuse a used instance' );
 
@@ -202,6 +214,12 @@ define( function( require ) {
       this.parent && this.parent.attemptToCollapse();
     },
 
+    /**
+     * @private
+     * If our bin can be collapsed (it is split and has children that are not used AND not split), then we will become
+     * not split, and will remove our children. If successful, it will also call this on our parent, fully attempting
+     * to clean up unused data structures.
+     */
     attemptToCollapse: function() {
       assert && assert( this.isSplit, 'Should only attempt to collapse split bins' );
 
@@ -223,7 +241,7 @@ define( function( require ) {
       this.parent && this.parent.attemptToCollapse();
     },
 
-    // for debugging purposes
+    // @private for debugging purposes
     toString: function() {
       return this.bounds.toString() + ( this.isUsed ? ' used' : '' );
     }
