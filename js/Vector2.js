@@ -301,8 +301,11 @@ define( function( require ) {
 
     setPolar: function( magnitude, angle ) {
       return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
-    }
+    },
 
+    toJSON: function(){
+      return { x: this.x, y: this.y };
+    }
   };
 
   Poolable.mixin( Vector2, {
@@ -345,6 +348,11 @@ define( function( require ) {
   Vector2.ZERO = new Immutable( 0, 0 );
   Vector2.X_UNIT = new Immutable( 1, 0 );
   Vector2.Y_UNIT = new Immutable( 0, 1 );
+
+  // support for deserialization
+  Vector2.fromJSON = function( json ){
+    return new Vector2( json.x, json.y );
+  };
 
   return Vector2;
 } );
