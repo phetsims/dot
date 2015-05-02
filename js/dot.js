@@ -6,9 +6,6 @@ define( function( require ) {
   // object allocation tracking
   window.phetAllocation = require( 'PHET_CORE/phetAllocation' );
 
-  // workaround for Axon, since it needs window.arch to be defined
-  window.arch = window.arch || null;
-
   var dot = function dot() {
     switch( arguments.length ) {
       case 2:
