@@ -303,7 +303,7 @@ define( function( require ) {
       return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
     },
 
-    toJSON: function(){
+    toStateObject: function() {
       return { x: this.x, y: this.y };
     }
   };
@@ -350,7 +350,7 @@ define( function( require ) {
   Vector2.Y_UNIT = new Immutable( 0, 1 );
 
   // support for deserialization
-  Vector2.fromJSON = function( json ){
+  Vector2.fromStateObject = function( json ) {
     return new Vector2( json.x, json.y );
   };
 
