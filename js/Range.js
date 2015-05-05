@@ -66,6 +66,15 @@ define( function( require ) {
 
     toString: function() {
       return "[Range (min:" + this.min + " max:" + this.max + " defaultValue:" + this.defaultValue + ")]";
+    },
+
+    /**
+     * Constrains a value to the range.
+     * @param {number} value
+     * @returns {number}
+     */
+    constrainValue: function( value ) {
+      return Math.min( Math.max( value, this.min ), this.max );
     }
   };
 
