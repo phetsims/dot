@@ -303,6 +303,7 @@ define( function( require ) {
       return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
     },
 
+    // support for serialization
     toStateObject: function() {
       return { x: this.x, y: this.y };
     }
