@@ -17,9 +17,8 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
+  var Vector2 = require( 'DOT/Vector2' );
   var Poolable = require( 'PHET_CORE/Poolable' );
-
-  require( 'DOT/Vector2' );
 
   //Temporary instances to be used in the transform method.
   var scratchVector2 = new dot.Vector2();
@@ -120,6 +119,23 @@ define( function( require ) {
 
     isValid: function() {
       return !this.isEmpty() && this.isFinite();
+    },
+
+    /**
+     * Returns (1) the same location if the location is within the bounds
+     * or (2) a location on the edge of the bounds if the location is outside the bounds
+     * @param {Vector2} location
+     * @returns {Vector2}
+     */
+    closestPointTo: function( location ) {
+      if ( this.containsCoordinates( location.x, location.y ) ) {
+        return location;
+      }
+      else {
+        var xConstrained = Math.max( Math.min( location.x, this.maxX ), this.x );
+        var yConstrained = Math.max( Math.min( location.y, this.maxY ), this.y );
+        return new Vector2( xConstrained, yConstrained );
+      }
     },
 
     // whether the coordinates are inside the bounding box (or on the boundary)
