@@ -75,6 +75,10 @@ define( function( require ) {
      */
     constrainValue: function( value ) {
       return Math.min( Math.max( value, this.min ), this.max );
+    },
+
+    equals: function( other ) {
+      return this.min === other.min && this.max === other.max && this.defaultValue === this.defaultValue;
     }
   };
 
