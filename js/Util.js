@@ -81,6 +81,7 @@ define( function( require ) {
     },
 
     // intersection between the line from p1-p2 and the line from p3-p4
+    // Taken from an answer in http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
     lineLineIntersection: function( p1, p2, p3, p4 ) {
       var x12 = p1.x - p2.x;
       var x34 = p3.x - p4.x;
