@@ -267,8 +267,9 @@ define( function( require ) {
     },
 
     /*
-     * Computes the intersection of two line segments. Algorithm taked from Paul Bourke, 1989:
-     * http://astronomy.swin.edu.au/~pbourke/geometry/lineline2d/
+     * Computes the intersection of two line segments. Algorithm taken from Paul Bourke, 1989:
+     * http://paulbourke.net/geometry/pointlineplane/
+     * http://paulbourke.net/geometry/pointlineplane/pdb.c
      * Ported from MathUtil.java on 9/20/2013 by @samreid
      * line a goes from point 1->2 and line b goes from 3->4
      * @returns a Vector2 of the intersection point, or null if no intersection
