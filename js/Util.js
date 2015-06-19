@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
 
 /**
  * Utility functions for Dot, placed into the dot.X namespace.
@@ -11,6 +11,15 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
   // require( 'DOT/Vector2' ); // Require.js doesn't like the circular reference
+
+  // constants
+  var EPSILON = Number.MIN_VALUE;
+  var TWO_PI = 2 * Math.PI;
+
+  // "static" variables used in boxMullerTransform
+  var generate;
+  var z0;
+  var z1;
 
   dot.Util = {
     testAssert: function() {
@@ -344,8 +353,40 @@ define( function( require ) {
 
     log10: function( val ) {
       return Math.log( val ) / Math.LN10;
+    },
+
+    /**
+     * Generates a random Gaussian sample with the given mean and standard deviation.
+     * This method relies on the "static" variables generate, z0, and z1 defined above.
+     * Random.js is the primary client of this function, but it is defined here so it can be
+     * used other places more easily if need be.
+     * Code inspired by example here: https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform.
+     *
+     * @param mu the mean of the Gaussian
+     * @param sigma the standard deviation of the Gaussian
+     * @returns {number}
+     */
+    boxMullerTransform: function( mu, sigma ) {
+      generate = !generate;
+
+      if ( !generate ) {
+        return z1 * sigma + mu;
+      }
+
+      var u1;
+      var u2;
+      do {
+        u1 = Math.random();
+        u2 = Math.random();
+      }
+      while ( u1 <= EPSILON );
+
+      z0 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.cos( TWO_PI * u2 );
+      z1 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.sin( TWO_PI * u2 );
+      return z0 * sigma + mu;
     }
   };
+
   var Util = dot.Util;
 
   // make these available in the main namespace directly (for now)
@@ -363,6 +404,7 @@ define( function( require ) {
   dot.solveCubicRootsReal = Util.solveCubicRootsReal;
   dot.cubeRoot = Util.cubeRoot;
   dot.linear = Util.linear;
+  dot.boxMullerTransform = Util.boxMullerTransform;
 
   return Util;
 } );
