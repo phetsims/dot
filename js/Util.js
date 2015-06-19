@@ -253,13 +253,25 @@ define( function( require ) {
     },
 
     /**
+     * Rounds using "Round half away from zero" algorithm. See dot#35.
+     *
+     * JavaScript's Math.round is not symmetric for positive and negative numbers, it uses IEEE 754 "Round half up".
+     * See https://en.wikipedia.org/wiki/Rounding#Round_half_up.
+     * For sims, we want to treat positive and negative values symmetrically, which is IEEE 754 "Round half away from zero",
+     * See https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    roundSymmetric: function( value ) {
+      return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) );
+    },
+
+    /**
      * A predictable implementation of toFixed.
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
-     *
-     * This is the IEEE 754 "Round half away from zero" algorithm, see
-     * https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero
-     * It treats positive and negative values symmetrically, which is desirable for sims (see dot#35).
+     * Rounding is symmetric for positive and negative values, see Util.roundSymmetric.
      *
      * @param {number} number
      * @param {number} decimalPlaces
@@ -267,8 +279,7 @@ define( function( require ) {
      */
     toFixed: function( number, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
-      var value = Math.round( Math.abs( number ) * multiplier ) / multiplier;
-      if ( number < 0 ) { value *= -1; }
+      var value = Util.roundSymmetric( number * multiplier ) / multiplier;
       return value.toFixed( decimalPlaces );
     },
 
