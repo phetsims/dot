@@ -256,13 +256,19 @@ define( function( require ) {
      * A predictable implementation of toFixed.
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
+     *
+     * This is the IEEE 754 "Round half away from zero" algorithm, see
+     * https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero
+     * It treats positive and negative values symmetrically, which is desirable for sims (see dot#35).
+     *
      * @param {number} number
      * @param {number} decimalPlaces
      * @returns {string}
      */
     toFixed: function( number, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
-      var value = Math.round( number * multiplier ) / multiplier;
+      var value = Math.round( Math.abs( number ) * multiplier ) / multiplier;
+      if ( number < 0 ) { value *= -1; }
       return value.toFixed( decimalPlaces );
     },
 
