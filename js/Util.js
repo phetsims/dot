@@ -279,8 +279,8 @@ define( function( require ) {
      */
     toFixed: function( value, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
-      var value = Util.roundSymmetric( value * multiplier ) / multiplier;
-      return value.toFixed( decimalPlaces );
+      var newValue = Util.roundSymmetric( value * multiplier ) / multiplier;
+      return newValue.toFixed( decimalPlaces );
     },
 
     // Convenience for returning a number instead of a string.
