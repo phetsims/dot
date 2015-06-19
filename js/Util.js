@@ -273,19 +273,19 @@ define( function( require ) {
      * because the spec doesn't specify whether to round or floor.
      * Rounding is symmetric for positive and negative values, see Util.roundSymmetric.
      *
-     * @param {number} number
+     * @param {number} value
      * @param {number} decimalPlaces
      * @returns {string}
      */
-    toFixed: function( number, decimalPlaces ) {
+    toFixed: function( value, decimalPlaces ) {
       var multiplier = Math.pow( 10, decimalPlaces );
-      var value = Util.roundSymmetric( number * multiplier ) / multiplier;
+      var value = Util.roundSymmetric( value * multiplier ) / multiplier;
       return value.toFixed( decimalPlaces );
     },
 
     // Convenience for returning a number instead of a string.
-    toFixedNumber: function( number, decimalPlaces ) {
-      return parseFloat( Util.toFixed( number, decimalPlaces ) );
+    toFixedNumber: function( value, decimalPlaces ) {
+      return parseFloat( Util.toFixed( value, decimalPlaces ) );
     },
 
     isInteger: function( n ) {
