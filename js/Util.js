@@ -259,8 +259,9 @@ define( function( require ) {
      * See https://en.wikipedia.org/wiki/Rounding#Round_half_up.
      * For sims, we want to treat positive and negative values symmetrically, which is IEEE 754 "Round half away from zero",
      * See https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero
+     * Note that -0 is rounded to 0, since we typically do not want to display -0 in sims.
      *
-     * @param {number} value
+     * @param {number} value                               `
      * @returns {number}
      */
     roundSymmetric: function( value ) {
