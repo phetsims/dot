@@ -36,8 +36,8 @@ define( function( require ) {
       return this;
     },
 
-    setHeight: function( width ) {
-      this.width = width;
+    setHeight: function( height ) {
+      this.height = height;
       return this;
     },
 
