@@ -94,10 +94,6 @@ define( function( require ) {
       return this.equals( value );
     },
 
-    // we are not storing a separate value field (_value), so we leave this blank
-    storeValue: function( value ) {
-    },
-
     // to prevent a user from modifying the passed in initial value, we store the x/y here
     storeInitialValue: function( value ) {
       this._initial00 = value.m00();
