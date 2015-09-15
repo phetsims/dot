@@ -11,11 +11,11 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  dot.Ray2 = function Ray2( pos, dir ) {
-    this.pos = pos;
-    this.dir = dir;
+  dot.Ray2 = function Ray2( position, direction ) {
+    this.position = position;
+    this.direction = direction;
 
-    assert && assert( Math.abs( dir.magnitude() - 1 ) < 0.01 );
+    assert && assert( Math.abs( direction.magnitude() - 1 ) < 0.01 );
 
     phetAllocation && phetAllocation( 'Ray2' );
   };
@@ -25,15 +25,15 @@ define( function( require ) {
     constructor: Ray2,
 
     shifted: function( distance ) {
-      return new Ray2( this.pointAtDistance( distance ), this.dir );
+      return new Ray2( this.pointAtDistance( distance ), this.direction );
     },
 
     pointAtDistance: function( distance ) {
-      return this.pos.plus( this.dir.timesScalar( distance ) );
+      return this.position.plus( this.direction.timesScalar( distance ) );
     },
 
     toString: function() {
-      return this.pos.toString() + " => " + this.dir.toString();
+      return this.position.toString() + " => " + this.direction.toString();
     }
   };
 

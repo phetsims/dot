@@ -116,8 +116,8 @@ define( function( require ) {
       // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
       var center = new dot.Vector3();
 
-      var rayDir = ray.dir;
-      var pos = ray.pos;
+      var rayDir = ray.direction;
+      var pos = ray.position;
       var centerToRay = pos.minus( center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)

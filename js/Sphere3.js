@@ -35,8 +35,8 @@ define( function( require ) {
      * @returns An intersection result { distance, hitPoint, normal, fromOutside }, or null if the sphere is behind the ray
      */
     intersect: function( ray, epsilon ) {
-      var raydir = ray.dir;
-      var pos = ray.pos;
+      var raydir = ray.direction;
+      var pos = ray.position;
       var centerToRay = pos.minus( this.center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
@@ -97,8 +97,8 @@ define( function( require ) {
      *          the "proper" intersection first, if applicable (closest in front of the ray).
      */
     intersections: function( ray, epsilon ) {
-      var raydir = ray.dir;
-      var pos = ray.pos;
+      var raydir = ray.direction;
+      var pos = ray.position;
       var centerToRay = pos.minus( this.center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)

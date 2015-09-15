@@ -258,7 +258,7 @@ define( function( require ) {
     },
 
     transformRay2: function( ray ) {
-      return new dot.Ray2( this.transformPosition2( ray.pos ), this.transformDelta2( ray.dir ).normalized() );
+      return new dot.Ray2( this.transformPosition2( ray.position ), this.transformDelta2( ray.direction ).normalized() );
     },
 
     /*---------------------------------------------------------------------------*
@@ -314,7 +314,7 @@ define( function( require ) {
     },
 
     inverseRay2: function( ray ) {
-      return new dot.Ray2( this.inversePosition2( ray.pos ), this.inverseDelta2( ray.dir ).normalized() );
+      return new dot.Ray2( this.inversePosition2( ray.position ), this.inverseDelta2( ray.direction ).normalized() );
     }
   } );
 
