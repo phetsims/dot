@@ -351,8 +351,8 @@ define( function( require ) {
   Vector2.Y_UNIT = new Immutable( 0, 1 );
 
   // support for deserialization
-  Vector2.fromStateObject = function( json ) {
-    return new Vector2( json.x, json.y );
+  Vector2.fromStateObject = function( stateObject ) {
+    return new Vector2( stateObject.x, stateObject.y );
   };
 
   return Vector2;
