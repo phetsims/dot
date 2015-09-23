@@ -23,8 +23,8 @@ define( function( require ) {
     this._oldValue = this.copy();
     Property.call( this, this );
 
-    this._initialX = value.x;
-    this._initialY = value.y;
+    this._initialX = x;
+    this._initialY = y;
   };
   var ObservableVector2 = dot.ObservableVector2;
 

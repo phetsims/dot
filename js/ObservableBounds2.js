@@ -22,10 +22,10 @@ define( function( require ) {
 
     this._oldValue = this.copy();
     Property.call( this, this );
-    this._initialMinX = value.minX;
-    this._initialMinY = value.minY;
-    this._initialMaxX = value.maxX;
-    this._initialMaxY = value.maxY;
+    this._initialMinX = minX;
+    this._initialMinY = minY;
+    this._initialMaxX = maxX;
+    this._initialMaxY = maxY;
   };
   var ObservableBounds2 = dot.ObservableBounds2;
 
