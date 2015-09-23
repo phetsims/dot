@@ -22,6 +22,10 @@ define( function( require ) {
 
     this._oldValue = this.copy();
     Property.call( this, this );
+    this._initialMinX = value.minX;
+    this._initialMinY = value.minY;
+    this._initialMaxX = value.maxX;
+    this._initialMaxY = value.maxY;
   };
   var ObservableBounds2 = dot.ObservableBounds2;
 
@@ -85,14 +89,6 @@ define( function( require ) {
     // override with vector equality instead of instance equality
     equalsValue: function( value ) {
       return this.equals( value );
-    },
-
-    // to prevent a user from modifying the passed in initial value, we store the x/y here
-    storeInitialValue: function( value ) {
-      this._initialMinX = value.minX;
-      this._initialMinY = value.minY;
-      this._initialMaxX = value.maxX;
-      this._initialMaxY = value.maxY;
     },
 
     reset: function() {

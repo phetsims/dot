@@ -23,6 +23,17 @@ define( function( require ) {
     this._oldValue = this.copy();
     this._skipChecks = false;
     Property.call( this, this );
+
+    this._initial00 = value.m00();
+    this._initial01 = value.m01();
+    this._initial02 = value.m02();
+    this._initial10 = value.m10();
+    this._initial11 = value.m11();
+    this._initial12 = value.m12();
+    this._initial20 = value.m20();
+    this._initial21 = value.m21();
+    this._initial22 = value.m22();
+    this._initialType = value.type;
   };
   var ObservableMatrix3 = dot.ObservableMatrix3;
 
@@ -92,20 +103,6 @@ define( function( require ) {
     // override with vector equality instead of instance equality
     equalsValue: function( value ) {
       return this.equals( value );
-    },
-
-    // to prevent a user from modifying the passed in initial value, we store the x/y here
-    storeInitialValue: function( value ) {
-      this._initial00 = value.m00();
-      this._initial01 = value.m01();
-      this._initial02 = value.m02();
-      this._initial10 = value.m10();
-      this._initial11 = value.m11();
-      this._initial12 = value.m12();
-      this._initial20 = value.m20();
-      this._initial21 = value.m21();
-      this._initial22 = value.m22();
-      this._initialType = value.type;
     },
 
     reset: function() {

@@ -22,6 +22,9 @@ define( function( require ) {
 
     this._oldValue = this.copy();
     Property.call( this, this );
+
+    this._initialX = value.x;
+    this._initialY = value.y;
   };
   var ObservableVector2 = dot.ObservableVector2;
 
@@ -65,12 +68,6 @@ define( function( require ) {
     // override with vector equality instead of instance equality
     equalsValue: function( value ) {
       return this.equals( value );
-    },
-
-    // to prevent a user from modifying the passed in initial value, we store the x/y here
-    storeInitialValue: function( value ) {
-      this._initialX = value.x;
-      this._initialY = value.y;
     },
 
     reset: function() {
