@@ -208,32 +208,4 @@
       }
     } );
   } );
-
-  test( 'Re-entrant ObservableBounds2', function() {
-    var b = new dot.ObservableBounds2( 0, 0, 5, 5 );
-    b.link( function( n, o ) {
-      if ( o !== null ) {
-        equal( n.minX, o.minX + 1 );
-      }
-    } );
-    b.link( function( n ) {
-      if ( n.minX < 10 ) {
-        n.shift( 1, 1 );
-      }
-    } );
-  } );
-
-  test( 'Re-entrant ObservableMatrix3', function() {
-    var m = new dot.ObservableMatrix3();
-    m.link( function( n, o ) {
-      if ( o !== null ) {
-        equal( n.m00(), o.m00() + 1 );
-      }
-    } );
-    m.link( function( n ) {
-      if ( n.m00() < 10 ) {
-        n.add( dot.Matrix3.IDENTITY );
-      }
-    } );
-  } );
 })();
