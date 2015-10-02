@@ -320,7 +320,7 @@ define( function( require ) {
       if ( matrixOrScalar.isMatrix ) {
         matrix = matrixOrScalar;
         if ( matrix.m !== this.n ) {
-          throw new Error( "Matrix inner dimensions must agree." );
+          throw new Error( 'Matrix inner dimensions must agree.' );
         }
         result = new Matrix( this.m, matrix.n );
         var matrixcolj = new Float32Array( this.n );
@@ -395,18 +395,18 @@ define( function( require ) {
 
     checkMatrixDimensions: function( matrix ) {
       if ( matrix.m !== this.m || matrix.n !== this.n ) {
-        throw new Error( "Matrix dimensions must agree." );
+        throw new Error( 'Matrix dimensions must agree.' );
       }
     },
 
     toString: function() {
-      var result = "";
-      result += "dim: " + this.getRowDimension() + "x" + this.getColumnDimension() + "\n";
+      var result = '';
+      result += 'dim: ' + this.getRowDimension() + 'x' + this.getColumnDimension() + '\n';
       for ( var row = 0; row < this.getRowDimension(); row++ ) {
         for ( var col = 0; col < this.getColumnDimension(); col++ ) {
-          result += this.get( row, col ) + " ";
+          result += this.get( row, col ) + ' ';
         }
-        result += "\n";
+        result += '\n';
       }
       return result;
     },
@@ -483,7 +483,7 @@ define( function( require ) {
       return Matrix.rowVector4( vector );
     }
     else {
-      throw new Error( "undetected type of vector: " + vector.toString() );
+      throw new Error( 'undetected type of vector: ' + vector.toString() );
     }
   };
 
@@ -510,7 +510,7 @@ define( function( require ) {
       return Matrix.columnVector4( vector );
     }
     else {
-      throw new Error( "undetected type of vector: " + vector.toString() );
+      throw new Error( 'undetected type of vector: ' + vector.toString() );
     }
   };
 

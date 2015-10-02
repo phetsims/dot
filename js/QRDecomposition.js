@@ -136,10 +136,10 @@ define( function( require ) {
 
     solve: function( matrix ) {
       if ( matrix.getRowDimension() !== this.m ) {
-        throw new Error( "Matrix row dimensions must agree." );
+        throw new Error( 'Matrix row dimensions must agree.' );
       }
       if ( !this.isFullRank() ) {
-        throw new Error( "Matrix is rank deficient." );
+        throw new Error( 'Matrix is rank deficient.' );
       }
 
       var i, j, k;

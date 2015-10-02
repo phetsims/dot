@@ -95,7 +95,7 @@ define( function( require ) {
     normalized: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
-        throw new Error( "Cannot normalize a zero-magnitude vector" );
+        throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
       else {
         return new Vector3( this.x / mag, this.y / mag, this.z / mag );
@@ -159,7 +159,7 @@ define( function( require ) {
     },
 
     toString: function() {
-      return "Vector3(" + this.x + ", " + this.y + ", " + this.z + ")";
+      return 'Vector3(' + this.x + ', ' + this.y + ', ' + this.z + ')';
     },
 
     toVector2: function() {
@@ -245,7 +245,7 @@ define( function( require ) {
     normalize: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
-        throw new Error( "Cannot normalize a zero-magnitude vector" );
+        throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
       else {
         return this.divideScalar( mag );
@@ -282,7 +282,7 @@ define( function( require ) {
   // throw errors whenever a mutable method is called on our immutable vector
   Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
     Immutable.prototype[ mutableFunctionName ] = function() {
-      throw new Error( "Cannot call mutable method '" + mutableFunctionName + "' on immutable Vector3" );
+      throw new Error( 'Cannot call mutable method \'' + mutableFunctionName + '\' on immutable Vector3' );
     };
   };
 

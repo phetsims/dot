@@ -34,7 +34,7 @@ define( function( require ) {
     },
 
     toString: function() {
-      return this.pos.toString() + " => " + this.dir.toString();
+      return this.pos.toString() + ' => ' + this.dir.toString();
     }
   };
 

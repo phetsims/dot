@@ -524,15 +524,15 @@ define( function( require ) {
     get determinant() { return this.getDeterminant(); },
 
     toString: function() {
-      return this.m00() + " " + this.m01() + " " + this.m02() + " " + this.m03() + "\n" +
-             this.m10() + " " + this.m11() + " " + this.m12() + " " + this.m13() + "\n" +
-             this.m20() + " " + this.m21() + " " + this.m22() + " " + this.m23() + "\n" +
-             this.m30() + " " + this.m31() + " " + this.m32() + " " + this.m33();
+      return this.m00() + ' ' + this.m01() + ' ' + this.m02() + ' ' + this.m03() + '\n' +
+             this.m10() + ' ' + this.m11() + ' ' + this.m12() + ' ' + this.m13() + '\n' +
+             this.m20() + ' ' + this.m21() + ' ' + this.m22() + ' ' + this.m23() + '\n' +
+             this.m30() + ' ' + this.m31() + ' ' + this.m32() + ' ' + this.m33();
     },
 
     makeImmutable: function() {
       this.rowMajor = function() {
-        throw new Error( "Cannot modify immutable matrix" );
+        throw new Error( 'Cannot modify immutable matrix' );
       };
     }
   };

@@ -33,7 +33,7 @@ define( function( require ) {
     },
 
     toString: function() {
-      return this.position.toString() + " => " + this.direction.toString();
+      return this.position.toString() + ' => ' + this.direction.toString();
     }
   };
 

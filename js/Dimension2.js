@@ -22,7 +22,7 @@ define( function( require ) {
     constructor: Dimension2,
 
     toString: function() {
-      return "[" + this.width + "w, " + this.height + "h]";
+      return '[' + this.width + 'w, ' + this.height + 'h]';
     },
 
     set: function( dimension ) {

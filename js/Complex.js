@@ -74,7 +74,7 @@ define( function( require ) {
     },
 
     toString: function() {
-      return "Complex(" + this.x + ", " + this.y + ")";
+      return 'Complex(' + this.x + ', ' + this.y + ')';
     }
   } );
 

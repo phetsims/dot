@@ -155,7 +155,7 @@ define( function( require ) {
 
     det: function() {
       if ( this.m !== this.n ) {
-        throw new Error( "Matrix must be square." );
+        throw new Error( 'Matrix must be square.' );
       }
       var d = this.pivsign;
       for ( var j = 0; j < this.n; j++ ) {
@@ -167,10 +167,10 @@ define( function( require ) {
     solve: function( matrix ) {
       var i, j, k;
       if ( matrix.getRowDimension() !== this.m ) {
-        throw new Error( "Matrix row dimensions must agree." );
+        throw new Error( 'Matrix row dimensions must agree.' );
       }
       if ( !this.isNonsingular() ) {
-        throw new Error( "Matrix is singular." );
+        throw new Error( 'Matrix is singular.' );
       }
 
       // Copy right hand side with pivoting
