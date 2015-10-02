@@ -1,4 +1,5 @@
-//  Copyright 2002-2015, University of Colorado Boulder
+// Copyright 2002-2015, University of Colorado Boulder
+
 /**
  * @author John Blanco
  * @author Mohamed Safi
