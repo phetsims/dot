@@ -11,9 +11,9 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  dot.Ray3 = function Ray3( pos, dir ) {
-    this.pos = pos;
-    this.dir = dir;
+  dot.Ray3 = function Ray3( position, direction ) {
+    this.position = position;
+    this.direction = direction;
   };
   var Ray3 = dot.Ray3;
 
@@ -21,20 +21,20 @@ define( function( require ) {
     constructor: Ray3,
 
     shifted: function( distance ) {
-      return new Ray3( this.pointAtDistance( distance ), this.dir );
+      return new Ray3( this.pointAtDistance( distance ), this.direction );
     },
 
     pointAtDistance: function( distance ) {
-      return this.pos.plus( this.dir.timesScalar( distance ) );
+      return this.position.plus( this.direction.timesScalar( distance ) );
     },
 
     // @param {Plane3} plane
     distanceToPlane: function( plane ) {
-      return ( plane.distance - this.pos.dot( plane.normal ) ) / this.dir.dot( plane.normal );
+      return ( plane.distance - this.position.dot( plane.normal ) ) / this.direction.dot( plane.normal );
     },
 
     toString: function() {
-      return this.pos.toString() + ' => ' + this.dir.toString();
+      return this.position.toString() + ' => ' + this.direction.toString();
     }
   };
 
