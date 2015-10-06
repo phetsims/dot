@@ -14,6 +14,7 @@ define( [
   'DOT/Matrix',
   'DOT/Matrix3',
   'DOT/Matrix4',
+  'DOT/MatrixOps3',
   'DOT/ObservableVector2',
   'DOT/Permutation',
   'DOT/Plane3',
