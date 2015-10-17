@@ -173,7 +173,7 @@ define( function( require ) {
           }
         }
       }
-      return new dot.Matrix( X, this.n, nx ).getMatrix( 0, this.n - 1, 0, nx - 1 );
+      return new dot.Matrix( this.n, nx, X, true ).getMatrix( 0, this.n - 1, 0, nx - 1 );
     }
   };
 
