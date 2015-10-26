@@ -16,7 +16,9 @@ define( function( require ) {
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
   dot.LUDecomposition = function LUDecomposition( matrix ) {
-    var i, j, k;
+    var i;
+    var j;
+    var k;
 
     this.matrix = matrix;
 
@@ -165,7 +167,9 @@ define( function( require ) {
     },
 
     solve: function( matrix ) {
-      var i, j, k;
+      var i;
+      var j;
+      var k;
       if ( matrix.getRowDimension() !== this.m ) {
         throw new Error( 'Matrix row dimensions must agree.' );
       }

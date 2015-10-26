@@ -782,7 +782,9 @@ define( function( require ) {
 
       var epsilon = 0.0001;
 
-      var e, h, f;
+      var e;
+      var h;
+      var f;
 
       var v = start.cross( end );
       e = start.dot( end );
@@ -790,7 +792,9 @@ define( function( require ) {
 
       // if "from" and "to" vectors are nearly parallel
       if ( f > 1.0 - epsilon ) {
-        var c1, c2, c3;
+        var c1;
+        var c2;
+        var c3;
 
         var x = new dot.Vector3(
           ( start.x > 0.0 ) ? start.x : -start.x,
@@ -836,7 +840,11 @@ define( function( require ) {
       }
       else {
         // the most common case, unless "start"="end", or "start"=-"end"
-        var hvx, hvz, hvxy, hvxz, hvyz;
+        var hvx;
+        var hvz;
+        var hvxy;
+        var hvxz;
+        var hvyz;
         h = 1.0 / ( 1.0 + e );
         hvx = h * v.x;
         hvz = h * v.z;

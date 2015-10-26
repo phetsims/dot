@@ -50,8 +50,14 @@ define( function( require ) {
     var wantu = true;
     var wantv = true;
 
-    var i, j, k, t, f;
-    var cs, sn;
+    var i;
+    var j;
+    var k;
+    var t;
+    var f;
+
+    var cs;
+    var sn;
 
     var hypot = dot.Matrix.hypot;
 

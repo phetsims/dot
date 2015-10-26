@@ -315,7 +315,10 @@ define( function( require ) {
 
     times: function( matrixOrScalar ) {
       var result;
-      var i, j, k, s;
+      var i;
+      var j;
+      var k;
+      var s;
       var matrix;
       if ( matrixOrScalar.isMatrix ) {
         matrix = matrixOrScalar;

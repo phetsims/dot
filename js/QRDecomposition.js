@@ -28,7 +28,9 @@ define( function( require ) {
 
     this.Rdiag = new Float32Array( n );
 
-    var i, j, k;
+    var i;
+    var j;
+    var k;
 
     // Main loop.
     for ( k = 0; k < n; k++ ) {
@@ -111,7 +113,9 @@ define( function( require ) {
     },
 
     getQ: function() {
-      var i, j, k;
+      var i;
+      var j;
+      var k;
       var result = new dot.Matrix( this.m, this.n );
       for ( k = this.n - 1; k >= 0; k-- ) {
         for ( i = 0; i < this.m; i++ ) {
@@ -142,7 +146,9 @@ define( function( require ) {
         throw new Error( 'Matrix is rank deficient.' );
       }
 
-      var i, j, k;
+      var i;
+      var j;
+      var k;
 
       // Copy right hand side
       var nx = matrix.getColumnDimension();

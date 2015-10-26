@@ -423,7 +423,8 @@ define( function( require ) {
       assert && assert( row > col ); // only in the lower-triangular area
 
       var epsilon = 0.0000000001;
-      var cos, sin;
+      var cos;
+      var sin;
 
       var diagonalValue = r[ this.index3( col, col ) ];
       var targetValue = r[ this.index3( row, col ) ];
