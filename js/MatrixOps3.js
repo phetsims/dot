@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2015, University of Colorado Boulder
 
 /**
  * Fast 3x3 matrix computations at the lower level, including an SVD implementation that is fully stable.
