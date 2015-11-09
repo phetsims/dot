@@ -16,7 +16,7 @@ define( function( require ) {
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
 
-  dot.Vector2 = function Vector2( x, y ) {
+  function Vector2( x, y ) {
     // allow optional parameters
     this.x = x !== undefined ? x : 0;
     this.y = y !== undefined ? y : 0;
@@ -25,8 +25,8 @@ define( function( require ) {
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );
 
     phetAllocation && phetAllocation( 'Vector2' );
-  };
-  var Vector2 = dot.Vector2;
+  }
+  dot.register( 'Vector2', Vector2 );
 
   Vector2.createPolar = function( magnitude, angle ) {
     return new Vector2().setPolar( magnitude, angle );

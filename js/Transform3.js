@@ -26,7 +26,7 @@ define( function( require ) {
   /**
    * @param {Matrix3} matrix
    */
-  dot.Transform3 = function Transform3( matrix ) {
+  function Transform3( matrix ) {
     Events.call( this );
 
     this.matrix = dot.Matrix3.IDENTITY.copy();
@@ -45,8 +45,8 @@ define( function( require ) {
     }
 
     phetAllocation && phetAllocation( 'Transform3' );
-  };
-  var Transform3 = dot.Transform3;
+  }
+  dot.register( 'Transform3', Transform3 );
 
   inherit( Events, Transform3, {
     /*---------------------------------------------------------------------------*

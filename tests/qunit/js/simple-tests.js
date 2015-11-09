@@ -138,7 +138,7 @@
     equal( oldVector.y, 4 );
 
     // set everything
-    v.set( dot( 10, 9 ) );
+    v.set( dot.v2( 10, 9 ) );
     equal( newVector.x, 10 );
     equal( newVector.y, 9 );
     equal( oldVector.x, 5 );
@@ -146,7 +146,7 @@
 
     // this shouldn't trigger a change
     currentCount = count;
-    v.set( dot( 10, 9 ) );
+    v.set( dot.v2( 10, 9 ) );
     equal( count, currentCount, 'change guard on set' );
 
     // this shouldn't trigger a change
@@ -204,7 +204,7 @@
     } );
     v.link( function( n ) {
       if ( n.magnitude() < 10 ) {
-        n.add( dot( 1, 1 ) );
+        n.add( dot.v2( 1, 1 ) );
       }
     } );
   } );

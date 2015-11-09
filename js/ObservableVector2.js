@@ -17,7 +17,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   require( 'DOT/Vector2' );
 
-  dot.ObservableVector2 = function ObservableVector2( x, y ) {
+  function ObservableVector2( x, y ) {
     dot.Vector2.call( this, x, y );
 
     this._oldValue = this.copy();
@@ -25,8 +25,8 @@ define( function( require ) {
 
     this._initialX = x;
     this._initialY = y;
-  };
-  var ObservableVector2 = dot.ObservableVector2;
+  }
+  dot.register( 'ObservableVector2', ObservableVector2 );
 
   inherit( dot.Vector2, ObservableVector2, extend( {}, Property.prototype, {
     // returns this value directly

@@ -13,9 +13,9 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var dot = require( 'DOT/dot' );
 
-  dot.Random = function Random() {
-  };
-  var Random = dot.Random;
+  function Random() {
+  }
+  dot.register( 'Random', Random );
 
   Random.prototype = {
 

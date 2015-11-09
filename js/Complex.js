@@ -18,12 +18,12 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
-  dot.Complex = function Complex( real, imaginary ) {
+  function Complex( real, imaginary ) {
     Vector2.call( this, real, imaginary );
     this.real = real;
     this.imaginary = imaginary;
-  };
-  var Complex = dot.Complex;
+  }
+  dot.register( 'Complex', Complex );
 
   Complex.real = function( real ) {
     return new Complex( real, 0 );

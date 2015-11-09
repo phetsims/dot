@@ -21,7 +21,7 @@ define( function( require ) {
   var z0;
   var z1;
 
-  dot.Util = {
+  var Util = {
     testAssert: function() {
       return 'assert.dot: ' + ( assert ? 'true' : 'false' );
     },
@@ -404,8 +404,7 @@ define( function( require ) {
       return z0 * sigma + mu;
     }
   };
-
-  var Util = dot.Util;
+  dot.register( 'Util', Util );
 
   // make these available in the main namespace directly (for now)
   dot.testAssert = Util.testAssert;

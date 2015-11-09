@@ -11,15 +11,15 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  dot.Ray2 = function Ray2( position, direction ) {
+  function Ray2( position, direction ) {
     this.position = position;
     this.direction = direction;
 
     assert && assert( Math.abs( direction.magnitude() - 1 ) < 0.01 );
 
     phetAllocation && phetAllocation( 'Ray2' );
-  };
-  var Ray2 = dot.Ray2;
+  }
+  dot.register( 'Ray2', Ray2 );
 
   Ray2.prototype = {
     constructor: Ray2,

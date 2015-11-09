@@ -28,7 +28,7 @@ define( function( require ) {
    * @param {Boolean} clamp clamp the result to the provided ranges, false by default
    * @constructor
    */
-  dot.LinearFunction = function LinearFunction( a1, a2, b1, b2, clamp ) {
+  function LinearFunction( a1, a2, b1, b2, clamp ) {
 
     clamp = _.isUndefined( clamp ) ? false : clamp;
 
@@ -58,7 +58,8 @@ define( function( require ) {
     };
 
     return evaluate; // return the evaluation function, so we use sites look like: f(a) f.inverse(b)
-  };
+  }
+  dot.register( 'LinearFunction', LinearFunction );
 
-  return dot.LinearFunction;
+  return LinearFunction;
 } );

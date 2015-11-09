@@ -16,7 +16,7 @@ define( function( require ) {
     return p2.minus( p1 ).crossScalar( p3.minus( p1 ) );
   }
 
-  dot.ConvexHull2 = {
+  var ConvexHull2 = {
     // test: all collinear, multiple ways of having same angle, etc.
 
     // points is an array of Vector2 instances. see http://en.wikipedia.org/wiki/Graham_scan
@@ -75,6 +75,7 @@ define( function( require ) {
       return result;
     }
   };
+  dot.register( 'ConvexHull2', ConvexHull2 );
 
-  return dot.ConvexHull2;
+  return ConvexHull2;
 } );

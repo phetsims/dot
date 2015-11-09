@@ -17,14 +17,14 @@ define( function( require ) {
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.Vector4 = function Vector4( x, y, z, w ) {
+  function Vector4( x, y, z, w ) {
     // allow optional parameters
     this.x = x !== undefined ? x : 0;
     this.y = y !== undefined ? y : 0;
     this.z = z !== undefined ? z : 0;
     this.w = w !== undefined ? w : 1; // since w could be zero!
-  };
-  var Vector4 = dot.Vector4;
+  }
+  dot.register( 'Vector4', Vector4 );
 
   Vector4.prototype = {
     constructor: Vector4,

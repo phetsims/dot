@@ -19,15 +19,15 @@ define( function( require ) {
    * @param {number} distance - The signed distance to the plane from the origin, so that normal.times( distance )
    *                            will be a point on the plane.
    */
-  dot.Plane3 = function Plane3( normal, distance ) {
+  function Plane3( normal, distance ) {
     this.normal = normal;
     this.distance = distance;
 
     assert && assert( Math.abs( normal.magnitude() - 1 ) < 0.01 );
 
     phetAllocation && phetAllocation( 'Plane3' );
-  };
-  var Plane3 = dot.Plane3;
+  }
+  dot.register( 'Plane3', Plane3 );
 
   Plane3.prototype = {
     constructor: Plane3,

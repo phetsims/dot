@@ -24,7 +24,7 @@ define( function( require ) {
   var scratchVector2 = new dot.Vector2();
 
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
-  dot.Bounds2 = function Bounds2( minX, minY, maxX, maxY ) {
+  function Bounds2( minX, minY, maxX, maxY ) {
     assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
     this.minX = minX;
     this.minY = minY;
@@ -32,8 +32,8 @@ define( function( require ) {
     this.maxY = maxY;
 
     phetAllocation && phetAllocation( 'Bounds2' );
-  };
-  var Bounds2 = dot.Bounds2;
+  }
+  dot.register( 'Bounds2', Bounds2 );
 
   Bounds2.prototype = {
     constructor: Bounds2,

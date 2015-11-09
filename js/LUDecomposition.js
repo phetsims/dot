@@ -15,7 +15,7 @@ define( function( require ) {
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.LUDecomposition = function LUDecomposition( matrix ) {
+  function LUDecomposition( matrix ) {
     var i;
     var j;
     var k;
@@ -90,8 +90,8 @@ define( function( require ) {
         }
       }
     }
-  };
-  var LUDecomposition = dot.LUDecomposition;
+  }
+  dot.register( 'LUDecomposition', LUDecomposition );
 
   LUDecomposition.prototype = {
     constructor: LUDecomposition,

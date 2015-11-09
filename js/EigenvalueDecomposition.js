@@ -30,7 +30,7 @@ define( function( require ) {
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.EigenvalueDecomposition = function EigenvalueDecomposition( matrix ) {
+  function EigenvalueDecomposition( matrix ) {
     var i;
     var j;
 
@@ -80,8 +80,8 @@ define( function( require ) {
       // Reduce Hessenberg to real Schur form.
       this.hqr2();
     }
-  };
-  var EigenvalueDecomposition = dot.EigenvalueDecomposition;
+  }
+  dot.register( 'EigenvalueDecomposition', EigenvalueDecomposition );
 
   EigenvalueDecomposition.prototype = {
     constructor: EigenvalueDecomposition,

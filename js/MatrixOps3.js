@@ -25,7 +25,7 @@ define( function( require ) {
   // constants
   var SQRT_HALF = Math.sqrt( 0.5 );
 
-  dot.MatrixOps3 = {
+  var MatrixOps3 = {
     // use typed arrays if possible
     Array: dot.FastArray,
 
@@ -676,6 +676,7 @@ define( function( require ) {
       }
     }
   };
+  dot.register( 'MatrixOps3', MatrixOps3 );
 
-  return dot.MatrixOps3;
+  return MatrixOps3;
 } );

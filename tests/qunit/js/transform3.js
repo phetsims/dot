@@ -125,14 +125,14 @@
   test( 'Transform inverse validation', function() {
     var t = new Transform3();
 
-    ok( t.transformPosition2( dot( 2, 4 ) ).equals( dot( 2, 4 ) ) );
-    ok( t.inversePosition2( dot( 2, 4 ) ).equals( dot( 2, 4 ) ) );
+    ok( t.transformPosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 2, 4 ) ) );
+    ok( t.inversePosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 2, 4 ) ) );
     t.getMatrix().setToScale( 4, 2 );
     t.invalidate();
-    ok( t.transformPosition2( dot( 2, 4 ) ).equals( dot( 8, 8 ) ) );
-    ok( t.inversePosition2( dot( 2, 4 ) ).equals( dot( 0.5, 2 ) ) );
+    ok( t.transformPosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 8, 8 ) ) );
+    ok( t.inversePosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 0.5, 2 ) ) );
     t.append( Matrix3.rotation2( Math.PI / 2 ) );
-    ok( t.transformPosition2( dot( 2, 4 ) ).equalsEpsilon( dot( -16, 4 ), epsilon ) );
-    ok( t.inversePosition2( dot( 2, 4 ) ).equalsEpsilon( dot( 2, -0.5 ), epsilon ) );
+    ok( t.transformPosition2( dot.v2( 2, 4 ) ).equalsEpsilon( dot.v2( -16, 4 ), epsilon ) );
+    ok( t.inversePosition2( dot.v2( 2, 4 ) ).equalsEpsilon( dot.v2( 2, -0.5 ), epsilon ) );
   } );
 })();

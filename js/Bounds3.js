@@ -21,7 +21,7 @@ define( function( require ) {
   require( 'DOT/Vector3' );
 
   // not using x,y,width,height so that it can handle infinity-based cases in a better way
-  dot.Bounds3 = function Bounds3( minX, minY, minZ, maxX, maxY, maxZ ) {
+  function Bounds3( minX, minY, minZ, maxX, maxY, maxZ ) {
     assert && assert( maxY !== undefined, 'Bounds3 requires 4 parameters' );
     this.minX = minX;
     this.minY = minY;
@@ -31,8 +31,8 @@ define( function( require ) {
     this.maxZ = maxZ;
 
     phetAllocation && phetAllocation( 'Bounds3' );
-  };
-  var Bounds3 = dot.Bounds3;
+  }
+  dot.register( 'Bounds3', Bounds3 );
 
   Bounds3.prototype = {
     constructor: Bounds3,

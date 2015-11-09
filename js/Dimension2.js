@@ -12,11 +12,11 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   require( 'DOT/Bounds2' );
 
-  dot.Dimension2 = function Dimension2( width, height ) {
+  function Dimension2( width, height ) {
     this.width = width;
     this.height = height;
-  };
-  var Dimension2 = dot.Dimension2;
+  }
+  dot.register( 'Dimension2', Dimension2 );
 
   Dimension2.prototype = {
     constructor: Dimension2,

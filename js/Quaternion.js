@@ -18,12 +18,12 @@ define( function( require ) {
   require( 'DOT/Matrix3' );
   require( 'DOT/Util' );
 
-  dot.Quaternion = function Quaternion( x, y, z, w ) {
+  function Quaternion( x, y, z, w ) {
     this.setXYZW( x, y, z, w );
 
     phetAllocation && phetAllocation( 'Quaternion' );
-  };
-  var Quaternion = dot.Quaternion;
+  }
+  dot.register( 'Quaternion', Quaternion );
 
   Quaternion.prototype = {
     constructor: Quaternion,

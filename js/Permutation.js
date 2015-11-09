@@ -15,9 +15,10 @@ define( function( require ) {
   require( 'DOT/Util' ); // for rangeInclusive
 
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
-  var Permutation = dot.Permutation = function Permutation( indices ) {
+  function Permutation( indices ) {
     this.indices = indices;
-  };
+  }
+  dot.register( 'Permutation', Permutation );
 
   // An identity permutation with a specific number of elements
   Permutation.identity = function( size ) {

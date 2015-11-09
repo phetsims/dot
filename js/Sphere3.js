@@ -16,15 +16,15 @@ define( function( require ) {
    * @param {Vector3} center - The center of the sphere
    * @param {number} radius - The radius of the sphere
    */
-  dot.Sphere3 = function Sphere3( center, radius ) {
+  function Sphere3( center, radius ) {
     this.center = center;
     this.radius = radius;
 
     assert && assert( radius >= 0 );
 
     phetAllocation && phetAllocation( 'Sphere3' );
-  };
-  var Sphere3 = dot.Sphere3;
+  }
+  dot.register( 'Sphere3', Sphere3 );
 
   Sphere3.prototype = {
     constructor: Sphere3,

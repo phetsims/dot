@@ -17,13 +17,13 @@ define( function( require ) {
   require( 'DOT/Vector2' );
   require( 'DOT/Vector4' );
 
-  dot.Vector3 = function Vector3( x, y, z ) {
+  function Vector3( x, y, z ) {
     // allow optional parameters
     this.x = x !== undefined ? x : 0;
     this.y = y !== undefined ? y : 0;
     this.z = z !== undefined ? z : 0;
-  };
-  var Vector3 = dot.Vector3;
+  }
+  dot.register( 'Vector3', Vector3 );
 
   Vector3.prototype = {
     constructor: Vector3,

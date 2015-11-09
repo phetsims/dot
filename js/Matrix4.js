@@ -19,7 +19,7 @@ define( function( require ) {
 
   var Float32Array = window.Float32Array || Array;
 
-  dot.Matrix4 = function Matrix4( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
+  function Matrix4( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
 
     // entries stored in column-major format
     this.entries = new Float32Array( 16 );
@@ -30,8 +30,8 @@ define( function( require ) {
       v20 !== undefined ? v20 : 0, v21 !== undefined ? v21 : 0, v22 !== undefined ? v22 : 1, v23 !== undefined ? v23 : 0,
       v30 !== undefined ? v30 : 0, v31 !== undefined ? v31 : 0, v32 !== undefined ? v32 : 0, v33 !== undefined ? v33 : 1,
       type );
-  };
-  var Matrix4 = dot.Matrix4;
+  }
+  dot.register( 'Matrix4', Matrix4 );
 
   Matrix4.Types = {
     OTHER: 0, // default

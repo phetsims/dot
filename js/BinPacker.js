@@ -24,11 +24,12 @@ define( function( require ) {
    *
    * @param {Bounds2} bounds - The available bounds to pack bins inside.
    */
-  dot.BinPacker = function BinPacker( bounds ) {
+  function BinPacker( bounds ) {
     this.rootBin = new dot.BinPacker.Bin( bounds, null );
-  };
+  }
+  dot.register( 'BinPacker', BinPacker );
 
-  inherit( Object, dot.BinPacker, {
+  inherit( Object, BinPacker, {
     /**
      * Allocates a bin with the specified width and height if possible (returning a {Bin}), otherwise returns null.
      *
@@ -249,5 +250,5 @@ define( function( require ) {
     }
   } );
 
-  return dot.BinPacker;
+  return BinPacker;
 } );

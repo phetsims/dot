@@ -11,11 +11,11 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  dot.Ray3 = function Ray3( position, direction ) {
+  function Ray3( position, direction ) {
     this.position = position;
     this.direction = direction;
-  };
-  var Ray3 = dot.Ray3;
+  }
+  dot.register( 'Ray3', Ray3 );
 
   Ray3.prototype = {
     constructor: Ray3,

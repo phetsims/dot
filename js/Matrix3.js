@@ -31,8 +31,8 @@ define( function( require ) {
                               return new FastArray( identityFastArray );
                             };
 
-  //Create an identity matrix
-  dot.Matrix3 = function Matrix3( argumentsShouldNotExist ) {
+  // Create an identity matrix
+  function Matrix3( argumentsShouldNotExist ) {
 
     //Make sure no clients are expecting to create a matrix with non-identity values
     assert && assert( !argumentsShouldNotExist, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
@@ -42,8 +42,8 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Matrix3' );
     this.type = Types.IDENTITY;
-  };
-  var Matrix3 = dot.Matrix3;
+  }
+  dot.register( 'Matrix3', Matrix3 );
 
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!

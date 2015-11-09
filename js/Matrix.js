@@ -23,7 +23,7 @@ define( function( require ) {
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
 
-  dot.Matrix = function Matrix( m, n, filler, fast ) {
+  function Matrix( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
 
@@ -55,8 +55,8 @@ define( function( require ) {
         }
       }
     }
-  };
-  var Matrix = dot.Matrix;
+  }
+  dot.register( 'Matrix', Matrix );
 
   /** sqrt(a^2 + b^2) without under/overflow. **/
   Matrix.hypot = function hypot( a, b ) {

@@ -10,7 +10,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  dot.Range = function Range( min, max, defaultValue ) {
+  function Range( min, max, defaultValue ) {
 
     this.min = min;
     this.max = max;
@@ -18,8 +18,8 @@ define( function( require ) {
 
     assert && assert( min <= max );
     assert && assert( ( this.defaultValue >= min ) && ( this.defaultValue <= max ) );
-  };
-  var Range = dot.Range;
+  }
+  dot.register( 'Range', Range );
 
   Range.prototype = {
 
