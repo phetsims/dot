@@ -47,7 +47,7 @@ define( function( require ) {
    */
   function recursiveForEachPermutation( array, prefix, callback ) {
     if ( array.length === 0 ) {
-      callback.call( undefined, prefix );
+      callback( prefix );
     }
     else {
       for ( var i = 0; i < array.length; i++ ) {
