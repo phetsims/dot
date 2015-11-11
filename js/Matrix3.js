@@ -497,16 +497,14 @@ define( function( require ) {
     },
 
     setArray: function( array ) {
-      return this.rowMajor( array[ 0 ], array[ 3 ], array[ 6 ],
+      return this.rowMajor(
+        array[ 0 ], array[ 3 ], array[ 6 ],
         array[ 1 ], array[ 4 ], array[ 7 ],
         array[ 2 ], array[ 5 ], array[ 8 ] );
     },
 
     // component setters
-    set00: function( value ) {
-      this.entries[ 0 ] = value;
-      return this;
-    },
+    set00: function( value ) { this.entries[ 0 ] = value; return this; },
     set01: function( value ) {
       this.entries[ 3 ] = value;
       return this;
