@@ -365,9 +365,7 @@ define( function( require ) {
 
           // Calculate the shift.
 
-          var scale = max( max( max( max(
-              abs( s[ p - 1 ] ), abs( s[ p - 2 ] ) ), abs( e[ p - 2 ] ) ),
-            abs( s[ k ] ) ), abs( e[ k ] ) );
+          var scale = max( max( max( max( abs( s[ p - 1 ] ), abs( s[ p - 2 ] ) ), abs( e[ p - 2 ] ) ), abs( s[ k ] ) ), abs( e[ k ] ) );
           var sp = s[ p - 1 ] / scale;
           var spm1 = s[ p - 2 ] / scale;
           var epm1 = e[ p - 2 ] / scale;
