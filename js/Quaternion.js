@@ -23,6 +23,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Quaternion' );
   }
+
   dot.register( 'Quaternion', Quaternion );
 
   Quaternion.prototype = {

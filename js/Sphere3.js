@@ -24,6 +24,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Sphere3' );
   }
+
   dot.register( 'Sphere3', Sphere3 );
 
   Sphere3.prototype = {

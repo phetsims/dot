@@ -23,6 +23,7 @@ define( function( require ) {
     this.y = y !== undefined ? y : 0;
     this.z = z !== undefined ? z : 0;
   }
+
   dot.register( 'Vector3', Vector3 );
 
   Vector3.prototype = {

@@ -26,6 +26,7 @@ define( function( require ) {
     this._initialX = x;
     this._initialY = y;
   }
+
   dot.register( 'ObservableVector2', ObservableVector2 );
 
   inherit( dot.Vector2, ObservableVector2, extend( {}, Property.prototype, {

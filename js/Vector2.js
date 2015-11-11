@@ -26,6 +26,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Vector2' );
   }
+
   dot.register( 'Vector2', Vector2 );
 
   Vector2.createPolar = function( magnitude, angle ) {

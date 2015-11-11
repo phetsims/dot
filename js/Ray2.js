@@ -19,6 +19,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Ray2' );
   }
+
   dot.register( 'Ray2', Ray2 );
 
   Ray2.prototype = {

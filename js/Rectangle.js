@@ -18,6 +18,7 @@ define( function( require ) {
     assert && assert( height !== undefined, 'Rectangle requires 4 parameters' );
     Bounds2.call( this, x, y, x + width, y + height );
   }
+
   dot.register( 'Rectangle', Rectangle );
 
   inherit( Bounds2, Rectangle );

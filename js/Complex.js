@@ -23,6 +23,7 @@ define( function( require ) {
     this.real = real;
     this.imaginary = imaginary;
   }
+
   dot.register( 'Complex', Complex );
 
   Complex.real = function( real ) {

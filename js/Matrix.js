@@ -56,6 +56,7 @@ define( function( require ) {
       }
     }
   }
+
   dot.register( 'Matrix', Matrix );
 
   /** sqrt(a^2 + b^2) without under/overflow. **/

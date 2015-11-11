@@ -43,6 +43,7 @@ define( function( require ) {
     phetAllocation && phetAllocation( 'Matrix3' );
     this.type = Types.IDENTITY;
   }
+
   dot.register( 'Matrix3', Matrix3 );
 
   Matrix3.Types = {
@@ -258,7 +259,7 @@ define( function( require ) {
         '-webkit-backface-visibility': 'hidden',
 
         '-webkit-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
-        '-moz-transform':    transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
+        '-moz-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
         '-ms-transform': transformCSS,
         '-o-transform': transformCSS,
         'transform': transformCSS,
@@ -496,21 +497,48 @@ define( function( require ) {
     },
 
     setArray: function( array ) {
-      return this.rowMajor( array[0], array[3], array[6],
-                            array[1], array[4], array[7],
-                            array[2], array[5], array[8] );
+      return this.rowMajor( array[ 0 ], array[ 3 ], array[ 6 ],
+        array[ 1 ], array[ 4 ], array[ 7 ],
+        array[ 2 ], array[ 5 ], array[ 8 ] );
     },
 
     // component setters
-    set00: function( value ) { this.entries[ 0 ] = value; return this; },
-    set01: function( value ) { this.entries[ 3 ] = value; return this; },
-    set02: function( value ) { this.entries[ 6 ] = value; return this; },
-    set10: function( value ) { this.entries[ 1 ] = value; return this; },
-    set11: function( value ) { this.entries[ 4 ] = value; return this; },
-    set12: function( value ) { this.entries[ 7 ] = value; return this; },
-    set20: function( value ) { this.entries[ 2 ] = value; return this; },
-    set21: function( value ) { this.entries[ 5 ] = value; return this; },
-    set22: function( value ) { this.entries[ 8 ] = value; return this; },
+    set00: function( value ) {
+      this.entries[ 0 ] = value;
+      return this;
+    },
+    set01: function( value ) {
+      this.entries[ 3 ] = value;
+      return this;
+    },
+    set02: function( value ) {
+      this.entries[ 6 ] = value;
+      return this;
+    },
+    set10: function( value ) {
+      this.entries[ 1 ] = value;
+      return this;
+    },
+    set11: function( value ) {
+      this.entries[ 4 ] = value;
+      return this;
+    },
+    set12: function( value ) {
+      this.entries[ 7 ] = value;
+      return this;
+    },
+    set20: function( value ) {
+      this.entries[ 2 ] = value;
+      return this;
+    },
+    set21: function( value ) {
+      this.entries[ 5 ] = value;
+      return this;
+    },
+    set22: function( value ) {
+      this.entries[ 8 ] = value;
+      return this;
+    },
 
     makeImmutable: function() {
       this.rowMajor = function() {

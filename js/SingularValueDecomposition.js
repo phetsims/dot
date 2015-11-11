@@ -475,6 +475,7 @@ define( function( require ) {
       }
     }
   }
+
   dot.register( 'SingularValueDecomposition', SingularValueDecomposition );
 
   SingularValueDecomposition.prototype = {

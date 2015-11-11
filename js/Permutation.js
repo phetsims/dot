@@ -18,6 +18,7 @@ define( function( require ) {
   function Permutation( indices ) {
     this.indices = indices;
   }
+
   dot.register( 'Permutation', Permutation );
 
   // An identity permutation with a specific number of elements

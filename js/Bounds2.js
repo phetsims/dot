@@ -33,6 +33,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Bounds2' );
   }
+
   dot.register( 'Bounds2', Bounds2 );
 
   Bounds2.prototype = {
@@ -567,6 +568,7 @@ define( function( require ) {
     bounds.addCoordinates = function() { throw new Error( 'Attempt to set \"addCoordinates\" of an immutable Bounds2 object' ); };
     bounds.transform = function() { throw new Error( 'Attempt to set \"transform\" of an immutable Bounds2 object' ); };
   }
+
   if ( assert ) {
     catchImmutableSetterLowHangingFruit( Bounds2.EVERYTHING );
     catchImmutableSetterLowHangingFruit( Bounds2.NOTHING );

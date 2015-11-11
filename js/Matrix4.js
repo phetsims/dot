@@ -31,6 +31,7 @@ define( function( require ) {
       v30 !== undefined ? v30 : 0, v31 !== undefined ? v31 : 0, v32 !== undefined ? v32 : 0, v33 !== undefined ? v33 : 1,
       type );
   }
+
   dot.register( 'Matrix4', Matrix4 );
 
   Matrix4.Types = {

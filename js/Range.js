@@ -19,6 +19,7 @@ define( function( require ) {
     assert && assert( min <= max );
     assert && assert( ( this.defaultValue >= min ) && ( this.defaultValue <= max ) );
   }
+
   dot.register( 'Range', Range );
 
   Range.prototype = {

@@ -46,6 +46,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Transform3' );
   }
+
   dot.register( 'Transform3', Transform3 );
 
   inherit( Events, Transform3, {

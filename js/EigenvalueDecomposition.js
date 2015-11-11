@@ -81,6 +81,7 @@ define( function( require ) {
       this.hqr2();
     }
   }
+
   dot.register( 'EigenvalueDecomposition', EigenvalueDecomposition );
 
   EigenvalueDecomposition.prototype = {

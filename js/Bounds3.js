@@ -32,6 +32,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Bounds3' );
   }
+
   dot.register( 'Bounds3', Bounds3 );
 
   Bounds3.prototype = {

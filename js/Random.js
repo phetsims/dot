@@ -15,6 +15,7 @@ define( function( require ) {
 
   function Random() {
   }
+
   dot.register( 'Random', Random );
 
   Random.prototype = {

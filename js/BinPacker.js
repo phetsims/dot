@@ -27,6 +27,7 @@ define( function( require ) {
   function BinPacker( bounds ) {
     this.rootBin = new dot.BinPacker.Bin( bounds, null );
   }
+
   dot.register( 'BinPacker', BinPacker );
 
   inherit( Object, BinPacker, {
@@ -70,12 +71,14 @@ define( function( require ) {
       var result = '';
 
       var padding = '';
+
       function binTree( bin ) {
         result += padding + bin.toString() + '\n';
         padding = padding + '  ';
         _.each( bin.children, binTree );
         padding = padding.substring( 2 );
       }
+
       binTree( this.rootBin );
 
       return result;
@@ -120,7 +123,7 @@ define( function( require ) {
       // If we have been split, check our children
       else if ( this.isSplit ) {
         for ( var i = 0; i < this.children.length; i++ ) {
-          var result = this.children[i].findAvailableBin( width, height );
+          var result = this.children[ i ].findAvailableBin( width, height );
           if ( result ) {
             return result;
           }
@@ -229,7 +232,7 @@ define( function( require ) {
       // Bail out if a single child isn't able to be collapsed. If it is not split or used, it won't have any children
       // or needs.
       for ( var i = 0; i < this.children.length; i++ ) {
-        var child = this.children[i];
+        var child = this.children[ i ];
 
         if ( child.isSplit || child.isUsed ) {
           return;

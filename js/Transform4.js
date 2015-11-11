@@ -20,6 +20,7 @@ define( function( require ) {
     // using immutable version for now. change it to the mutable identity copy if we need mutable operations on the matrices
     this.setMatrix( matrix === undefined ? dot.Matrix4.IDENTITY : matrix );
   }
+
   dot.register( 'Transform4', Transform4 );
 
   Transform4.prototype = {

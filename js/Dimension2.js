@@ -16,6 +16,7 @@ define( function( require ) {
     this.width = width;
     this.height = height;
   }
+
   dot.register( 'Dimension2', Dimension2 );
 
   Dimension2.prototype = {

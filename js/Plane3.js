@@ -27,6 +27,7 @@ define( function( require ) {
 
     phetAllocation && phetAllocation( 'Plane3' );
   }
+
   dot.register( 'Plane3', Plane3 );
 
   Plane3.prototype = {

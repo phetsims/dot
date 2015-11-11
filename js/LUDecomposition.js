@@ -91,6 +91,7 @@ define( function( require ) {
       }
     }
   }
+
   dot.register( 'LUDecomposition', LUDecomposition );
 
   LUDecomposition.prototype = {

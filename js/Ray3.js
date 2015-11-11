@@ -15,6 +15,7 @@ define( function( require ) {
     this.position = position;
     this.direction = direction;
   }
+
   dot.register( 'Ray3', Ray3 );
 
   Ray3.prototype = {

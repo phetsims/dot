@@ -24,6 +24,7 @@ define( function( require ) {
     this.z = z !== undefined ? z : 0;
     this.w = w !== undefined ? w : 1; // since w could be zero!
   }
+
   dot.register( 'Vector4', Vector4 );
 
   Vector4.prototype = {
