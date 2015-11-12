@@ -22,10 +22,6 @@ define( function( require ) {
   var z1;
 
   var Util = {
-    testAssert: function() {
-      return 'assert.dot: ' + ( assert ? 'true' : 'false' );
-    },
-
     clamp: function( value, min, max ) {
       if ( value < min ) {
         return min;
@@ -407,7 +403,6 @@ define( function( require ) {
   dot.register( 'Util', Util );
 
   // make these available in the main namespace directly (for now)
-  dot.testAssert = Util.testAssert;
   dot.clamp = Util.clamp;
   dot.moduloBetweenDown = Util.moduloBetweenDown;
   dot.moduloBetweenUp = Util.moduloBetweenUp;
