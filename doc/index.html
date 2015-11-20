@@ -127,54 +127,190 @@
   <div class="span3" id="apiList">
     <div class="ph2"><a href="#api">Dot API</a></div>
 
+    <a class="navlink" href="#bounds2">Bounds2</a><br>
+    <a class="navlink" href="#matrix3">Matrix3</a><br>
+    <a class="navlink" href="#ray2">Ray2</a><br>
+    <a class="navlink" href="#transform3">Transform3</a><br>
+    <a class="navlink" href="#util">Util</a><br>
+
     <a class="navlink" href="#vector2">Vector2</a><br>
+
     <a class="sublink" href="#vector2-createPolar">Vector2.createPolar</a><br>
     <a class="sublink" href="#vector2-ZERO">Vector2.ZERO</a><br>
     <a class="sublink" href="#vector2-X_UNIT">Vector2.X_UNIT</a><br>
     <a class="sublink" href="#vector2-Y_UNIT">Vector2.Y_UNIT</a><br>
+
     <a class="sublink" href="#vector2-magnitude">magnitude</a><br>
     <a class="sublink" href="#vector2-magnitudeSquared">magnitudeSquared</a><br>
     <a class="sublink" href="#vector2-distance">distance</a><br>
+    <a class="sublink" href="#vector2-distanceXY">distanceXY</a><br>
     <a class="sublink" href="#vector2-distanceSquared">distanceSquared</a><br>
+    <a class="sublink" href="#vector2-distanceSquaredXY">distanceSquaredXY</a><br>
     <a class="sublink" href="#vector2-dot">dot</a><br>
-    <a class="sublink" href="#vector2-crossScalar">crossScalar</a><br>
+    <a class="sublink" href="#vector2-dotXY">dotXY</a><br>
+    <a class="sublink" href="#vector2-angle">angle</a><br>
+    <a class="sublink" href="#vector2-angleBetween">angleBetween</a><br>
     <a class="sublink" href="#vector2-equals">equals</a><br>
     <a class="sublink" href="#vector2-equalsEpsilon">equalsEpsilon</a><br>
     <a class="sublink" href="#vector2-isFinite">isFinite</a><br>
+
     <a class="sublink" href="#vector2-copy">copy</a><br>
+    <a class="sublink" href="#vector2-crossScalar">crossScalar</a><br>
     <a class="sublink" href="#vector2-normalized">normalized</a><br>
-    <a class="sublink" href="#vector2-componentTimes">componentTimes</a><br>
-    <a class="sublink" href="#vector2-times">times</a><br>
+    <a class="sublink" href="#vector2-withMagnitude">withMagnitude</a><br>
     <a class="sublink" href="#vector2-timesScalar">timesScalar</a><br>
+    <a class="sublink" href="#vector2-times">times</a><br>
+    <a class="sublink" href="#vector2-componentTimes">componentTimes</a><br>
     <a class="sublink" href="#vector2-plus">plus</a><br>
+    <a class="sublink" href="#vector2-plusXY">plus</a><br>
     <a class="sublink" href="#vector2-plusScalar">plusScalar</a><br>
     <a class="sublink" href="#vector2-minus">minus</a><br>
+    <a class="sublink" href="#vector2-minusXY">minusXY</a><br>
     <a class="sublink" href="#vector2-minusScalar">minusScalar</a><br>
     <a class="sublink" href="#vector2-dividedScalar">dividedScalar</a><br>
     <a class="sublink" href="#vector2-negated">negated</a><br>
-    <a class="sublink" href="#vector2-angle">angle</a><br>
-    <a class="sublink" href="#vector2-angleBetween">angleBetween</a><br>
-    <a class="sublink" href="#vector2-rotated">rotated</a><br>
     <a class="sublink" href="#vector2-perpendicular">perpendicular</a><br>
+    <a class="sublink" href="#vector2-rotated">rotated</a><br>
     <a class="sublink" href="#vector2-blend">blend</a><br>
+    <a class="sublink" href="#vector2-average">average</a><br>
     <a class="sublink" href="#vector2-toVector3">toVector3</a><br>
 
-    <a class="sublink" href="#vector2-set">set</a><br>
+    <a class="sublink" href="#vector2-setXY">set</a><br>
     <a class="sublink" href="#vector2-setX">setX</a><br>
     <a class="sublink" href="#vector2-setY">setY</a><br>
+    <a class="sublink" href="#vector2-set">set</a><br>
+    <a class="sublink" href="#vector2-setMagnitude">setMagnitude</a><br>
     <a class="sublink" href="#vector2-add">add</a><br>
+    <a class="sublink" href="#vector2-addXY">addXY</a><br>
     <a class="sublink" href="#vector2-addScalar">addScalar</a><br>
     <a class="sublink" href="#vector2-subtract">subtract</a><br>
+    <a class="sublink" href="#vector2-subtractXY">subtractXY</a><br>
     <a class="sublink" href="#vector2-subtractScalar">subtractScalar</a><br>
+    <a class="sublink" href="#vector2-multiplyScalar">multiplyScalar</a><br>
+    <a class="sublink" href="#vector2-multiply">multiply</a><br>
     <a class="sublink" href="#vector2-componentMultiply">componentMultiply</a><br>
     <a class="sublink" href="#vector2-divideScalar">divideScalar</a><br>
     <a class="sublink" href="#vector2-negate">negate</a><br>
+    <a class="sublink" href="#vector2-normalize">normalize</a><br>
+    <a class="sublink" href="#vector2-rotate">rotate</a><br>
 
-    <a class="navlink" href="#bounds2">Bounds2</a><br>
-    <a class="navlink" href="#matrix3">Matrix3</a><br>
-    <a class="navlink" href="#transform3">Transform3</a><br>
-    <a class="navlink" href="#ray2">Ray2</a><br>
-    <a class="navlink" href="#util">Util</a><br>
+    <a class="navlink" href="#vector3">Vector3</a><br>
+
+    <a class="sublink" href="#vector3-ZERO">Vector3.ZERO</a><br>
+    <a class="sublink" href="#vector3-X_UNIT">Vector3.X_UNIT</a><br>
+    <a class="sublink" href="#vector3-Y_UNIT">Vector3.Y_UNIT</a><br>
+    <a class="sublink" href="#vector3-Z_UNIT">Vector3.Z_UNIT</a><br>
+    <a class="sublink" href="#vector3-slerp">Vector3.slerp</a><br>
+
+    <a class="sublink" href="#vector3-magnitude">magnitude</a><br>
+    <a class="sublink" href="#vector3-magnitudeSquared">magnitudeSquared</a><br>
+    <a class="sublink" href="#vector3-distance">distance</a><br>
+    <a class="sublink" href="#vector3-distanceXYZ">distanceXYZ</a><br>
+    <a class="sublink" href="#vector3-distanceSquared">distanceSquared</a><br>
+    <a class="sublink" href="#vector3-distanceSquaredXYZ">distanceSquaredXYZ</a><br>
+    <a class="sublink" href="#vector3-dot">dot</a><br>
+    <a class="sublink" href="#vector3-dotXYZ">dotXYZ</a><br>
+    <a class="sublink" href="#vector3-angleBetween">angleBetween</a><br>
+    <a class="sublink" href="#vector3-equals">equals</a><br>
+    <a class="sublink" href="#vector3-equalsEpsilon">equalsEpsilon</a><br>
+    <a class="sublink" href="#vector3-isFinite">isFinite</a><br>
+
+    <a class="sublink" href="#vector3-copy">copy</a><br>
+    <a class="sublink" href="#vector3-cross">cross</a><br>
+    <a class="sublink" href="#vector3-normalized">normalized</a><br>
+    <a class="sublink" href="#vector3-withMagnitude">withMagnitude</a><br>
+    <a class="sublink" href="#vector3-timesScalar">timesScalar</a><br>
+    <a class="sublink" href="#vector3-times">times</a><br>
+    <a class="sublink" href="#vector3-componentTimes">componentTimes</a><br>
+    <a class="sublink" href="#vector3-plus">plus</a><br>
+    <a class="sublink" href="#vector3-plusXYZ">plusXYZ</a><br>
+    <a class="sublink" href="#vector3-plusScalar">plusScalar</a><br>
+    <a class="sublink" href="#vector3-minus">minus</a><br>
+    <a class="sublink" href="#vector3-minusXYZ">minusXYZ</a><br>
+    <a class="sublink" href="#vector3-minusScalar">minusScalar</a><br>
+    <a class="sublink" href="#vector3-dividedScalar">dividedScalar</a><br>
+    <a class="sublink" href="#vector3-negated">negated</a><br>
+    <a class="sublink" href="#vector3-blend">blend</a><br>
+    <a class="sublink" href="#vector3-average">average</a><br>
+    <a class="sublink" href="#vector3-toVector2">toVector2</a><br>
+    <a class="sublink" href="#vector3-toVector4">toVector4</a><br>
+
+    <a class="sublink" href="#vector3-setXYZ">setXYZ</a><br>
+    <a class="sublink" href="#vector3-setX">setX</a><br>
+    <a class="sublink" href="#vector3-setY">setY</a><br>
+    <a class="sublink" href="#vector3-setZ">setZ</a><br>
+    <a class="sublink" href="#vector3-set">set</a><br>
+    <a class="sublink" href="#vector3-setMagnitude">setMagnitude</a><br>
+    <a class="sublink" href="#vector3-add">add</a><br>
+    <a class="sublink" href="#vector3-addXYZ">addXYZ</a><br>
+    <a class="sublink" href="#vector3-addScalar">addScalar</a><br>
+    <a class="sublink" href="#vector3-subtract">subtract</a><br>
+    <a class="sublink" href="#vector3-subtractXYZ">subtractXYZ</a><br>
+    <a class="sublink" href="#vector3-subtractScalar">subtractScalar</a><br>
+    <a class="sublink" href="#vector3-multiplyScalar">multiplyScalar</a><br>
+    <a class="sublink" href="#vector3-multiply">multiply</a><br>
+    <a class="sublink" href="#vector3-componentMultiply">componentMultiply</a><br>
+    <a class="sublink" href="#vector3-divideScalar">divideScalar</a><br>
+    <a class="sublink" href="#vector3-negate">negate</a><br>
+    <a class="sublink" href="#vector3-normalize">normalize</a><br>
+
+    <a class="navlink" href="#vector4">Vector4</a><br>
+
+    <a class="sublink" href="#vector4-ZERO">Vector4.ZERO</a><br>
+    <a class="sublink" href="#vector4-X_UNIT">Vector4.X_UNIT</a><br>
+    <a class="sublink" href="#vector4-Y_UNIT">Vector4.Y_UNIT</a><br>
+    <a class="sublink" href="#vector4-Z_UNIT">Vector4.Z_UNIT</a><br>
+    <a class="sublink" href="#vector4-W_UNIT">Vector4.W_UNIT</a><br>
+
+    <a class="sublink" href="#vector4-magnitude">magnitude</a><br>
+    <a class="sublink" href="#vector4-magnitudeSquared">magnitudeSquared</a><br>
+    <a class="sublink" href="#vector4-distance">distance</a><br>
+    <a class="sublink" href="#vector4-distanceXYZW">distanceXYZW</a><br>
+    <a class="sublink" href="#vector4-distanceSquared">distanceSquared</a><br>
+    <a class="sublink" href="#vector4-distanceSquaredXYZW">distanceSquaredXYZW</a><br>
+    <a class="sublink" href="#vector4-dot">dot</a><br>
+    <a class="sublink" href="#vector4-dotXYZW">dotXYZW</a><br>
+    <a class="sublink" href="#vector4-angleBetween">angleBetween</a><br>
+    <a class="sublink" href="#vector4-equals">equals</a><br>
+    <a class="sublink" href="#vector4-equalsEpsilon">equalsEpsilon</a><br>
+    <a class="sublink" href="#vector4-isFinite">isFinite</a><br>
+
+    <a class="sublink" href="#vector4-copy">copy</a><br>
+    <a class="sublink" href="#vector4-normalized">normalized</a><br>
+    <a class="sublink" href="#vector4-withMagnitude">withMagnitude</a><br>
+    <a class="sublink" href="#vector4-timesScalar">timesScalar</a><br>
+    <a class="sublink" href="#vector4-times">times</a><br>
+    <a class="sublink" href="#vector4-componentTimes">componentTimes</a><br>
+    <a class="sublink" href="#vector4-plus">plus</a><br>
+    <a class="sublink" href="#vector4-plusXYZW">plusXYZW</a><br>
+    <a class="sublink" href="#vector4-plusScalar">plusScalar</a><br>
+    <a class="sublink" href="#vector4-minus">minus</a><br>
+    <a class="sublink" href="#vector4-minusXYZW">minusXYZW</a><br>
+    <a class="sublink" href="#vector4-minusScalar">minusScalar</a><br>
+    <a class="sublink" href="#vector4-negated">negated</a><br>
+    <a class="sublink" href="#vector4-blend">blend</a><br>
+    <a class="sublink" href="#vector4-average">average</a><br>
+    <a class="sublink" href="#vector4-toVector3">toVector3</a><br>
+
+    <a class="sublink" href="#vector4-setXYZW">setXYZW</a><br>
+    <a class="sublink" href="#vector4-setX">setX</a><br>
+    <a class="sublink" href="#vector4-setY">setY</a><br>
+    <a class="sublink" href="#vector4-setZ">setZ</a><br>
+    <a class="sublink" href="#vector4-setW">setW</a><br>
+    <a class="sublink" href="#vector4-set">set</a><br>
+    <a class="sublink" href="#vector4-setMagnitude">setMagnitude</a><br>
+    <a class="sublink" href="#vector4-add">add</a><br>
+    <a class="sublink" href="#vector4-addXYZW">addXYZW</a><br>
+    <a class="sublink" href="#vector4-addScalar">addScalar</a><br>
+    <a class="sublink" href="#vector4-subtract">subtract</a><br>
+    <a class="sublink" href="#vector4-subtractXYZW">subtractXYZW</a><br>
+    <a class="sublink" href="#vector4-subtractScalar">subtractScalar</a><br>
+    <a class="sublink" href="#vector4-multiplyScalar">multiplyScalar</a><br>
+    <a class="sublink" href="#vector4-multiply">multiply</a><br>
+    <a class="sublink" href="#vector4-componentMultiply">componentMultiply</a><br>
+    <a class="sublink" href="#vector4-divideScalar">divideScalar</a><br>
+    <a class="sublink" href="#vector4-negate">negate</a><br>
+    <a class="sublink" href="#vector4-normalize">normalize</a><br>
   </div>
   <div class="span6">
     <h2 id="tutorials">Tutorials</h2>

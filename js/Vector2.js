@@ -16,6 +16,13 @@ define( function( require ) {
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
 
+  /**
+   * Creates a 2-dimensional vector with the specified X and Y values.
+   * @constructor
+   *
+   * @param {number} [x] - X coordinate, defaults to 0 if not provided
+   * @param {number} [y] - Y coordinate, defaults to 0 if not provided
+   */
   function Vector2( x, y ) {
     // allow optional parameters
     this.x = x !== undefined ? x : 0;
@@ -29,61 +36,149 @@ define( function( require ) {
 
   dot.register( 'Vector2', Vector2 );
 
-  Vector2.createPolar = function( magnitude, angle ) {
-    return new Vector2().setPolar( magnitude, angle );
-  };
-
-  Vector2.prototype = {
-    constructor: Vector2,
+  inherit( Object, Vector2, {
+    // @public (read-only) - Helps to identify the dimension of the vector
     isVector2: true,
     dimension: 2,
 
+    /**
+     * The magnitude (Euclidean/L2 Norm) of this vector.
+     * @public
+     *
+     * @returns {number}
+     */
     magnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
     },
 
+    /**
+     * The squared magnitude (square of the Euclidean/L2 Norm) of this vector.
+     * @public
+     *
+     * @returns {number}
+     */
     magnitudeSquared: function() {
       return this.x * this.x + this.y * this.y;
     },
 
-    // the distance between this vector (treated as a point) and another point
+    /**
+     * The Euclidean distance between this vector (treated as a point) and another point.
+     * @public
+     *
+     * @param {Vector2} point
+     * @returns {number}
+     */
     distance: function( point ) {
       return Math.sqrt( this.distanceSquared( point ) );
     },
 
-    // the distance between this vector (treated as a point) and another point specified as x:Number, y:Number
+    /**
+     * The Euclidean distance between this vector (treated as a point) and another point (x,y).
+     * @public
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {number}
+     */
     distanceXY: function( x, y ) {
       var dx = this.x - x;
       var dy = this.y - y;
       return Math.sqrt( dx * dx + dy * dy );
     },
 
-    // the squared distance between this vector (treated as a point) and another point
+    /**
+     * The squared Euclidean distance between this vector (treated as a point) and another point.
+     * @public
+     *
+     * @param {Vector2} point
+     * @returns {number}
+     */
     distanceSquared: function( point ) {
       var dx = this.x - point.x;
       var dy = this.y - point.y;
       return dx * dx + dy * dy;
     },
 
-    // the squared distance between this vector (treated as a point) and another point as (x,y)
+    /**
+     * The squared Euclidean distance between this vector (treated as a point) and another point (x,y).
+     * @public
+     *
+     * @param {Vector2} point
+     * @returns {number}
+     */
     distanceSquaredXY: function( x, y ) {
       var dx = this.x - x;
       var dy = this.y - y;
       return dx * dx + dy * dy;
     },
 
+    /**
+     * The dot-product (Euclidean inner product) between this vector and another vector v.
+     * @public
+     *
+     * @param {Vector2} v
+     * @returns {number}
+     */
     dot: function( v ) {
       return this.x * v.x + this.y * v.y;
     },
 
-    dotXY: function( vx, vy ) {
-      return this.x * vx + this.y * vy;
+    /**
+     * The dot-product (Euclidean inner product) between this vector and another vector (x,y).
+     * @public
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {number}
+     */
+    dotXY: function( x, y ) {
+      return this.x * x + this.y * y;
     },
 
+    /**
+     * The angle (theta) of this vector, such that it can be represented by x=magnitude*cos(theta) and
+     * y=magnitude*sin(theta), where theta is in the range (-pi, pi].
+     * @public
+     *
+     * @returns {number}
+     */
+    angle: function() {
+      return Math.atan2( this.y, this.x );
+    },
+
+    /**
+     * The angle between this vector and another vector, in the range [0, pi].
+     * @public
+     *
+     * @param {Vector2} v
+     * @returns {number}
+     */
+    angleBetween: function( v ) {
+      var thisMagnitude = this.magnitude();
+      var vMagnitude = v.magnitude();
+      return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
+    },
+
+    /**
+     * Exact equality comparison between this vector and another vector.
+     * @public
+     *
+     * @param {Vector2} other
+     * @returns {boolean} - Whether the two vectors have equal components
+     */
     equals: function( other ) {
       return this.x === other.x && this.y === other.y;
     },
 
+    /**
+     * Approximate equality comparison between this vector and another vector.
+     * @public
+     *
+     * @param {Vector2} other
+     * @param {number} epsilon
+     * @returns {boolean} - Whether difference between the two vectors has no component with an absolute value greater
+     *                      than epsilon.
+     */
     equalsEpsilon: function( other, epsilon ) {
       if ( !epsilon ) {
         epsilon = 0;
@@ -91,15 +186,31 @@ define( function( require ) {
       return Math.max( Math.abs( this.x - other.x ), Math.abs( this.y - other.y ) ) <= epsilon;
     },
 
+    /**
+     * Whether all of the components are numbers (not NaN) that are not infinity or -infinity.
+     * @public
+     *
+     * @returns {boolean}
+     */
     isFinite: function() {
       return isFinite( this.x ) && isFinite( this.y );
     },
 
     /*---------------------------------------------------------------------------*
      * Immutables
-     *----------------------------------------------------------------------------*/
+     *---------------------------------------------------------------------------*/
 
-    // create a copy, or if a vector is passed in, set that vector to our value
+    /**
+     * Creates a copy of this vector, or if a vector is passed in, set that vector's values to ours.
+     * @public
+     *
+     * This is the immutable form of the function set(), if a vector is provided. This will return a new vector, and
+     * will not modify this vector.
+     *
+     * @param {Vector2} [vector] - If not provided, creates a new Vector2 with filled in values. Otherwise, fills in the
+     *                             values of the provided vector so that it equals this vector.
+     * @returns {Vector2}
+     */
     copy: function( vector ) {
       if ( vector ) {
         return vector.set( this );
@@ -109,11 +220,27 @@ define( function( require ) {
       }
     },
 
-    // z component of the equivalent 3-dimensional cross product (this.x, this.y,0) x (v.x, v.y, 0)
+    /**
+     * The z-component of the equivalent 3-dimensional cross-product (this.x, this.y,0) x (v.x, v.y, 0).
+     * @public
+     *
+     * @param {Vector2} v
+     * @returns {number}
+     */
     crossScalar: function( v ) {
       return this.x * v.y - this.y * v.x;
     },
 
+    /**
+     * Normalized (re-scaled) copy of this vector such that its magnitude is 1. If its initial magnitude is zero, an
+     * error is thrown.
+     * @public
+     *
+     * This is the immutable form of the function normalize(). This will return a new vector, and will not modify this
+     * vector.
+     *
+     * @returns {Vector2}
+     */
     normalized: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
@@ -124,166 +251,487 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Re-scaled copy of this vector such that it has the desired magnitude. If its initial magnitude is zero, an error
+     * is thrown. If the passed-in magnitude is negative, the direction of the resulting vector will be reversed.
+     * @public
+     *
+     * This is the immutable form of the function setMatnigude(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} magnitude
+     * @returns {Vector2}
+     */
     withMagnitude: function( magnitude ) {
       return this.copy().setMagnitude( magnitude );
     },
 
+    /**
+     * Copy of this vector, scaled by the desired scalar value.
+     * @public
+     *
+     * This is the immutable form of the function multiplyScalar(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     timesScalar: function( scalar ) {
       return new Vector2( this.x * scalar, this.y * scalar );
     },
 
+    /**
+     * Same as timesScalar.
+     * @public
+     *
+     * This is the immutable form of the function multiply(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     times: function( scalar ) {
       // make sure it's not a vector!
       assert && assert( scalar.dimension === undefined );
       return this.timesScalar( scalar );
     },
 
+    /**
+     * Copy of this vector, multiplied component-wise by the passed-in vector v.
+     * @public
+     *
+     * This is the immutable form of the function componentMultiply(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {Vector2} v
+     * @returns {Vector2}
+     */
     componentTimes: function( v ) {
       return new Vector2( this.x * v.x, this.y * v.y );
     },
 
+    /**
+     * Addition of this vector and another vector, returning a copy.
+     * @public
+     *
+     * This is the immutable form of the function add(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {Vector2} v
+     * @returns {Vector2}
+     */
     plus: function( v ) {
       return new Vector2( this.x + v.x, this.y + v.y );
     },
 
+    /**
+     * Addition of this vector and another vector (x,y), returning a copy.
+     * @public
+     *
+     * This is the immutable form of the function addXY(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {Vector2}
+     */
     plusXY: function( x, y ) {
       return new Vector2( this.x + x, this.y + y );
     },
 
+    /**
+     * Addition of this vector with a scalar (adds the scalar to every component), returning a copy.
+     * @public
+     *
+     * This is the immutable form of the function addScalar(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     plusScalar: function( scalar ) {
       return new Vector2( this.x + scalar, this.y + scalar );
     },
 
+    /**
+     * Subtraction of this vector by another vector v, returning a copy.
+     * @public
+     *
+     * This is the immutable form of the function subtract(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {Vector2} v
+     * @returns {Vector2}
+     */
     minus: function( v ) {
       return new Vector2( this.x - v.x, this.y - v.y );
     },
 
+    /**
+     * Subtraction of this vector by another vector (x,y), returning a copy.
+     * @public
+     *
+     * This is the immutable form of the function subtractXY(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {Vector2}
+     */
     minusXY: function( x, y ) {
       return new Vector2( this.x - x, this.y - y );
     },
 
+    /**
+     * Subtraction of this vector by a scalar (subtracts the scalar from every component), returning a copy.
+     * @public
+     *
+     * This is the immutable form of the function subtractScalar(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     minusScalar: function( scalar ) {
       return new Vector2( this.x - scalar, this.y - scalar );
     },
 
+    /**
+     * Division of this vector by a scalar (divides every component by the scalar), returning a copy.
+     * @public
+     *
+     * This is the immutable form of the function divideScalar(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     dividedScalar: function( scalar ) {
       return new Vector2( this.x / scalar, this.y / scalar );
     },
 
+    /**
+     * Negated copy of this vector (multiplies every component by -1).
+     * @public
+     *
+     * This is the immutable form of the function negate(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @returns {Vector2}
+     */
     negated: function() {
       return new Vector2( -this.x, -this.y );
     },
 
-    angle: function() {
-      return Math.atan2( this.y, this.x );
-    },
-
-    // equivalent to a -PI/2 rotation (right hand rotation)
+    /**
+     * Rotated by -pi/2 (perpendicular to this vector), returned as a copy.
+     * @public
+     *
+     * @returns {Vector2}
+     */
     perpendicular: function() {
       return new Vector2( this.y, -this.x );
     },
 
-    angleBetween: function( v ) {
-      var thisMagnitude = this.magnitude();
-      var vMagnitude = v.magnitude();
-      return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
-    },
-
+    /**
+     * Rotated by an arbitrary angle, in radians. Returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function rotate(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @param {number} angle - In radians
+     * @returns {Vector2}
+     */
     rotated: function( angle ) {
       var newAngle = this.angle() + angle;
       var mag = this.magnitude();
       return new Vector2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
 
-    // linear interpolation from this (ratio=0) to vector (ratio=1)
+    /**
+     * A linear interpolation between this vector (ratio=0) and another vector (ratio=1).
+     * @public
+     *
+     * @param {Vector2} vector
+     * @param {number} ratio - Not necessarily constrained in [0, 1]
+     * @returns {Vector2}
+     */
     blend: function( vector, ratio ) {
       return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
     },
 
-    // average position between this and the provided vector
+    /**
+     * The average (midpoint) between this vector and another vector.
+     * @public
+     *
+     * @param {Vector2} vector
+     * @returns {Vector2}
+     */
     average: function( vector ) {
       return this.blend( vector, 0.5 );
     },
 
+    /**
+     * Debugging string for the vector.
+     * @public
+     *
+     * @returns {string}
+     */
     toString: function() {
       return 'Vector2(' + this.x + ', ' + this.y + ')';
     },
 
+    /**
+     * Converts this to a 3-dimensional vector, with the z-component equal to 0.
+     * @public
+     *
+     * @returns {Vector3}
+     */
     toVector3: function() {
-      return new dot.Vector3( this.x, this.y );
+      return new dot.Vector3( this.x, this.y, 0 );
     },
 
     /*---------------------------------------------------------------------------*
      * Mutables
-     *----------------------------------------------------------------------------*/
+     * - all mutation should go through setXY / setX / setY
+     *---------------------------------------------------------------------------*/
 
-    // our core three functions which all mutation should go through
+    /**
+     * Sets all of the components of this vector, returning this.
+     * @public
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {Vector2}
+     */
     setXY: function( x, y ) {
       this.x = x;
       this.y = y;
       return this;
     },
+
+    /**
+     * Sets the x-component of this vector, returning this.
+     * @public
+     *
+     * @param {number} x
+     * @returns {Vector2}
+     */
     setX: function( x ) {
       this.x = x;
       return this;
     },
+
+    /**
+     * Sets the y-component of this vector, returning this.
+     * @public
+     *
+     * @param {number} y
+     * @returns {Vector2}
+     */
     setY: function( y ) {
       this.y = y;
       return this;
     },
 
+    /**
+     * Sets this vector to be a copy of another vector.
+     * @public
+     *
+     * This is the mutable form of the function copy(). This will mutate (change) this vector, in addition to returning
+     * this vector itself.
+     *
+     * @param {Vector2} v
+     * @returns {Vector2}
+     */
     set: function( v ) {
       return this.setXY( v.x, v.y );
     },
 
-    //Sets the magnitude of the vector, keeping the same direction (though a negative magnitude will flip the vector direction)
-    setMagnitude: function( m ) {
-      var scale = m / this.magnitude();
+    /**
+     * Sets the magnitude of this vector. If the passed-in magnitude is negative, this flips the vector and sets its
+     * magnitude to abs( magnitude ).
+     * @public
+     *
+     * This is the mutable form of the function withMagnitude(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} magnitude
+     * @returns {Vector2}
+     */
+    setMagnitude: function( magnitude ) {
+      var scale = magnitude / this.magnitude();
       return this.multiplyScalar( scale );
     },
 
+    /**
+     * Adds another vector to this vector, changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function plus(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {Vector2} v
+     * @returns {Vector2}
+     */
     add: function( v ) {
       return this.setXY( this.x + v.x, this.y + v.y );
     },
 
+    /**
+     * Adds another vector (x,y) to this vector, changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function plusXY(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {Vector2}
+     */
     addXY: function( x, y ) {
       return this.setXY( this.x + x, this.y + y );
     },
 
+    /**
+     * Adds a scalar to this vector (added to every component), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function plusScalar(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     addScalar: function( scalar ) {
       return this.setXY( this.x + scalar, this.y + scalar );
     },
 
+    /**
+     * Subtracts this vector by another vector, changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function minus(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {Vector2} v
+     * @returns {Vector2}
+     */
     subtract: function( v ) {
       return this.setXY( this.x - v.x, this.y - v.y );
     },
 
+    /**
+     * Subtracts this vector by another vector (x,y), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function minusXY(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {Vector2}
+     */
+    subtractXY: function( x, y ) {
+      return this.setXY( this.x - x, this.y - y );
+    },
+
+    /**
+     * Subtracts this vector by a scalar (subtracts each component by the scalar), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function minusScalar(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     subtractScalar: function( scalar ) {
       return this.setXY( this.x - scalar, this.y - scalar );
     },
 
+    /**
+     * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function timesScalar(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     multiplyScalar: function( scalar ) {
       return this.setXY( this.x * scalar, this.y * scalar );
     },
 
+    /**
+     * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
+     * Same as multiplyScalar.
+     * @public
+     *
+     * This is the mutable form of the function times(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     multiply: function( scalar ) {
       // make sure it's not a vector!
       assert && assert( scalar.dimension === undefined );
       return this.multiplyScalar( scalar );
     },
 
+    /**
+     * Multiplies this vector by another vector component-wise, changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function componentTimes(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {Vector2} v
+     * @returns {Vector2}
+     */
     componentMultiply: function( v ) {
       return this.setXY( this.x * v.x, this.y * v.y );
     },
 
+    /**
+     * Divides this vector by a scalar (divides each component by the scalar), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function dividedScalar(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} scalar
+     * @returns {Vector2}
+     */
     divideScalar: function( scalar ) {
       return this.setXY( this.x / scalar, this.y / scalar );
     },
 
+    /**
+     * Negates this vector (multiplies each component by -1), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function negated(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @returns {Vector2}
+     */
     negate: function() {
       return this.setXY( -this.x, -this.y );
     },
 
+    /**
+     * Normalizes this vector (rescales to where the magnitude is 1), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function normalized(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @returns {Vector2}
+     */
     normalize: function() {
       var mag = this.magnitude();
       if ( mag === 0 ) {
@@ -294,22 +742,66 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Rotates this vector by the angle (in radians), changing this vector.
+     * @public
+     *
+     * This is the mutable form of the function rotated(). This will mutate (change) this vector, in addition to
+     * returning this vector itself.
+     *
+     * @param {number} angle - In radians
+     * @returns {Vector2}
+     */
     rotate: function( angle ) {
       var newAngle = this.angle() + angle;
       var mag = this.magnitude();
       return this.setXY( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
 
+    /**
+     * Sets this vector's value to be the x,y values matching the given magnitude and angle (in radians), changing
+     * this vector, and returning itself.
+     * @public
+     *
+     * @param {number} magnitude
+     * @param {number} angle - In radians
+     * @returns {Vector2}
+     */
     setPolar: function( magnitude, angle ) {
       return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
     },
 
-    // support for serialization
+    /**
+     * Returns a duck-typed object meant for use with tandem/together serialization.
+     */
     toStateObject: function() {
       return { x: this.x, y: this.y };
     }
-  };
+  }, { // static functions on Vector2 itself
+    /**
+     * Creates a new Vector2 as if it had been constructed with new dot.Vector2().setPolar( magnitude, angle ).
+     * @public
+     *
+     * @returns {Vector2}
+     */
+    createPolar: function( magnitude, angle ) {
+      return new Vector2().setPolar( magnitude, angle );
+    },
 
+    /**
+     * Constructs a Vector2 from a duck-typed { x: {number}, y: {number} } object, meant for use with
+     * tandem/together deserialization.
+     * @public
+     *
+     * @param { x: {number}, y: {number } } stateObject
+     * @returns {Vector2}
+     */
+    fromStateObject: function( stateObject ) {
+      return new Vector2( stateObject.x, stateObject.y );
+    }
+  } );
+
+  // Sets up pooling on Vector2
   Poolable.mixin( Vector2, {
     defaultFactory: function() { return new Vector2(); },
     constructorDuplicateFactory: function( pool ) {
@@ -326,7 +818,9 @@ define( function( require ) {
 
   /*---------------------------------------------------------------------------*
    * Immutable Vector form
-   *----------------------------------------------------------------------------*/
+   *---------------------------------------------------------------------------*/
+
+  // @private
   Vector2.Immutable = function ImmutableVector2( x, y ) {
     Vector2.call( this, x, y );
   };
@@ -346,15 +840,10 @@ define( function( require ) {
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
 
-  // helpful immutable constants
-  Vector2.ZERO = new Immutable( 0, 0 );
-  Vector2.X_UNIT = new Immutable( 1, 0 );
-  Vector2.Y_UNIT = new Immutable( 0, 1 );
-
-  // support for deserialization
-  Vector2.fromStateObject = function( stateObject ) {
-    return new Vector2( stateObject.x, stateObject.y );
-  };
+  // @public {Vector2} - helpful immutable constants
+  Vector2.ZERO = assert ? new Immutable( 0, 0 ) : new Vector2( 0, 0 );
+  Vector2.X_UNIT = assert ? new Immutable( 1, 0 ) : new Vector2( 1, 0 );
+  Vector2.Y_UNIT = assert ? new Immutable( 0, 1 ) : new Vector2( 0, 1 );
 
   return Vector2;
 } );
