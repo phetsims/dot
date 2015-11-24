@@ -1,7 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * A 3D cuboid-shaped bounded area (bounding box)
+ * A 3D cuboid-shaped bounded area (bounding box).
  *
  * There are a number of convenience functions to get locations and points on the Bounds. Currently we do not
  * store these with the Bounds3 instance, since we want to lower the memory footprint.
@@ -17,17 +17,42 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
 
   require( 'DOT/Vector3' );
 
-  // not using x,y,width,height so that it can handle infinity-based cases in a better way
+  /**
+   * Creates a 3-dimensional bounds (bounding box).
+   * @constructor
+   * @public
+   *
+   * @param {number} minX - The intial minimum X coordinate of the bounds.
+   * @param {number} minY - The intial minimum Y coordinate of the bounds.
+   * @param {number} minZ - The intial minimum Z coordinate of the bounds.
+   * @param {number} maxX - The intial maximum X coordinate of the bounds.
+   * @param {number} maxY - The intial maximum Y coordinate of the bounds.
+   * @param {number} maxZ - The intial maximum Z coordinate of the bounds.
+   */
   function Bounds3( minX, minY, minZ, maxX, maxY, maxZ ) {
     assert && assert( maxY !== undefined, 'Bounds3 requires 4 parameters' );
+
+    // @public {number} - The minimum X coordinate of the bounds.
     this.minX = minX;
+
+    // @public {number} - The minimum Y coordinate of the bounds.
     this.minY = minY;
+
+    // @public {number} - The minimum Z coordinate of the bounds.
     this.minZ = minZ;
+
+    // @public {number} - The maximum X coordinate of the bounds.
     this.maxX = maxX;
+
+    // @public {number} - The maximum Y coordinate of the bounds.
     this.maxY = maxY;
+
+    // @public {number} - The maximum Z coordinate of the bounds.
     this.maxZ = maxZ;
 
     phetAllocation && phetAllocation( 'Bounds3' );
@@ -35,22 +60,39 @@ define( function( require ) {
 
   dot.register( 'Bounds3', Bounds3 );
 
-  Bounds3.prototype = {
-    constructor: Bounds3,
-
+  inherit( Object, Bounds3, {
+    // @public (read-only) - Helps to identify the dimension of the bounds
     isBounds: true,
     dimension: 3,
 
     /*---------------------------------------------------------------------------*
      * Properties
-     *----------------------------------------------------------------------------*/
+     *---------------------------------------------------------------------------*/
 
+    /**
+     * The width of the bounds, defined as maxX - minX.
+     * @public
+     *
+     * @returns {number}
+     */
     getWidth: function() { return this.maxX - this.minX; },
     get width() { return this.getWidth(); },
 
+    /**
+     * The height of the bounds, defined as maxY - minY.
+     * @public
+     *
+     * @returns {number}
+     */
     getHeight: function() { return this.maxY - this.minY; },
     get height() { return this.getHeight(); },
 
+    /**
+     * The depth of the bounds, defined as maxZ - minZ.
+     * @public
+     *
+     * @returns {number}
+     */
     getDepth: function() { return this.maxZ - this.minZ; },
     get depth() { return this.getDepth(); },
 
@@ -64,75 +106,289 @@ define( function( require ) {
      * centerY  | centerLeft    center      centerRight
      * maxY     | lowerLeft   lowerCenter   lowerRight
      */
+
+    /**
+     * Alias for minX, when thinking of the bounds as an (x,y,z,width,height,depth) cuboid.
+     * @public
+     *
+     * @returns {number}
+     */
     getX: function() { return this.minX; },
     get x() { return this.getX(); },
+
+    /**
+     * Alias for minY, when thinking of the bounds as an (x,y,z,width,height,depth) cuboid.
+     * @public
+     *
+     * @returns {number}
+     */
     getY: function() { return this.minY; },
     get y() { return this.getY(); },
+
+    /**
+     * Alias for minZ, when thinking of the bounds as an (x,y,z,width,height,depth) cuboid.
+     * @public
+     *
+     * @returns {number}
+     */
     getZ: function() { return this.minZ; },
     get z() { return this.getZ(); },
 
+    /**
+     * Alias for minX, supporting the explicit getter function style.
+     * @public
+     *
+     * @returns {number}
+     */
     getMinX: function() { return this.minX; },
-    get left() { return this.minX; },
+
+    /**
+     * Alias for minY, supporting the explicit getter function style.
+     * @public
+     *
+     * @returns {number}
+     */
     getMinY: function() { return this.minY; },
-    get top() { return this.minY; },
+
+    /**
+     * Alias for minZ, supporting the explicit getter function style.
+     * @public
+     *
+     * @returns {number}
+     */
     getMinZ: function() { return this.minZ; },
-    get back() { return this.minZ; },
+
+    /**
+     * Alias for maxX, supporting the explicit getter function style.
+     * @public
+     *
+     * @returns {number}
+     */
     getMaxX: function() { return this.maxX; },
-    get right() { return this.maxX; },
+
+    /**
+     * Alias for maxY, supporting the explicit getter function style.
+     * @public
+     *
+     * @returns {number}
+     */
     getMaxY: function() { return this.maxY; },
-    get bottom() { return this.maxY; },
+
+    /**
+     * Alias for maxZ, supporting the explicit getter function style.
+     * @public
+     *
+     * @returns {number}
+     */
     getMaxZ: function() { return this.maxZ; },
+
+    /**
+     * Alias for minX, when thinking in the UI-layout manner.
+     * @public
+     *
+     * @returns {number}
+     */
+    getLeft: function() { return this.minX; },
+    get left() { return this.minX; },
+
+    /**
+     * Alias for minY, when thinking in the UI-layout manner.
+     * @public
+     *
+     * @returns {number}
+     */
+    getTop: function() { return this.minY; },
+    get top() { return this.minY; },
+
+    /**
+     * Alias for minZ, when thinking in the UI-layout manner.
+     * @public
+     *
+     * @returns {number}
+     */
+    getBack: function() { return this.minZ; },
+    get back() { return this.minZ; },
+
+    /**
+     * Alias for maxX, when thinking in the UI-layout manner.
+     * @public
+     *
+     * @returns {number}
+     */
+    getRight: function() { return this.maxX; },
+    get right() { return this.maxX; },
+
+    /**
+     * Alias for maxY, when thinking in the UI-layout manner.
+     * @public
+     *
+     * @returns {number}
+     */
+    getBottom: function() { return this.maxY; },
+    get bottom() { return this.maxY; },
+
+    /**
+     * Alias for maxZ, when thinking in the UI-layout manner.
+     * @public
+     *
+     * @returns {number}
+     */
+    getFront: function() { return this.maxZ; },
     get front() { return this.maxZ; },
 
+    /**
+     * The horizontal (X-coordinate) center of the bounds, averaging the minX and maxX.
+     * @public
+     *
+     * @returns {number}
+     */
     getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
     get centerX() { return this.getCenterX(); },
+
+    /**
+     * The vertical (Y-coordinate) center of the bounds, averaging the minY and maxY.
+     * @public
+     *
+     * @returns {number}
+     */
     getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
     get centerY() { return this.getCenterY(); },
+
+    /**
+     * The depthwise (Z-coordinate) center of the bounds, averaging the minZ and maxZ.
+     * @public
+     *
+     * @returns {number}
+     */
     getCenterZ: function() { return ( this.maxZ + this.minZ ) / 2; },
     get centerZ() { return this.getCenterZ(); },
 
+    /**
+     * The point (centerX, centerY, centerZ), in the center of the bounds.
+     * @public
+     *
+     * @returns {Vector3}
+     */
     getCenter: function() { return new dot.Vector3( this.getCenterX(), this.getCenterY(), this.getCenterZ() ); },
     get center() { return this.getCenter(); },
 
+    /**
+     * Whether we have negative width, height or depth. Bounds3.NOTHING is a prime example of an empty Bounds3.
+     * Bounds with width = height = depth = 0 are considered not empty, since they include the single (0,0,0) point.
+     * @public
+     *
+     * @returns {boolean}
+     */
     isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0 || this.getDepth() < 0; },
 
+    /**
+     * Whether our minimums and maximums are all finite numbers. This will exclude Bounds3.NOTHING and Bounds3.EVERYTHING.
+     * @public
+     *
+     * @returns {boolean}
+     */
     isFinite: function() {
       return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.minZ ) && isFinite( this.maxX ) && isFinite( this.maxY ) && isFinite( this.maxZ );
     },
 
+    /**
+     * Whether this bounds has a non-zero area (non-zero positive width, height and depth).
+     * @public
+     *
+     * @returns {boolean}
+     */
+    hasNonzeroArea: function() {
+      return this.getWidth() > 0 && this.getHeight() > 0 && this.getDepth() > 0;
+    },
+
+    /**
+     * Whether this bounds has a finite and non-negative width, height and depth.
+     * @public
+     *
+     * @returns {boolean}
+     */
     isValid: function() {
       return !this.isEmpty() && this.isFinite();
     },
 
-    // whether the coordinates are inside the bounding box (or on the boundary)
+    /**
+     * Whether the coordinates are contained inside the bounding box, or are on the boundary.
+     * @public
+     *
+     * @param {number} x - X coordinate of the point to check
+     * @param {number} y - Y coordinate of the point to check
+     * @param {number} z - Z coordinate of the point to check
+     * @returns {boolean}
+     */
     containsCoordinates: function( x, y, z ) {
       return this.minX <= x && x <= this.maxX && this.minY <= y && y <= this.maxY && this.minZ <= z && z <= this.maxZ;
     },
 
-    // whether the point is inside the bounding box (or on the boundary)
+    /**
+     * Whether the point is contained inside the bounding box, or is on the boundary.
+     * @public
+     *
+     * @param {Vector3} point
+     * @returns {boolean}
+     */
     containsPoint: function( point ) {
       return this.containsCoordinates( point.x, point.y, point.z );
     },
 
-    // whether this bounding box completely contains the argument bounding box
+    /**
+     * Whether this bounding box completely contains the bounding box passed as a parameter. The boundary of a box is
+     * considered to be "contained".
+     * @public
+     *
+     * @param {Bounds3} bounds
+     * @returns {boolean}
+     */
     containsBounds: function( bounds ) {
       return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY && this.minZ <= bounds.minZ && this.maxZ >= bounds.maxZ;
     },
 
-    // whether the intersection is non-empty (if they share any part of a boundary, this will be true)
+    /**
+     * Whether this and another bounding box have any points of intersection (including touching boundaries).
+     * @public
+     *
+     * @param {Bounds3} bounds
+     * @returns {boolean}
+     */
     intersectsBounds: function( bounds ) {
       // TODO: more efficient way of doing this?
       return !this.intersection( bounds ).isEmpty();
     },
 
+    /**
+     * Debugging string for the bounds.
+     * @public
+     *
+     * @returns {string}
+     */
     toString: function() {
       return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + '),z:(' + this.minZ + ',' + this.maxZ + ')]';
     },
 
+    /**
+     * Exact equality comparison between this bounds and another bounds.
+     * @public
+     *
+     * @param {Bounds3} other
+     * @returns {boolean} - Whether the two bounds are equal
+     */
     equals: function( other ) {
       return this.minX === other.minX && this.minY === other.minY && this.minZ === other.minZ && this.maxX === other.maxX && this.maxY === other.maxY && this.maxZ === other.maxZ;
     },
 
+    /**
+     * Approximate equality comparison between this bounds and another bounds.
+     * @public
+     *
+     * @param {Bounds3} other
+     * @param {number} epsilon
+     * @returns {boolean} - Whether difference between the two bounds has no min/max with an absolute value greater
+     *                      than epsilon.
+     */
     equalsEpsilon: function( other, epsilon ) {
       epsilon = epsilon !== undefined ? epsilon : 0;
       var thisFinite = this.isFinite();
@@ -165,9 +421,19 @@ define( function( require ) {
 
     /*---------------------------------------------------------------------------*
      * Immutable operations
-     *----------------------------------------------------------------------------*/
+     *---------------------------------------------------------------------------*/
 
-    // create a copy, or if bounds is passed in, set that bounds to our value
+    /**
+     * Creates a copy of this bounds, or if a bounds is passed in, set that bounds's values to ours.
+     * @public
+     *
+     * This is the immutable form of the function set(), if a bounds is provided. This will return a new bounds, and
+     * will not modify this bounds.
+     *
+     * @param {Bounds3} [bounds] - If not provided, creates a new Bounds3 with filled in values. Otherwise, fills in the
+     *                             values of the provided bounds so that it equals this bounds.
+     * @returns {Bounds3}
+     */
     copy: function( bounds ) {
       if ( bounds ) {
         return bounds.set( this );
@@ -303,7 +569,7 @@ define( function( require ) {
 
     /*---------------------------------------------------------------------------*
      * Mutable operations
-     *----------------------------------------------------------------------------*/
+     *---------------------------------------------------------------------------*/
 
     // core mutations (every other mutator should call one of these once)
     setMinMax: function( minX, minY, minZ, maxX, maxY, maxZ ) {
@@ -498,16 +764,30 @@ define( function( require ) {
     shift: function( x, y, z ) {
       return this.setMinMax( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
     }
-  };
+  }, {
+    cuboid: function( x, y, z, width, height, depth ) {
+      return new Bounds3( x, y, z, x + width, y + height, z + depth );
+    },
 
-  Bounds3.cuboid = function( x, y, z, width, height, depth ) {
-    return new Bounds3( x, y, z, x + width, y + height, z + depth );
-  };
+    // a volume-less point bounds, which can be dilated to form a centered bounds
+    point: function( x, y, z ) {
+      return new Bounds3( x, y, z, x, y, z );
+    }
+  } );
 
-  // a volume-less point bounds, which can be dilated to form a centered bounds
-  Bounds3.point = function( x, y, z ) {
-    return new Bounds3( x, y, z, x, y, z );
-  };
+  Poolable.mixin( Bounds2, {
+    defaultFactory: function() { return Bounds2.NOTHING.copy(); },
+    constructorDuplicateFactory: function( pool ) {
+      return function( minX, minY, minZ, maxX, maxY, maxZ ) {
+        if ( pool.length ) {
+          return pool.pop().setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
+        }
+        else {
+          return new Bounds2( minX, minY, minZ, maxX, maxY, maxZ );
+        }
+      };
+    }
+  } );
 
   // specific bounds useful for operations
   Bounds3.EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );

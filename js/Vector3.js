@@ -1,7 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Basic 3-dimensional vector
+ * Basic 3-dimensional vector, represented as (x,y).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -21,15 +21,20 @@ define( function( require ) {
   /**
    * Creates a 3-dimensional vector with the specified X, Y and Z values.
    * @constructor
+   * @public
    *
    * @param {number} [x] - X coordinate, defaults to 0 if not provided
    * @param {number} [y] - Y coordinate, defaults to 0 if not provided
    * @param {number} [z] - Z coordinate, defaults to 0 if not provided
    */
   function Vector3( x, y, z ) {
-    // allow optional parameters
+    // @public {number} - The X coordinate of the vector.
     this.x = x !== undefined ? x : 0;
+
+    // @public {number} - The Y coordinate of the vector.
     this.y = y !== undefined ? y : 0;
+
+    // @public {number} - The Z coordinate of the vector.
     this.z = z !== undefined ? z : 0;
 
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
@@ -47,7 +52,7 @@ define( function( require ) {
     dimension: 3,
 
     /**
-     * The magnitude (Euclidean/L2 Norm) of this vector.
+     * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2+z^2}$.
      * @public
      *
      * @returns {number}
@@ -57,7 +62,7 @@ define( function( require ) {
     },
 
     /**
-     * T squared magnitude (square of the Euclidean/L2 Norm) of this vector.
+     * T squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2+z^2$.
      * @public
      *
      * @returns {number}
@@ -146,8 +151,11 @@ define( function( require ) {
     },
 
     /**
-     * The angle between this vector and another vector, in the range [0, pi].
+     * The angle between this vector and another vector, in the range $\theta\in[0, \pi]$.
      * @public
+     *
+     * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
+     * is the input vector (normalized).
      *
      * @param {Vector3} v
      * @returns {number}
@@ -257,7 +265,7 @@ define( function( require ) {
      * is thrown. If the passed-in magnitude is negative, the direction of the resulting vector will be reversed.
      * @public
      *
-     * This is the immutable form of the function setMatnigude(). This will return a new vector, and will not modify
+     * This is the immutable form of the function setMagnitude(). This will return a new vector, and will not modify
      * this vector.
      *
      * @param {number} magnitude

@@ -1,9 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Basic 4-dimensional vector
- *
- * TODO: add quaternion extension
+ * Basic 4-dimensional vector, represented as (x,y).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -22,6 +20,7 @@ define( function( require ) {
   /**
    * Creates a 4-dimensional vector with the specified X, Y, Z and W values.
    * @constructor
+   * @public
    *
    * @param {number} [x] - X coordinate, defaults to 0 if not provided
    * @param {number} [y] - Y coordinate, defaults to 0 if not provided
@@ -29,11 +28,17 @@ define( function( require ) {
    * @param {number} [w] - W coordinate, defaults to 1 if not provided (convenience for homogeneous coordinates)
    */
   function Vector4( x, y, z, w ) {
-    // allow optional parameters
+    // @public {number} - The X coordinate of the vector.
     this.x = x !== undefined ? x : 0;
+
+    // @public {number} - The Y coordinate of the vector.
     this.y = y !== undefined ? y : 0;
+
+    // @public {number} - The Z coordinate of the vector.
     this.z = z !== undefined ? z : 0;
-    this.w = w !== undefined ? w : 1; // since w could be zero!
+
+    // @public {number} - The W coordinate of the vector. Default is 1, for ease with homogeneous coordinates.
+    this.w = w !== undefined ? w : 1;
 
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );
@@ -51,7 +56,7 @@ define( function( require ) {
     dimension: 4,
 
     /**
-     * The magnitude (Euclidean/L2 Norm) of this vector.
+     * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2+z^2+w^2}$.
      * @public
      *
      * @returns {number}
@@ -61,7 +66,7 @@ define( function( require ) {
     },
 
     /**
-     * The squared magnitude (square of the Euclidean/L2 Norm) of this vector.
+     * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2+z^2+w^2$.
      * @public
      *
      * @returns {number}
@@ -151,8 +156,11 @@ define( function( require ) {
     },
 
     /**
-     * The angle between this vector and another vector, in the range [0, pi].
+     * The angle between this vector and another vector, in the range $\theta\in[0, \pi]$.
      * @public
+     *
+     * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
+     * is the input vector (normalized).
      *
      * @param {Vector4} v
      * @returns {number}
@@ -247,7 +255,7 @@ define( function( require ) {
      * is thrown. If the passed-in magnitude is negative, the direction of the resulting vector will be reversed.
      * @public
      *
-     * This is the immutable form of the function setMatnigude(). This will return a new vector, and will not modify
+     * This is the immutable form of the function setMagnitude(). This will return a new vector, and will not modify
      * this vector.
      *
      * @param {number} magnitude

@@ -6,8 +6,6 @@
  *
  * Inpsired from https://github.com/jakesgordon/bin-packing/blob/master/js/packer.js
  *
- * TODO: option for efficiently repacking?
- *
  * @author Sharfudeen Ashraf
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -20,6 +18,8 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
 
   /**
+   * Creates a BinPacker with the specified containing bounds.
+   * @public
    * @constructor
    *
    * @param {Bounds2} bounds - The available bounds to pack bins inside.
@@ -33,11 +33,11 @@ define( function( require ) {
   inherit( Object, BinPacker, {
     /**
      * Allocates a bin with the specified width and height if possible (returning a {Bin}), otherwise returns null.
+     * @public
      *
      * @param {number} width
      * @param {number} height
-     *
-     * @returns {Bin | null}
+     * @returns {Bin|null}
      */
     allocate: function( width, height ) {
       // find a leaf bin that has available room (or null)
@@ -59,6 +59,7 @@ define( function( require ) {
 
     /**
      * Deallocates a bin, so that its area can be reused by future allocations.
+     * @public
      *
      * @param {Bin} bin - The bin that was returned from allocate().
      */
@@ -86,28 +87,38 @@ define( function( require ) {
   } );
 
   /**
-   * A rectangular bin that can be used itself or split into sub-bins
+   * A rectangular bin that can be used itself or split into sub-bins.
+   * @public
    * @constructor
    *
    * @param {Bounds2} bounds
+   * @param {Bin|null} parent
    */
-  dot.BinPacker.Bin = function Bin( bounds, parent ) {
-    this.bounds = bounds; // @public {Bounds2} our containing bounds
-    this.parent = parent; // @private {Bin || null} parent bin, if applicable
+  BinPacker.Bin = function Bin( bounds, parent ) {
+    // @public {Bounds2} - Our containing bounds
+    this.bounds = bounds;
 
-    this.isSplit = false; // @private {boolean} whether our children are responsible for our area
-    this.isUsed = false; // @private {boolean} whether we are marked as a bin that is used
-    this.children = []; // @private {Array.<Bin>}
+    // @private {Bin|null} - Parent bin, if applicable
+    this.parent = parent;
+
+    // @private {boolean} - Whether our children are responsible for our area
+    this.isSplit = false;
+
+    // @private {boolean} - Whether we are marked as a bin that is used
+    this.isUsed = false;
+
+    // @private {Array.<Bin>}
+    this.children = [];
   };
-  inherit( Object, dot.BinPacker.Bin, {
+  inherit( Object, BinPacker.Bin, {
 
     /**
-     * @private
      * Finds an unused bin with open area that is at least width-x-height in size.
+     * @private
      *
      * @param {number} width
      * @param {number} height
-     * @returns {Bin | null}
+     * @returns {Bin|null}
      */
     findAvailableBin: function( width, height ) {
       assert && assert( width > 0 && height > 0, 'Empty bin requested?' );
@@ -138,8 +149,8 @@ define( function( require ) {
     },
 
     /**
-     * @private
      * Splits this bin into multiple child bins, and returns the child with the dimensions (width,height).
+     * @private
      *
      * @param {number} width
      * @param {number} height
@@ -198,8 +209,8 @@ define( function( require ) {
     },
 
     /**
-     * @private
      * Mark this bin as used.
+     * @private
      */
     use: function() {
       assert && assert( !this.isSplit, 'Should not mark a split bin as used' );
@@ -209,8 +220,8 @@ define( function( require ) {
     },
 
     /**
-     * @private
      * Mark this bin as not used, and attempt to collapse split parents if all children are unused.
+     * @private
      */
     unuse: function() {
       assert && assert( this.isUsed, 'Can only unuse a used instance' );
@@ -221,10 +232,10 @@ define( function( require ) {
     },
 
     /**
-     * @private
      * If our bin can be collapsed (it is split and has children that are not used AND not split), then we will become
      * not split, and will remove our children. If successful, it will also call this on our parent, fully attempting
      * to clean up unused data structures.
+     * @private
      */
     attemptToCollapse: function() {
       assert && assert( this.isSplit, 'Should only attempt to collapse split bins' );

@@ -1,7 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Basic 2-dimensional vector
+ * Basic 2-dimensional vector, represented as (x,y).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -19,13 +19,16 @@ define( function( require ) {
   /**
    * Creates a 2-dimensional vector with the specified X and Y values.
    * @constructor
+   * @public
    *
    * @param {number} [x] - X coordinate, defaults to 0 if not provided
    * @param {number} [y] - Y coordinate, defaults to 0 if not provided
    */
   function Vector2( x, y ) {
-    // allow optional parameters
+    // @public {number} - The X coordinate of the vector.
     this.x = x !== undefined ? x : 0;
+
+    // @public {number} - The Y coordinate of the vector.
     this.y = y !== undefined ? y : 0;
 
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
@@ -42,7 +45,7 @@ define( function( require ) {
     dimension: 2,
 
     /**
-     * The magnitude (Euclidean/L2 Norm) of this vector.
+     * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2}$.
      * @public
      *
      * @returns {number}
@@ -52,7 +55,7 @@ define( function( require ) {
     },
 
     /**
-     * The squared magnitude (square of the Euclidean/L2 Norm) of this vector.
+     * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2$.
      * @public
      *
      * @returns {number}
@@ -136,8 +139,9 @@ define( function( require ) {
     },
 
     /**
-     * The angle (theta) of this vector, such that it can be represented by x=magnitude*cos(theta) and
-     * y=magnitude*sin(theta), where theta is in the range (-pi, pi].
+     * The angle $\theta$ of this vector, such that this vector is equal to
+     * $$ u = \begin{bmatrix} r\cos\theta \\ r\sin\theta \end{bmatrix} $$
+     * for the magnitude $r \ge 0$ of the vector, with $\theta\in(-\pi,\pi]$
      * @public
      *
      * @returns {number}
@@ -147,8 +151,11 @@ define( function( require ) {
     },
 
     /**
-     * The angle between this vector and another vector, in the range [0, pi].
+     * The angle between this vector and another vector, in the range $\theta\in[0, \pi]$.
      * @public
+     *
+     * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
+     * is the input vector (normalized).
      *
      * @param {Vector2} v
      * @returns {number}
@@ -221,7 +228,8 @@ define( function( require ) {
     },
 
     /**
-     * The z-component of the equivalent 3-dimensional cross-product (this.x, this.y,0) x (v.x, v.y, 0).
+     * The scalar value of the z-component of the equivalent 3-dimensional cross product:
+     * $$ f( u, v ) = \left( \begin{bmatrix} u_x \\ u_y \\ 0 \end{bmatrix} \times \begin{bmatrix} v_x \\ v_y \\ 0 \end{bmatrix} \right)_z = u_x v_y - u_y v_x $$
      * @public
      *
      * @param {Vector2} v
@@ -256,7 +264,7 @@ define( function( require ) {
      * is thrown. If the passed-in magnitude is negative, the direction of the resulting vector will be reversed.
      * @public
      *
-     * This is the immutable form of the function setMatnigude(). This will return a new vector, and will not modify
+     * This is the immutable form of the function setMagnitude(). This will return a new vector, and will not modify
      * this vector.
      *
      * @param {number} magnitude
@@ -773,15 +781,20 @@ define( function( require ) {
 
     /**
      * Returns a duck-typed object meant for use with tandem/together serialization.
+     *
+     * @returns {Object}
      */
     toStateObject: function() {
       return { x: this.x, y: this.y };
     }
   }, { // static functions on Vector2 itself
     /**
-     * Creates a new Vector2 as if it had been constructed with new dot.Vector2().setPolar( magnitude, angle ).
+     * Returns a Vector2 with the specified magnitude $r$ and angle $\theta$ (in radians), with the formula:
+     * $$ f( r, \theta ) = \begin{bmatrix} r\cos\theta \\ r\sin\theta \end{bmatrix} $$
      * @public
      *
+     * @param {number} magnitude
+     * @param {number} angle
      * @returns {Vector2}
      */
     createPolar: function( magnitude, angle ) {
@@ -793,7 +806,7 @@ define( function( require ) {
      * tandem/together deserialization.
      * @public
      *
-     * @param { x: {number}, y: {number } } stateObject
+     * @param {Object} stateObject - Like { x: {number}, y: {number} }
      * @returns {Vector2}
      */
     fromStateObject: function( stateObject ) {
@@ -840,9 +853,28 @@ define( function( require ) {
   Immutable.mutableOverrideHelper( 'setX' );
   Immutable.mutableOverrideHelper( 'setY' );
 
-  // @public {Vector2} - helpful immutable constants
+  /**
+   * Immutable zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
+   * @public
+   *
+   * @constant {Vector2} ZERO
+   */
   Vector2.ZERO = assert ? new Immutable( 0, 0 ) : new Vector2( 0, 0 );
+
+  /**
+   * Immutable vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
+   * @public
+   *
+   * @constant {Vector2} X_UNIT
+   */
   Vector2.X_UNIT = assert ? new Immutable( 1, 0 ) : new Vector2( 1, 0 );
+
+  /**
+   * Immutable vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
+   * @public
+   *
+   * @constant {Vector2} Y_UNIT
+   */
   Vector2.Y_UNIT = assert ? new Immutable( 0, 1 ) : new Vector2( 0, 1 );
 
   return Vector2;
