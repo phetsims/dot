@@ -940,7 +940,7 @@ define( function( require ) {
      * This is the mutable form of the function copy(). This will mutate (change) this bounds, in addition to returning
      * this bounds itself.
      *
-     * @param {number} maxY
+     * @param {Bounds2} bounds
      * @returns {Bounds2}
      */
     set: function( bounds ) {

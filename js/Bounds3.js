@@ -443,7 +443,16 @@ define( function( require ) {
       }
     },
 
-    // immutable operations (bounding-box style handling, so that the relevant bounds contain everything)
+    /**
+     * The smallest bounds that contains both this bounds and the input bounds, returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function includeBounds(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {Bounds3} bounds
+     * @returns {Bounds3}
+     */
     union: function( bounds ) {
       return new Bounds3(
         Math.min( this.minX, bounds.minX ),
@@ -454,6 +463,17 @@ define( function( require ) {
         Math.max( this.maxZ, bounds.maxZ )
       );
     },
+
+    /**
+     * The smallest bounds that is contained by both this bounds and the input bounds, returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function constrainBounds(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {Bounds3} bounds
+     * @returns {Bounds3}
+     */
     intersection: function( bounds ) {
       return new Bounds3(
         Math.max( this.minX, bounds.minX ),
@@ -466,6 +486,18 @@ define( function( require ) {
     },
     // TODO: difference should be well-defined, but more logic is needed to compute
 
+    /**
+     * The smallest bounds that contains this bounds and the point (x,y,z), returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function addCoordinates(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     withCoordinates: function( x, y, z ) {
       return new Bounds3(
         Math.min( this.minX, x ),
@@ -477,19 +509,115 @@ define( function( require ) {
       );
     },
 
-    // like a union with a point-sized bounding box
+    /**
+     * The smallest bounds that contains this bounds and the input point, returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function addPoint(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {Vector3} point
+     * @returns {Bounds3}
+     */
     withPoint: function( point ) {
       return this.withCoordinates( point.x, point.y, point.z );
     },
 
-    withMinX: function( minX ) { return new Bounds3( minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ ); },
-    withMinY: function( minY ) { return new Bounds3( this.minX, minY, this.minZ, this.maxX, this.maxY, this.maxZ ); },
-    withMinZ: function( minZ ) { return new Bounds3( this.minX, this.minY, minZ, this.maxX, this.maxY, this.maxZ ); },
-    withMaxX: function( maxX ) { return new Bounds3( this.minX, this.minY, this.minZ, maxX, this.maxY, this.maxZ ); },
-    withMaxY: function( maxY ) { return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, maxY, this.maxZ ); },
-    withMaxZ: function( maxZ ) { return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, maxZ ); },
+    /**
+     * A copy of this bounds, with minX replaced with the input.
+     * @public
+     *
+     * This is the immutable form of the function setMinX(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} minX
+     * @returns {Bounds3}
+     */
+    withMinX: function( minX ) {
+      return new Bounds3( minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
+    },
 
-    // copy rounded to integral values, expanding where necessary
+    /**
+     * A copy of this bounds, with minY replaced with the input.
+     * @public
+     *
+     * This is the immutable form of the function setMinY(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} minY
+     * @returns {Bounds3}
+     */
+    withMinY: function( minY ) {
+      return new Bounds3( this.minX, minY, this.minZ, this.maxX, this.maxY, this.maxZ );
+    },
+
+    /**
+     * A copy of this bounds, with minZ replaced with the input.
+     * @public
+     *
+     * This is the immutable form of the function setMinZ(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} minZ
+     * @returns {Bounds3}
+     */
+    withMinZ: function( minZ ) {
+      return new Bounds3( this.minX, this.minY, minZ, this.maxX, this.maxY, this.maxZ );
+    },
+
+    /**
+     * A copy of this bounds, with maxX replaced with the input.
+     * @public
+     *
+     * This is the immutable form of the function setMaxX(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} maxX
+     * @returns {Bounds3}
+     */
+    withMaxX: function( maxX ) {
+      return new Bounds3( this.minX, this.minY, this.minZ, maxX, this.maxY, this.maxZ );
+    },
+
+    /**
+     * A copy of this bounds, with maxY replaced with the input.
+     * @public
+     *
+     * This is the immutable form of the function setMaxY(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} maxY
+     * @returns {Bounds3}
+     */
+    withMaxY: function( maxY ) {
+      return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, maxY, this.maxZ );
+    },
+
+    /**
+     * A copy of this bounds, with maxZ replaced with the input.
+     * @public
+     *
+     * This is the immutable form of the function setMaxZ(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} maxZ
+     * @returns {Bounds3}
+     */
+    withMaxZ: function( maxZ ) {
+      return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, maxZ );
+    },
+
+    /**
+     * A copy of this bounds, with the minimum values rounded down to the nearest integer, and the maximum values
+     * rounded up to the nearest integer. This causes the bounds to expand as necessary so that its boundaries
+     * are integer-aligned.
+     * @public
+     *
+     * This is the immutable form of the function roundOut(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @returns {Bounds3}
+     */
     roundedOut: function() {
       return new Bounds3(
         Math.floor( this.minX ),
@@ -501,7 +629,17 @@ define( function( require ) {
       );
     },
 
-    // copy rounded to integral values, contracting where necessary
+    /**
+     * A copy of this bounds, with the minimum values rounded up to the nearest integer, and the maximum values
+     * rounded down to the nearest integer. This causes the bounds to contract as necessary so that its boundaries
+     * are integer-aligned.
+     * @public
+     *
+     * This is the immutable form of the function roundIn(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @returns {Bounds3}
+     */
     roundedIn: function() {
       return new Bounds3(
         Math.ceil( this.minX ),
@@ -513,65 +651,237 @@ define( function( require ) {
       );
     },
 
-    // transform a bounding box.
-    // NOTE that box.transformed( matrix ).transformed( inverse ) may be larger than the original box
+    /**
+     * A bounding box (still axis-aligned) that contains the transformed shape of this bounds, applying the matrix as
+     * an affine transformation.
+     * @pubic
+     *
+     * NOTE: bounds.transformed( matrix ).transformed( inverse ) may be larger than the original box, if it includes
+     * a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in area to cover
+     * ALL of the corners of the transformed bounding box.
+     *
+     * This is the immutable form of the function transform(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {Matrix4} matrix
+     * @returns {Bounds3}
+     */
     transformed: function( matrix ) {
       return this.copy().transform( matrix );
     },
 
-    // returns copy expanded on all sides by length d
+    /**
+     * A bounding box that is expanded on all sides by the specified amount.)
+     * @public
+     *
+     * This is the immutable form of the function dilate(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} d
+     * @returns {Bounds3}
+     */
     dilated: function( d ) {
       return new Bounds3( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
     },
 
-    // dilates only in the x direction
+    /**
+     * A bounding box that is expanded horizontally (on the left and right) by the specified amount.
+     * @public
+     *
+     * This is the immutable form of the function dilateX(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x
+     * @returns {Bounds3}
+     */
     dilatedX: function( x ) {
       return new Bounds3( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
 
-    // dilates only in the y direction
+    /**
+     * A bounding box that is expanded vertically (on the top and bottom) by the specified amount.
+     * @public
+     *
+     * This is the immutable form of the function dilateY(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} y
+     * @returns {Bounds3}
+     */
     dilatedY: function( y ) {
       return new Bounds3( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
     },
 
-    // dilates only in the z direction
+    /**
+     * A bounding box that is expanded depth-wise (on the front and back) by the specified amount.
+     * @public
+     *
+     * This is the immutable form of the function dilateZ(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     dilatedZ: function( z ) {
       return new Bounds3( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
     },
 
-    // dilate with different amounts in the x, y and z directions
+    /**
+     * A bounding box that is expanded on all sides, with different amounts of expansion along each axis.
+     * Will be identical to the bounds returned by calling bounds.dilatedX( x ).dilatedY( y ).dilatedZ( z ).
+     * @public
+     *
+     * This is the immutable form of the function dilateXYZ(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x - Amount to dilate horizontally (for each side)
+     * @param {number} y - Amount to dilate vertically (for each side)
+     * @param {number} z - Amount to dilate depth-wise (for each side)
+     * @returns {Bounds3}
+     */
     dilatedXYZ: function( x, y, z ) {
       return new Bounds3( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
     },
 
-    // returns copy contracted on all sides by length d, or x/y/z separately
+    /**
+     * A bounding box that is contracted on all sides by the specified amount.
+     * @public
+     *
+     * This is the immutable form of the function erode(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} amount
+     * @returns {Bounds3}
+     */
     eroded: function( d ) { return this.dilated( -d ); },
+
+    /**
+     * A bounding box that is contracted horizontally (on the left and right) by the specified amount.
+     * @public
+     *
+     * This is the immutable form of the function erodeX(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x
+     * @returns {Bounds3}
+     */
     erodedX: function( x ) { return this.dilatedX( -x ); },
+
+    /**
+     * A bounding box that is contracted vertically (on the top and bottom) by the specified amount.
+     * @public
+     *
+     * This is the immutable form of the function erodeY(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} y
+     * @returns {Bounds3}
+     */
     erodedY: function( y ) { return this.dilatedY( -y ); },
+
+    /**
+     * A bounding box that is contracted depth-wise (on the front and back) by the specified amount.
+     * @public
+     *
+     * This is the immutable form of the function erodeZ(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     erodedZ: function( z ) { return this.dilatedZ( -z ); },
+
+    /**
+     * A bounding box that is contracted on all sides, with different amounts of contraction along each axis.
+     * @public
+     *
+     * This is the immutable form of the function erodeXYZ(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x - Amount to erode horizontally (for each side)
+     * @param {number} y - Amount to erode vertically (for each side)
+     * @param {number} z - Amount to erode depth-wise (for each side)
+     * @returns {Bounds3}
+     */
     erodedXYZ: function( x, y, z ) { return this.dilatedXYZ( -x, -y, -z ); },
 
+    /**
+     * Our bounds, translated horizontally by x, returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function shiftX(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x
+     * @returns {Bounds3}
+     */
     shiftedX: function( x ) {
       return new Bounds3( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
 
+    /**
+     * Our bounds, translated vertically by y, returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function shiftY(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} y
+     * @returns {Bounds3}
+     */
     shiftedY: function( y ) {
       return new Bounds3( this.minX, this.minY + y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
     },
 
+    /**
+     * Our bounds, translated depth-wise by z, returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function shiftZ(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     shiftedZ: function( z ) {
       return new Bounds3( this.minX, this.minY, this.minZ + z, this.maxX, this.maxY, this.maxZ + z );
     },
 
+    /**
+     * Our bounds, translated by (x,y,z), returned as a copy.
+     * @public
+     *
+     * This is the immutable form of the function shift(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     shifted: function( x, y, z ) {
       return new Bounds3( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
     },
 
     /*---------------------------------------------------------------------------*
      * Mutable operations
+     *
+     * All mutable operations should call one of the following:
+     *   setMinMax, setMinX, setMinY, setMinZ, setMaxX, setMaxY, setMaxZ
      *---------------------------------------------------------------------------*/
 
-    // core mutations (every other mutator should call one of these once)
+    /**
+     * Sets each value for this bounds, and returns itself.
+     * @public
+     *
+     * @param {number} minX
+     * @param {number} minY
+     * @param {number} minZ
+     * @param {number} maxX
+     * @param {number} maxY
+     * @param {number} maxZ
+     * @returns {Bounds3}
+     */
     setMinMax: function( minX, minY, minZ, maxX, maxY, maxZ ) {
       this.minX = minX;
       this.minY = minY;
@@ -581,36 +891,121 @@ define( function( require ) {
       this.maxZ = maxZ;
       return this;
     },
+
+    /**
+     * Sets the value of minX.
+     * @public
+     *
+     * This is the mutable form of the function withMinX(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} minX
+     * @returns {Bounds3}
+     */
     setMinX: function( minX ) {
       this.minX = minX;
       return this;
     },
+
+    /**
+     * Sets the value of minY.
+     * @public
+     *
+     * This is the mutable form of the function withMinY(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} minY
+     * @returns {Bounds3}
+     */
     setMinY: function( minY ) {
       this.minY = minY;
       return this;
     },
+
+    /**
+     * Sets the value of minZ.
+     * @public
+     *
+     * This is the mutable form of the function withMinZ(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} minZ
+     * @returns {Bounds3}
+     */
     setMinZ: function( minZ ) {
       this.minZ = minZ;
       return this;
     },
+
+    /**
+     * Sets the value of maxX.
+     * @public
+     *
+     * This is the mutable form of the function withMaxX(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} maxX
+     * @returns {Bounds3}
+     */
     setMaxX: function( maxX ) {
       this.maxX = maxX;
       return this;
     },
+
+    /**
+     * Sets the value of maxY.
+     * @public
+     *
+     * This is the mutable form of the function withMaxY(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} maxY
+     * @returns {Bounds3}
+     */
     setMaxY: function( maxY ) {
       this.maxY = maxY;
       return this;
     },
+
+    /**
+     * Sets the value of maxZ.
+     * @public
+     *
+     * This is the mutable form of the function withMaxZ(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} maxZ
+     * @returns {Bounds3}
+     */
     setMaxZ: function( maxZ ) {
       this.maxZ = maxZ;
       return this;
     },
 
+    /**
+     * Sets the values of this bounds to be equal to the input bounds.
+     * @public
+     *
+     * This is the mutable form of the function copy(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {Bounds3} bounds
+     * @returns {Bounds3}
+     */
     set: function( bounds ) {
       return this.setMinMax( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );
     },
 
-    // mutable union
+    /**
+     * Modifies this bounds so that it contains both its original bounds and the input bounds.
+     * @public
+     *
+     * This is the mutable form of the function union(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {Bounds3} bounds
+     * @returns {Bounds3}
+     */
     includeBounds: function( bounds ) {
       return this.setMinMax(
         Math.min( this.minX, bounds.minX ),
@@ -622,7 +1017,16 @@ define( function( require ) {
       );
     },
 
-    // mutable intersection
+    /**
+     * Modifies this bounds so that it is the largest bounds contained both in its original bounds and in the input bounds.
+     * @public
+     *
+     * This is the mutable form of the function intersection(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {Bounds3} bounds
+     * @returns {Bounds3}
+     */
     constrainBounds: function( bounds ) {
       return this.setMinMax(
         Math.max( this.minX, bounds.minX ),
@@ -634,6 +1038,18 @@ define( function( require ) {
       );
     },
 
+    /**
+     * Modifies this bounds so that it contains both its original bounds and the input point (x,y,z).
+     * @public
+     *
+     * This is the mutable form of the function withCoordinates(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     addCoordinates: function( x, y, z ) {
       return this.setMinMax(
         Math.min( this.minX, x ),
@@ -645,11 +1061,30 @@ define( function( require ) {
       );
     },
 
+    /**
+     * Modifies this bounds so that it contains both its original bounds and the input point.
+     * @public
+     *
+     * This is the mutable form of the function withPoint(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {Vector3} point
+     * @returns {Bounds3}
+     */
     addPoint: function( point ) {
       return this.addCoordinates( point.x, point.y, point.z );
     },
 
-    // round to integral values, expanding where necessary
+    /**
+     * Modifies this bounds so that its boundaries are integer-aligned, rounding the minimum boundaries down and the
+     * maximum boundaries up (expanding as necessary).
+     * @public
+     *
+     * This is the mutable form of the function roundedOut(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @returns {Bounds3}
+     */
     roundOut: function() {
       return this.setMinMax(
         Math.floor( this.minX ),
@@ -661,7 +1096,16 @@ define( function( require ) {
       );
     },
 
-    // round to integral values, contracting where necessary
+    /**
+     * Modifies this bounds so that its boundaries are integer-aligned, rounding the minimum boundaries up and the
+     * maximum boundaries down (contracting as necessary).
+     * @public
+     *
+     * This is the mutable form of the function roundedIn(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @returns {Bounds3}
+     */
     roundIn: function() {
       return this.setMinMax(
         Math.ceil( this.minX ),
@@ -673,8 +1117,21 @@ define( function( require ) {
       );
     },
 
-    // transform a bounding box.
-    // NOTE that box.transformed( matrix ).transformed( inverse ) may be larger than the original box
+    /**
+     * Modifies this bounds so that it would fully contain a transformed version if its previous value, applying the
+     * matrix as an affine transformation.
+     * @pubic
+     *
+     * NOTE: bounds.transform( matrix ).transform( inverse ) may be larger than the original box, if it includes
+     * a rotation that isn't a multiple of $\pi/2$. This is because the bounds may expand in area to cover
+     * ALL of the corners of the transformed bounding box.
+     *
+     * This is the mutable form of the function transformed(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {Matrix4} matrix
+     * @returns {Bounds3}
+     */
     transform: function( matrix ) {
       // do nothing
       if ( this.isEmpty() ) {
@@ -717,59 +1174,227 @@ define( function( require ) {
       return this.setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
     },
 
-    // expands on all sides by length d
+    /**
+     * Expands this bounds on all sides by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function dilated(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} d
+     * @returns {Bounds3}
+     */
     dilate: function( d ) {
       return this.setMinMax( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
     },
 
-    // dilates only in the x direction
+    /**
+     * Expands this bounds horizontally (left and right) by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function dilatedX(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @returns {Bounds3}
+     */
     dilateX: function( x ) {
       return this.setMinMax( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
 
-    // dilates only in the y direction
+    /**
+     * Expands this bounds vertically (top and bottom) by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function dilatedY(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} y
+     * @returns {Bounds3}
+     */
     dilateY: function( y ) {
       return this.setMinMax( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
     },
 
-    // dilates only in the z direction
+    /**
+     * Expands this bounds depth-wise (front and back) by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function dilatedZ(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     dilateZ: function( z ) {
       return this.setMinMax( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
     },
 
-    // dilate with different amounts in the x, y and z directions
+    /**
+     * Expands this bounds independently along each axis. Will be equal to calling
+     * bounds.dilateX( x ).dilateY( y ).dilateZ( z ).
+     * @public
+     *
+     * This is the mutable form of the function dilatedXYZ(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     dilateXYZ: function( x, y, z ) {
       return this.setMinMax( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
     },
 
-    // contracts on all sides by length d, or x/y/z independently
+    /**
+     * Contracts this bounds on all sides by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function eroded(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} d
+     * @returns {Bounds3}
+     */
     erode: function( d ) { return this.dilate( -d ); },
+
+    /**
+     * Contracts this bounds horizontally (left and right) by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function erodedX(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @returns {Bounds3}
+     */
     erodeX: function( x ) { return this.dilateX( -x ); },
+
+    /**
+     * Contracts this bounds vertically (top and bottom) by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function erodedY(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} y
+     * @returns {Bounds3}
+     */
     erodeY: function( y ) { return this.dilateY( -y ); },
+
+    /**
+     * Contracts this bounds depth-wise (front and back) by the specified amount.
+     * @public
+     *
+     * This is the mutable form of the function erodedZ(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     erodeZ: function( z ) { return this.dilateZ( -z ); },
+
+    /**
+     * Contracts this bounds independently along each axis. Will be equal to calling
+     * bounds.erodeX( x ).erodeY( y ).erodeZ( z ).
+     * @public
+     *
+     * This is the mutable form of the function erodedXYZ(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     erodeXYZ: function( x, y, z ) { return this.dilateXYZ( -x, -y, -z ); },
 
+    /**
+     * Translates our bounds horizontally by x.
+     * @public
+     *
+     * This is the mutable form of the function shiftedX(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @returns {Bounds3}
+     */
     shiftX: function( x ) {
       return this.setMinMax( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
     },
 
+    /**
+     * Translates our bounds vertically by y.
+     * @public
+     *
+     * This is the mutable form of the function shiftedY(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} y
+     * @returns {Bounds3}
+     */
     shiftY: function( y ) {
       return this.setMinMax( this.minX, this.minY + y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
     },
 
+    /**
+     * Translates our bounds depth-wise by z.
+     * @public
+     *
+     * This is the mutable form of the function shiftedZ(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     shiftZ: function( z ) {
       return this.setMinMax( this.minX, this.minY, this.minZ + z, this.maxX, this.maxY, this.maxZ + z );
     },
 
+    /**
+     * Translates our bounds by (x,y,z).
+     * @public
+     *
+     * This is the mutable form of the function shifted(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     shift: function( x, y, z ) {
       return this.setMinMax( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
     }
   }, {
+    /**
+     * Returns a new Bounds3 object, with the cuboid (3d rectangle) construction with x, y, z, width, height and depth.
+     * @public
+     *
+     * @param {number} x - The minimum value of X for the bounds.
+     * @param {number} y - The minimum value of Y for the bounds.
+     * @param {number} z - The minimum value of Z for the bounds.
+     * @param {number} width - The width (maxX - minX) of the bounds.
+     * @param {number} height - The height (maxY - minY) of the bounds.
+     * @param {number} depth - The depth (maxZ - minZ) of the bounds.
+     * @returns {Bounds3}
+     */
     cuboid: function( x, y, z, width, height, depth ) {
       return new Bounds3( x, y, z, x + width, y + height, z + depth );
     },
 
-    // a volume-less point bounds, which can be dilated to form a centered bounds
+    /**
+     * Returns a new Bounds3 object that only contains the specified point (x,y,z). Useful for being dilated to form a
+     * bounding box around a point. Note that the bounds will not be "empty" as it contains (x,y,z), but it will have
+     * zero area.
+     * @public
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @returns {Bounds3}
+     */
     point: function( x, y, z ) {
       return new Bounds3( x, y, z, x, y, z );
     }
@@ -789,9 +1414,33 @@ define( function( require ) {
     }
   } );
 
-  // specific bounds useful for operations
-  Bounds3.EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
+  /**
+   * A contant Bounds3 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".
+   * @public
+   *
+   * This allows us to take the union (union/includeBounds) of this and any other Bounds3 to get the other bounds back,
+   * e.g. Bounds3.NOTHING.union( bounds ).equals( bounds ). This object naturally serves as the base case as a union of
+   * zero bounds objects.
+   *
+   * Additionally, intersections with NOTHING will always return a Bounds3 equivalent to NOTHING.
+   *
+   * @constant {Bounds3} NOTHING
+   */
   Bounds3.NOTHING = new Bounds3( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
+
+  /**
+   * A contant Bounds3 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
+   * @public
+   *
+   * This allows us to take the intersection (intersection/constrainBounds) of this and any other Bounds3 to get the
+   * other bounds back, e.g. Bounds3.EVERYTHING.intersection( bounds ).equals( bounds ). This object naturally serves as
+   * the base case as an intersection of zero bounds objects.
+   *
+   * Additionally, unions with EVERYTHING will always return a Bounds3 equivalent to EVERYTHING.
+   *
+   * @constant {Bounds3} EVERYTHING
+   */
+  Bounds3.EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
   return Bounds3;
 } );

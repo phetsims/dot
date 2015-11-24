@@ -1,7 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * 2D convex hulls
+ * Construction of 2D convex hulls from a list of points.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -17,9 +17,18 @@ define( function( require ) {
   }
 
   var ConvexHull2 = {
-    // test: all collinear, multiple ways of having same angle, etc.
+    // TODO testing: all collinear, multiple ways of having same angle, etc.
 
-    // points is an array of Vector2 instances. see http://en.wikipedia.org/wiki/Graham_scan
+    /**
+     * Given multiple points, this performs a Graham Scan (http://en.wikipedia.org/wiki/Graham_scan) to identify an
+     * ordered list of points which define the minimal polygon that contains all of the points.
+     * @public
+     *
+     * @param {Array.<Vector2>} points
+     * @param {boolean} includeCollinear - If a point is along an edge of the convex hull (not at one of its vertices),
+     *                                     should it be included?
+     * @returns {Array.<Vector2>}
+     */
     grahamScan: function( points, includeCollinear ) {
       if ( points.length <= 2 ) {
         return points;
@@ -75,6 +84,7 @@ define( function( require ) {
       return result;
     }
   };
+
   dot.register( 'ConvexHull2', ConvexHull2 );
 
   return ConvexHull2;
