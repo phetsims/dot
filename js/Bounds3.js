@@ -775,15 +775,15 @@ define( function( require ) {
     }
   } );
 
-  Poolable.mixin( Bounds2, {
-    defaultFactory: function() { return Bounds2.NOTHING.copy(); },
+  Poolable.mixin( Bounds3, {
+    defaultFactory: function() { return Bounds3.NOTHING.copy(); },
     constructorDuplicateFactory: function( pool ) {
       return function( minX, minY, minZ, maxX, maxY, maxZ ) {
         if ( pool.length ) {
           return pool.pop().setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
         }
         else {
-          return new Bounds2( minX, minY, minZ, maxX, maxY, maxZ );
+          return new Bounds3( minX, minY, minZ, maxX, maxY, maxZ );
         }
       };
     }
