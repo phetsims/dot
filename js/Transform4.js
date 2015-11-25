@@ -22,6 +22,12 @@ define( function( require ) {
   require( 'DOT/Vector3' );
   require( 'DOT/Ray3' );
 
+  var scratchMatrix = new dot.Matrix4();
+
+  function checkMatrix( matrix ) {
+    return ( matrix instanceof dot.Matrix4 ) && matrix.isFinite();
+  }
+
   /**
    * Creates a transform based around an initial matrix.
    * @constructor
@@ -70,7 +76,7 @@ define( function( require ) {
 
     /**
      * Sets the value of the primary matrix directly from a Matrix4. Does not change the Matrix4 instance of this
-     * Transform3.
+     * Transform4.
      * @public
      *
      * @param {Matrix4} matrix
@@ -140,7 +146,7 @@ define( function( require ) {
      * Like prepend(), but prepends the other transform's matrix.
      * @public
      *
-     * @param {Transform3} transform
+     * @param {Transform4} transform
      */
     prependTransform: function( transform ) {
       this.prepend( transform.matrix );
@@ -150,7 +156,7 @@ define( function( require ) {
      * Like append(), but appends the other transform's matrix.
      * @public
      *
-     * @param {Transform3} transform
+     * @param {Transform4} transform
      */
     appendTransform: function( transform ) {
       this.append( transform.matrix );
@@ -174,10 +180,10 @@ define( function( require ) {
      * Creates a copy of this transform.
      * @public
      *
-     * @returns {Transform3}
+     * @returns {Transform4}
      */
     copy: function() {
-      var transform = new Transform3( this.matrix );
+      var transform = new Transform4( this.matrix );
 
       transform.inverse = this.inverse;
       transform.matrixTransposed = this.matrixTransposed;

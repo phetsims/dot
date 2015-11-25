@@ -148,7 +148,7 @@ module.exports = function( grunt ) {
         attachComment: true
       } );
       var doc = extractDocumentation( program );
-      if ( baseName === 'Vector2' ) { // for testing
+      if ( baseName === 'ConvexHull2' ) { // for testing
         // console.log( JSON.stringify( doc, null, 2 ) );
       }
       var htmlDoc = documentationToHTML( doc, baseName, typeNames, localTypeIds, externalTypeURLs );
