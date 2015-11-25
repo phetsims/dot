@@ -467,6 +467,36 @@
           <br><a class="sublink" href="#dimension2-toBounds">toBounds</a>
           <br><a class="sublink" href="#dimension2-toString">toString</a>
           <br>
+        </div><a class="navlink" href="#util" data-toggle="collapse" data-target="#collapse-Util" onclick="$( '.collapse.in' ).collapse( 'toggle' ); return true;">Util</a>
+        <br>
+        <div id="collapse-Util" class="collapse">
+          <a class="sublink" href="#util-arePointsCollinear">arePointsCollinear</a>
+          <br><a class="sublink" href="#util-boxMullerTransform">boxMullerTransform</a>
+          <br><a class="sublink" href="#util-clamp">clamp</a>
+          <br><a class="sublink" href="#util-cubeRoot">cubeRoot</a>
+          <br><a class="sublink" href="#util-distToSegment">distToSegment</a>
+          <br><a class="sublink" href="#util-distToSegmentSquared">distToSegmentSquared</a>
+          <br><a class="sublink" href="#util-gcd">gcd</a>
+          <br><a class="sublink" href="#util-isInteger">isInteger</a>
+          <br><a class="sublink" href="#util-lineLineIntersection">lineLineIntersection</a>
+          <br><a class="sublink" href="#util-lineSegmentIntersection">lineSegmentIntersection</a>
+          <br><a class="sublink" href="#util-linear">linear</a>
+          <br><a class="sublink" href="#util-log10">log10</a>
+          <br><a class="sublink" href="#util-moduloBetweenDown">moduloBetweenDown</a>
+          <br><a class="sublink" href="#util-moduloBetweenUp">moduloBetweenUp</a>
+          <br><a class="sublink" href="#util-rangeExclusive">rangeExclusive</a>
+          <br><a class="sublink" href="#util-rangeInclusive">rangeInclusive</a>
+          <br><a class="sublink" href="#util-roundSymmetric">roundSymmetric</a>
+          <br><a class="sublink" href="#util-solveCubicRootsReal">solveCubicRootsReal</a>
+          <br><a class="sublink" href="#util-solveQuadraticRootsReal">solveQuadraticRootsReal</a>
+          <br><a class="sublink" href="#util-sphereRayIntersection">sphereRayIntersection</a>
+          <br><a class="sublink" href="#util-toDegrees">toDegrees</a>
+          <br><a class="sublink" href="#util-toFixed">toFixed</a>
+          <br><a class="sublink" href="#util-toFixedNumber">toFixedNumber</a>
+          <br><a class="sublink" href="#util-toRadians">toRadians</a>
+          <br><a class="sublink" href="#util-triangleArea">triangleArea</a>
+          <br><a class="sublink" href="#util-triangleAreaSigned">triangleAreaSigned</a>
+          <br>
         </div><a class="navlink" href="#vector2" data-toggle="collapse" data-target="#collapse-Vector2" onclick="$( '.collapse.in' ).collapse( 'toggle' ); return true;">Vector2</a>
         <br>
         <div id="collapse-Vector2" class="collapse">
@@ -1771,6 +1801,150 @@ grunt</pre>
       </table>
       <h5 id="dimension2-toString" class="section"><span class="entryName">toString</span>() :<span class="return"> <span class="type">string</span></span></h5>
       <p>Debugging string for the dimension.</p>
+      <h3 id="util" class="section">Util</h3>
+      <p>
+        Utility functions for Dot, placed into the dot.X namespace.
+      </p>
+      <h5 id="util-arePointsCollinear" class="section"><span class="entryName">Util.arePointsCollinear</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> a</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> b</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> c</span>, <span class="args"> <span class="type">number</span> epsilon</span> ) :<span class="return"> <span class="type">boolean</span></span></h5>
+      <p>Determines whether the three points are approximately collinear.</p>
+      <h5 id="util-boxMullerTransform" class="section"><span class="entryName">Util.boxMullerTransform</span>( <span class="args"> <span class="type">number</span> mu</span>, <span class="args"> <span class="type">number</span> sigma</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Generates a random Gaussian sample with the given mean and standard deviation. This method relies on the "static" variables generate, z0, and z1 defined above. Random.js is the primary client of this function, but it is defined here so it can be
+        used other places more easily if need be. Code inspired by example here: https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform.</p>
+      <table class="params">
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>mu</td>
+          <td> - </td>
+          <td>The mean of the Gaussian</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>sigma</td>
+          <td> - </td>
+          <td>The standard deviation of the Gaussian</td>
+        </tr>
+      </table>
+      <h5 id="util-clamp" class="section"><span class="entryName">Util.clamp</span>( <span class="args"> <span class="type">number</span> value</span>, <span class="args"> <span class="type">number</span> min</span>, <span class="args"> <span class="type">number</span> max</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Returns the original value if it is inclusively within the [max,min] range. If it's below the range, min is returned, and if it's above the range, max is returned.</p>
+      <h5 id="util-cubeRoot" class="section"><span class="entryName">Util.cubeRoot</span>( <span class="args"> <span class="type">number</span> x</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Returns the unique real cube root of x, such that $y^3=x$.</p>
+      <h5 id="util-distToSegment" class="section"><span class="entryName">Util.distToSegment</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> point</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> a</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> b</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Squared distance from a point to a line segment squared.</p>
+      <table class="params">
+        <tr class="param">
+          <td> <a href="#vector2" class="type">Vector2</a></td>
+          <td>point</td>
+          <td> - </td>
+          <td>The point</td>
+        </tr>
+        <tr class="param">
+          <td> <a href="#vector2" class="type">Vector2</a></td>
+          <td>a</td>
+          <td> - </td>
+          <td>Starting point of the line segment</td>
+        </tr>
+        <tr class="param">
+          <td> <a href="#vector2" class="type">Vector2</a></td>
+          <td>b</td>
+          <td> - </td>
+          <td>Ending point of the line segment</td>
+        </tr>
+      </table>
+      <h5 id="util-distToSegmentSquared" class="section"><span class="entryName">Util.distToSegmentSquared</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> point</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> a</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> b</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Squared distance from a point to a line segment squared. See http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment</p>
+      <table class="params">
+        <tr class="param">
+          <td> <a href="#vector2" class="type">Vector2</a></td>
+          <td>point</td>
+          <td> - </td>
+          <td>The point</td>
+        </tr>
+        <tr class="param">
+          <td> <a href="#vector2" class="type">Vector2</a></td>
+          <td>a</td>
+          <td> - </td>
+          <td>Starting point of the line segment</td>
+        </tr>
+        <tr class="param">
+          <td> <a href="#vector2" class="type">Vector2</a></td>
+          <td>b</td>
+          <td> - </td>
+          <td>Ending point of the line segment</td>
+        </tr>
+      </table>
+      <h5 id="util-gcd" class="section"><span class="entryName">Util.gcd</span>( <span class="args"> <span class="type">number</span> a</span>, <span class="args"> <span class="type">number</span> b</span> )</h5>
+      <p>Greatest Common Denominator, using https://en.wikipedia.org/wiki/Euclidean_algorithm</p>
+      <h5 id="util-isInteger" class="section"><span class="entryName">Util.isInteger</span>( <span class="args"> <span class="type">number</span> n</span> ) :<span class="return"> <span class="type">boolean</span></span></h5>
+      <p>Returns whether the input is a number that is an integer (no fractional part).</p>
+      <h5 id="util-lineLineIntersection" class="section"><span class="entryName">Util.lineLineIntersection</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> p1</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p2</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p3</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p4</span> ) :<span class="return"> <a href="#vector2" class="type">Vector2</a></span></h5>
+      <p>Intersection point between the lines defined by the line segments p1-2 and p3-p4. Currently does not handle parallel lines.</p>
+      <h5 id="util-lineSegmentIntersection" class="section"><span class="entryName">Util.lineSegmentIntersection</span>( <span class="args"> <span class="type">number</span> x1</span>, <span class="args"> <span class="type">number</span> y1</span>, <span class="args"> <span class="type">number</span> x2</span>, <span class="args"> <span class="type">number</span> y2</span>, <span class="args"> <span class="type">number</span> x3</span>, <span class="args"> <span class="type">number</span> y3</span>, <span class="args"> <span class="type">number</span> x4</span>, <span class="args"> <span class="type">number</span> y4</span> ) :<span class="return"> <span class="type">Vector2|null</span></span></h5>
+      <p>Computes the intersection of the two line segments $(x_1,y_1)(x_2,y_2)$ and $(x_3,y_3)(x_4,y_4)$. If there is no intersection, null is returned.</p>
+      <h5 id="util-linear" class="section"><span class="entryName">Util.linear</span>( <span class="args"> <span class="type">number</span> a1</span>, <span class="args"> <span class="type">number</span> a2</span>, <span class="args"> <span class="type">number</span> b1</span>, <span class="args"> <span class="type">number</span> b2</span>, <span class="args"> <span class="type">number</span> a3</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Defines and evaluates a linear mapping. The mapping is defined so that $f(a_1)=b_1$ and $f(a_2)=b_2$, and other values are interpolated along the linear equation. The returned value is $f(a_3)$.</p>
+      <h5 id="util-log10" class="section"><span class="entryName">Util.log10</span>( <span class="args"> <span class="type">number</span> val</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Log base-10, since it wasn't included in every supported browser.</p>
+      <h5 id="util-moduloBetweenDown" class="section"><span class="entryName">Util.moduloBetweenDown</span>( <span class="args"> <span class="type">number</span> value</span>, <span class="args"> <span class="type">number</span> min</span>, <span class="args"> <span class="type">number</span> max</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Returns a number in the range $n\in[\mathrm{min},\mathrm{max})$ with the same equivalence class as the input value mod (max-min), i.e. for a value $m$, $m\equiv n\ (\mathrm{mod}\ \mathrm{max}-\mathrm{min})$.
+        <br>
+        <br> The 'down' indicates that if the value is equal to min or max, the max is returned.</p>
+      <h5 id="util-moduloBetweenUp" class="section"><span class="entryName">Util.moduloBetweenUp</span>( <span class="args"> <span class="type">number</span> value</span>, <span class="args"> <span class="type">number</span> min</span>, <span class="args"> <span class="type">number</span> max</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Returns a number in the range $n\in(\mathrm{min},\mathrm{max}]$ with the same equivalence class as the input value mod (max-min), i.e. for a value $m$, $m\equiv n\ (\mathrm{mod}\ \mathrm{max}-\mathrm{min})$.
+        <br>
+        <br> The 'up' indicates that if the value is equal to min or max, the min is returned.</p>
+      <h5 id="util-rangeExclusive" class="section"><span class="entryName">Util.rangeExclusive</span>( <span class="args"> <span class="type">number</span> a</span>, <span class="args"> <span class="type">number</span> b</span> ) :<span class="return"> <span class="type">Array.&lt;number&gt;</span></span></h5>
+      <p>Returns an array of integers from A to B (exclusive), e.g. rangeExclusive( 4, 7 ) maps to [ 5, 6 ].</p>
+      <h5 id="util-rangeInclusive" class="section"><span class="entryName">Util.rangeInclusive</span>( <span class="args"> <span class="type">number</span> a</span>, <span class="args"> <span class="type">number</span> b</span> ) :<span class="return"> <span class="type">Array.&lt;number&gt;</span></span></h5>
+      <p>Returns an array of integers from A to B (inclusive), e.g. rangeInclusive( 4, 7 ) maps to [ 4, 5, 6, 7 ].</p>
+      <h5 id="util-roundSymmetric" class="section"><span class="entryName">Util.roundSymmetric</span>( <span class="args"> <span class="type">number</span> value</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Rounds using "Round half away from zero" algorithm. See dot#35.
+        <br>
+        <br> JavaScript's Math.round is not symmetric for positive and negative numbers, it uses IEEE 754 "Round half up". See https://en.wikipedia.org/wiki/Rounding#Round_half_up. For sims, we want to treat positive and negative values symmetrically, which
+        is IEEE 754 "Round half away from zero", See https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero
+        <br>
+        <br> Note that -0 is rounded to 0, since we typically do not want to display -0 in sims.</p>
+      <table class="params">
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>value</td>
+          <td> - </td>
+          <td>`</td>
+        </tr>
+      </table>
+      <h5 id="util-solveCubicRootsReal" class="section"><span class="entryName">Util.solveCubicRootsReal</span>( <span class="args"> <span class="type">number</span> a</span>, <span class="args"> <span class="type">number</span> b</span>, <span class="args"> <span class="type">number</span> c</span>, <span class="args"> <span class="type">number</span> d</span> ) :<span class="return"> <span class="type">Array.&lt;number&gt;</span></span></h5>
+      <p>Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$ (there will be between 0 and 3 roots).</p>
+      <h5 id="util-solveQuadraticRootsReal" class="section"><span class="entryName">Util.solveQuadraticRootsReal</span>( <span class="args"> <span class="type">number</span> a</span>, <span class="args"> <span class="type">number</span> b</span>, <span class="args"> <span class="type">number</span> c</span> ) :<span class="return"> <span class="type">Array.&lt;number&gt;</span></span></h5>
+      <p>Returns an array of the real roots of the quadratic equation $ax^2 + bx + c=0$ (there will be between 0 and 2 roots).</p>
+      <h5 id="util-sphereRayIntersection" class="section"><span class="entryName">Util.sphereRayIntersection</span>( <span class="args"> <span class="type">number</span> radius</span>, <span class="args"> <span class="type">Ray3</span> ray</span>, <span class="args"> <span class="type">number</span> epsilon</span> ) :<span class="return"> <span class="type">Object</span></span></h5>
+      <p>Ray-sphere intersection, returning information about the closest intersection. Assumes the sphere is centered at the origin (for ease of computation), transform the ray to compensate if needed.
+        <br>
+        <br> If there is no intersection, null is returned. Otherwise an object will be returned like:
+        <pre class="brush: js">
+{
+  distance: {number}, // distance from the ray position to the intersection
+  hitPoint: {Vector3}, // location of the intersection
+  normal: {Vector3}, // the normal of the sphere's surface at the intersection
+  fromOutside: {boolean}, // whether the ray intersected the sphere from outside the sphere first
+}
+</pre></p>
+      <h5 id="util-toDegrees" class="section"><span class="entryName">Util.toDegrees</span>( <span class="args"> <span class="type">number</span> radians</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Converts radians to degrees.</p>
+      <h5 id="util-toFixed" class="section"><span class="entryName">Util.toFixed</span>( <span class="args"> <span class="type">number</span> value</span>, <span class="args"> <span class="type">number</span> decimalPlaces</span> ) :<span class="return"> <span class="type">string</span></span></h5>
+      <p>A predictable implementation of toFixed.
+        <br>
+        <br> JavaScript's toFixed is notoriously buggy, behavior differs depending on browser, because the spec doesn't specify whether to round or floor. Rounding is symmetric for positive and negative values, see Util.roundSymmetric.</p>
+      <h5 id="util-toFixedNumber"
+      class="section"><span class="entryName">Util.toFixedNumber</span>( <span class="args"> <span class="type">number</span> value</span>, <span class="args"> <span class="type">number</span> decimalPlaces</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>A predictable implementation of toFixed, where the result is returned as a number instead of a string.
+        <br>
+        <br> JavaScript's toFixed is notoriously buggy, behavior differs depending on browser, because the spec doesn't specify whether to round or floor. Rounding is symmetric for positive and negative values, see Util.roundSymmetric.</p>
+      <h5 id="util-toRadians"
+      class="section"><span class="entryName">Util.toRadians</span>( <span class="args"> <span class="type">number</span> degrees</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>Converts degrees to radians.</p>
+      <h5 id="util-triangleArea" class="section"><span class="entryName">Util.triangleArea</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> a</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> b</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> c</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>The area inside the triangle defined by the three vertices.</p>
+      <h5 id="util-triangleAreaSigned" class="section"><span class="entryName">Util.triangleAreaSigned</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> a</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> b</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> c</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>The area inside the triangle defined by the three vertices, but with the sign determined by whether the vertices provided are clockwise or counter-clockwise.</p>
       <h3 id="vector2" class="section">Vector2</h3>
       <p>
         Basic 2-dimensional vector, represented as (x,y).

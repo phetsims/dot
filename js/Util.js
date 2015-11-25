@@ -22,6 +22,16 @@ define( function( require ) {
   var z1;
 
   var Util = {
+    /**
+     * Returns the original value if it is inclusively within the [max,min] range. If it's below the range, min is
+     * returned, and if it's above the range, max is returned.
+     * @public
+     *
+     * @param {number} value
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
     clamp: function( value, min, max ) {
       if ( value < min ) {
         return min;
@@ -34,7 +44,18 @@ define( function( require ) {
       }
     },
 
-    // returns a number between [min,max) with the same equivalence class as value mod (max-min)
+    /**
+     * Returns a number in the range $n\in[\mathrm{min},\mathrm{max})$ with the same equivalence class as the input
+     * value mod (max-min), i.e. for a value $m$, $m\equiv n\ (\mathrm{mod}\ \mathrm{max}-\mathrm{min})$.
+     * @public
+     *
+     * The 'down' indicates that if the value is equal to min or max, the max is returned.
+     *
+     * @param {number} value
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
     moduloBetweenDown: function( value, min, max ) {
       assert && assert( max > min, 'max > min required for moduloBetween' );
 
@@ -50,12 +71,30 @@ define( function( require ) {
       return partial + min; // add back in the minimum value
     },
 
-    // returns a number between (min,max] with the same equivalence class as value mod (max-min)
+    /**
+     * Returns a number in the range $n\in(\mathrm{min},\mathrm{max}]$ with the same equivalence class as the input
+     * value mod (max-min), i.e. for a value $m$, $m\equiv n\ (\mathrm{mod}\ \mathrm{max}-\mathrm{min})$.
+     * @public
+     *
+     * The 'up' indicates that if the value is equal to min or max, the min is returned.
+     *
+     * @param {number} value
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
     moduloBetweenUp: function( value, min, max ) {
       return -Util.moduloBetweenDown( -value, -max, -min );
     },
 
-    // Returns an array of integers from A to B (including both A to B)
+    /**
+     * Returns an array of integers from A to B (inclusive), e.g. rangeInclusive( 4, 7 ) maps to [ 4, 5, 6, 7 ].
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     * @returns {Array.<number>}
+     */
     rangeInclusive: function( a, b ) {
       if ( b < a ) {
         return [];
@@ -67,28 +106,64 @@ define( function( require ) {
       return result;
     },
 
-    // Returns an array of integers between A and B (excluding both A to B)
+    /**
+     * Returns an array of integers from A to B (exclusive), e.g. rangeExclusive( 4, 7 ) maps to [ 5, 6 ].
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     * @returns {Array.<number>}
+     */
     rangeExclusive: function( a, b ) {
       return Util.rangeInclusive( a + 1, b - 1 );
     },
 
+    /**
+     * Converts degrees to radians.
+     * @public
+     *
+     * @param {number} degrees
+     * @returns {number}
+     */
     toRadians: function( degrees ) {
       return Math.PI * degrees / 180;
     },
 
+    /**
+     * Converts radians to degrees.
+     * @public
+     *
+     * @param {number} radians
+     * @returns {number}
+     */
     toDegrees: function( radians ) {
       return 180 * radians / Math.PI;
     },
 
-    // find the greatest common denominator using the classic algorithm
+    /**
+     * Greatest Common Denominator, using https://en.wikipedia.org/wiki/Euclidean_algorithm
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     */
     gcd: function( a, b ) {
       return b === 0 ? a : this.gcd( b, a % b );
     },
 
-    // intersection between the line from p1-p2 and the line from p3-p4
-    // Taken from an answer in http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
-    // Does not handle parallel lines
+    /**
+     * Intersection point between the lines defined by the line segments p1-2 and p3-p4. Currently does not handle
+     * parallel lines.
+     * @public
+     *
+     * @param {Vector2} p1
+     * @param {Vector2} p2
+     * @param {Vector2} p3
+     * @param {Vector2} p4
+     * @returns {Vector2}
+     */
     lineLineIntersection: function( p1, p2, p3, p4 ) {
+      // Taken from an answer in http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
       var x12 = p1.x - p2.x;
       var x34 = p3.x - p4.x;
       var y12 = p1.y - p2.y;
@@ -105,6 +180,26 @@ define( function( require ) {
       );
     },
 
+    /**
+     * Ray-sphere intersection, returning information about the closest intersection. Assumes the sphere is centered
+     * at the origin (for ease of computation), transform the ray to compensate if needed.
+     * @public
+     *
+     * If there is no intersection, null is returned. Otherwise an object will be returned like:
+     * <pre class="brush: js">
+     * {
+     *   distance: {number}, // distance from the ray position to the intersection
+     *   hitPoint: {Vector3}, // location of the intersection
+     *   normal: {Vector3}, // the normal of the sphere's surface at the intersection
+     *   fromOutside: {boolean}, // whether the ray intersected the sphere from outside the sphere first
+     * }
+     * </pre>
+     *
+     * @param {number} radius
+     * @param {Ray3} ray
+     * @param {number} epsilon
+     * @returns {Object}
+     */
     // assumes a sphere with the specified radius, centered at the origin
     sphereRayIntersection: function( radius, ray, epsilon ) {
       epsilon = epsilon === undefined ? 1e-5 : epsilon;
@@ -167,7 +262,15 @@ define( function( require ) {
       }
     },
 
-    // return an array of real roots of ax^2 + bx + c = 0
+    /**
+     * Returns an array of the real roots of the quadratic equation $ax^2 + bx + c=0$ (there will be between 0 and 2 roots).
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     * @param {number} c
+     * @returns {Array.<number>}
+     */
     solveQuadraticRootsReal: function( a, b, c ) {
       var epsilon = 1E7;
 
@@ -189,7 +292,16 @@ define( function( require ) {
       ];
     },
 
-    // return an array of real roots of ax^3 + bx^2 + cx + d = 0
+    /**
+     * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$ (there will be between 0 and 3 roots).
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     * @param {number} c
+     * @param {number} d
+     * @returns {Array.<number>}
+     */
     solveCubicRootsReal: function( a, b, c, d ) {
       // TODO: a Complex type!
 
@@ -238,23 +350,42 @@ define( function( require ) {
       }
     },
 
+    /**
+     * Returns the unique real cube root of x, such that $y^3=x$.
+     * @public
+     *
+     * @param {number} x
+     * @returns {number}
+     */
     cubeRoot: function( x ) {
       return x >= 0 ? Math.pow( x, 1 / 3 ) : -Math.pow( -x, 1 / 3 );
     },
 
-    // Linearly interpolate two points and evaluate the line equation for a third point
-    // f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
+    /**
+     * Defines and evaluates a linear mapping. The mapping is defined so that $f(a_1)=b_1$ and $f(a_2)=b_2$, and other
+     * values are interpolated along the linear equation. The returned value is $f(a_3)$.
+     * @public
+     *
+     * @param {number} a1
+     * @param {number} a2
+     * @param {number} b1
+     * @param {number} b2
+     * @param {number} a3
+     * @returns {number}
+     */
     linear: function( a1, a2, b1, b2, a3 ) {
       return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
     },
 
     /**
      * Rounds using "Round half away from zero" algorithm. See dot#35.
+     * @public
      *
      * JavaScript's Math.round is not symmetric for positive and negative numbers, it uses IEEE 754 "Round half up".
      * See https://en.wikipedia.org/wiki/Rounding#Round_half_up.
      * For sims, we want to treat positive and negative values symmetrically, which is IEEE 754 "Round half away from zero",
      * See https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero
+     *
      * Note that -0 is rounded to 0, since we typically do not want to display -0 in sims.
      *
      * @param {number} value                               `
@@ -266,6 +397,8 @@ define( function( require ) {
 
     /**
      * A predictable implementation of toFixed.
+     * @public
+     *
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
      * Rounding is symmetric for positive and negative values, see Util.roundSymmetric.
@@ -280,24 +413,55 @@ define( function( require ) {
       return newValue.toFixed( decimalPlaces );
     },
 
-    // Convenience for returning a number instead of a string.
+    /**
+     * A predictable implementation of toFixed, where the result is returned as a number instead of a string.
+     * @public
+     *
+     * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
+     * because the spec doesn't specify whether to round or floor.
+     * Rounding is symmetric for positive and negative values, see Util.roundSymmetric.
+     *
+     * @param {number} value
+     * @param {number} decimalPlaces
+     * @returns {number}
+     */
     toFixedNumber: function( value, decimalPlaces ) {
       return parseFloat( Util.toFixed( value, decimalPlaces ) );
     },
 
+    /**
+     * Returns whether the input is a number that is an integer (no fractional part).
+     * @public
+     *
+     * @param {number} n
+     * @returns {boolean}
+     */
     isInteger: function( n ) {
       return ( typeof n === 'number' ) && ( n % 1 === 0 );
     },
 
-    /*
-     * Computes the intersection of two line segments. Algorithm taken from Paul Bourke, 1989:
-     * http://paulbourke.net/geometry/pointlineplane/
-     * http://paulbourke.net/geometry/pointlineplane/pdb.c
-     * Ported from MathUtil.java on 9/20/2013 by @samreid
-     * line a goes from point 1->2 and line b goes from 3->4
-     * @returns a Vector2 of the intersection point, or null if no intersection
+    /**
+     * Computes the intersection of the two line segments $(x_1,y_1)(x_2,y_2)$ and $(x_3,y_3)(x_4,y_4)$. If there is no
+     * intersection, null is returned.
+     * @public
+     *
+     * @param {number} x1
+     * @param {number} y1
+     * @param {number} x2
+     * @param {number} y2
+     * @param {number} x3
+     * @param {number} y3
+     * @param {number} x4
+     * @param {number} y4
+     * @returns {Vector2|null}
      */
     lineSegmentIntersection: function( x1, y1, x2, y2, x3, y3, x4, y4 ) {
+      /*
+       * Algorithm taken from Paul Bourke, 1989:
+       * http://paulbourke.net/geometry/pointlineplane/
+       * http://paulbourke.net/geometry/pointlineplane/pdb.c
+       * Ported from MathUtil.java on 9/20/2013 by @samreid
+       */
       var numA = ( x4 - x3 ) * ( y1 - y3 ) - ( y4 - y3 ) * ( x1 - x3 );
       var numB = ( x2 - x1 ) * ( y1 - y3 ) - ( y2 - y1 ) * ( x1 - x3 );
       var denom = ( y4 - y3 ) * ( x2 - x1 ) - ( x4 - x3 ) * ( y2 - y1 );
@@ -325,11 +489,12 @@ define( function( require ) {
     /**
      * Squared distance from a point to a line segment squared.
      * See http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+     * @public
      *
-     * @param point the point
-     * @param a start point of a line segment
-     * @param b end point of a line segment
-     * @returns {Number}
+     * @param {Vector2} point - The point
+     * @param {Vector2} a - Starting point of the line segment
+     * @param {Vector2} b - Ending point of the line segment
+     * @returns {number}
      */
     distToSegmentSquared: function( point, a, b ) {
       var segmentLength = a.distanceSquared( b );
@@ -342,13 +507,25 @@ define( function( require ) {
 
     /**
      * Squared distance from a point to a line segment squared.
-     * @param point the point
-     * @param a start point of a line segment
-     * @param b end point of a line segment
-     * @returns {Number}
+     * @public
+     *
+     * @param {Vector2} point - The point
+     * @param {Vector2} a - Starting point of the line segment
+     * @param {Vector2} b - Ending point of the line segment
+     * @returns {number}
      */
     distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); },
 
+    /**
+     * Determines whether the three points are approximately collinear.
+     * @public
+     *
+     * @param {Vector2} a
+     * @param {Vector2} b
+     * @param {Vector2} c
+     * @param {number} epsilon
+     * @returns {boolean}
+     */
     arePointsCollinear: function( a, b, c, epsilon ) {
       if ( epsilon === undefined ) {
         epsilon = 0;
@@ -356,15 +533,41 @@ define( function( require ) {
       return Util.triangleArea( a, b, c ) <= epsilon;
     },
 
+    /**
+     * The area inside the triangle defined by the three vertices.
+     * @public
+     *
+     * @param {Vector2} a
+     * @param {Vector2} b
+     * @param {Vector2} c
+     * @returns {number}
+     */
     triangleArea: function( a, b, c ) {
       return Math.abs( Util.triangleAreaSigned( a, b, c ) );
     },
 
-    // TODO: investigate which way we want the sign (Canvas or WebGL style)
+    /**
+     * The area inside the triangle defined by the three vertices, but with the sign determined by whether the vertices
+     * provided are clockwise or counter-clockwise.
+     * @public
+     *
+     * @param {Vector2} a
+     * @param {Vector2} b
+     * @param {Vector2} c
+     * @returns {number}
+     */
     triangleAreaSigned: function( a, b, c ) {
+      // TODO: investigate which way we want the sign (Canvas or WebGL style)
       return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
     },
 
+    /**
+     * Log base-10, since it wasn't included in every supported browser.
+     * @public
+     *
+     * @param {number} val
+     * @returns {number}
+     */
     log10: function( val ) {
       return Math.log( val ) / Math.LN10;
     },
@@ -375,9 +578,10 @@ define( function( require ) {
      * Random.js is the primary client of this function, but it is defined here so it can be
      * used other places more easily if need be.
      * Code inspired by example here: https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform.
+     * @public
      *
-     * @param mu the mean of the Gaussian
-     * @param sigma the standard deviation of the Gaussian
+     * @param {number} mu - The mean of the Gaussian
+     * @param {number} sigma - The standard deviation of the Gaussian
      * @returns {number}
      */
     boxMullerTransform: function( mu, sigma ) {

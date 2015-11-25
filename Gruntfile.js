@@ -110,6 +110,7 @@ module.exports = function( grunt ) {
       Complex: 'complex',
       ConvexHull2: 'convexHull2',
       Dimension2: 'dimension2',
+      Util: 'util',
       Vector2: 'vector2',
       Vector3: 'vector3',
       Vector4: 'vector4'
@@ -140,6 +141,7 @@ module.exports = function( grunt ) {
     docFile( 'js/Complex.js', 'Complex', [ 'Complex' ] );
     docFile( 'js/ConvexHull2.js', 'ConvexHull2', [ 'ConvexHull2' ] );
     docFile( 'js/Dimension2.js', 'Dimension2', [ 'Dimension2' ] );
+    docFile( 'js/Util.js', 'Util', [ 'Util' ] );
     docFile( 'js/Vector2.js', 'Vector2', [ 'Vector2' ] );
     docFile( 'js/Vector3.js', 'Vector3', [ 'Vector3' ] );
     docFile( 'js/Vector4.js', 'Vector4', [ 'Vector4' ] );
