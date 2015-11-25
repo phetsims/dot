@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Documentation - Dot</title>
+
+  <link rel="stylesheet" href="../../sherpa/lib/bootstrap-2.2.2.css">
+  <link rel="stylesheet" href="../../sherpa/lib/bootstrap-responsive-2.2.2.css">
+  <link rel="stylesheet" href="../../sherpa/lib/syntaxhighlighter-3.0.83/shCore.css">
+  <link rel="stylesheet" href="../../sherpa/lib/syntaxhighlighter-3.0.83/shThemeDefault.css">
+
+  <!-- jQuery and LoDash are dependencies -->
+  <script src="../../sherpa/lib/jquery-2.1.0.min.js"></script>
+  <script src="../../sherpa/lib/lodash-2.4.1.min.js"></script>
+
+  <!-- For the styling -->
+  <script src="../../sherpa/lib/bootstrap-2.2.2.js"></script>
+
+  <script src="../../sherpa/lib/syntaxhighlighter-3.0.83/shCore.js"></script>
+  <script src="../../sherpa/lib/syntaxhighlighter-3.0.83/shBrushJScript.js"></script>
+  <script src="../../sherpa/lib/syntaxhighlighter-3.0.83/shBrushXml.js"></script>
+
+  <!-- MathJax config -->
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  <!-- Our code, in either the concatenated 'with comments' version or the minified version -->
+  <script src="../build/development/dot.js"></script>
+
+  <style type="text/css">
+
+    .exampleScene {
+      margin: 15px auto;
+      border: 1px solid black;
+    }
+
+    #sidebar {
+      background-color: #eee;
+      position: fixed;
+      z-index: 10;
+      top: 41px;
+      left: 0;
+      bottom: 0;
+      width: 200px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 15px 0 30px 30px;
+      border-right: 1px solid #bbb;
+      box-shadow: 0 0 20px #ccc;
+      -webkit-box-shadow: 0 0 20px #ccc;
+      -moz-box-shadow: 0 0 20px #ccc;
+    }
+
+    #apiList {
+      background-color: #eee;
+      position: relative;
+      border: 1px solid #bbb;
+      border-left: none;
+      padding: 10px;
+    }
+
+    .ph2 {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .navlink {
+      font-weight: bold;
+    }
+
+    .sublink {
+      padding-left: 1em;
+    }
+
+    .args {
+      font-weight: normal;
+      font-size: 90%;
+      color: #000;
+      vertical-align: middle;
+    }
+
+    .this {
+      font-weight: normal;
+      font-size: 90%;
+      color: #000;
+      vertical-align: middle;
+    }
+
+    .return {
+      font-weight: normal;
+      font-size: 95%;
+      vertical-align: middle;
+    }
+
+    .property {
+      font-weight: normal;
+      font-size: 95%;
+      vertical-align: middle;
+    }
+
+    .entryName {
+      vertical-align: middle
+    }
+
+    .type {
+      color: #d14;
+    }
+
+    .type::before {
+      content: "{";
+    }
+
+    .type::after {
+      content: "}";
+    }
+
+    .param td {
+      vertical-align: top;
+    }
+
+    .params {
+      margin: 0 20px;
+    }
+
+    .explicitSetterGetter {
+      font-weight: normal;
+      padding-left: 15px;
+    }
+
+    .optional::before {
+      content: "[";
+      color: #888;
+    }
+
+    .optional::after {
+      content: "]";
+      color: #888;
+    }
+
+    .navSection {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .navSection a {
+      color: #333;
+    }
+
+    h4 {
+      margin-top: 25px;
+    }
+
+    h5 {
+      border-top: 1px solid #e2e2e2;
+      padding-top: 10px;
+      margin-top: 13px;
+    }
+
+    #codeContainer {
+      height: 100%;
+    }
+
+    #codeIndex {
+      position: fixed;
+      top: 41px;
+      left: 0;
+      bottom: 0;
+      width: 250px;
+      border-right: 1px solid #bbb;
+      float: left;
+      background-color: #eee;
+      overflow: auto;
+    }
+
+    #codeIndexInner {
+      padding: 20px;
+    }
+
+    #codeContent {
+      margin-left: 250px;
+      padding: 10px;
+      padding-left: 20px;
+      height: 100%;
+    }
+
+  </style>
+
+</head>
+
+<body id="body">
+<div class="navbar navbar-inverse navbar-static-top">
+  <div class="navbar-inner">
+    <a class="brand" href="../">Dot</a>
+    <ul class="nav">
+      <li><a href="../">Home</a></li>
+      <li class="active"><a href="../doc">Documentation</a></li>
+      <li><a href="../examples">Examples</a></li>
+      <li><a href="../tests">Tests</a></li>
+    </ul>
+    <ul class="nav pull-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Related <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="../../scenery">Scenery</a></li>
+          <li><a href="../../kite">Kite</a></li>
+          <li><a href="../../dot">Dot</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div id="codeContainer">
+  <div id="codeIndex">
+    <div id="codeIndexInner">
+      <div class="navSection">API Documentation</div>
+
+      $API_INDEX$
+    </div>
+  </div>
+  <div id="codeContent">
+    <h1>Dot Documentation</h1>
+
+    <h2 id="introduction">Introduction</h2>
+
+    <p>
+      To use Dot, first include references to Dot itself and <a href="https://lodash.com/">Lodash</a> (the only external dependency) in your HTML:
+    </p>
+
+    <pre class="brush: html">
+&lt;script src="http://example.com/lodash.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://example.com/dot.min.js"&gt;&lt;/script&gt;</pre>
+
+    <p>
+      Then Dot types and utilities can be accessed from the namespace:
+    </p>
+
+    <pre class="brush: js">
+var rotation = dot.Matrix3.rotationZ( Math.PI / 4 );
+
+console.log( rotation.toString() );
+// 0.7071067811865476 -0.7071067811865475 0
+// 0.7071067811865475 0.7071067811865476 0
+// 0 0 1
+
+var vector = new dot.Vector2( 10, 0 );
+var rotatedVector = rotation.timesVector2( vector );
+
+console.log( rotatedVector.x, rotatedVector.y );
+// 7.0710678118654755 7.071067811865475
+</pre>
+
+    <h2 id="building-from-source">Building</h2>
+
+    <p>
+      Dot depends on a few other libraries, and needs to have them checked out as siblings. It is recommended to
+      place all of these inside a containing directory. Make sure you have <a href="https://help.github.com/articles/set-up-git">git</a> installed,
+      then run:
+    </p>
+
+      <pre>
+git clone https://github.com/phetsims/sherpa.git
+git clone https://github.com/phetsims/chipper.git
+git clone https://github.com/phetsims/axon.git
+git clone https://github.com/phetsims/assert.git
+git clone https://github.com/phetsims/phet-core.git
+git clone https://github.com/phetsims/dot.git</pre>
+
+    <p>
+      For some examples and tests, and to build a custom version, you'll need to install <a href="http://nodejs.org/">node.js</a>, and <a
+        href="https://github.com/gruntjs/grunt-cli">grunt-cli</a>. Then,
+    </p>
+
+      <pre>
+cd dot
+npm install
+grunt</pre>
+
+    <p>
+      You will now have the built files under build/
+    </p>
+
+    <h2 id="api">API Documentation</h2>
+
+    $API_CONTENT$
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  SyntaxHighlighter.all();
+
+  function updatePositions() {
+    var codeIndex = document.getElementById( 'codeIndex' );
+    var top = Math.max( 0, document.getElementsByClassName( 'navbar' )[ 0 ].getBoundingClientRect().bottom );
+    codeIndex.style.top = top + 'px';
+  }
+
+  $( window ).scroll( updatePositions );
+  $( window ).resize( updatePositions );
+  $( document ).ready( updatePositions );
+</script>
+</body>
+</html>

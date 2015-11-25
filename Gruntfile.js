@@ -1,5 +1,11 @@
 // Copyright 2002-2015, University of Colorado Boulder
 
+var fs = require( 'fs' );
+var esprima = require( 'esprima' );
+var beautify_html = require( 'js-beautify' ).html;
+var extractDocumentation = require( '../chipper/js/common/extractDocumentation' );
+var documentationToHTML = require( '../chipper/js/common/documentationToHTML' );
+
 /*global module:false*/
 module.exports = function( grunt ) {
   'use strict';
@@ -91,6 +97,59 @@ module.exports = function( grunt ) {
   // compilation targets. invoke only one like ('grunt development')
   grunt.registerTask( 'production', [ 'requirejs:production' ] );
   grunt.registerTask( 'development', [ 'requirejs:development' ] );
+
+  grunt.registerTask( 'doc', 'Generates Documentation', function() {
+    var indexHTML = '';
+    var contentHTML = '';
+
+    var localTypeIds = {
+      BinPacker: 'binPacker',
+      Bin: 'binPacker-bin',
+      Bounds2: 'bounds2',
+      Bounds3: 'bounds3',
+      Complex: 'complex',
+      ConvexHull2: 'convexHull2',
+      Vector2: 'vector2',
+      Vector3: 'vector3',
+      Vector4: 'vector4'
+    };
+
+    var externalTypeURLs = {
+      // anything?
+    };
+
+    function docFile( file, baseName, typeNames ) {
+      var codeFile = fs.readFileSync( file, 'utf8' );
+      var program = esprima.parse( codeFile, {
+        attachComment: true
+      } );
+      var doc = extractDocumentation( program );
+      if ( baseName === 'Vector2' ) { // for testing
+        // console.log( JSON.stringify( doc, null, 2 ) );
+      }
+      var htmlDoc = documentationToHTML( doc, baseName, typeNames, localTypeIds, externalTypeURLs );
+
+      indexHTML += htmlDoc.indexHTML;
+      contentHTML += htmlDoc.contentHTML;
+    }
+
+    docFile( 'js/BinPacker.js', 'BinPacker', [ 'BinPacker', 'Bin' ] );
+    docFile( 'js/Bounds2.js', 'Bounds2', [ 'Bounds2' ] );
+    docFile( 'js/Bounds3.js', 'Bounds3', [ 'Bounds3' ] );
+    docFile( 'js/Complex.js', 'Complex', [ 'Complex' ] );
+    docFile( 'js/ConvexHull2.js', 'ConvexHull2', [ 'ConvexHull2' ] );
+    docFile( 'js/Vector2.js', 'Vector2', [ 'Vector2' ] );
+    docFile( 'js/Vector3.js', 'Vector3', [ 'Vector3' ] );
+    docFile( 'js/Vector4.js', 'Vector4', [ 'Vector4' ] );
+
+    var template = fs.readFileSync( 'doc/template.html', 'utf8' );
+
+    var html = template.replace( '$API_INDEX$', indexHTML ).replace( '$API_CONTENT$', contentHTML );
+
+    html = beautify_html( html, { indent_size: 2 } )
+
+    fs.writeFileSync( 'doc/index.html', html );
+  } );
 
   // dependencies
   grunt.loadNpmTasks( 'grunt-requirejs' );
