@@ -454,6 +454,19 @@
         <div id="collapse-ConvexHull2" class="collapse">
           <a class="sublink" href="#convexHull2-grahamScan">grahamScan</a>
           <br>
+        </div><a class="navlink" href="#dimension2" data-toggle="collapse" data-target="#collapse-Dimension2" onclick="$( '.collapse.in' ).collapse( 'toggle' ); return true;">Dimension2</a>
+        <br>
+        <div id="collapse-Dimension2" class="collapse">
+          <a class="sublink" href="#dimension2-height">height</a>
+          <br><a class="sublink" href="#dimension2-width">width</a>
+          <br><a class="sublink" href="#dimension2-copy">copy</a>
+          <br><a class="sublink" href="#dimension2-equals">equals</a>
+          <br><a class="sublink" href="#dimension2-set">set</a>
+          <br><a class="sublink" href="#dimension2-setHeight">setHeight</a>
+          <br><a class="sublink" href="#dimension2-setWidth">setWidth</a>
+          <br><a class="sublink" href="#dimension2-toBounds">toBounds</a>
+          <br><a class="sublink" href="#dimension2-toString">toString</a>
+          <br>
         </div><a class="navlink" href="#vector2" data-toggle="collapse" data-target="#collapse-Vector2" onclick="$( '.collapse.in' ).collapse( 'toggle' ); return true;">Vector2</a>
         <br>
         <div id="collapse-Vector2" class="collapse">
@@ -1708,6 +1721,56 @@ grunt</pre>
           <td>If a point is along an edge of the convex hull (not at one of its vertices), should it be included?</td>
         </tr>
       </table>
+      <h3 id="dimension2" class="section">Dimension2</h3>
+      <p>
+        Basic width and height, like a Bounds2 but without the location defined.
+      </p>
+      <h4 id="dimension2-constructor" class="section">Dimension2( <span class="args"> <span class="type">number</span> width</span>, <span class="args"> <span class="type">number</span> height</span> )</h4>
+      <p>Creates a 2-dimensional size with a width and height</p>
+      <h5 id="dimension2-height" class="section"><span class="entryName">height</span> <span class="property"> <span class="type">number</span></span></h5>
+      <p>Height of the dimension</p>
+      <h5 id="dimension2-width" class="section"><span class="entryName">width</span> <span class="property"> <span class="type">number</span></span></h5>
+      <p>Width of the dimension</p>
+      <h5 id="dimension2-copy" class="section"><span class="entryName">copy</span>( <span class="args"> <a href="#dimension2" class="type">Dimension2</a> <span class="optional">dimension</span></span> ) :<span class="return"> <a href="#dimension2" class="type">Dimension2</a></span></h5>
+      <p>Creates a copy of this dimension, or if a dimension is passed in, set that dimension's values to ours.
+        <br>
+        <br> This is the immutable form of the function set(), if a dimension is provided. This will return a new dimension, and will not modify this dimension.</p>
+      <table class="params">
+        <tr class="param">
+          <td> <a href="#dimension2" class="type">Dimension2</a></td>
+          <td><span class="optional">dimension</span></td>
+          <td> - </td>
+          <td>If not provided, creates a new Vector2 with filled in values. Otherwise, fills in the values of the provided dimension so that it equals this dimension.</td>
+        </tr>
+      </table>
+      <h5 id="dimension2-equals" class="section"><span class="entryName">equals</span>( <span class="args"> <a href="#dimension2" class="type">Dimension2</a> other</span> ) :<span class="return"> <span class="type">boolean</span></span></h5>
+      <p>Exact equality comparison between this dimension and another dimension.</p>
+      <h5 id="dimension2-set" class="section"><span class="entryName">set</span>( <span class="args"> <a href="#dimension2" class="type">Dimension2</a> dimension</span> ) :<span class="return"> <a href="#dimension2" class="type">Dimension2</a></span></h5>
+      <p>Sets this dimension to be a copy of another dimension.
+        <br>
+        <br> This is the mutable form of the function copy(). This will mutate (change) this dimension, in addition to returning this dimension itself.</p>
+      <h5 id="dimension2-setHeight" class="section"><span class="entryName">setHeight</span>( <span class="args"> <span class="type">number</span> height</span> ) :<span class="return"> <a href="#dimension2" class="type">Dimension2</a></span></h5>
+      <p>Sets the height of the dimension, returning this.</p>
+      <h5 id="dimension2-setWidth" class="section"><span class="entryName">setWidth</span>( <span class="args"> <span class="type">number</span> width</span> ) :<span class="return"> <a href="#dimension2" class="type">Dimension2</a></span></h5>
+      <p>Sets the width of the dimension, returning this.</p>
+      <h5 id="dimension2-toBounds" class="section"><span class="entryName">toBounds</span>( <span class="args"> <span class="type">number</span> <span class="optional">x</span></span>, <span class="args"> <span class="type">number</span> <span class="optional">y</span></span> ) :<span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
+      <p>Creates a Bounds2 from this dimension based on passing in the minimum (top-left) corner as (x,y).</p>
+      <table class="params">
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td><span class="optional">x</span></td>
+          <td> - </td>
+          <td>Minimum x coordinate of the bounds, or 0 if not provided.</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td><span class="optional">y</span></td>
+          <td> - </td>
+          <td>Minimum y coordinate of the bounds, or 0 if not provided.</td>
+        </tr>
+      </table>
+      <h5 id="dimension2-toString" class="section"><span class="entryName">toString</span>() :<span class="return"> <span class="type">string</span></span></h5>
+      <p>Debugging string for the dimension.</p>
       <h3 id="vector2" class="section">Vector2</h3>
       <p>
         Basic 2-dimensional vector, represented as (x,y).
