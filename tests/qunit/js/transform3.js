@@ -80,14 +80,6 @@
     var v = new Vector2( -71, 27 );
     approximateEqual( t.inverseDeltaX( t.transformDeltaX( v.x ) ), v.x, 'inverse check X' );
     approximateEqual( t.inverseDeltaY( t.transformDeltaY( v.y ) ), v.y, 'inverse check Y' );
-
-    var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
-    assert && throws( function() {
-      var x = t2.transformDeltaX( 5 );
-    } );
-    assert && throws( function() {
-      var y = t2.transformDeltaY( 5 );
-    } );
   } );
 
   test( 'Transform setMatrix ensuring matrix instance equivalence', function() {

@@ -110,6 +110,27 @@ module.exports = function( grunt ) {
       Complex: 'complex',
       ConvexHull2: 'convexHull2',
       Dimension2: 'dimension2',
+      EigenvalueDecomposition: 'eigenvalueDecomposition',
+      LinearFunction: 'linearFunction',
+      LUDecomposition: 'luDecomposition',
+      Matrix: 'matrix',
+      Matrix3: 'matrix3',
+      Matrix4: 'matrix4',
+      MatrixOps3: 'matrixOps3',
+      ObservableVector2: 'observableVector2',
+      Permutation: 'permutation',
+      Plane3: 'plane3',
+      QRDecomposition: 'qrDecomposition',
+      Quaternion: 'quaternion',
+      Random: 'random',
+      Range: 'range',
+      Ray2: 'ray2',
+      Ray3: 'ray3',
+      Rectangle: 'rectangle', // TODO: How to not have a namespace conflict?
+      SingularValueDecomposition: 'singularValueDecomposition',
+      Sphere3: 'sphere3',
+      Transform3: 'transform3',
+      Transform4: 'transform4',
       Util: 'util',
       Vector2: 'vector2',
       Vector3: 'vector3',
@@ -117,7 +138,8 @@ module.exports = function( grunt ) {
     };
 
     var externalTypeURLs = {
-      // anything?
+      Events: '../../axon/doc#events',
+      Shape: '../../kite/doc#shape'
     };
 
     function docFile( file, baseName, typeNames ) {
@@ -141,6 +163,8 @@ module.exports = function( grunt ) {
     docFile( 'js/Complex.js', 'Complex', [ 'Complex' ] );
     docFile( 'js/ConvexHull2.js', 'ConvexHull2', [ 'ConvexHull2' ] );
     docFile( 'js/Dimension2.js', 'Dimension2', [ 'Dimension2' ] );
+    docFile( 'js/Transform3.js', 'Transform3', [ 'Transform3' ] );
+    docFile( 'js/Transform4.js', 'Transform4', [ 'Transform4' ] );
     docFile( 'js/Util.js', 'Util', [ 'Util' ] );
     docFile( 'js/Vector2.js', 'Vector2', [ 'Vector2' ] );
     docFile( 'js/Vector3.js', 'Vector3', [ 'Vector3' ] );
