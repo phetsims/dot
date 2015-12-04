@@ -117,7 +117,6 @@ module.exports = function( grunt ) {
       Matrix3: 'matrix3',
       Matrix4: 'matrix4',
       MatrixOps3: 'matrixOps3',
-      ObservableVector2: 'observableVector2',
       Permutation: 'permutation',
       Plane3: 'plane3',
       QRDecomposition: 'qrDecomposition',
