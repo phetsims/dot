@@ -378,8 +378,11 @@ define( function( require ) {
      * @returns {boolean}
      */
     intersectsBounds: function( bounds ) {
-      // TODO: more efficient way of doing this?
-      return !this.intersection( bounds ).isEmpty();
+      var minX = Math.max( this.minX, bounds.minX );
+      var minY = Math.max( this.minY, bounds.minY );
+      var maxX = Math.min( this.maxX, bounds.maxX );
+      var maxY = Math.min( this.maxY, bounds.maxY );
+      return ( maxX - minX ) >= 0 && ( maxY - minY >= 0 );
     },
 
     /**
