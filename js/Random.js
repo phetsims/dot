@@ -38,6 +38,8 @@ define( function( require ) {
 
     var seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
     this.setSeed( seed );
+
+    options.tandem && options.tandem.addInstance( this );
   }
 
   dot.register( 'Random', Random );
