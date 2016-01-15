@@ -17,12 +17,27 @@ define( function( require ) {
 
   function Random( options ) {
     options = _.extend( {
-      tandem: null, // for deterministic playback in randomized sims
-      seed: null // {number|null} seed for the random number generator.
-                 //               when seed is null, Math.random() is used
+
+      // {Tandem} for deterministic playback in randomized sims
+      tandem: null,
+
+      // {number|null} seed for the random number generator.
+      //               when seed is null, Math.random() is used
+      seed: null,
+
+      // {boolean} if true, use the seed specified statically in the preloads for replicable playback in phet-io
+      // this is a convenience option since it will be a common occurrence to use the replicable playback seed
+      // if staticSeed and seed are both specified, there will be an assertion error.
+      staticSeed: false
+
     }, options );
 
-    this.setSeed( options.seed );
+    if ( options.seed !== null && options.staticSeed ) {
+      assert && assert( false, 'cannot specify seed and useChipperSeed, use one or the other' );
+    }
+
+    var seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
+    this.setSeed( seed );
   }
 
   dot.register( 'Random', Random );
@@ -61,7 +76,6 @@ define( function( require ) {
 
     nextDouble: function() {
       var vv = this.random();
-      console.log( vv );
       return vv;
     },
 
