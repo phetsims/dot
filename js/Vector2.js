@@ -780,7 +780,7 @@ define( function( require ) {
     },
 
     /**
-     * Returns a duck-typed object meant for use with tandem/together serialization.
+     * Returns a duck-typed object meant for use with tandem/phet-io serialization.
      *
      * @returns {Object}
      */
@@ -803,7 +803,7 @@ define( function( require ) {
 
     /**
      * Constructs a Vector2 from a duck-typed { x: {number}, y: {number} } object, meant for use with
-     * tandem/together deserialization.
+     * tandem/phet-io deserialization.
      * @public
      *
      * @param {Object} stateObject - Like { x: {number}, y: {number} }
