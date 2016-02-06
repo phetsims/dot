@@ -360,7 +360,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         case Types.OTHER:
           det = this.getDeterminant();
           if ( det !== 0 ) {
@@ -380,7 +380,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
@@ -617,7 +617,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         case Types.OTHER:
           det = this.getDeterminant();
           if ( det !== 0 ) {
@@ -637,7 +637,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
