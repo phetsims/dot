@@ -16,7 +16,7 @@
   // }
 
   function approximateRayEqual( a, b, msg ) {
-    ok( a.pos.equalsEpsilon( b.pos, 0.00001 ) && a.dir.equalsEpsilon( b.dir, 0.00001 ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
+    ok( a.position.equalsEpsilon( b.position, 0.00001 ) && a.direction.equalsEpsilon( b.direction, 0.00001 ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
   }
 
   test( 'Ray2 transforms', function() {
@@ -27,12 +27,12 @@
     var iray = transform.inverseRay2( ray );
 
     var backOffset = transform.inversePosition2( tray.pointAtDistance( 1 ) );
-    var backPos = transform.inversePosition2( tray.pos );
-    ok( ray.dir.equalsEpsilon( backOffset.minus( backPos ).normalized(), 0.00001 ), 'transformRay2 ray linearity' );
+    var backPos = transform.inversePosition2( tray.position );
+    ok( ray.direction.equalsEpsilon( backOffset.minus( backPos ).normalized(), 0.00001 ), 'transformRay2 ray linearity' );
 
     var forwardOffset = transform.transformPosition2( iray.pointAtDistance( 1 ) );
-    var forwardPos = transform.transformPosition2( iray.pos );
-    ok( ray.dir.equalsEpsilon( forwardOffset.minus( forwardPos ).normalized(), 0.00001 ), 'inverseRay2 ray linearity' );
+    var forwardPos = transform.transformPosition2( iray.position );
+    ok( ray.direction.equalsEpsilon( forwardOffset.minus( forwardPos ).normalized(), 0.00001 ), 'inverseRay2 ray linearity' );
 
     approximateRayEqual( transform.inverseRay2( transform.transformRay2( ray ) ), ray, 'inverse correctness' );
   } );
@@ -80,13 +80,51 @@
     var v = new Vector2( -71, 27 );
     approximateEqual( t.inverseDeltaX( t.transformDeltaX( v.x ) ), v.x, 'inverse check X' );
     approximateEqual( t.inverseDeltaY( t.transformDeltaY( v.y ) ), v.y, 'inverse check Y' );
+  } );
 
-    var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
-    assert && throws( function() {
-      var x = t2.transformDeltaX( 5 );
-    } );
-    assert && throws( function() {
-      var y = t2.transformDeltaY( 5 );
-    } );
+  test( 'Transform setMatrix ensuring matrix instance equivalence', function() {
+    var t = new Transform3();
+
+    var m = t.getMatrix();
+
+    t.setMatrix( Matrix3.createFromPool( 1, 2, 3, 4, 5, 6, 7, 8, 9 ) );
+    equal( t.getMatrix(), m );
+    equal( t.getMatrix().m00(), 1 );
+    equal( t.getMatrix().m01(), 2 );
+    t.setMatrix( Matrix3.createFromPool( 9, 8, 7, 6, 5, 4, 3, 2, 1 ) );
+    equal( t.getMatrix(), m );
+    equal( t.getMatrix().m00(), 9 );
+    equal( t.getMatrix().m01(), 8 );
+  } );
+
+  test( 'Transform event firing', function() {
+    var t = new Transform3();
+
+    var count = 0;
+
+    t.on( 'change', function() { count += 1; } );
+    equal( count, 0 );
+    t.setMatrix( Matrix3.rotation2( Math.PI / 2 ) );
+    equal( count, 1 );
+    t.prepend( Matrix3.rotation2( Math.PI / 2 ) );
+    equal( count, 2 );
+    t.prependTranslation( 1, 2 );
+    equal( count, 3 );
+    t.append( Matrix3.rotation2( Math.PI / 2 ) );
+    equal( count, 4 );
+  } );
+
+  test( 'Transform inverse validation', function() {
+    var t = new Transform3();
+
+    ok( t.transformPosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 2, 4 ) ) );
+    ok( t.inversePosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 2, 4 ) ) );
+    t.getMatrix().setToScale( 4, 2 );
+    t.invalidate();
+    ok( t.transformPosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 8, 8 ) ) );
+    ok( t.inversePosition2( dot.v2( 2, 4 ) ).equals( dot.v2( 0.5, 2 ) ) );
+    t.append( Matrix3.rotation2( Math.PI / 2 ) );
+    ok( t.transformPosition2( dot.v2( 2, 4 ) ).equalsEpsilon( dot.v2( -16, 4 ), epsilon ) );
+    ok( t.inversePosition2( dot.v2( 2, 4 ) ).equalsEpsilon( dot.v2( 2, -0.5 ), epsilon ) );
   } );
 })();

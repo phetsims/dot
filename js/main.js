@@ -1,7 +1,8 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 define( [
   'DOT/dot',
+  'DOT/BinPacker',
   'DOT/Bounds2',
   'DOT/Bounds3',
   'DOT/Complex',
@@ -13,13 +14,12 @@ define( [
   'DOT/Matrix',
   'DOT/Matrix3',
   'DOT/Matrix4',
-  'DOT/ObservableBounds2',
-  'DOT/ObservableMatrix3',
-  'DOT/ObservableVector2',
+  'DOT/MatrixOps3',
   'DOT/Permutation',
   'DOT/Plane3',
   'DOT/QRDecomposition',
   'DOT/Quaternion',
+  'DOT/Random',
   'DOT/Ray2',
   'DOT/Ray3',
   'DOT/Rectangle',

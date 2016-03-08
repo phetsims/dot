@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * An immutable permutation that can permute an array
@@ -15,9 +15,11 @@ define( function( require ) {
   require( 'DOT/Util' ); // for rangeInclusive
 
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
-  var Permutation = dot.Permutation = function Permutation( indices ) {
+  function Permutation( indices ) {
     this.indices = indices;
-  };
+  }
+
+  dot.register( 'Permutation', Permutation );
 
   // An identity permutation with a specific number of elements
   Permutation.identity = function( size ) {
@@ -47,7 +49,7 @@ define( function( require ) {
    */
   function recursiveForEachPermutation( array, prefix, callback ) {
     if ( array.length === 0 ) {
-      callback.call( undefined, prefix );
+      callback( prefix );
     }
     else {
       for ( var i = 0; i < array.length; i++ ) {
@@ -80,7 +82,7 @@ define( function( require ) {
     apply: function( arrayOrInt ) {
       if ( isArray( arrayOrInt ) ) {
         if ( arrayOrInt.length !== this.size() ) {
-          throw new Error( "Permutation length " + this.size() + " not equal to list length " + arrayOrInt.length );
+          throw new Error( 'Permutation length ' + this.size() + ' not equal to list length ' + arrayOrInt.length );
         }
 
         // permute it as an array
@@ -121,7 +123,7 @@ define( function( require ) {
     },
 
     toString: function() {
-      return "P[" + this.indices.join( ", " ) + "]";
+      return 'P[' + this.indices.join( ', ' ) + ']';
     }
   };
 

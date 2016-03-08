@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * QR decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
@@ -28,7 +28,9 @@ define( function( require ) {
 
     this.Rdiag = new Float32Array( n );
 
-    var i, j, k;
+    var i;
+    var j;
+    var k;
 
     // Main loop.
     for ( k = 0; k < n; k++ ) {
@@ -111,7 +113,9 @@ define( function( require ) {
     },
 
     getQ: function() {
-      var i, j, k;
+      var i;
+      var j;
+      var k;
       var result = new dot.Matrix( this.m, this.n );
       for ( k = this.n - 1; k >= 0; k-- ) {
         for ( i = 0; i < this.m; i++ ) {
@@ -136,13 +140,15 @@ define( function( require ) {
 
     solve: function( matrix ) {
       if ( matrix.getRowDimension() !== this.m ) {
-        throw new Error( "Matrix row dimensions must agree." );
+        throw new Error( 'Matrix row dimensions must agree.' );
       }
       if ( !this.isFullRank() ) {
-        throw new Error( "Matrix is rank deficient." );
+        throw new Error( 'Matrix is rank deficient.' );
       }
 
-      var i, j, k;
+      var i;
+      var j;
+      var k;
 
       // Copy right hand side
       var nx = matrix.getColumnDimension();
@@ -173,7 +179,7 @@ define( function( require ) {
           }
         }
       }
-      return new dot.Matrix( X, this.n, nx ).getMatrix( 0, this.n - 1, 0, nx - 1 );
+      return new dot.Matrix( this.n, nx, X, true ).getMatrix( 0, this.n - 1, 0, nx - 1 );
     }
   };
 

@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * Eigensystem decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
@@ -30,8 +30,9 @@ define( function( require ) {
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.EigenvalueDecomposition = function EigenvalueDecomposition( matrix ) {
-    var i, j;
+  function EigenvalueDecomposition( matrix ) {
+    var i;
+    var j;
 
     var A = matrix.entries;
     this.n = matrix.getColumnDimension(); // Row and column dimension (square matrix).
@@ -79,8 +80,9 @@ define( function( require ) {
       // Reduce Hessenberg to real Schur form.
       this.hqr2();
     }
-  };
-  var EigenvalueDecomposition = dot.EigenvalueDecomposition;
+  }
+
+  dot.register( 'EigenvalueDecomposition', EigenvalueDecomposition );
 
   EigenvalueDecomposition.prototype = {
     constructor: EigenvalueDecomposition,
@@ -102,7 +104,9 @@ define( function( require ) {
 
     // Return the block diagonal eigenvalue matrix
     getD: function() {
-      var n = this.n, d = this.d, e = this.e;
+      var n = this.n;
+      var d = this.d;
+      var e = this.e;
 
       var X = new dot.Matrix( n, n );
       var D = X.entries;
@@ -123,8 +127,16 @@ define( function( require ) {
 
     // Symmetric Householder reduction to tridiagonal form.
     tred2: function() {
-      var n = this.n, V = this.V, d = this.d, e = this.e;
-      var i, j, k, f, g, h;
+      var n = this.n;
+      var V = this.V;
+      var d = this.d;
+      var e = this.e;
+      var i;
+      var j;
+      var k;
+      var f;
+      var g;
+      var h;
 
       //  This is derived from the Algol procedures tred2 by
       //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -242,8 +254,16 @@ define( function( require ) {
 
     // Symmetric tridiagonal QL algorithm.
     tql2: function() {
-      var n = this.n, V = this.V, d = this.d, e = this.e;
-      var i, j, k, l, g, p;
+      var n = this.n;
+      var V = this.V;
+      var d = this.d;
+      var e = this.e;
+      var i;
+      var j;
+      var k;
+      var l;
+      var g;
+      var p;
       var iter;
 
       //  This is derived from the Algol procedures tql2, by
@@ -364,8 +384,15 @@ define( function( require ) {
 
     // Nonsymmetric reduction to Hessenberg form.
     orthes: function() {
-      var n = this.n, V = this.V, H = this.H, ort = this.ort;
-      var i, j, m, f, g;
+      var n = this.n;
+      var V = this.V;
+      var H = this.H;
+      var ort = this.ort;
+      var i;
+      var j;
+      var m;
+      var f;
+      var g;
 
       //  This is derived from the Algol procedures orthes and ortran,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -458,7 +485,8 @@ define( function( require ) {
 
     // Complex scalar division.
     cdiv: function( xr, xi, yr, yi ) {
-      var r, d;
+      var r;
+      var d;
       if ( Math.abs( yr ) > Math.abs( yi ) ) {
         r = yi / yr;
         d = yr + r * yi;
@@ -475,8 +503,16 @@ define( function( require ) {
 
     // Nonsymmetric reduction from Hessenberg to real Schur form.
     hqr2: function() {
-      var n, V = this.V, d = this.d, e = this.e, H = this.H;
-      var i, j, k, l, m;
+      var n;
+      var V = this.V;
+      var d = this.d;
+      var e = this.e;
+      var H = this.H;
+      var i;
+      var j;
+      var k;
+      var l;
+      var m;
       var iter;
 
       //  This is derived from the Algol procedure hqr2,
@@ -492,7 +528,15 @@ define( function( require ) {
       var high = nn - 1;
       var eps = Math.pow( 2.0, -52.0 );
       var exshift = 0.0;
-      var p = 0, q = 0, r = 0, s = 0, z = 0, t, w, x, y;
+      var p = 0;
+      var q = 0;
+      var r = 0;
+      var s = 0;
+      var z = 0;
+      var t;
+      var w;
+      var x;
+      var y;
 
       // Store roots isolated by balanc and compute matrix norm
 
@@ -847,7 +891,10 @@ define( function( require ) {
           H[ n * n + n - 1 ] = 0.0;
           H[ n * n + n ] = 1.0;
           for ( i = n - 2; i >= 0; i-- ) {
-            var ra, sa, vr, vi;
+            var ra;
+            var sa;
+            var vr;
+            var vi;
             ra = 0.0;
             sa = 0.0;
             for ( j = l; j <= n; j++ ) {

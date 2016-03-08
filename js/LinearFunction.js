@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2014, University of Colorado Boulder
 
 /**
  * Function for doing a linear mapping between two domains ('a' and 'b').
@@ -28,7 +28,7 @@ define( function( require ) {
    * @param {Boolean} clamp clamp the result to the provided ranges, false by default
    * @constructor
    */
-  dot.LinearFunction = function LinearFunction( a1, a2, b1, b2, clamp ) {
+  function LinearFunction( a1, a2, b1, b2, clamp ) {
 
     clamp = _.isUndefined( clamp ) ? false : clamp;
 
@@ -58,7 +58,9 @@ define( function( require ) {
     };
 
     return evaluate; // return the evaluation function, so we use sites look like: f(a) f.inverse(b)
-  };
+  }
 
-  return dot.LinearFunction;
+  dot.register( 'LinearFunction', LinearFunction );
+
+  return LinearFunction;
 } );

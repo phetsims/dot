@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2014-2015, University of Colorado Boulder
 
 /**
  * A sphere in 3 dimensions (NOT a 3-sphere).
@@ -16,15 +16,16 @@ define( function( require ) {
    * @param {Vector3} center - The center of the sphere
    * @param {number} radius - The radius of the sphere
    */
-  dot.Sphere3 = function Sphere3( center, radius ) {
+  function Sphere3( center, radius ) {
     this.center = center;
     this.radius = radius;
 
     assert && assert( radius >= 0 );
 
     phetAllocation && phetAllocation( 'Sphere3' );
-  };
-  var Sphere3 = dot.Sphere3;
+  }
+
+  dot.register( 'Sphere3', Sphere3 );
 
   Sphere3.prototype = {
     constructor: Sphere3,
@@ -35,8 +36,8 @@ define( function( require ) {
      * @returns An intersection result { distance, hitPoint, normal, fromOutside }, or null if the sphere is behind the ray
      */
     intersect: function( ray, epsilon ) {
-      var raydir = ray.dir;
-      var pos = ray.pos;
+      var raydir = ray.direction;
+      var pos = ray.position;
       var centerToRay = pos.minus( this.center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
@@ -97,8 +98,8 @@ define( function( require ) {
      *          the "proper" intersection first, if applicable (closest in front of the ray).
      */
     intersections: function( ray, epsilon ) {
-      var raydir = ray.dir;
-      var pos = ray.pos;
+      var raydir = ray.direction;
+      var pos = ray.position;
       var centerToRay = pos.minus( this.center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)

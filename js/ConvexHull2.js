@@ -1,7 +1,34 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * 2D convex hulls
+ * Construction of 2D convex hulls from a list of points.
+ *
+ * For example:
+ * #begin canvasExample grahamScan 256x128
+ * #on
+ * var points = _.range( 50 ).map( function() {
+ *   return new dot.Vector2( 5 + ( 256 - 10 ) * Math.random(), 5 + ( 128 - 10 ) * Math.random() );
+ * } );
+ * var hullPoints = dot.ConvexHull2.grahamScan( points, false );
+ * #off
+ * context.beginPath();
+ * hullPoints.forEach( function( point ) {
+ *   context.lineTo( point.x, point.y );
+ * } );
+ * context.closePath();
+ * context.fillStyle = '#eee';
+ * context.fill();
+ * context.strokeStyle = '#f00';
+ * context.stroke();
+ *
+ * context.beginPath();
+ * points.forEach( function( point ) {
+ *   context.arc( point.x, point.y, 2, 0, Math.PI * 2, false );
+ *   context.closePath();
+ * } );
+ * context.fillStyle = '#00f';
+ * context.fill();
+ * #end canvasExample
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -16,10 +43,19 @@ define( function( require ) {
     return p2.minus( p1 ).crossScalar( p3.minus( p1 ) );
   }
 
-  dot.ConvexHull2 = {
-    // test: all collinear, multiple ways of having same angle, etc.
+  var ConvexHull2 = {
+    // TODO testing: all collinear, multiple ways of having same angle, etc.
 
-    // points is an array of Vector2 instances. see http://en.wikipedia.org/wiki/Graham_scan
+    /**
+     * Given multiple points, this performs a Graham Scan (http://en.wikipedia.org/wiki/Graham_scan) to identify an
+     * ordered list of points which define the minimal polygon that contains all of the points.
+     * @public
+     *
+     * @param {Array.<Vector2>} points
+     * @param {boolean} includeCollinear - If a point is along an edge of the convex hull (not at one of its vertices),
+     *                                     should it be included?
+     * @returns {Array.<Vector2>}
+     */
     grahamScan: function( points, includeCollinear ) {
       if ( points.length <= 2 ) {
         return points;
@@ -76,5 +112,7 @@ define( function( require ) {
     }
   };
 
-  return dot.ConvexHull2;
+  dot.register( 'ConvexHull2', ConvexHull2 );
+
+  return ConvexHull2;
 } );

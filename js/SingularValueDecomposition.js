@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * SVD decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
@@ -15,7 +15,7 @@ define( function( require ) {
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.SingularValueDecomposition = function SingularValueDecomposition( matrix ) {
+  function SingularValueDecomposition( matrix ) {
     this.matrix = matrix;
 
     var Arg = matrix;
@@ -50,8 +50,14 @@ define( function( require ) {
     var wantu = true;
     var wantv = true;
 
-    var i, j, k, t, f;
-    var cs, sn;
+    var i;
+    var j;
+    var k;
+    var t;
+    var f;
+
+    var cs;
+    var sn;
 
     var hypot = dot.Matrix.hypot;
 
@@ -359,9 +365,7 @@ define( function( require ) {
 
           // Calculate the shift.
 
-          var scale = max( max( max( max(
-              abs( s[ p - 1 ] ), abs( s[ p - 2 ] ) ), abs( e[ p - 2 ] ) ),
-            abs( s[ k ] ) ), abs( e[ k ] ) );
+          var scale = max( max( max( max( abs( s[ p - 1 ] ), abs( s[ p - 2 ] ) ), abs( e[ p - 2 ] ) ), abs( s[ k ] ) ), abs( e[ k ] ) );
           var sp = s[ p - 1 ] / scale;
           var spm1 = s[ p - 2 ] / scale;
           var epm1 = e[ p - 2 ] / scale;
@@ -468,8 +472,9 @@ define( function( require ) {
           break;
       }
     }
-  };
-  var SingularValueDecomposition = dot.SingularValueDecomposition;
+  }
+
+  dot.register( 'SingularValueDecomposition', SingularValueDecomposition );
 
   SingularValueDecomposition.prototype = {
     constructor: SingularValueDecomposition,

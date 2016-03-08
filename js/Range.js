@@ -1,6 +1,4 @@
-/*
- * Copyright 2002-2014, University of Colorado Boulder
- */
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * A numeric range.
@@ -12,7 +10,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  dot.Range = function Range( min, max, defaultValue ) {
+  function Range( min, max, defaultValue ) {
 
     this.min = min;
     this.max = max;
@@ -20,8 +18,9 @@ define( function( require ) {
 
     assert && assert( min <= max );
     assert && assert( ( this.defaultValue >= min ) && ( this.defaultValue <= max ) );
-  };
-  var Range = dot.Range;
+  }
+
+  dot.register( 'Range', Range );
 
   Range.prototype = {
 
@@ -65,7 +64,20 @@ define( function( require ) {
     },
 
     toString: function() {
-      return "[Range (min:" + this.min + " max:" + this.max + " defaultValue:" + this.defaultValue + ")]";
+      return '[Range (min:' + this.min + ' max:' + this.max + ' defaultValue:' + this.defaultValue + ')]';
+    },
+
+    /**
+     * Constrains a value to the range.
+     * @param {number} value
+     * @returns {number}
+     */
+    constrainValue: function( value ) {
+      return Math.min( Math.max( value, this.min ), this.max );
+    },
+
+    equals: function( other ) {
+      return this.min === other.min && this.max === other.max && this.defaultValue === this.defaultValue;
     }
   };
 

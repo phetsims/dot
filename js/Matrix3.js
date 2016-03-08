@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * 3-dimensional Matrix
@@ -31,8 +31,8 @@ define( function( require ) {
                               return new FastArray( identityFastArray );
                             };
 
-  //Create an identity matrix
-  dot.Matrix3 = function Matrix3( argumentsShouldNotExist ) {
+  // Create an identity matrix
+  function Matrix3( argumentsShouldNotExist ) {
 
     //Make sure no clients are expecting to create a matrix with non-identity values
     assert && assert( !argumentsShouldNotExist, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
@@ -40,15 +40,11 @@ define( function( require ) {
     // entries stored in column-major format
     this.entries = createIdentityArray();
 
-//    this.rowMajor( v00 === undefined ? 1 : v00, v01 || 0, v02 || 0,
-//        v10 || 0, v11 === undefined ? 1 : v11, v12 || 0,
-//        v20 || 0, v21 || 0, v22 === undefined ? 1 : v22,
-//      type );
-
     phetAllocation && phetAllocation( 'Matrix3' );
     this.type = Types.IDENTITY;
-  };
-  var Matrix3 = dot.Matrix3;
+  }
+
+  dot.register( 'Matrix3', Matrix3 );
 
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
@@ -116,6 +112,11 @@ define( function( require ) {
 
     isIdentity: function() {
       return this.type === Types.IDENTITY || this.equals( Matrix3.IDENTITY );
+    },
+
+    // returning false means "inconclusive, may be identity or not"
+    isFastIdentity: function() {
+      return this.type === Types.IDENTITY;
     },
 
     isAffine: function() {
@@ -214,8 +215,9 @@ define( function( require ) {
     getCSSTransform: function() {
       // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
 
-      // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
+      // We need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
       // 20 is the largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
+      // See https://github.com/phetsims/dot/issues/36
 
       // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
       // NOTE: the toFixed calls are inlined for performance reasons
@@ -228,7 +230,8 @@ define( function( require ) {
 
       // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
       function svgNumber( number ) {
-        // largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
+        // Largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
+        // See https://github.com/phetsims/dot/issues/36
         return number.toFixed( 20 );
       }
 
@@ -256,7 +259,7 @@ define( function( require ) {
         '-webkit-backface-visibility': 'hidden',
 
         '-webkit-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
-        '-moz-transform':    transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
+        '-moz-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
         '-ms-transform': transformCSS,
         '-o-transform': transformCSS,
         'transform': transformCSS,
@@ -357,7 +360,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         case Types.OTHER:
           det = this.getDeterminant();
           if ( det !== 0 ) {
@@ -377,7 +380,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
@@ -493,6 +496,51 @@ define( function( require ) {
         matrix.type );
     },
 
+    setArray: function( array ) {
+      return this.rowMajor(
+        array[ 0 ], array[ 3 ], array[ 6 ],
+        array[ 1 ], array[ 4 ], array[ 7 ],
+        array[ 2 ], array[ 5 ], array[ 8 ] );
+    },
+
+    // component setters
+    set00: function( value ) {
+      this.entries[ 0 ] = value;
+      return this;
+    },
+    set01: function( value ) {
+      this.entries[ 3 ] = value;
+      return this;
+    },
+    set02: function( value ) {
+      this.entries[ 6 ] = value;
+      return this;
+    },
+    set10: function( value ) {
+      this.entries[ 1 ] = value;
+      return this;
+    },
+    set11: function( value ) {
+      this.entries[ 4 ] = value;
+      return this;
+    },
+    set12: function( value ) {
+      this.entries[ 7 ] = value;
+      return this;
+    },
+    set20: function( value ) {
+      this.entries[ 2 ] = value;
+      return this;
+    },
+    set21: function( value ) {
+      this.entries[ 5 ] = value;
+      return this;
+    },
+    set22: function( value ) {
+      this.entries[ 8 ] = value;
+      return this;
+    },
+
     makeImmutable: function() {
       this.rowMajor = function() {
         throw new Error( 'Cannot modify immutable matrix' );
@@ -569,7 +617,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         case Types.OTHER:
           det = this.getDeterminant();
           if ( det !== 0 ) {
@@ -589,7 +637,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
@@ -651,6 +699,22 @@ define( function( require ) {
         this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
         this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
         this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
+    },
+
+    prependTranslation: function( x, y ) {
+      this.set02( this.m02() + x );
+      this.set12( this.m12() + y );
+
+      if ( this.type === Types.IDENTITY || this.type === Types.TRANSLATION_2D ) {
+        this.type = Types.TRANSLATION_2D;
+      }
+      else if ( this.type === Types.OTHER ) {
+        this.type = Types.OTHER;
+      }
+      else {
+        this.type = Types.AFFINE;
+      }
+      return this; // for chaining
     },
 
     setToIdentity: function() {
@@ -747,7 +811,9 @@ define( function( require ) {
 
       var epsilon = 0.0001;
 
-      var e, h, f;
+      var e;
+      var h;
+      var f;
 
       var v = start.cross( end );
       e = start.dot( end );
@@ -755,7 +821,9 @@ define( function( require ) {
 
       // if "from" and "to" vectors are nearly parallel
       if ( f > 1.0 - epsilon ) {
-        var c1, c2, c3;
+        var c1;
+        var c2;
+        var c3;
 
         var x = new dot.Vector3(
           ( start.x > 0.0 ) ? start.x : -start.x,
@@ -801,7 +869,11 @@ define( function( require ) {
       }
       else {
         // the most common case, unless "start"="end", or "start"=-"end"
-        var hvx, hvz, hvxy, hvxz, hvyz;
+        var hvx;
+        var hvz;
+        var hvxy;
+        var hvxz;
+        var hvyz;
         h = 1.0 / ( 1.0 + e );
         hvx = h * v.x;
         hvz = h * v.z;
@@ -815,6 +887,20 @@ define( function( require ) {
           hvxz - v.y, hvyz + v.x, e + hvz * v.z
         );
       }
+    },
+
+    setTo32Bit: function() {
+      if ( window.Float32Array ) {
+        this.entries = new window.Float32Array( this.entries );
+      }
+      return this;
+    },
+
+    setTo64Bit: function() {
+      if ( window.Float64Array ) {
+        this.entries = new window.Float64Array( this.entries );
+      }
+      return this;
     },
 
     /*---------------------------------------------------------------------------*
@@ -892,13 +978,15 @@ define( function( require ) {
   Matrix3.IDENTITY = Matrix3.identity();
   Matrix3.IDENTITY.makeImmutable();
 
-  Matrix3.X_REFLECTION = Matrix3.createFromPool( -1, 0, 0,
+  Matrix3.X_REFLECTION = Matrix3.createFromPool(
+    -1, 0, 0,
     0, 1, 0,
     0, 0, 1,
     Types.AFFINE );
   Matrix3.X_REFLECTION.makeImmutable();
 
-  Matrix3.Y_REFLECTION = Matrix3.createFromPool( 1, 0, 0,
+  Matrix3.Y_REFLECTION = Matrix3.createFromPool(
+    1, 0, 0,
     0, -1, 0,
     0, 0, 1,
     Types.AFFINE );
@@ -920,7 +1008,8 @@ define( function( require ) {
     else {
       type = Types.AFFINE;
     }
-    return Matrix3.createFromPool( m.m00(), m.m01(), m.m02() + x,
+    return Matrix3.createFromPool(
+      m.m00(), m.m01(), m.m02() + x,
       m.m10(), m.m11(), m.m12() + y,
       m.m20(), m.m21(), m.m22(),
       type );

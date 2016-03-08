@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * Quaternion, see http://en.wikipedia.org/wiki/Quaternion
@@ -18,12 +18,13 @@ define( function( require ) {
   require( 'DOT/Matrix3' );
   require( 'DOT/Util' );
 
-  dot.Quaternion = function Quaternion( x, y, z, w ) {
+  function Quaternion( x, y, z, w ) {
     this.setXYZW( x, y, z, w );
 
     phetAllocation && phetAllocation( 'Quaternion' );
-  };
-  var Quaternion = dot.Quaternion;
+  }
+
+  dot.register( 'Quaternion', Quaternion );
 
   Quaternion.prototype = {
     constructor: Quaternion,
@@ -31,9 +32,9 @@ define( function( require ) {
     isQuaternion: true,
 
     setXYZW: function( x, y, z, w ) {
-      this.x = x || 0;
-      this.y = y || 0;
-      this.z = z || 0;
+      this.x = x !== undefined ? x : 0;
+      this.y = y !== undefined ? y : 0;
+      this.z = z !== undefined ? z : 0;
       this.w = w !== undefined ? w : 1;
     },
 

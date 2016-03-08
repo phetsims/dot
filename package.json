@@ -2,7 +2,6 @@
   "name": "dot",
   "version": "0.0.0",
   "license": "MIT",
-  "phetLibs": "sherpa chipper axon assert phet-core dot",
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/dot.git"
@@ -10,8 +9,10 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-requirejs": "~0.4.0",
-    "grunt-contrib-jshint": "~0.6.4",
+    "grunt-eslint": "~17.2.0",
     "uglify-js": "~2.4.0",
-    "requirejs": "~2.1.8"
+    "requirejs": "~2.1.8",
+    "esprima": "~2.7.0",
+    "js-beautify": "~1.5.10"
   }
 }

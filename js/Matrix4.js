@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * 4-dimensional Matrix
@@ -19,19 +19,20 @@ define( function( require ) {
 
   var Float32Array = window.Float32Array || Array;
 
-  dot.Matrix4 = function Matrix4( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
+  function Matrix4( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
 
     // entries stored in column-major format
     this.entries = new Float32Array( 16 );
 
     this.rowMajor(
-      v00 === undefined ? 1 : v00, v01 || 0, v02 || 0, v03 || 0,
-      v10 || 0, v11 === undefined ? 1 : v11, v12 || 0, v13 || 0,
-      v20 || 0, v21 || 0, v22 === undefined ? 1 : v22, v23 || 0,
-      v30 || 0, v31 || 0, v32 || 0, v33 === undefined ? 1 : v33,
+      v00 !== undefined ? v00 : 1, v01 !== undefined ? v01 : 0, v02 !== undefined ? v02 : 0, v03 !== undefined ? v03 : 0,
+      v10 !== undefined ? v10 : 0, v11 !== undefined ? v11 : 1, v12 !== undefined ? v12 : 0, v13 !== undefined ? v13 : 0,
+      v20 !== undefined ? v20 : 0, v21 !== undefined ? v21 : 0, v22 !== undefined ? v22 : 1, v23 !== undefined ? v23 : 0,
+      v30 !== undefined ? v30 : 0, v31 !== undefined ? v31 : 0, v32 !== undefined ? v32 : 0, v33 !== undefined ? v33 : 1,
       type );
-  };
-  var Matrix4 = dot.Matrix4;
+  }
+
+  dot.register( 'Matrix4', Matrix4 );
 
   Matrix4.Types = {
     OTHER: 0, // default
@@ -248,8 +249,9 @@ define( function( require ) {
     getCSSTransform: function() {
       // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
 
-      // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
+      // We need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
       // 20 is the largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
+      // See https://github.com/phetsims/dot/issues/36
 
       // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
       // NOTE: the toFixed calls are inlined for performance reasons
@@ -391,7 +393,7 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break; // because JSHint totally can't tell that this can't be reached
+          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
@@ -523,15 +525,15 @@ define( function( require ) {
     get determinant() { return this.getDeterminant(); },
 
     toString: function() {
-      return this.m00() + " " + this.m01() + " " + this.m02() + " " + this.m03() + "\n" +
-             this.m10() + " " + this.m11() + " " + this.m12() + " " + this.m13() + "\n" +
-             this.m20() + " " + this.m21() + " " + this.m22() + " " + this.m23() + "\n" +
-             this.m30() + " " + this.m31() + " " + this.m32() + " " + this.m33();
+      return this.m00() + ' ' + this.m01() + ' ' + this.m02() + ' ' + this.m03() + '\n' +
+             this.m10() + ' ' + this.m11() + ' ' + this.m12() + ' ' + this.m13() + '\n' +
+             this.m20() + ' ' + this.m21() + ' ' + this.m22() + ' ' + this.m23() + '\n' +
+             this.m30() + ' ' + this.m31() + ' ' + this.m32() + ' ' + this.m33();
     },
 
     makeImmutable: function() {
       this.rowMajor = function() {
-        throw new Error( "Cannot modify immutable matrix" );
+        throw new Error( 'Cannot modify immutable matrix' );
       };
     }
   };

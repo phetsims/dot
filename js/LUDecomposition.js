@@ -1,4 +1,4 @@
-// Copyright 2002-2014, University of Colorado Boulder
+// Copyright 2013-2015, University of Colorado Boulder
 
 /**
  * LU decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
@@ -15,8 +15,10 @@ define( function( require ) {
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
-  dot.LUDecomposition = function LUDecomposition( matrix ) {
-    var i, j, k;
+  function LUDecomposition( matrix ) {
+    var i;
+    var j;
+    var k;
 
     this.matrix = matrix;
 
@@ -88,8 +90,9 @@ define( function( require ) {
         }
       }
     }
-  };
-  var LUDecomposition = dot.LUDecomposition;
+  }
+
+  dot.register( 'LUDecomposition', LUDecomposition );
 
   LUDecomposition.prototype = {
     constructor: LUDecomposition,
@@ -155,7 +158,7 @@ define( function( require ) {
 
     det: function() {
       if ( this.m !== this.n ) {
-        throw new Error( "Matrix must be square." );
+        throw new Error( 'Matrix must be square.' );
       }
       var d = this.pivsign;
       for ( var j = 0; j < this.n; j++ ) {
@@ -165,12 +168,14 @@ define( function( require ) {
     },
 
     solve: function( matrix ) {
-      var i, j, k;
+      var i;
+      var j;
+      var k;
       if ( matrix.getRowDimension() !== this.m ) {
-        throw new Error( "Matrix row dimensions must agree." );
+        throw new Error( 'Matrix row dimensions must agree.' );
       }
       if ( !this.isNonsingular() ) {
-        throw new Error( "Matrix is singular." );
+        throw new Error( 'Matrix is singular.' );
       }
 
       // Copy right hand side with pivoting
