@@ -9,7 +9,6 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-
 (function() {
   'use strict';
 
