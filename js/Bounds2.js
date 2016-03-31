@@ -809,6 +809,24 @@ define( function( require ) {
     erodedXY: function( x, y ) { return this.dilatedXY( -x, -y ); },
 
     /**
+     * A bounding box that is expanded by a specific amount on all sides (or if some offsets are negative, will contract
+     * those sides).
+     * @public
+     *
+     * This is the immutable form of the function offset(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} left - Amount to expand to the left (subtracts from minX)
+     * @param {number} top - Amount to expand to the top (subtracts from minY)
+     * @param {number} right - Amount to expand to the right (adds to maxX)
+     * @param {number} bottom - Amount to expand to the bottom (adds to maxY)
+     * @returns {Bounds2}
+     */
+    withOffsets: function( left, top, right, bottom ) {
+      return new Bounds2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
+    },
+
+    /**
      * Our bounds, translated horizontally by x, returned as a copy.
      * @public
      *
@@ -1209,6 +1227,23 @@ define( function( require ) {
      * @returns {Bounds2}
      */
     erodeXY: function( x, y ) { return this.dilateXY( -x, -y ); },
+
+    /**
+     * Expands this bounds independently for each side (or if some offsets are negative, will contract those sides).
+     * @public
+     *
+     * This is the mutable form of the function withOffsets(). This will mutate (change) this bounds, in addition to
+     * returning this bounds itself.
+     *
+     * @param {number} left - Amount to expand to the left (subtracts from minX)
+     * @param {number} top - Amount to expand to the top (subtracts from minY)
+     * @param {number} right - Amount to expand to the right (adds to maxX)
+     * @param {number} bottom - Amount to expand to the bottom (adds to maxY)
+     * @returns {Bounds2}
+     */
+    offset: function( left, top, right, bottom ) {
+      return new Bounds2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
+    },
 
     /**
      * Translates our bounds horizontally by x.
