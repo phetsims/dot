@@ -10,6 +10,12 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
+  /**
+   * @param {number} min
+   * @param {number} max
+   * @param {number} [defaultValue] - if omitted, defaults to min
+   * @constructor
+   */
   function Range( min, max, defaultValue ) {
 
     this.min = min;
