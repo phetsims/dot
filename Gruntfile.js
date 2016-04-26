@@ -2,9 +2,12 @@
 
 var fs = require( 'fs' );
 var esprima = require( 'esprima' );
-var beautify_html = require( 'js-beautify' ).html;
+var jsBeautify = require( 'js-beautify' ); // eslint-disable-line require-statement-match
 var extractDocumentation = require( '../chipper/js/common/extractDocumentation' );
 var documentationToHTML = require( '../chipper/js/common/documentationToHTML' );
+
+// constants
+var beautify_html = jsBeautify.html;
 
 /*global module:false*/
 module.exports = function( grunt ) {
