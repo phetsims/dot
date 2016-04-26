@@ -26,7 +26,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
@@ -37,11 +37,11 @@ define( function( require ) {
     var A = matrix.entries;
     this.n = matrix.getColumnDimension(); // Row and column dimension (square matrix).
     var n = this.n;
-    this.V = new Float32Array( n * n ); // Array for internal storage of eigenvectors.
+    this.V = new ArrayType( n * n ); // Array for internal storage of eigenvectors.
 
     // Arrays for internal storage of eigenvalues.
-    this.d = new Float32Array( n );
-    this.e = new Float32Array( n );
+    this.d = new ArrayType( n );
+    this.e = new ArrayType( n );
 
     this.issymmetric = true;
     for ( j = 0; (j < n) && this.issymmetric; j++ ) {
@@ -65,8 +65,8 @@ define( function( require ) {
 
     }
     else {
-      this.H = new Float32Array( n * n ); // Array for internal storage of nonsymmetric Hessenberg form.
-      this.ort = new Float32Array( n ); // // Working storage for nonsymmetric algorithm.
+      this.H = new ArrayType( n * n ); // Array for internal storage of nonsymmetric Hessenberg form.
+      this.ort = new ArrayType( n ); // // Working storage for nonsymmetric algorithm.
 
       for ( j = 0; j < n; j++ ) {
         for ( i = 0; i < n; i++ ) {

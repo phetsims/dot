@@ -11,7 +11,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
@@ -39,14 +39,14 @@ define( function( require ) {
      throw new IllegalArgumentException("Jama SVD only works for m >= n"); }
      */
     var nu = min( m, n );
-    this.s = new Float32Array( min( m + 1, n ) );
+    this.s = new ArrayType( min( m + 1, n ) );
     var s = this.s;
-    this.U = new Float32Array( m * nu );
+    this.U = new ArrayType( m * nu );
     var U = this.U;
-    this.V = new Float32Array( n * n );
+    this.V = new ArrayType( n * n );
     var V = this.V;
-    var e = new Float32Array( n );
-    var work = new Float32Array( m );
+    var e = new ArrayType( n );
+    var work = new ArrayType( m );
     var wantu = true;
     var wantv = true;
 
@@ -480,7 +480,7 @@ define( function( require ) {
     constructor: SingularValueDecomposition,
 
     getU: function() {
-      return new dot.Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is Float32Array
+      return new dot.Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is ArrayType
     },
 
     getV: function() {

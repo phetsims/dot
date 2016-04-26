@@ -11,7 +11,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   var isArray = require( 'PHET_CORE/isArray' );
 
@@ -40,7 +40,7 @@ define( function( require ) {
       }
 
       // entries stored in row-major format
-      this.entries = [];
+      this.entries = new ArrayType(size);
 
       if ( isArray( filler ) ) {
         assert && assert( filler.length === size );
@@ -92,7 +92,7 @@ define( function( require ) {
     },
 
     getArrayCopy: function() {
-      return [].concat( this.entries );
+      return new ArrayType( this.entries );
     },
 
     getRowDimension: function() {
@@ -327,7 +327,7 @@ define( function( require ) {
           throw new Error( 'Matrix inner dimensions must agree.' );
         }
         result = new Matrix( this.m, matrix.n );
-        var matrixcolj = new Float32Array( this.n );
+        var matrixcolj = new ArrayType( this.n );
         for ( j = 0; j < matrix.n; j++ ) {
           for ( k = 0; k < this.n; k++ ) {
             matrixcolj[ k ] = matrix.entries[ matrix.index( k, j ) ];
@@ -525,7 +525,7 @@ define( function( require ) {
   Matrix.fromVectors2 = function( vectors ) {
     var dimension = 2;
     var n = vectors.length;
-    var data = new Float32Array( dimension * n );
+    var data = new ArrayType( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
       var vector = vectors[ i ];
@@ -539,7 +539,7 @@ define( function( require ) {
   Matrix.fromVectors3 = function( vectors ) {
     var dimension = 3;
     var n = vectors.length;
-    var data = new Float32Array( dimension * n );
+    var data = new ArrayType( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
       var vector = vectors[ i ];
@@ -554,7 +554,7 @@ define( function( require ) {
   Matrix.fromVectors4 = function( vectors ) {
     var dimension = 4;
     var n = vectors.length;
-    var data = new Float32Array( dimension * n );
+    var data = new ArrayType( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
       var vector = vectors[ i ];
