@@ -26,7 +26,7 @@ define( function( require ) {
     this.n = matrix.getColumnDimension();
     var n = this.n;
 
-    this.Rdiag = new Float32Array( n );
+    this.Rdiag = [];
 
     var i;
     var j;
@@ -38,6 +38,7 @@ define( function( require ) {
       var nrm = 0;
       for ( i = k; i < m; i++ ) {
         nrm = dot.Matrix.hypot( nrm, QR[ this.matrix.index( i, k ) ] );
+        console.log( 'nrm[' + i + ']=', nrm );
       }
 
       if ( nrm !== 0.0 ) {
@@ -64,6 +65,10 @@ define( function( require ) {
       }
       this.Rdiag[ k ] = -nrm;
     }
+
+    console.log( 'rdiag' );
+    console.log( this.Rdiag );
+    // this.Rdiag = [-1.4142135623730951, 1.4142135623730951, -7068.729282415327, -0.7071067776486961];
   };
   var QRDecomposition = dot.QRDecomposition;
 

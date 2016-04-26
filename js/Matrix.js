@@ -40,7 +40,7 @@ define( function( require ) {
       }
 
       // entries stored in row-major format
-      this.entries = new Float32Array( size );
+      this.entries = [];
 
       if ( isArray( filler ) ) {
         assert && assert( filler.length === size );
@@ -92,7 +92,7 @@ define( function( require ) {
     },
 
     getArrayCopy: function() {
-      return new Float32Array( this.entries );
+      return [].concat( this.entries );
     },
 
     getRowDimension: function() {
