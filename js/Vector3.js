@@ -1,11 +1,10 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Basic 3-dimensional vector, represented as (x,y).
+ * Basic 3-dimensional vector, represented as (x,y,z).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-
 define( function( require ) {
   'use strict';
 
