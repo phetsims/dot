@@ -14,6 +14,7 @@ define( function( require ) {
   // modules
   var Util = require( 'DOT/Util' );
   var dot = require( 'DOT/dot' );
+  var Tandem = require( 'TANDEM/Tandem' );
 
   function Random( options ) {
     options = _.extend( {
@@ -31,6 +32,8 @@ define( function( require ) {
       staticSeed: false
 
     }, options );
+
+    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
 
     if ( options.seed !== null && options.staticSeed ) {
       assert && assert( false, 'cannot specify seed and useChipperSeed, use one or the other' );
