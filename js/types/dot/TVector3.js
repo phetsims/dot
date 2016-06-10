@@ -13,7 +13,7 @@ define( function( require ) {
 
   // constants
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TObject = require( 'PHET_IO/api/TObject' );
+  var TObject = require( 'PHET_IO/types/TObject' );
 
   var TVector3 = phetioInherit( TObject, 'TVector3', function( vector3, phetioID ) {
     TObject.call( this, vector3, phetioID );
