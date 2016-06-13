@@ -14,7 +14,6 @@ define( function( require ) {
   // modules
   var Util = require( 'DOT/Util' );
   var dot = require( 'DOT/dot' );
-  var Tandem = require( 'TANDEM/Tandem' );
 
   function Random( options ) {
     options = _.extend( {
@@ -33,7 +32,10 @@ define( function( require ) {
 
     }, options );
 
-    Tandem.validateOptions( options ); // The tandem is required when brand==='phet-io'
+    // The tandem is required when brand==='phet-io'
+    // Like Tandem.validateOptions, but without depending on tandem
+    assert && phet && phet.chipper && phet.chipper.brand && phet.chipper.brand === 'phet-io' && assert( options.tandem,
+      'When running as PhET-iO, a tandem must be specified for each user interface component' );
 
     if ( options.seed !== null && options.staticSeed ) {
       assert && assert( false, 'cannot specify seed and useChipperSeed, use one or the other' );
