@@ -103,10 +103,11 @@ define( function( require ) {
     },
 
     /**
-     * The squared Euclidean distance between this vector (treated as a point) and another point (x,y).
+     * The squared Euclidean distance between this vector (treated as a point) and another point with coordinates (x,y).
      * @public
      *
-     * @param {Vector2} point
+     * @param {number} x
+     * @param {number} y
      * @returns {number}
      */
     distanceSquaredXY: function( x, y ) {

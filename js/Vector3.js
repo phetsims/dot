@@ -115,7 +115,9 @@ define( function( require ) {
      * The squared Euclidean distance between this vector (treated as a point) and another point (x,y,z).
      * @public
      *
-     * @param {Vector3} point
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
      * @returns {number}
      */
     distanceSquaredXYZ: function( x, y, z ) {

@@ -49,7 +49,7 @@ define( function( require ) {
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
     // NOTE: if two matrices with identical types are multiplied, the result should have the same type. if not, changed timesMatrix()!
-    // NOTE: on adding a type, exaustively check all type usage
+    // NOTE: on adding a type, exhaustively check all type usage
     OTHER: 0, // default
     IDENTITY: 1,
     TRANSLATION_2D: 2,

@@ -27,12 +27,12 @@ define( function( require ) {
    * @constructor
    * @public
    *
-   * @param {number} minX - The intial minimum X coordinate of the bounds.
-   * @param {number} minY - The intial minimum Y coordinate of the bounds.
-   * @param {number} minZ - The intial minimum Z coordinate of the bounds.
-   * @param {number} maxX - The intial maximum X coordinate of the bounds.
-   * @param {number} maxY - The intial maximum Y coordinate of the bounds.
-   * @param {number} maxZ - The intial maximum Z coordinate of the bounds.
+   * @param {number} minX - The initial minimum X coordinate of the bounds.
+   * @param {number} minY - The initial minimum Y coordinate of the bounds.
+   * @param {number} minZ - The initial minimum Z coordinate of the bounds.
+   * @param {number} maxX - The initial maximum X coordinate of the bounds.
+   * @param {number} maxY - The initial maximum Y coordinate of the bounds.
+   * @param {number} maxZ - The initial maximum Z coordinate of the bounds.
    */
   function Bounds3( minX, minY, minZ, maxX, maxY, maxZ ) {
     assert && assert( maxY !== undefined, 'Bounds3 requires 4 parameters' );
@@ -753,7 +753,7 @@ define( function( require ) {
      * @param {number} amount
      * @returns {Bounds3}
      */
-    eroded: function( d ) { return this.dilated( -d ); },
+    eroded: function( amount ) { return this.dilated( -amount ); },
 
     /**
      * A bounding box that is contracted horizontally (on the left and right) by the specified amount.

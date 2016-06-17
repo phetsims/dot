@@ -129,7 +129,8 @@ define( function( require ) {
      * Optimized prepended translation such that: this.matrix = translation( x, y ) * this.matrix.
      * @public
      *
-     * @param {Matrix3} matrix
+     * @param {number} x -  x-coordinate
+     * @param {number} y -  y-coordinate
      */
     prependTranslation: function( x, y ) {
       // See scenery#119 for more details on the need.
@@ -563,8 +564,8 @@ define( function( require ) {
      * @param {Bounds2} bounds
      * @returns {Bounds2}
      */
-    inverseBounds2: function( bounds2 ) {
-      return bounds2.transformed( this.getInverse() );
+    inverseBounds2: function( bounds ) {
+      return bounds.transformed( this.getInverse() );
     },
 
     /**

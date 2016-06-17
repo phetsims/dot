@@ -3,7 +3,7 @@
 /**
  * Quaternion, see http://en.wikipedia.org/wiki/Quaternion
  *
- * TODO: convert from JME-style parameterization into classical mathematical description?
+ * TODO: convert from JME-style parametrization into classical mathematical description?
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
