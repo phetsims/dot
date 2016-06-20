@@ -152,24 +152,39 @@ define( function( require ) {
     },
 
     /**
-     * Intersection point between the lines defined by the line segments p1-2 and p3-p4. Currently does not handle
-     * parallel lines.
+     * Intersection point between the lines defined by the line segments p1-2 and p3-p4. If the 
+     * lines are not properly defined, null is returned. If there are no intersections or infinitely many, 
+     * e.g. parallel lines, null is returned. 
      * @public
      *
      * @param {Vector2} p1
      * @param {Vector2} p2
      * @param {Vector2} p3
      * @param {Vector2} p4
-     * @returns {Vector2}
+     * @returns {Vector2|null}
      */
     lineLineIntersection: function( p1, p2, p3, p4 ) {
-      // Taken from an answer in http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
+      var epsilon = 1e-5;
+
+      // If the endpoints are the same, they don't properly define a line
+      if ( p1.equals( p2 ) || p3.equals( p4 ) ) {
+        return null;
+      }
+
+      // Taken from an answer in 
+      // http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
       var x12 = p1.x - p2.x;
       var x34 = p3.x - p4.x;
       var y12 = p1.y - p2.y;
       var y34 = p3.y - p4.y;
 
       var denom = x12 * y34 - y12 * x34;
+
+      // If the denominator is 0, lines are parallel or coincident
+      if ( denom < epsilon ) {
+        console.log ( 'no intersection' );
+        return null;
+      }
 
       var a = p1.x * p2.y - p1.y * p2.x;
       var b = p3.x * p4.y - p3.y * p4.x;
