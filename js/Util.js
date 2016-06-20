@@ -181,7 +181,7 @@ define( function( require ) {
       var denom = x12 * y34 - y12 * x34;
 
       // If the denominator is 0, lines are parallel or coincident
-      if ( denom < epsilon ) {
+      if ( Math.abs( denom ) < epsilon ) {
         console.log ( 'no intersection' );
         return null;
       }
