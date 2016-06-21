@@ -110,4 +110,22 @@
     approximateEquals( g.inverse( 4 ), 6 );
   } );
 
+  test( 'lineLineIntersection', function() {
+    var f = dot.lineLineIntersection;
+
+    var p1 = dot.Vector2.ZERO;
+    var p2 = new dot.Vector2( 1, 1 );
+    var p3 = new dot.Vector2( -10, 10 );
+    var p4 = new dot.Vector2( -12, 8 );
+
+    equal( f( p1, p2, p3, p4 ), null );
+    equal( f( p1, p4, p4, p1 ), null );
+    equal( f( p1, p1, p3, p4 ), null );
+    equal( f( p1, p2, p2, p3 ).x, 1 );
+    equal( f( p1, p2, p2, p3 ).y, 1 );
+
+
+
+  } );
+
 })();

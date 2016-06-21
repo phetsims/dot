@@ -182,7 +182,6 @@ define( function( require ) {
 
       // If the denominator is 0, lines are parallel or coincident
       if ( Math.abs( denom ) < epsilon ) {
-        console.log ( 'no intersection' );
         return null;
       }
 
