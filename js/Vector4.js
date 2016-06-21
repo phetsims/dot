@@ -244,13 +244,9 @@ define( function( require ) {
      * @returns {Vector4}
      */
     normalized: function() {
-      var mag = this.magnitude();
-      if ( mag === 0 ) {
-        throw new Error( 'Cannot normalize a zero-magnitude vector' );
-      }
-      else {
-        return new Vector4( this.x / mag, this.y / mag, this.z / mag, this.w / mag );
-      }
+      var magnitude = this.magnitude();
+      assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude vector' );
+      return this.divideScalar( magnitude );
     },
 
     /**
