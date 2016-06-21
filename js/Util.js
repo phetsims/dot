@@ -184,7 +184,8 @@ define( function( require ) {
       if ( Math.abs( denom ) < epsilon ) {
         return null;
       }
-
+      
+      // define intersection using determinants, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
       var a = p1.x * p2.y - p1.y * p2.x;
       var b = p3.x * p4.y - p3.y * p4.x;
 
