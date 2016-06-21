@@ -123,9 +123,33 @@
     equal( f( p1, p1, p3, p4 ), null );
     equal( f( p1, p2, p2, p3 ).x, 1 );
     equal( f( p1, p2, p2, p3 ).y, 1 );
+  } );
 
+  test( 'lineSegmentIntersection', function() {
+    var h = dot.lineSegmentIntersection;
 
+    var p1 = dot.Vector2.ZERO;
+    var p2 = new dot.Vector2( 1, 1 );
+    var p3 = new dot.Vector2( -10, 8 );
+    var p4 = new dot.Vector2( -3, -3 );
+    var p5 = new dot.Vector2( 8, -10 );
 
+    var f = function(p1, p2, p3, p4) {
+      return h( p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
+    };
+
+    equal( f( p4, p1, p1, p2), null );
+    equal( f( p3, p2, p4, p1 ), null );
+    equal( f( p4, p3, p5, p2 ), null );
+    equal( f( p4, p1, p3, p2 ), null );
+    equal( f( p3, p1, p4, p2 ).x, 0 );
+    equal( f( p3, p1, p4, p2 ).y, 0 );
+    equal( f( p3, p4, p4, p1 ).x, p4.x );
+    equal( f( p3, p4, p4, p1 ).y, p4.y );
+    equal( f( p4, p2, p3, p5 ).x, -1 );
+    equal( f( p4, p2, p3, p5 ).y, -1 );
+    equal( f( p3, p4, p3, p2 ).x, -10 );
+    equal( f( p3, p4, p3, p2 ).y, 8 );
   } );
 
 })();

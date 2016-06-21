@@ -471,35 +471,36 @@ define( function( require ) {
      * @returns {Vector2|null}
      */
     lineSegmentIntersection: function( x1, y1, x2, y2, x3, y3, x4, y4 ) {
-      /*
-       * Algorithm taken from Paul Bourke, 1989:
-       * http://paulbourke.net/geometry/pointlineplane/
-       * http://paulbourke.net/geometry/pointlineplane/pdb.c
-       * Ported from MathUtil.java on 9/20/2013 by @samreid
-       */
-      var numA = ( x4 - x3 ) * ( y1 - y3 ) - ( y4 - y3 ) * ( x1 - x3 );
-      var numB = ( x2 - x1 ) * ( y1 - y3 ) - ( y2 - y1 ) * ( x1 - x3 );
-      var denom = ( y4 - y3 ) * ( x2 - x1 ) - ( x4 - x3 ) * ( y2 - y1 );
+      // find the intersection of the lines of infinite length produced by the segments
+      var intersection = Util.lineLineIntersection(
+        new dot.Vector2( x1, y1 ),
+        new dot.Vector2( x2, y2 ),
+        new dot.Vector2( x3, y3 ),
+        new dot.Vector2( x4, y4 )
+      );
 
-      // If denominator is 0, the lines are parallel or coincident
-      if ( denom === 0 ) {
+      // lines are parallel, coincident, or degenerate
+      if ( intersection === null ) {
         return null;
       }
-      else {
-        var ua = numA / denom;
-        var ub = numB / denom;
 
-        // ua and ub must both be in the range 0 to 1 for the segments to have an intersection pt.
-        if ( !( ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1 ) ) {
-          return null;
-        }
-        else {
-          var x = x1 + ua * ( x2 - x1 );
-          var y = y1 + ua * ( y2 - y1 );
-          return new dot.Vector2( x, y );
-        }
+      /* Check that the intersection point is on both of the line segments. For each line segment, the signs of the
+       * cartesian differences between an endpoint and the intersection point and the other endpoint and the
+       * intesection point must be different (positive, negative, and zero are different signs) for the intersection 
+       * point to be inclusively between the endpoints
+       */
+      if (
+        ( x1 - intersection.x ) * ( x2 - intersection.x ) <= 0 &&
+        ( y1 - intersection.y ) * ( y2 - intersection.y ) <= 0 &&
+        ( x3 - intersection.x ) * ( x4 - intersection.x ) <= 0 &&
+        ( y3 - intersection.y ) * ( y4 - intersection.y ) <= 0
+      ) {
+        return intersection;
       }
+      return null;
     },
+
+
 
     /**
      * Squared distance from a point to a line segment squared.
@@ -630,6 +631,7 @@ define( function( require ) {
   dot.toRadians = Util.toRadians;
   dot.toDegrees = Util.toDegrees;
   dot.lineLineIntersection = Util.lineLineIntersection;
+  dot.lineSegmentIntersection = Util.lineSegmentIntersection;
   dot.sphereRayIntersection = Util.sphereRayIntersection;
   dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
   dot.solveCubicRootsReal = Util.solveCubicRootsReal;
