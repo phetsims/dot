@@ -45,4 +45,15 @@
     approximateComplexEquals( new Complex( 2, -3 ).exponentiated(), new Complex( -7.31511, -1.04274 ), 'Exponentiation' );
   } );
 
+  test( 'Cos of', function() {
+    var a = new Complex( 1, 1 );
+    var b = new Complex( 0.8337300251311491, -0.9888977057628651 );
+    approximateComplexEquals( a.cosOf(), b, 'Cos Of' );
+  } );
+
+  test( 'Sin of', function() {
+    var a = new Complex( 1, 1 );
+    var b = new Complex( 1.29845758, 0.634963914 );
+    approximateComplexEquals( a.sinOf(), b, 'Sin Of' );
+  } );
 })();

@@ -152,9 +152,9 @@ define( function( require ) {
     },
 
     /**
-     * Intersection point between the lines defined by the line segments p1-2 and p3-p4. If the 
-     * lines are not properly defined, null is returned. If there are no intersections or infinitely many, 
-     * e.g. parallel lines, null is returned. 
+     * Intersection point between the lines defined by the line segments p1-2 and p3-p4. If the
+     * lines are not properly defined, null is returned. If there are no intersections or infinitely many,
+     * e.g. parallel lines, null is returned.
      * @public
      *
      * @param {Vector2} p1
@@ -184,7 +184,7 @@ define( function( require ) {
       if ( Math.abs( denom ) < epsilon ) {
         return null;
       }
-      
+
       // define intersection using determinants, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
       var a = p1.x * p2.y - p1.y * p2.x;
       var b = p3.x * p4.y - p3.y * p4.x;
@@ -501,7 +501,6 @@ define( function( require ) {
     },
 
 
-
     /**
      * Squared distance from a point to a line segment squared.
      * See http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
@@ -575,6 +574,29 @@ define( function( require ) {
     triangleAreaSigned: function( a, b, c ) {
       // TODO: investigate which way we want the sign (Canvas or WebGL style)
       return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
+    },
+
+
+    /**
+     * Function that returns the hyperbolic cosine of a number
+     * @public
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    cosh: function( value ) {
+      return (Math.exp( value ) + Math.exp( -value )) / 2;
+    },
+
+    /**
+     * Function that returns the hyperbolic sine of a number
+     * @public
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    sinh: function( value ) {
+      return (Math.exp( value ) - Math.exp( -value )) / 2;
     },
 
     /**

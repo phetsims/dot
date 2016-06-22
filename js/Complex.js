@@ -12,7 +12,7 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-
+  require( 'DOT/Util' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -191,8 +191,8 @@ define( function( require ) {
      */
     sinOf: function() {
       return new Complex(
-        Math.sin( this.real ) * Math.cosh( this.imaginary ),
-        Math.cos( this.real ) * Math.sinh( this.imaginary )
+        Math.sin( this.real ) * dot.Util.cosh( this.imaginary ),
+        Math.cos( this.real ) * dot.Util.sinh( this.imaginary )
       );
     },
 
@@ -205,8 +205,8 @@ define( function( require ) {
      */
     cosOf: function() {
       return new Complex(
-        Math.cos( this.real ) * Math.cosh( this.imaginary ),
-        - Math.sin( this.real ) * Math.sinh( this.imaginary )
+        Math.cos( this.real ) * dot.Util.cosh( this.imaginary ),
+        - Math.sin( this.real ) * dot.Util.sinh( this.imaginary )
       );
     },
 
@@ -409,8 +409,8 @@ define( function( require ) {
      */
     sin: function() {
       return this.setRealImaginary(
-        Math.sin( this.real ) * Math.cosh( this.imaginary ),
-        Math.cos( this.real ) * Math.sinh( this.imaginary )
+        Math.sin( this.real ) * dot.Util.cosh( this.imaginary ),
+        Math.cos( this.real ) * dot.Util.sinh( this.imaginary )
       );
     },
 
@@ -423,8 +423,8 @@ define( function( require ) {
      */
     cos: function() {
       return this.setRealImaginary(
-        Math.cos( this.real ) * Math.cosh( this.imaginary ),
-        - Math.sin( this.real ) * Math.sinh( this.imaginary )
+        Math.cos( this.real ) * dot.Util.cosh( this.imaginary ),
+        - Math.sin( this.real ) * dot.Util.sinh( this.imaginary )
       );
     },
 
