@@ -166,12 +166,12 @@ define( function( require ) {
     lineLineIntersection: function( p1, p2, p3, p4 ) {
       var epsilon = 1e-5;
 
-      // If the endpoints are the same, they don't properly define a line
+      // if the endpoints are the same, they don't properly define a line
       if ( p1.equals( p2 ) || p3.equals( p4 ) ) {
         return null;
       }
 
-      // Taken from an answer in 
+      // taken from an answer in 
       // http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
       var x12 = p1.x - p2.x;
       var x34 = p3.x - p4.x;
@@ -180,7 +180,7 @@ define( function( require ) {
 
       var denom = x12 * y34 - y12 * x34;
 
-      // If the denominator is 0, lines are parallel or coincident
+      // if the denominator is 0, lines are parallel or coincident
       if ( Math.abs( denom ) < epsilon ) {
         return null;
       }
@@ -308,7 +308,8 @@ define( function( require ) {
     },
 
     /**
-     * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$ (there will be between 0 and 3 roots).
+     * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$ (there will be between 
+     * 0 and 3 roots).
      * @public
      *
      * @param {number} a
@@ -502,8 +503,11 @@ define( function( require ) {
 
 
     /**
-     * Squared distance from a point to a line segment squared.
-     * See http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+     * Shortest distance from a point to a line segment squared.
+     * Algorithm inspired by Minimum Distance between a Point and a Line by Paul Bourke, 1998,
+     * found at http://paulbourke.net/geometry/pointlineplane/
+     * Code is original, but a similar implementation can be found at
+     * http://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
      * @public
      *
      * @param {Vector2} point - The point
@@ -512,16 +516,19 @@ define( function( require ) {
      * @returns {number}
      */
     distToSegmentSquared: function( point, a, b ) {
-      var segmentLength = a.distanceSquared( b );
-      if ( segmentLength === 0 ) { return point.distanceSquared( a ); }
-      var t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / segmentLength;
-      return t < 0 ? point.distanceSquared( a ) :
-             t > 1 ? point.distanceSquared( b ) :
-             point.distanceSquared( new dot.Vector2( a.x + t * (b.x - a.x), a.y + t * (b.y - a.y) ) );
+      var denom = a.distanceSquared( b );
+      if ( denom === 0 ) {
+        // if line segment is degenerate, return the squared distance to an endpoint
+        return point.distanceSquared( a );
+      }
+      var u = ( ( point.x - a.x ) * ( b.x - a.x ) + ( point.y - a.y ) * ( b.y - a.y ) ) / denom;
+      return  u < 0 ? point.distanceSquared( a ) :
+              u > 1 ? point.distanceSquared( b ) :
+              point.distanceSquaredXY ( a.x + u * ( b.x - a.x ), a.y + u * ( b.y - a.y ) );
     },
 
     /**
-     * Squared distance from a point to a line segment squared.
+     * Shortest distance from a point to a line segment.
      * @public
      *
      * @param {Vector2} point - The point

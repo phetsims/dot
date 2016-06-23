@@ -152,4 +152,18 @@
     equal( f( p3, p4, p3, p2 ).y, 8 );
   } );
 
+  test( 'distToSegmentSquared', function() {
+    var f = dot.Util.distToSegmentSquared;
+
+    var p1 = dot.Vector2.ZERO;
+    var p2 = new dot.Vector2( -6, 0 );
+    var p3 = new dot.Vector2( -5, 1 );
+
+    approximateEquals( f( p1, p2, p3 ),  26 );
+    approximateEquals( f( p2, p3, p1 ), 2 );
+    approximateEquals( f( p3, p1, p2 ), 1 );
+    approximateEquals( f( p1, p2, p2 ), 36 );
+    approximateEquals( f( p3, p2, p2 ), 2 );
+  } );
+
 })();
