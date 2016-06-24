@@ -541,7 +541,7 @@ define( function( require ) {
     },
 
     /**
-     * Squared distance from a point to a line segment squared.
+     * distance from a point to a line segment squared.
      * @public
      *
      * @param {Vector2} point - The point
