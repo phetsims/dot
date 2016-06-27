@@ -11,15 +11,20 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
 
   /**
-   * @param {number} min
-   * @param {number} max
+   * @param {number} min - the minimum value of the range
+   * @param {number} max - the maximum value of the range
    * @param {number} [defaultValue] - if omitted, defaults to min
    * @constructor
    */
   function Range( min, max, defaultValue ) {
 
+    // @public (read-only) - the minimum value of the range
     this.min = min;
+
+    // @public (read-only) - the maximum value of the range
     this.max = max;
+
+    // @public (read-only) - the default value of the range
     this.defaultValue = ( defaultValue === undefined ) ? min : defaultValue;
 
     assert && assert( min <= max );
@@ -32,24 +37,46 @@ define( function( require ) {
 
     constructor: Range,
 
+    /**
+     * Makes a copy of this range
+     * @public
+     * @returns {Range}
+     */
     copy: function() {
       return new Range( this.min, this.max, this.defaultValue );
     },
 
+    /**
+     * Gets the length of this range, that is the difference between the maximum and minimum value of this range
+     * @public
+     * @returns {number}
+     */
     getLength: function() {
       return this.max - this.min;
     },
 
+    /**
+     * Gets the center of this range, that is the average value of the maximum and minimum value of this range
+     * @public
+     * @returns {number}
+     */
     getCenter: function() {
       return (this.max + this.min) / 2;
     },
 
+    /**
+     * Determines if this range contains the value
+     * @public
+     * @param {number} value
+     * @returns {boolean}
+     */
     contains: function( value ) {
       return ( value >= this.min ) && ( value <= this.max );
     },
 
     /**
      * Does this range contain the specified range?
+     * @public
      * @param {Range} range
      * @returns {boolean}
      */
@@ -57,24 +84,39 @@ define( function( require ) {
       return this.min <= range.min && this.max >= range.max;
     },
 
+    /**
+     * Determine if this range overlaps (intersects) with another range
+     * @public
+     * @param {Range} range
+     * @returns {boolean}
+     */
     intersects: function( range ) {
       return ( this.max >= range.min ) && ( range.max >= this.min );
     },
 
     /**
      * Do the two ranges overlap with one another?  Note that this assumes that
-     * this is a open interval.
+     * This is a open interval.
+     * @public
+     * @param {Range} range
+     * @returns {boolean}
      */
     intersectsExclusive: function( range ) {
       return ( this.max > range.min ) && ( range.max > this.min );
     },
 
+    /**
+     * Converts the attributes of this range to a string
+     * @public
+     * @returns {string}
+     */
     toString: function() {
       return '[Range (min:' + this.min + ' max:' + this.max + ' defaultValue:' + this.defaultValue + ')]';
     },
 
     /**
      * Constrains a value to the range.
+     * @public
      * @param {number} value
      * @returns {number}
      */
@@ -82,6 +124,13 @@ define( function( require ) {
       return Math.min( Math.max( value, this.min ), this.max );
     },
 
+    /**
+     * Determines if this range is equal to other range.
+     * Note the default values must match as well.
+     * @public
+     * @param {Range} other
+     * @returns {boolean}
+     */
     equals: function( other ) {
       return this.min === other.min && this.max === other.max && this.defaultValue === this.defaultValue;
     }
