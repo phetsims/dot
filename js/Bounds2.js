@@ -1328,11 +1328,11 @@ define( function( require ) {
     /**
      * Returns a new Bounds2 object that only contains the specified point (x,y). Useful for being dilated to form a
      * bounding box around a point. Note that the bounds will not be "empty" as it contains (x,y), but it will have
-     * zero area.
+     * zero area. The x and y coordinates can be specified by numbers or with at Vector2
      * @public
      *
-     * @param {number} x
-     * @param {number} y
+     * @param {number|Vector2} x
+     * @param [number] y
      * @returns {Bounds2}
      */
     point: function( x, y ) {
