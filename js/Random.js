@@ -15,6 +15,11 @@ define( function( require ) {
   var Util = require( 'DOT/Util' );
   var dot = require( 'DOT/dot' );
 
+  /**
+   *
+   * @param [Object] options
+   * @constructor
+   */
   function Random( options ) {
     options = _.extend( {
 
@@ -54,8 +59,8 @@ define( function( require ) {
     constructor: Random,
 
     /**
-     * Re-seed the random number generator, or null to use Math.random()
-     * @param seed
+     * Sets the seed of the random number generator. Setting it to null reverts the random generator to Math.random()
+     * @param {number|null} seed
      */
     setSeed: function( seed ) {
       this.seed = seed;
@@ -64,35 +69,66 @@ define( function( require ) {
       this.seedrandom = this.seed !== null ? new Math.seedrandom( this.seed + '' ) : null;
     },
 
+    /**
+     * Returns the value of the seed, null indicates that Math.random() is used
+     * @public
+     * @returns {number|null}
+     */
     getSeed: function() {
       return this.seed;
     },
 
+    /**
+     * Returns a floating-point number in the range [0, 1), i.e. from 0 (inclusive) to 1 (exclusive)
+     * The random number can be seeded
+     * @public
+     * @returns {number}
+     */
     random: function() {
       return this.seed === null ? Math.random() : this.seedrandom();
     },
 
+    /**
+     * Returns the next pseudo-random boolean
+     * @public
+     * @returns {boolean}
+     */
     nextBoolean: function() {
       return this.random() >= 0.5;
     },
 
+    /**
+     * Returns the next pseudo random number from this random number generator sequence.
+     * The random number is an integer ranging from 0 to n-1.
+     * @public
+     * @param {number} n
+     * @returns {number} - an integer
+     */
     nextInt: function( n ) {
       var value = this.random() * n;
-      return value | 0; // convert to int
+      return value | 0; // convert to int by removing the decimal places
     },
 
+    /**
+     * Returns the next pseudo random number from this random number generator sequence in the range [0, 1)
+     * The distribution of the random numbers is uniformly distributed across the interval
+     * @public
+     * @returns {number} - a float
+     */
     nextDouble: function() {
       var vv = this.random();
       return vv;
     },
 
     /**
+     * Returns the next pseudo random number from this random number generator sequence.
+     * The distribution of the random numbers is gaussian, with a mean =0  and standard deviation = 1
+     * This random number is not seeded
      * @public
      * @returns {number}
      * // TODO: Seed this
      */
     nextGaussian: function() {
-      // random gaussian with mean = 0 and standard deviation = 1
       return Util.boxMullerTransform( 0, 1 );
     }
   };
