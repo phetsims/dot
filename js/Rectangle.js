@@ -14,6 +14,13 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Bounds2 = require( 'DOT/Bounds2' );
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   * @constructor
+   */
   function Rectangle( x, y, width, height ) {
     assert && assert( height !== undefined, 'Rectangle requires 4 parameters' );
     Bounds2.call( this, x, y, x + width, y + height );
