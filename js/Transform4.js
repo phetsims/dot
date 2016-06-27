@@ -24,16 +24,22 @@ define( function( require ) {
 
   var scratchMatrix = new dot.Matrix4();
 
+  /**
+   * check if the matrix is Finite and is of type Matrix4
+   * @private
+   * @param matrix
+   * @returns {boolean}
+   */
   function checkMatrix( matrix ) {
     return ( matrix instanceof dot.Matrix4 ) && matrix.isFinite();
   }
 
   /**
    * Creates a transform based around an initial matrix.
-   * @constructor
    * @public
    *
    * @param {Matrix4} matrix
+   * @constructor
    */
   function Transform4( matrix ) {
     Events.call( this );
