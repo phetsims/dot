@@ -38,7 +38,13 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  // counter-clockwise turn if > 0, clockwise turn if < 0, collinear if === 0.
+  /**
+   * counter-clockwise turn if > 0, clockwise turn if < 0, collinear if === 0.
+   * @param {Vector2} p1
+   * @param {Vector2} p2
+   * @param {Vector2} p3
+   * @returns {number}
+   */
   function ccw( p1, p2, p3 ) {
     return p2.minus( p1 ).crossScalar( p3.minus( p1 ) );
   }
