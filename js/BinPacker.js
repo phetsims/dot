@@ -85,7 +85,10 @@ define( function( require ) {
       bin.unuse();
     },
 
-    // @private, for debugging purposes
+    /**
+     * @private, for debugging purposes
+     * @returns {string}
+     */
     toString: function() {
       var result = '';
 
@@ -276,7 +279,10 @@ define( function( require ) {
       this.parent && this.parent.attemptToCollapse();
     },
 
-    // @private for debugging purposes
+    /**
+     * @private, for debugging purposes
+     * @returns {string}
+     */
     toString: function() {
       return this.bounds.toString() + ( this.isUsed ? ' used' : '' );
     }
