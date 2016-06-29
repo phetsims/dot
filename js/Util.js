@@ -471,6 +471,7 @@ define( function( require ) {
      * @returns {Vector2|null}
      */
     lineSegmentIntersection: function( x1, y1, x2, y2, x3, y3, x4, y4 ) {
+      var epsilon = 1e-7;
       // find the intersection of the lines of infinite length produced by the segments
       var intersection = Util.lineLineIntersection(
         new dot.Vector2( x1, y1 ),
@@ -490,10 +491,10 @@ define( function( require ) {
        * point to be inclusively between the endpoints
        */
       if (
-        ( x1 - intersection.x ) * ( x2 - intersection.x ) <= 0 &&
-        ( y1 - intersection.y ) * ( y2 - intersection.y ) <= 0 &&
-        ( x3 - intersection.x ) * ( x4 - intersection.x ) <= 0 &&
-        ( y3 - intersection.y ) * ( y4 - intersection.y ) <= 0
+        ( x1 - intersection.x ) * ( x2 - intersection.x ) <= epsilon &&
+        ( y1 - intersection.y ) * ( y2 - intersection.y ) <= epsilon &&
+        ( x3 - intersection.x ) * ( x4 - intersection.x ) <= epsilon &&
+        ( y3 - intersection.y ) * ( y4 - intersection.y ) <= epsilon
       ) {
         return intersection;
       }
