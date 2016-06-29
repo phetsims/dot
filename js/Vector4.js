@@ -246,7 +246,7 @@ define( function( require ) {
     normalized: function() {
       var magnitude = this.magnitude();
       assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude vector' );
-      return this.divideScalar( magnitude );
+      return this.dividedScalar( magnitude );
     },
 
     /**
