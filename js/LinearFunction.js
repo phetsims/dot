@@ -25,7 +25,7 @@ define( function( require ) {
    * @param {number} a2
    * @param {number} b1
    * @param {number} b2
-   * @param [Boolean] clamp clamp the result to the provided ranges, false by default
+   * @param {boolean} [clamp] - clamp the result to the provided ranges, false by default
    * @constructor
    */
   function LinearFunction( a1, a2, b1, b2, clamp ) {
