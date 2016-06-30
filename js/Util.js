@@ -471,34 +471,35 @@ define( function( require ) {
      * @returns {Vector2|null}
      */
     lineSegmentIntersection: function( x1, y1, x2, y2, x3, y3, x4, y4 ) {
-      var epsilon = 1e-7;
-      // find the intersection of the lines of infinite length produced by the segments
-      var intersection = Util.lineLineIntersection(
-        new dot.Vector2( x1, y1 ),
-        new dot.Vector2( x2, y2 ),
-        new dot.Vector2( x3, y3 ),
-        new dot.Vector2( x4, y4 )
-      ); // {Vector2||null} returns a location or null if the two lines do not intersect
 
-      // lines are parallel, coincident, or degenerate
-      if ( intersection === null ) {
+      // @private
+      // Determines counterclockwiseness. Positive if counterclockwise, negative if clockwise, zero if straight line
+      // Point1(a,b), Point2(c,d), Point3(e,f)
+      // See http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf
+      // @returns {number}
+      var ccw = function( a, b, c, d, e, f ) {
+        return (f - b) * (c - a) - (d - b) * (e - a);
+      };
+
+      // Check if intersection doesn't exist. See http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
+      // If point1 and point2 are on opposite sides of line 3 4, exactly one of the two triples 1, 3, 4 and 2, 3, 4
+      // is in counterclockwise order.
+      if ( ccw(x1, y1, x3, y3, x4, y4 ) * ccw( x2, y2, x3, y3, x4, y4 ) > 0 ||
+        ccw( x3, y3, x1, y1, x2, y2 ) * ccw( x4, y4, x1, y1, x2, y2 ) > 0
+      ) {
+        return null;
+      }
+      
+      var denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
+      // If denominator is 0, the lines are parallel or coincident
+      if ( denom === 0 ) {
         return null;
       }
 
-      /* Check that the intersection point is on both of the line segments. For each line segment, the signs of the
-       * cartesian differences between an endpoint and the intersection point and the other endpoint and the
-       * intersection point must be different (positive, negative, and zero are different signs) for the intersection 
-       * point to be inclusively between the endpoints
-       */
-      if (
-        ( x1 - intersection.x ) * ( x2 - intersection.x ) <= epsilon &&
-        ( y1 - intersection.y ) * ( y2 - intersection.y ) <= epsilon &&
-        ( x3 - intersection.x ) * ( x4 - intersection.x ) <= epsilon &&
-        ( y3 - intersection.y ) * ( y4 - intersection.y ) <= epsilon
-      ) {
-        return intersection;
-      }
-      return null;
+      // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+      var intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      var intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      return new dot.Vector2( intersectionX, intersectionY );
     },
 
 
