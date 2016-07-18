@@ -4,6 +4,7 @@
  * A numeric range.
  *
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Andrew Adare
  */
 define( function( require ) {
   'use strict';
@@ -13,10 +14,9 @@ define( function( require ) {
   /**
    * @param {number} min - the minimum value of the range
    * @param {number} max - the maximum value of the range
-   * @param {number} [defaultValue] - if omitted, defaults to min
    * @constructor
    */
-  function Range( min, max, defaultValue ) {
+  function Range( min, max ) {
 
     // @public (read-only) - the minimum value of the range
     this.min = min;
@@ -24,11 +24,7 @@ define( function( require ) {
     // @public (read-only) - the maximum value of the range
     this.max = max;
 
-    // @public (read-only) - the default value of the range
-    this.defaultValue = ( defaultValue === undefined ) ? min : defaultValue;
-
     assert && assert( min <= max );
-    assert && assert( ( this.defaultValue >= min ) && ( this.defaultValue <= max ) );
   }
 
   dot.register( 'Range', Range );
@@ -43,7 +39,7 @@ define( function( require ) {
      * @returns {Range}
      */
     copy: function() {
-      return new Range( this.min, this.max, this.defaultValue );
+      return new Range( this.min, this.max );
     },
 
     /**
@@ -111,7 +107,7 @@ define( function( require ) {
      * @returns {string}
      */
     toString: function() {
-      return '[Range (min:' + this.min + ' max:' + this.max + ' defaultValue:' + this.defaultValue + ')]';
+      return '[Range (min:' + this.min + ' max:' + this.max + ')]';
     },
 
     /**
@@ -132,7 +128,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     equals: function( other ) {
-      return this.min === other.min && this.max === other.max && this.defaultValue === this.defaultValue;
+      return this.min === other.min && this.max === other.max;
     }
   };
 
