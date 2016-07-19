@@ -122,7 +122,6 @@ define( function( require ) {
 
     /**
      * Determines if this range is equal to other range.
-     * Note the default values must match as well.
      * @public
      * @param {Range} other
      * @returns {boolean}
