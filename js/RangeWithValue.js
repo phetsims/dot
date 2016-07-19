@@ -1,7 +1,7 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * A numeric range.
+ * A numeric range with an optional default value.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  */
@@ -15,12 +15,9 @@ define( function( require ) {
   /**
    * @param {number} min - the minimum value of the range
    * @param {number} max - the maximum value of the range
-   * @param {number} defaultValue - required default value inside the range
+   * @param {number} [defaultValue] - default value inside the range
    * @constructor
    */
-
-  // See XYTableNode. Need getter only. Use instanceOf Range in equals().
-  // Replace Range with RangeWithValue everywhere for now. Don't use Range anywhere in sim code yet.
 
   function RangeWithValue( min, max, defaultValue ) {
 
