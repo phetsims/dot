@@ -15,10 +15,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
-  var TVector3 = phetioInherit( TObject, 'TVector3', function( vector3, phetioID ) {
+  var TVector3 = function( vector3, phetioID ) {
     TObject.call( this, vector3, phetioID );
     assert && assert( vector3 instanceof phet.dot.Vector3 );
-  }, {}, {
+  };
+
+  phetioInherit( TObject, 'TVector3', TVector3, {}, {
     documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
 
     fromStateObject: function( stateObject ) {

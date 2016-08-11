@@ -15,10 +15,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
-  var TBounds3 = phetioInherit( TObject, 'TBounds3', function( bounds3, phetioID ) {
+  var TBounds3 = function( bounds3, phetioID ) {
     TObject.call( this, bounds3, phetioID );
     assert && assert( bounds3 instanceof phet.dot.Bounds3 );
-  }, {}, {
+  };
+
+  phetioInherit( TObject, 'TBounds3', TBounds3, {}, {
     documentation: 'a 3-dimensional bounds (bounding box)',
 
     fromStateObject: function( stateObject ) {
