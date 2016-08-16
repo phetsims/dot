@@ -39,7 +39,13 @@ define( function( require ) {
 
     // The tandem is required when brand==='phet-io'
     // Like Tandem.validateOptions, but without depending on tandem
-    assert && phet && phet.chipper && phet.chipper.brand && phet.chipper.brand === 'phet-io' && assert( options.tandem,
+    assert &&
+    phet &&
+    phet.chipper &&
+    phet.chipper.brand &&
+    phet.chipper.brand === 'phet-io' &&
+    phet.chipper.getQueryParameter( 'phet-io.validateTandems' ) !== 'false' &&
+    assert( options.tandem,
       'When running as PhET-iO, a tandem must be specified for each user interface component' );
 
     if ( options.seed !== null && options.staticSeed ) {
