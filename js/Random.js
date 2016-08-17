@@ -115,6 +115,54 @@ define( function( require ) {
       return value | 0; // convert to int by removing the decimal places
     },
 
+    // inclusive, to match underscore
+    randomIntegerBetween: function( min, max, floaty ) {
+
+      assert && assert( floaty === undefined, '3rd arg not supported' );
+
+      // underscore support, where only 1 arg is supplied as max and min=0 is inferred
+      if ( typeof max !== 'number' ) {
+        max = min;
+        min = 0;
+      }
+
+      if ( max === min ) {
+        return max;
+      }
+      var range = max - min;
+      return this.nextInt( range + 1 ) + min;
+    },
+
+    /**
+     * Creates an array of shuffled values, using a version of the Fisher-Yates
+     * shuffle. See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
+     *
+     * @static
+     * @memberOf _
+     * @category Collections
+     * @param {Array|Object|string} collection The collection to shuffle.
+     * @returns {Array} Returns a new shuffled collection.
+     * @example
+     *
+     * _.shuffle([1, 2, 3, 4, 5, 6]);
+     * // => [4, 1, 6, 3, 5, 2]
+     *
+     * Adapted from lodash-2.4.1 by Sam Reid on Aug 16, 2016
+     */
+    shuffle: function( collection ) {
+      var r = this;
+      var index = -1;
+      var length = collection ? collection.length : 0;
+      var result = Array( typeof length === 'number' ? length : 0 );
+
+      _.forEach( collection, function( value ) {
+        var rand = r.randomIntegerBetween( 0, ++index );
+        result[ index ] = result[ rand ];
+        result[ rand ] = value;
+      } );
+      return result;
+    },
+
     /**
      * Returns the next pseudo random number from this random number generator sequence in the range [0, 1)
      * The distribution of the random numbers is uniformly distributed across the interval
