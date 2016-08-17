@@ -133,6 +133,12 @@ define( function( require ) {
       return this.nextInt( range + 1 ) + min;
     },
 
+    // For lodash interoperability, but with seeded random
+    sample: function( array ) {
+      var index = this.randomIntegerBetween( 0, array.length - 1 );
+      return array[ index ];
+    },
+
     /**
      * Creates an array of shuffled values, using a version of the Fisher-Yates
      * shuffle. See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
