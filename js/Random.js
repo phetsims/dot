@@ -49,7 +49,7 @@ define( function( require ) {
       'When running as PhET-iO, a tandem must be specified for each user interface component' );
 
     if ( options.seed !== null && options.staticSeed ) {
-      assert && assert( false, 'cannot specify seed and useChipperSeed, use one or the other' );
+      assert && assert( false, 'cannot specify seed and staticSeed, use one or the other' );
     }
 
     var seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
