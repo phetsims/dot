@@ -16,14 +16,14 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
 
   /**
-   *
-   * @param [Object] options
+   * @param {Object} [options]
    * @constructor
    */
   function Random( options ) {
     options = _.extend( {
 
       // {Tandem} for deterministic playback in randomized sims
+      // TODO: Do we still need this?
       tandem: null,
 
       // {number|null} seed for the random number generator.
