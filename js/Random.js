@@ -118,10 +118,11 @@ define( function( require ) {
 
     /**
      * Randomly select one element from the given array.
-     * @param {Object[]} array
-     * @returns {Object}
+     * @param {Object[]} array - the array from which one element will be selected, must have at least one element
+     * @returns {Object} - the selected element from the array
      */
     sample: function( array ) {
+      assert && assert( array.length > 0, 'Array should have at least 1 item.' );
       var index = this.randomIntegerBetween( 0, array.length - 1 );
       return array[ index ];
     },
