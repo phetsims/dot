@@ -116,7 +116,11 @@ define( function( require ) {
       return this.nextInt( range + 1 ) + min;
     },
 
-    // For lodash interoperability, but with seeded random
+    /**
+     * Randomly select one element from the given array.
+     * @param {Object[]} array
+     * @returns {Object}
+     */
     sample: function( array ) {
       var index = this.randomIntegerBetween( 0, array.length - 1 );
       return array[ index ];
