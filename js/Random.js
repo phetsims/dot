@@ -22,31 +22,16 @@ define( function( require ) {
   function Random( options ) {
     options = _.extend( {
 
-      // {Tandem} for deterministic playback in randomized sims
-      // TODO: Do we still need this?
-      tandem: null,
-
       // {number|null} seed for the random number generator.
       //               when seed is null, Math.random() is used
       seed: null,
 
-      // {boolean} if true, use the seed specified statically in the preloads for replicable playback in phet-io
-      // this is a convenience option since it will be a common occurrence to use the replicable playback seed
-      // if staticSeed and seed are both specified, there will be an assertion error.
+      // {boolean} if true, use the seed specified statically in the preloads for replicable playback in phet-io.
+      // This is a convenience option since it will be a common occurrence to use the replicable playback seed.
+      // If staticSeed and seed are both specified, there will be an assertion error.
       staticSeed: false
 
     }, options );
-
-    // The tandem is required when brand==='phet-io'
-    // Like Tandem.validateOptions, but without depending on tandem
-    assert &&
-    phet &&
-    phet.chipper &&
-    phet.chipper.brand &&
-    phet.chipper.brand === 'phet-io' &&
-    phet.chipper.getQueryParameter( 'phet-io.validateTandems' ) !== 'false' &&
-    assert( options.tandem,
-      'When running as PhET-iO, a tandem must be specified for each user interface component' );
 
     if ( options.seed !== null && options.staticSeed ) {
       assert && assert( false, 'cannot specify seed and staticSeed, use one or the other' );
@@ -54,8 +39,6 @@ define( function( require ) {
 
     var seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
     this.setSeed( seed );
-
-    options.tandem && options.tandem.addInstance( this );
   }
 
   dot.register( 'Random', Random );
