@@ -106,19 +106,16 @@ define( function( require ) {
 
     /**
      * Randomly select a random integer between min and max (inclusive).
-     * This is a replacement for lodash's _.random function (though doesn't support lodash's 3rd argument)
-     * @param {number} min
-     * @param {number} max
-     * @returns {number} a value between min and max, inclusive
+     *
+     * @param {number} min - must be an integer
+     * @param {number} max - must be an integer
+     * @returns {number} an integer between min and max, inclusive
      */
     nextIntBetween: function( min, max ) {
-      assert && assert( arguments.length === 2, 'nextIntBetween must have exactly 2 arguments' );
 
-      // Number.isInteger doesn't have 100% adoption yet, so only test for it on platforms where supported.
-      if ( Number.isInteger ) {
-        assert && assert( Number.isInteger( min ), 'min should be an integer' );
-        assert && assert( Number.isInteger( max ), 'max should be an integer' );
-      }
+      assert && assert( arguments.length === 2, 'nextIntBetween must have exactly 2 arguments' );
+      assert && assert( Util.isInteger( min ), 'min must be an integer: ' + min );
+      assert && assert( Util.isInteger( max ), 'max must be an integer: ' + max );
 
       var range = max - min;
       return this.nextInt( range + 1 ) + min;
