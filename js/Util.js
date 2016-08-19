@@ -452,7 +452,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     isInteger: function( n ) {
-      assert && assert( typeof n === 'number', 'isInteger requires its argument to be a number' );
+      assert && assert( typeof n === 'number', 'isInteger requires its argument to be a number: ' + n );
       return n % 1 === 0;
     },
 
