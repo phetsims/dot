@@ -16,6 +16,11 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
 
   /**
+   * Construct a Random instance.
+   *
+   * If you are developing a PhET Simulation, you should probably use the global `phet.joist.random` because it
+   * provides built-in support for phet-io seeding and a check that it isn't used before the seed has been set.
+   *
    * @param {Object} [options]
    * @constructor
    */
@@ -26,7 +31,8 @@ define( function( require ) {
       //               when seed is null, Math.random() is used
       seed: null,
 
-      // {boolean} if true, use the seed specified statically in the preloads for replicable playback in phet-io.
+      // {boolean} if true, use the seed specified statically in `phet.chipper.randomSeed`.  This value is declared
+      // in initialize-globals.js and overrideable by phet-io for reproducible playback (see TPhETIO.setRandomSeed)
       // This is a convenience option since it will be a common occurrence to use the replicable playback seed.
       // If staticSeed and seed are both specified, there will be an assertion error.
       staticSeed: false
