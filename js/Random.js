@@ -99,26 +99,15 @@ define( function( require ) {
     },
 
     /**
-     * Randomly select a random integer between min and max (inclusive).
-     * This is a replacement for lodash's _.random function.
+     * Randomly select a random value an integral number of steps above min (inclusive).
+     * This is a replacement for lodash's _.random function (though doesn't support lodash's 3rd argument)
      * @param {number} min
      * @param {number} max
-     * @param {boolean} floaty - not currently supported!
      * @returns {number} a value between min and max, inclusive
      */
-    nextBetween: function( min, max, floaty ) {
+    nextBetween: function( min, max ) {
+      assert && assert( arguments.length === 2, 'nextBetween must have exactly 2 arguments' );
 
-      assert && assert( floaty === undefined, '3rd arg not supported' );
-
-      // underscore support, where only 1 arg is supplied as max and min=0 is inferred
-      if ( typeof max !== 'number' ) {
-        max = min;
-        min = 0;
-      }
-
-      if ( max === min ) {
-        return max;
-      }
       var range = max - min;
       return this.nextInt( range + 1 ) + min;
     },
