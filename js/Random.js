@@ -106,7 +106,7 @@ define( function( require ) {
      * @param {boolean} floaty - not currently supported!
      * @returns {number} a value between min and max, inclusive
      */
-    randomIntegerBetween: function( min, max, floaty ) {
+    nextBetween: function( min, max, floaty ) {
 
       assert && assert( floaty === undefined, '3rd arg not supported' );
 
@@ -130,7 +130,7 @@ define( function( require ) {
      */
     sample: function( array ) {
       assert && assert( array.length > 0, 'Array should have at least 1 item.' );
-      var index = this.randomIntegerBetween( 0, array.length - 1 );
+      var index = this.nextBetween( 0, array.length - 1 );
       return array[ index ];
     },
 
@@ -157,7 +157,7 @@ define( function( require ) {
       var result = Array( typeof length === 'number' ? length : 0 );
 
       _.forEach( collection, function( value ) {
-        var rand = r.randomIntegerBetween( 0, ++index );
+        var rand = r.nextBetween( 0, ++index );
         result[ index ] = result[ rand ];
         result[ rand ] = value;
       } );
