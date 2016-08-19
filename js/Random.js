@@ -98,7 +98,14 @@ define( function( require ) {
       return value | 0; // convert to int by removing the decimal places
     },
 
-    // inclusive, to match underscore
+    /**
+     * Randomly select a random integer between min and max (inclusive).
+     * This is a replacement for lodash's _.random function.
+     * @param {number} min
+     * @param {number} max
+     * @param {boolean} floaty - not currently supported!
+     * @returns {number} a value between min and max, inclusive
+     */
     randomIntegerBetween: function( min, max, floaty ) {
 
       assert && assert( floaty === undefined, '3rd arg not supported' );
