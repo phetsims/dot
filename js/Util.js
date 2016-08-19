@@ -484,12 +484,12 @@ define( function( require ) {
       // Check if intersection doesn't exist. See http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
       // If point1 and point2 are on opposite sides of line 3 4, exactly one of the two triples 1, 3, 4 and 2, 3, 4
       // is in counterclockwise order.
-      if ( ccw(x1, y1, x3, y3, x4, y4 ) * ccw( x2, y2, x3, y3, x4, y4 ) > 0 ||
-        ccw( x3, y3, x1, y1, x2, y2 ) * ccw( x4, y4, x1, y1, x2, y2 ) > 0
+      if ( ccw( x1, y1, x3, y3, x4, y4 ) * ccw( x2, y2, x3, y3, x4, y4 ) > 0 ||
+           ccw( x3, y3, x1, y1, x2, y2 ) * ccw( x4, y4, x1, y1, x2, y2 ) > 0
       ) {
         return null;
       }
-      
+
       var denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
       // If denominator is 0, the lines are parallel or coincident
       if ( denom === 0 ) {
@@ -642,9 +642,10 @@ define( function( require ) {
      *
      * @param {number} mu - The mean of the Gaussian
      * @param {number} sigma - The standard deviation of the Gaussian
+     * @param {Random} random - the source of randomness
      * @returns {number}
      */
-    boxMullerTransform: function( mu, sigma ) {
+    boxMullerTransform: function( mu, sigma, random ) {
       generate = !generate;
 
       if ( !generate ) {
@@ -654,8 +655,8 @@ define( function( require ) {
       var u1;
       var u2;
       do {
-        u1 = Math.random();
-        u2 = Math.random();
+        u1 = random.nextDouble();
+        u2 = random.nextDouble();
       }
       while ( u1 <= EPSILON );
 

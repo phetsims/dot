@@ -176,10 +176,9 @@ define( function( require ) {
      * This random number is not seeded
      * @public
      * @returns {number}
-     * // TODO: Seed this
      */
     nextGaussian: function() {
-      return Util.boxMullerTransform( 0, 1 );
+      return Util.boxMullerTransform( 0, 1, this );
     }
   };
 
