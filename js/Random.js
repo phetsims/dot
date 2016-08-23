@@ -174,9 +174,8 @@ define( function( require ) {
     },
 
     /**
-     * Returns the next pseudo random number from this random number generator sequence.
-     * The distribution of the random numbers is gaussian, with a mean =0  and standard deviation = 1
-     * This random number is not seeded
+     * Returns the next gaussian-distributed random number from this random number generator sequence.
+     * The distribution of the random numbers is gaussian, with a mean = 0 and standard deviation = 1
      * @public
      * @returns {number}
      */
