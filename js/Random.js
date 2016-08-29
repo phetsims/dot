@@ -14,6 +14,7 @@ define( function( require ) {
   // modules
   var Util = require( 'DOT/Util' );
   var dot = require( 'DOT/dot' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * Construct a Random instance.
@@ -45,11 +46,7 @@ define( function( require ) {
     this.setSeed( seed );
   }
 
-  dot.register( 'Random', Random );
-
-  Random.prototype = {
-
-    constructor: Random,
+  inherit( Object, Random, {
 
     /**
      * Sets the seed of the random number generator. Setting it to null reverts the random generator to Math.random()
@@ -58,7 +55,7 @@ define( function( require ) {
     setSeed: function( seed ) {
       this.seed = seed;
 
-      // Use "new" to create a local prng without altering Math.random.
+      // If seed is provided, create a local random number generator without altering Math.random.
       this.seedrandom = this.seed !== null ? new Math.seedrandom( this.seed + '' ) : null;
     },
 
@@ -123,20 +120,11 @@ define( function( require ) {
     },
 
     /**
-     * Creates an array of shuffled values, using a version of the Fisher-Yates
-     * shuffle. See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
+     * Creates an array of shuffled values, using a version of the Fisher-Yates shuffle.  Adapted from lodash-2.4.1 by
+     * Sam Reid on Aug 16, 2016, See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
      *
-     * @static
-     * @memberOf _
-     * @category Collections
-     * @param {Array|Object|string} collection The collection to shuffle.
+     * @param {Array} collection The collection to shuffle.
      * @returns {Array} Returns a new shuffled collection.
-     * @example
-     *
-     * _.shuffle([1, 2, 3, 4, 5, 6]);
-     * // => [4, 1, 6, 3, 5, 2]
-     *
-     * Adapted from lodash-2.4.1 by Sam Reid on Aug 16, 2016
      */
     shuffle: function( collection ) {
       var r = this;
@@ -171,7 +159,9 @@ define( function( require ) {
     nextGaussian: function() {
       return Util.boxMullerTransform( 0, 1, this );
     }
-  };
+  } );
+
+  dot.register( 'Random', Random );
 
   return Random;
 } );
