@@ -63,15 +63,6 @@ define( function( require ) {
     },
 
     /**
-     * Returns the value of the seed, null indicates that Math.random() is used
-     * @public
-     * @returns {number|null}
-     */
-    getSeed: function() {
-      return this.seed;
-    },
-
-    /**
      * Returns a floating-point number in the range [0, 1), i.e. from 0 (inclusive) to 1 (exclusive)
      * The random number can be seeded
      * @public
