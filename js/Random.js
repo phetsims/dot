@@ -78,6 +78,7 @@ define( function( require ) {
      * The random number can be seeded
      * @public
      * @returns {number}
+     * @deprecated please use nextDouble() instead because it is clearer
      */
     random: function() {
       return this.seed === null ? Math.random() : this.seedrandom();
@@ -169,8 +170,7 @@ define( function( require ) {
      * @returns {number} - a float
      */
     nextDouble: function() {
-      var vv = this.random();
-      return vv;
+      return this.random();
     },
 
     /**
