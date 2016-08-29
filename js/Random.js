@@ -3,10 +3,10 @@
 /**
  * Random number generator with an optional seed.
  *
- * @author John Blanco
+ * @author John Blanco (PhET Interactive Simulations)
+ * @author Aaron Davis (PhET Interactive Simulations)
+ * @author Sam Reid (PhET Interactive Simulations)
  * @author Mohamed Safi
- * @author Aaron Davis
- * @author Sam Reid
  */
 define( function( require ) {
   'use strict';
@@ -27,18 +27,16 @@ define( function( require ) {
   function Random( options ) {
     options = _.extend( {
 
-      // {number|null} seed for the random number generator.
-      //               when seed is null, Math.random() is used
+      // {number|null} seed for the random number generator.  When seed is null, Math.random() is used.
       seed: null,
 
       // {boolean} if true, use the seed specified statically in `phet.chipper.randomSeed`.  This value is declared
-      // in initialize-globals.js and overrideable by phet-io for reproducible playback (see TPhETIO.setRandomSeed)
-      // This is a convenience option since it will be a common occurrence to use the replicable playback seed.
-      // If staticSeed and seed are both specified, there will be an assertion error.
+      // in initialize-globals.js and can be overriden by phet-io for reproducible playback (see TPhETIO.setRandomSeed)
       staticSeed: false
 
     }, options );
 
+    // If staticSeed and seed are both specified, there will be an assertion error.
     if ( options.seed !== null && options.staticSeed ) {
       assert && assert( false, 'cannot specify seed and staticSeed, use one or the other' );
     }
