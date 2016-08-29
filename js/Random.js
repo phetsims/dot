@@ -79,7 +79,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     nextBoolean: function() {
-      return this.random() >= 0.5;
+      return this.nextDouble() >= 0.5;
     },
 
     /**
@@ -90,7 +90,7 @@ define( function( require ) {
      * @returns {number} - an integer
      */
     nextInt: function( n ) {
-      var value = this.random() * n;
+      var value = this.nextDouble() * n;
       return value | 0; // convert to int by removing the decimal places
     },
 
