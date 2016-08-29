@@ -81,7 +81,7 @@ define( function( require ) {
      * @deprecated please use nextDouble() instead because it is clearer
      */
     random: function() {
-      return this.seed === null ? Math.random() : this.seedrandom();
+      return this.nextDouble();
     },
 
     /**
@@ -167,10 +167,10 @@ define( function( require ) {
      * Returns the next pseudo random number from this random number generator sequence in the range [0, 1)
      * The distribution of the random numbers is uniformly distributed across the interval
      * @public
-     * @returns {number} - a float
+     * @returns {number} - the random number
      */
     nextDouble: function() {
-      return this.random();
+      return this.seed === null ? Math.random() : this.seedrandom();
     },
 
     /**
