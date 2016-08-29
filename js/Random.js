@@ -123,17 +123,17 @@ define( function( require ) {
      * Creates an array of shuffled values, using a version of the Fisher-Yates shuffle.  Adapted from lodash-2.4.1 by
      * Sam Reid on Aug 16, 2016, See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
      *
-     * @param {Array} collection The collection to shuffle.
-     * @returns {Array} Returns a new shuffled collection.
+     * @param {Array} array - the array which will be shuffled
+     * @returns {Array} a new array with all the same elements in the passed-in array, in randomized order.
      */
-    shuffle: function( collection ) {
-      var r = this;
+    shuffle: function( array ) {
+      assert && assert( array, 'Array should exist' );
+      var random = this;
       var index = -1;
-      var length = collection ? collection.length : 0;
-      var result = Array( typeof length === 'number' ? length : 0 );
+      var result = Array( array.length );
 
-      _.forEach( collection, function( value ) {
-        var rand = r.nextIntBetween( 0, ++index );
+      _.forEach( array, function( value ) {
+        var rand = random.nextIntBetween( 0, ++index );
         result[ index ] = result[ rand ];
         result[ rand ] = value;
       } );
