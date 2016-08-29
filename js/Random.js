@@ -130,7 +130,7 @@ define( function( require ) {
       assert && assert( array, 'Array should exist' );
       var random = this;
       var index = -1;
-      var result = Array( array.length );
+      var result = new Array( array.length );
 
       _.forEach( array, function( value ) {
         var rand = random.nextIntBetween( 0, ++index );
