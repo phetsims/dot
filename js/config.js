@@ -6,7 +6,8 @@ require.config( {
   paths: {
     DOT: '.',
     PHET_CORE: '../../phet-core/js',
-    AXON: '../../axon/js'
+    AXON: '../../axon/js',
+    ifphetio: '../../chipper/js/requirejs-plugins/ifphetio'
   },
 
   // optional cache buster to make browser refresh load all included scripts, can be disabled with ?cacheBuster=false
