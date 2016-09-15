@@ -128,12 +128,12 @@ define( function( require ) {
      */
     shuffle: function( array ) {
       assert && assert( array, 'Array should exist' );
-      var random = this;
+      var self = this;
       var index = -1;
       var result = new Array( array.length );
 
       _.forEach( array, function( value ) {
-        var rand = random.nextIntBetween( 0, ++index );
+        var rand = self.nextIntBetween( 0, ++index );
         result[ index ] = result[ rand ];
         result[ rand ] = value;
       } );
