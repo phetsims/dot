@@ -470,6 +470,9 @@ define( function( require ) {
           p--;
         }
           break;
+
+        default:
+          throw new Error( 'invalid kase: ' + kase );
       }
     }
   }
