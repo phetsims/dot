@@ -745,10 +745,7 @@ define( function( require ) {
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
-      else {
-        return this.divideScalar( mag );
-      }
-      return this;
+      return this.divideScalar( mag );
     }
   } );
 
