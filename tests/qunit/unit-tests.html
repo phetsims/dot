@@ -16,7 +16,7 @@
     window.assertions.enableAssertSlow();
   </script>
 
-  <script data-main="../../js/config.js" src="../../../sherpa/lib/require-2.1.11.js"></script>
+  <script data-main="../../js/dot-config.js" src="../../../sherpa/lib/require-2.1.11.js"></script>
 
   <!-- Loads the code needed to run unit tests for each particular library/codebase -->
   <script src="unit-tests.js"></script>
@@ -30,7 +30,7 @@
 <div id="qunit-fixture"></div>
 <script src="../../../sherpa/lib/qunit-1.14.0.js"></script>
 <script>
-  require( [ 'config' ], function() {
+  require( [ 'dot-config' ], function() {
     require( [ 'main', 'AXON/main', 'PHET_CORE/main' ], function( dot, axon, phetCore ) {
       window.dot = dot;
       window.axon = axon;
