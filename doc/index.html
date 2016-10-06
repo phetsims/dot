@@ -32,7 +32,7 @@
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   <!-- Our code, in either the concatenated 'with comments' version or the minified version -->
-  <script src="../build/development/dot.js"></script>
+  <script src="../build/dot.min.js"></script>
 
   <style type="text/css">
     .exampleScene {
@@ -40,7 +40,7 @@
       border: 1px solid black;
       display: block;
     }
-    
+
     #sidebar {
       background-color: #eee;
       position: fixed;
@@ -58,7 +58,7 @@
       -webkit-box-shadow: 0 0 20px #ccc;
       -moz-box-shadow: 0 0 20px #ccc;
     }
-    
+
     #apiList {
       background-color: #eee;
       position: relative;
@@ -66,118 +66,118 @@
       border-left: none;
       padding: 10px;
     }
-    
+
     .ph2 {
       font-weight: bold;
       font-size: 18px;
     }
-    
+
     .navlink {
       font-weight: bold;
     }
-    
+
     .sublink {
       padding-left: 1em;
     }
-    
+
     .args {
       font-weight: normal;
       font-size: 90%;
       color: #000;
       vertical-align: middle;
     }
-    
+
     .this {
       font-weight: normal;
       font-size: 90%;
       color: #000;
       vertical-align: middle;
     }
-    
+
     .return {
       font-weight: normal;
       font-size: 95%;
       vertical-align: middle;
     }
-    
+
     .property {
       font-weight: normal;
       font-size: 95%;
       vertical-align: middle;
     }
-    
+
     .inherit {
       font-weight: normal;
       font-size: 95%;
       vertical-align: middle;
       padding-left: 10px;
     }
-    
+
     .entryName {
       vertical-align: middle
     }
-    
+
     .type {
       /*color: #d14;*/
       color: #0088cc;
     }
-    
+
     .type::before {
       content: "{";
     }
-    
+
     .type::after {
       content: "}";
     }
-    
+
     .param td {
       vertical-align: top;
     }
-    
+
     .params {
       margin: 0 20px;
     }
-    
+
     .explicitSetterGetter {
       font-weight: normal;
       padding-left: 15px;
     }
-    
+
     .optional::before {
       content: "[";
       color: #888;
     }
-    
+
     .optional::after {
       content: "]";
       color: #888;
     }
-    
+
     .navSection {
       font-size: 20px;
       font-weight: bold;
       margin-top: 0;
       margin-bottom: 10px;
     }
-    
+
     .navSection a {
       color: #333;
     }
-    
+
     h4 {
       margin-top: 25px;
     }
-    
+
     h5 {
       border-top: 1px solid #e2e2e2;
       padding-top: 10px;
       margin-top: 13px;
     }
-    
+
     #codeContainer {
       height: 100%;
     }
-    
+
     #codeIndex {
       position: fixed;
       top: 41px;
@@ -189,11 +189,11 @@
       background-color: #eee;
       overflow: auto;
     }
-    
+
     #codeIndexInner {
       padding: 20px;
     }
-    
+
     #codeContent {
       margin-left: 250px;
       padding: 10px;
@@ -843,7 +843,7 @@ git clone https://github.com/phetsims/dot.git</pre>
       <pre>
 cd dot
 npm update
-grunt</pre>
+grunt build-js</pre>
 
       <p>
         You will now have the built files under build/
