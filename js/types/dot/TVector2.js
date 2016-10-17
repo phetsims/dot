@@ -15,10 +15,10 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
-  var TVector2 = function( vector2, phetioID ) {
+  function TVector2( vector2, phetioID ) {
     TObject.call( this, vector2, phetioID );
     assert && assert( vector2 instanceof phet.dot.Vector2 );
-  };
+  }
 
   phetioInherit( TObject, 'TVector2', TVector2, {}, {
     documentation: 'A numerical object with x/y scalar values',

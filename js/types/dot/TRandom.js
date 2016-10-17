@@ -15,10 +15,10 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
-  var TRandom = function( random, phetioID ) {
+  function TRandom( random, phetioID ) {
     TObject.call( this, random, phetioID );
     assert && assert( random instanceof phet.dot.Random );
-  };
+  }
 
   phetioInherit( TObject, 'TRandom', TRandom, {}, {
     documentation: 'Generates pseudorandom values'
