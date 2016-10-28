@@ -88,7 +88,7 @@ module.exports = function( grunt ) {
 
     var template = fs.readFileSync( 'doc/template.html', 'utf8' );
 
-    var html = template.replace( '$API_INDEX$', indexHTML ).replace( '$API_CONTENT$', contentHTML );
+    var html = template.replace( '{{API_INDEX}}', indexHTML ).replace( '{{API_CONTENT}}', contentHTML );
 
     html = beautify_html( html, { indent_size: 2 } );
 
