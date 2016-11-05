@@ -60,17 +60,6 @@ define( function( require ) {
     },
 
     /**
-     * Returns a floating-point number in the range [0, 1), i.e. from 0 (inclusive) to 1 (exclusive)
-     * The random number can be seeded
-     * @public
-     * @returns {number}
-     * @deprecated please use nextDouble() instead because it is clearer
-     */
-    random: function() {
-      return this.nextDouble();
-    },
-
-    /**
      * Returns the next pseudo-random boolean
      * @public
      * @returns {boolean}
