@@ -15,6 +15,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
+  /**
+   * Wrapper type for phet/dot's Bounds3
+   * @param bounds3
+   * @param phetioID
+   * @constructor
+   */
   function TBounds3( bounds3, phetioID ) {
     TObject.call( this, bounds3, phetioID );
     assert && assert( bounds3 instanceof phet.dot.Bounds3 );
@@ -23,6 +29,11 @@ define( function( require ) {
   phetioInherit( TObject, 'TBounds3', TBounds3, {}, {
     documentation: 'a 3-dimensional bounds (bounding box)',
 
+    /**
+     * Decodes a state into a Bounds3.
+     * @param {Object} stateObject
+     * @returns {Object}
+     */
     fromStateObject: function( stateObject ) {
       return new phet.dot.Bounds3(
         stateObject.minX, stateObject.minY, stateObject.minZ,
@@ -30,6 +41,11 @@ define( function( require ) {
       );
     },
 
+    /**
+     * Encodes a Bounds3 instance to a state.
+     * @param {Object} instance
+     * @returns {Object}
+     */
     toStateObject: function( instance ) {
       return {
         minX: instance.minX,

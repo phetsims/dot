@@ -15,6 +15,12 @@ define( function( require ) {
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
+  /**
+   * Wrapper type for phet/dot's Random
+   * @param random
+   * @param phetioID
+   * @constructor
+   */
   function TRandom( random, phetioID ) {
     TObject.call( this, random, phetioID );
     assert && assert( random instanceof phet.dot.Random );
