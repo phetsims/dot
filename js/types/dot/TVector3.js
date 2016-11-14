@@ -32,7 +32,7 @@ define( function( require ) {
     /**
      * Decodes a state into a Vector3.
      * @param {Object} stateObject
-     * @returns {Object}
+     * @returns {Vector3}
      */
     fromStateObject: function( stateObject ) {
       return new phet.dot.Vector3( stateObject.x, stateObject.y, stateObject.z );
@@ -40,7 +40,7 @@ define( function( require ) {
 
     /**
      * Encodes a Vector3 instance to a state.
-     * @param {Object} instance
+     * @param {Vector3} instance
      * @returns {Object}
      */
     toStateObject: function( instance ) {

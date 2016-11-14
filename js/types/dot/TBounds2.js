@@ -33,7 +33,7 @@ define( function( require ) {
     /**
      * Decodes a state into a Bounds2.
      * @param {Object} stateObject
-     * @returns {Object}
+     * @returns {Bounds2}
      */
     fromStateObject: function( stateObject ) {
       return new phet.dot.Bounds2(
@@ -44,7 +44,7 @@ define( function( require ) {
 
     /**
      * Encodes a Bounds2 instance to a state.
-     * @param {Object} instance
+     * @param {Bounds2} instance
      * @returns {Object}
      */
     toStateObject: function( instance ) {
