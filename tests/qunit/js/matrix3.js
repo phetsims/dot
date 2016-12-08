@@ -47,10 +47,6 @@
     return new Vector2( 0.739498, 0.827537 );
   }
 
-  function V3() {
-    return new Vector3( 0.598714, 0.18293, 0.698649 );
-  }
-
   test( 'Affine detection', function() {
     equal( A().type, Matrix3.Types.OTHER );
     equal( B().type, Matrix3.Types.OTHER );
