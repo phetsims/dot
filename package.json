@@ -14,5 +14,14 @@
     "requirejs": "~2.1.8",
     "esprima": "~2.7.0",
     "js-beautify": "~1.5.10"
+  },
+  "phet": {
+    "isJSOnly": true,
+    "requiresLodash": true,
+    "assignGlobals": {
+      "dot": "DOT/main",
+      "axon": "AXON/main",
+      "phetCore": "PHET_CORE/main"
+    }
   }
 }
