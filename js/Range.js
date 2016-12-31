@@ -39,7 +39,7 @@ define( function( require ) {
      * @returns {Range}
      */
     copy: function() {
-      return new Range( this.min, this.max );
+      return new Range( this.min, this.max ); // eslint-disable-line no-html-constructors
     },
 
     /**
