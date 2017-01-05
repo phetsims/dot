@@ -1,6 +1,8 @@
 // Copyright 2016, University of Colorado Boulder
 
 (function() {
+  'use strict';
+  
   module( 'Dot: Bounds2' );
 
   var Bounds2 = dot.Bounds2;

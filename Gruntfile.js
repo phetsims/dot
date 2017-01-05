@@ -10,10 +10,11 @@ var fs = require( 'fs' );
 var beautify_html = jsBeautify.html;
 
 // use chipper's gruntfile
-var Gruntfile = require( '../chipper/js/grunt/Gruntfile.js' );
+var Gruntfile = require( '../chipper/js/grunt/Gruntfile.js' ); // eslint-disable-line
 
 // Add repo-specific grunt tasks
 module.exports = function( grunt ) {
+  'use strict';
 
   grunt.registerTask( 'doc-dot', 'Generates Documentation', function() {
     var indexHTML = '';

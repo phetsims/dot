@@ -1,15 +1,12 @@
 // Copyright 2016, University of Colorado Boulder
 
 (function() {
+  'use strict';
+
   module( 'Dot: BinPacker' );
 
   var BinPacker = dot.BinPacker;
   var Bounds2 = dot.Bounds2;
-
-  function approximateComplexEquals( a, b, msg ) {
-    var epsilon = 0.00001;
-    ok( a.equalsEpsilon( b, epsilon ), msg + ' expected: ' + b.toString() + ', result: ' + a.toString() );
-  }
 
   test( 'Entire BinPacker allocation', function() {
     var p = new BinPacker( new Bounds2( 0, 0, 1, 1 ) );
@@ -149,7 +146,7 @@
     checkNoOverlappingBins( bins, bounds );
 
     // remove all bins
-    for ( var i = 0; i < bins.length; i ++ ) {
+    for ( i = 0; i < bins.length; i ++ ) {
       if ( bins[i] ) {
         p.deallocate( bins[i] );
         bins[i] = null;

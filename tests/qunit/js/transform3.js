@@ -1,6 +1,8 @@
 // Copyright 2016, University of Colorado Boulder
 
 (function() {
+  'use strict';
+
   module( 'Dot: Transform3' );
 
   var Matrix3 = dot.Matrix3;
@@ -48,10 +50,10 @@
 
     var t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
     assert && throws( function() {
-      var x = t2.transformX( 5 );
+      t2.transformX( 5 );
     } );
     assert && throws( function() {
-      var y = t2.transformY( 5 );
+      t2.transformY( 5 );
     } );
   } );
 

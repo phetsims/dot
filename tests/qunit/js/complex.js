@@ -1,6 +1,8 @@
 // Copyright 2016, University of Colorado Boulder
 
 (function() {
+  'use strict';
+  
   module( 'Dot: Complex' );
 
   var Complex = dot.Complex;
@@ -40,7 +42,7 @@
     approximateComplexEquals( c.sqrtOf().times( c.sqrtOf() ), c );
 
     var cc = c.plus( c );
-    var d = new Complex( cc.x, cc.y ).sqrtOf();
+    new Complex( cc.x, cc.y ).sqrtOf(); // eslint-disable-line
   } );
 
   test( 'Exponentiation', function() {

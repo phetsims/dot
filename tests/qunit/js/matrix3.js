@@ -1,11 +1,12 @@
 // Copyright 2016, University of Colorado Boulder
 
 (function() {
+  'use strict';
+
   module( 'Dot: Matrix3' );
 
   var Matrix3 = dot.Matrix3;
   var Vector2 = dot.Vector2;
-  var Vector3 = dot.Vector3;
 
   var epsilon = 0.00001;
 
@@ -91,7 +92,8 @@
   } );
 
   test( 'plus / add', function() {
-    var a = A(), b = B();
+    var a = A();
+    var b = B();
     var result = Matrix3.createFromPool( 0.583184, -1.32807, 0.400818, -0.207545, 0.401791, 0.882298, 0.81168, 0.370878, -0.0835274 );
 
     approximateMatrixEqual( a.plus( b ), result, 'plus' );
@@ -102,7 +104,8 @@
   } );
 
   test( 'minus / subtract', function() {
-    var a = A(), b = B();
+    var a = A();
+    var b = B();
     var result = Matrix3.createFromPool( -0.149837, 0.417574, -0.580365, -0.3163, -0.819726, -1.04049, -0.949493, -1.61117, 0.634326 );
 
     approximateMatrixEqual( a.minus( b ), result, 'minus' );
@@ -146,7 +149,8 @@
   } );
 
   test( 'timesMatrix / multiplyMatrix', function() {
-    var a = A(), b = B();
+    var a = A();
+    var b = B();
     var result = Matrix3.createFromPool( -0.0243954, -0.556133, -0.299155, -0.177013, 0.0225954, -0.301007, 0.183536, -0.0456892, -0.72886 );
 
     approximateMatrixEqual( a.timesMatrix( b ), result, 'timesMatrix' );
@@ -157,7 +161,8 @@
   } );
 
   test( 'timesVector2 / multiplyVector2', function() {
-    var c = C(), v = V2();
+    var c = C();
+    var v = V2();
     var result = new Vector2( 0.543836, 0.926107 );
 
     approximateMatrixEqual( c.timesVector2( v ), result, 'timesVector2' );
@@ -168,7 +173,8 @@
   } );
 
   test( 'timesTransposeVector2 / multiplyTransposeVector2', function() {
-    var c = C(), v = V2();
+    var c = C();
+    var v = V2();
 
     c.timesTransposeVector2( v );
     approximateMatrixEqual( v, V2(), 'verifying immutability' );
@@ -178,7 +184,8 @@
   } );
 
   test( 'timesRelativeVector2 / multiplyRelativeVector2', function() {
-    var c = C(), v = V2();
+    var c = C();
+    var v = V2();
 
     c.timesRelativeVector2( v );
     approximateMatrixEqual( v, V2(), 'verifying immutability' );
