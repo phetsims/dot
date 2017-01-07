@@ -81,7 +81,7 @@
     var t = new dot.Transform3();
     t.append( dot.Matrix3.rotation2( Math.PI ) );
 
-    expect( 0 );
+    expect( 0 ); // eslint-disable-line no-undef
   } );
 
   test( 'linear map', function() {
