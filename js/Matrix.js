@@ -464,6 +464,23 @@ define( function( require ) {
     return result;
   };
 
+  /**
+   * Returns a square diagonal matrix, whose entries along the diagonal are specified by the passed-in array, and the
+   * other entries are 0.
+   * @public
+   *
+   * @param {Array.<number>} diagonalValues
+   * @returns {Matrix}
+   */
+  Matrix.diagonalMatrix = function( diagonalValues ) {
+    var n = diagonalValues.length;
+    var result = new Matrix( n, n ); // Should fill in zeros
+    for ( var i = 0; i < n; i++ ) {
+      result.entries[ result.index( i, i ) ] = diagonalValues[ i ];
+    }
+    return result;
+  };
+
   Matrix.rowVector2 = function( vector ) {
     return new Matrix( 1, 2, [ vector.x, vector.y ] );
   };

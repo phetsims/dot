@@ -527,5 +527,28 @@ define( function( require ) {
     }
   };
 
+  /**
+   * Constructs the Moore-Penrose pseudoinverse of the specified matrix, using the SVD construction.
+   * @public
+   *
+   * See https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_pseudoinverse for details. Helpful for
+   * linear least-squares regression.
+   *
+   * @param {Matrix} matrix, m x n
+   * @returns {Matrix} - n x m
+   */
+  SingularValueDecomposition.pseudoinverse = function( matrix ) {
+    var svd = new SingularValueDecomposition( matrix );
+    var sigmaPseudoinverse = dot.Matrix.diagonalMatrix( svd.getSingularValues().map( function( value ) {
+      if ( Math.abs( value ) < 1e-300 ) {
+        return 0;
+      }
+      else {
+        return 1 / value;
+      }
+    } ) );
+    return svd.getV().times( sigmaPseudoinverse ).times( svd.getU().transpose() );
+  };
+
   return SingularValueDecomposition;
 } );
