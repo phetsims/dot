@@ -10,10 +10,9 @@ define( function( require ) {
 
   // modules
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-
-  // constants
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
+  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
 
   /**
    * Wrapper type for phet/dot's Vector3
@@ -22,8 +21,8 @@ define( function( require ) {
    * @constructor
    */
   function TVector3( vector3, phetioID ) {
+    assertInstanceOf( vector3, phet.dot.Vector3 );
     TObject.call( this, vector3, phetioID );
-    assert && assert( vector3 instanceof phet.dot.Vector3 );
   }
 
   phetioInherit( TObject, 'TVector3', TVector3, {}, {

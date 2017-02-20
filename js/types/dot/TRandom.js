@@ -10,8 +10,7 @@ define( function( require ) {
 
   // modules
   var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-
-  // constants
+  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'PHET_IO/phetioInherit' );
   var TObject = require( 'PHET_IO/types/TObject' );
 
@@ -22,8 +21,8 @@ define( function( require ) {
    * @constructor
    */
   function TRandom( random, phetioID ) {
+    assertInstanceOf( random, phet.dot.Random );
     TObject.call( this, random, phetioID );
-    assert && assert( random instanceof phet.dot.Random );
   }
 
   phetioInherit( TObject, 'TRandom', TRandom, {}, {
