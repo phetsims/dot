@@ -3,7 +3,7 @@
 // path to test base, without a slash, e.g. '../../../dot/tests/qunit'
 function runDotTests( pathToTestBase ) { // eslint-disable-line no-unused-vars
   'use strict';
-  
+
   function loadTestFile( src ) {
     var script = document.createElement( 'script' );
     script.type = 'text/javascript';
@@ -22,4 +22,5 @@ function runDotTests( pathToTestBase ) { // eslint-disable-line no-unused-vars
   loadTestFile( 'js/transform3.js' );
   loadTestFile( 'js/modulo.js' );
   loadTestFile( 'js/binpacker.js' );
+  loadTestFile( 'js/harmonic-motion.js' );
 }
