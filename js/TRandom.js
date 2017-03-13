@@ -9,10 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
-  var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TObject = require( 'PHET_IO/types/TObject' );
+  var dot = require( 'DOT/dot' );
+
+  // phet-io modules
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
 
   /**
    * Wrapper type for phet/dot's Random
@@ -29,7 +31,7 @@ define( function( require ) {
     documentation: 'Generates pseudorandom values'
   } );
 
-  phetioNamespace.register( 'TRandom', TRandom );
+  dot.register( 'TRandom', TRandom );
 
   return TRandom;
 } );

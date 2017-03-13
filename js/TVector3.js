@@ -9,10 +9,12 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var phetioNamespace = require( 'PHET_IO/phetioNamespace' );
-  var phetioInherit = require( 'PHET_IO/phetioInherit' );
-  var TObject = require( 'PHET_IO/types/TObject' );
-  var assertInstanceOf = require( 'PHET_IO/assertions/assertInstanceOf' );
+  var dot = require( 'DOT/dot' );
+
+  // phet-io modules
+  var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
+  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
 
   /**
    * Wrapper type for phet/dot's Vector3
@@ -47,7 +49,7 @@ define( function( require ) {
     }
   } );
 
-  phetioNamespace.register( 'TVector3', TVector3 );
+  dot.register( 'TVector3', TVector3 );
 
   return TVector3;
 } );
