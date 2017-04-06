@@ -468,9 +468,12 @@ define( function( require ) {
      * @returns {Vector2} this for chaining
      */
     rotateAboutXY: function( x, y, angle ) {
-      var rotatedAboutXY = this.rotatedAboutXY( x, y, angle );
-      this.x = rotatedAboutXY.x;
-      this.y = rotatedAboutXY.y;
+      var dx = this.x - x;
+      var dy = this.y - y;
+      var cos = Math.cos( angle );
+      var sin = Math.sin( angle );
+      this.x = x + dx * cos - dy * sin;
+      this.y = y + dx * sin + dy * cos;
       return this; // for chaining
     },
 
@@ -496,14 +499,7 @@ define( function( require ) {
      * @returns {Vector2} the new Vector2
      */
     rotatedAboutXY: function( x, y, angle ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
-      var cos = Math.cos( angle );
-      var sin = Math.sin( angle );
-      return new Vector2(
-        x + dx * cos - dy * sin,
-        y + dx * sin + dy * cos
-      );
+      return new Vector2( this.x, this.y ).rotateAboutXY( x, y, angle );
     },
 
     /**
