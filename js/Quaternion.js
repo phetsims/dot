@@ -322,7 +322,7 @@ define( function( require ) {
    *
    * @param {Vector3} a - Unit vector A
    * @param {Vector3} b - Unit vector B
-   * @return {Quaternion} A quaternion s.t. Q * A = B
+   * @returns {Quaternion} A quaternion s.t. Q * A = B
    */
   Quaternion.getRotationQuaternion = function( a, b ) {
     return Quaternion.fromRotationMatrix( dot.Matrix3.rotateAToB( a, b ) );
