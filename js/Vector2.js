@@ -459,6 +459,56 @@ define( function( require ) {
     },
 
     /**
+     * Mutable method that rotates a vector about an x,y point.
+     * @param {number} x - origin of rotation in x
+     * @param {number} y - origin of rotation in y
+     * @param {number} angle - radians to rotate
+     */
+    rotateAboutXY: function( x, y, angle ) {
+      var rotatedAboutXY = this.rotatedAboutXY( x, y, angle );
+      this.x = rotatedAboutXY.x;
+      this.y = rotatedAboutXY.y;
+      return this; // for chaining
+    },
+
+    /**
+     * Same as rotateAboutXY but with a point argument
+     * @param {Vector2} point
+     * @param {number} angle
+     */
+    rotateAboutPoint: function( point, angle ) {
+      return this.rotateAboutXY( point.x, point.y, angle );
+    },
+
+    /**
+     * Immutable method that returns a new Vector2 that is rotated about the given point.
+     * @param {number} x - origin for rotation in x
+     * @param {number} y - origin for rotation in y
+     * @param {number} angle - radians to rotate
+     * @return {Vector2}
+     */
+    rotatedAboutXY: function( x, y, angle ) {
+      var dx = this.x - x;
+      var dy = this.y - y;
+      var cos = Math.cos( angle );
+      var sin = Math.sin( angle );
+      return new Vector2(
+        x + dx * cos - dy * sin,
+        y + dx * sin + dy * cos
+      );
+    },
+
+    /**
+     * Immutable method that returns a new Vector2 rotated about the given point.
+     * @param {Vector2} point
+     * @param {Vector2} angle
+     * @return {Vector2}
+     */
+    rotatedAboutPoint: function( point, angle ) {
+      return this.rotatedAboutXY( point.x, point.y, angle );
+    },
+
+    /**
      * A linear interpolation between this vector (ratio=0) and another vector (ratio=1).
      * @public
      *
