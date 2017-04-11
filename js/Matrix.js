@@ -23,6 +23,14 @@ define( function( require ) {
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
 
+  /**
+   *
+   * @param {number} m - number of rows
+   * @param {number} n - number of columns
+   * @param {number[]} [filler]
+   * @param {boolean} [fast]
+   * @constructor
+   */
   function Matrix( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
@@ -108,10 +116,24 @@ define( function( require ) {
       return i * this.n + j;
     },
 
+    /**
+     * get the matrix element (i,j)
+     * with the convention that row and column indices start at zero
+     * @param {number} i - row index
+     * @param {number} j - column index
+     * @returns {number}
+     */
     get: function( i, j ) {
       return this.entries[ this.index( i, j ) ];
     },
 
+    /**
+     * set the matrix element (i,j) to a value s
+     * with the convention that row and column indices start at zero
+     * @param {number} i - row index
+     * @param {number} j - column index
+     * @param {number} s - value of the matrix element
+     */
     set: function( i, j, s ) {
       this.entries[ this.index( i, j ) ] = s;
     },
