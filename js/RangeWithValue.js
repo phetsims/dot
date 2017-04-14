@@ -36,7 +36,7 @@ define( function( require ) {
     /**
      * Getter for defaultValue
      *
-     * @returns {boolean}
+     * @returns {number}
      * @public
      */
     getDefaultValue: function() {
