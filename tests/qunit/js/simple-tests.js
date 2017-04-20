@@ -2,7 +2,7 @@
 
 (function() {
   'use strict';
-  
+
   module( 'Dot' );
 
   function approximateEquals( a, b, msg ) {
@@ -170,4 +170,24 @@
     approximateEquals( f( p3, p2, p2 ), 2 );
   } );
 
+  test( 'roundSymmetric', function() {
+    equal( dot.Util.roundSymmetric( 0.5 ), 1, '0.5 => 1' );
+    equal( dot.Util.roundSymmetric( 0.3 ), 0, '0.3 => 0' );
+    equal( dot.Util.roundSymmetric( 0.8 ), 1, '0.8 => 1' );
+    equal( dot.Util.roundSymmetric( -0.5 ), -1, '-0.5 => -1' );
+    for ( var i = 0; i < 20; i++ ) {
+      equal( dot.Util.roundSymmetric( i ), i, i + ' integer' );
+      equal( dot.Util.roundSymmetric( -i ), -i, -i + ' integer' );
+      equal( dot.Util.roundSymmetric( i + 0.5 ), i + 1, ( i + 0.5 ) + ' => ' + ( i + 1 ) );
+      equal( dot.Util.roundSymmetric( -i - 0.5 ), -i - 1, ( -i - 0.5 ) + ' => ' + ( -i - 1 ) );
+    }
+
+    var original = dot.v2( 1.5, -2.5 );
+    var rounded = original.roundedSymmetric();
+    ok( original.equals( dot.v2( 1.5, -2.5 ) ), 'sanity' );
+    ok( rounded.equals( dot.v2( 2, -3 ) ), 'rounded' );
+    var result = original.roundSymmetric();
+    equal( result, original, 'reflexive' );
+    ok( original.equals( rounded ), 'both rounded now' );
+  } );
 })();

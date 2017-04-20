@@ -250,6 +250,19 @@ define( function( require ) {
     },
 
     /**
+     * Returns a copy of this vector with each component rounded by Util.roundSymmetric.
+     * @public
+     *
+     * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @returns {Vector2}
+     */
+    roundedSymmetric: function() {
+      return this.copy().roundSymmetric();
+    },
+
+    /**
      * Re-scaled copy of this vector such that it has the desired magnitude. If its initial magnitude is zero, an error
      * is thrown. If the passed-in magnitude is negative, the direction of the resulting vector will be reversed.
      * @public
@@ -746,6 +759,22 @@ define( function( require ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
       return this.divideScalar( mag );
+    },
+
+    /**
+     * Rounds each component of this vector with Util.roundSymmetric.
+     * @public
+     *
+     * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
+     * to returning the vector itself.
+     *
+     * @returns {Vector4}
+     */
+    roundSymmetric: function() {
+      return this.setXYZW( dot.Util.roundSymmetric( this.x ),
+                           dot.Util.roundSymmetric( this.y ),
+                           dot.Util.roundSymmetric( this.z ),
+                           dot.Util.roundSymmetric( this.w ) );
     }
   } );
 
