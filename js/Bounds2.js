@@ -685,7 +685,7 @@ define( function( require ) {
     /**
      * A bounding box (still axis-aligned) that contains the transformed shape of this bounds, applying the matrix as
      * an affine transformation.
-     * @pubic
+     * @public
      *
      * NOTE: bounds.transformed( matrix ).transformed( inverse ) may be larger than the original box, if it includes
      * a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in area to cover
@@ -1081,7 +1081,7 @@ define( function( require ) {
     /**
      * Modifies this bounds so that it would fully contain a transformed version if its previous value, applying the
      * matrix as an affine transformation.
-     * @pubic
+     * @public
      *
      * NOTE: bounds.transform( matrix ).transform( inverse ) may be larger than the original box, if it includes
      * a rotation that isn't a multiple of $\pi/2$. This is because the bounds may expand in area to cover

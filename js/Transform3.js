@@ -397,7 +397,7 @@ define( function( require ) {
 
     /**
      * Returns bounds (axis-aligned) that contains the transformed bounds rectangle.
-     * @pubic
+     * @public
      *
      * NOTE: transform.inverseBounds2( transform.transformBounds2( bounds ) ) may be larger than the original box,
      * if it includes a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in
@@ -412,7 +412,7 @@ define( function( require ) {
 
     /**
      * Returns a transformed kite.Shape.
-     * @pubic
+     * @public
      *
      * @param {Shape} shape
      * @returns {Shape}
@@ -423,7 +423,7 @@ define( function( require ) {
 
     /**
      * Returns a transformed ray.
-     * @pubic
+     * @public
      *
      * @param {Ray2} ray
      * @returns {Ray2}
@@ -555,7 +555,7 @@ define( function( require ) {
 
     /**
      * Returns bounds (axis-aligned) that contains the inverse-transformed bounds rectangle.
-     * @pubic
+     * @public
      *
      * NOTE: transform.inverseBounds2( transform.transformBounds2( bounds ) ) may be larger than the original box,
      * if it includes a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in
@@ -570,7 +570,7 @@ define( function( require ) {
 
     /**
      * Returns an inverse-transformed kite.Shape.
-     * @pubic
+     * @public
      *
      * This is the inverse of transformShape()
      *
@@ -583,7 +583,7 @@ define( function( require ) {
 
     /**
      * Returns an inverse-transformed ray.
-     * @pubic
+     * @public
      *
      * This is the inverse of transformRay2()
      *

@@ -357,7 +357,7 @@ define( function( require ) {
 
     /**
      * Returns a transformed ray.
-     * @pubic
+     * @public
      *
      * @param {Ray3} ray
      * @returns {Ray3}
@@ -459,7 +459,7 @@ define( function( require ) {
 
     /**
      * Returns an inverse-transformed ray.
-     * @pubic
+     * @public
      *
      * This is the inverse of transformRay()
      *
