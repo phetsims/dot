@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Poolable = require( 'PHET_CORE/Poolable' );
   require( 'DOT/Util' );
+
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
 
   /**
@@ -831,7 +832,7 @@ define( function( require ) {
      */
     roundSymmetric: function() {
       return this.setXY( dot.Util.roundSymmetric( this.x ),
-                         dot.Util.roundSymmetric( this.y ) );
+        dot.Util.roundSymmetric( this.y ) );
     },
 
     /**
@@ -895,6 +896,19 @@ define( function( require ) {
      */
     fromStateObject: function( stateObject ) {
       return new Vector2( stateObject.x, stateObject.y );
+    },
+
+    /**
+     * Allocation-free implementation that gets the angle between two vectors
+     *
+     * @param {Vector2} startVector
+     * @param {Vector2} endVector
+     * @returns {number} the angle between the vectors
+     */
+    getAngleBetweenVectors: function( startVector, endVector ) {
+      var dx = endVector.x - startVector.x;
+      var dy = endVector.x - startVector.y;
+      return Math.atan2( dy, dx )
     }
   } );
 
