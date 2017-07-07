@@ -907,8 +907,20 @@ define( function( require ) {
      */
     getAngleBetweenVectors: function( startVector, endVector ) {
       var dx = endVector.x - startVector.x;
-      var dy = endVector.x - startVector.y;
-      return Math.atan2( dy, dx )
+      var dy = endVector.y - startVector.y;
+      return Math.atan2( dy, dx );
+    },
+
+    /**
+     * Allocation-free way to get the distance between vectors.
+     * @param {Vector2} startVector
+     * @param {Vector2} endVector
+     * @returns {number} the angle between the vectors
+     */
+    getDistanceBetweenVectors: function( startVector, endVector ) {
+      var dx = endVector.x - startVector.x;
+      var dy = endVector.y - startVector.y;
+      return Math.sqrt( dx * dx + dy * dy );
     }
   } );
 
