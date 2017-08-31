@@ -76,6 +76,8 @@ define( function( require ) {
   Matrix3.rotationY = function( angle ) { return Matrix3.dirtyFromPool().setToRotationY( angle ); };
   Matrix3.rotationZ = function( angle ) { return Matrix3.dirtyFromPool().setToRotationZ( angle ); };
 
+  Matrix3.translationRotation = function( x, y, angle ) { return Matrix3.dirtyFromPool().setToTranslationRotation( x, y, angle ); };
+
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
 
@@ -789,6 +791,21 @@ define( function( require ) {
         s, c, 0,
         0, 0, 1,
         Types.AFFINE );
+    },
+
+    setToTranslationRotation: function( x, y, angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor(
+        c, -s, x,
+        s, c, y,
+        0, 0, 1,
+        Types.AFFINE );
+    },
+
+    setToTranslationRotationPoint: function( translation, angle ) {
+      return this.setToTranslationRotation( translation.x, translation.y, angle );
     },
 
     setToSVGMatrix: function( svgMatrix ) {
