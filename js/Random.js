@@ -12,9 +12,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Util = require( 'DOT/Util' );
   var dot = require( 'DOT/dot' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Util = require( 'DOT/Util' );
 
   /**
    * Construct a Random instance.

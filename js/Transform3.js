@@ -12,9 +12,9 @@
 define( function( require ) {
   'use strict';
 
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Events = require( 'AXON/Events' );
   var dot = require( 'DOT/dot' );
+  var Events = require( 'AXON/Events' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   require( 'DOT/Matrix3' );
   require( 'DOT/Vector2' );

@@ -17,9 +17,9 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Poolable = require( 'PHET_CORE/Poolable' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // Temporary instances to be used in the transform method.
   var scratchVector2 = new dot.Vector2();

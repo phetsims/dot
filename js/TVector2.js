@@ -12,9 +12,9 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
 
   // phet-io modules
+  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
   var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertions/assertInstanceOf' );
 
   /**
    * Wrapper type for phet/dot's Vector2
