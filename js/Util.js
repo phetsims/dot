@@ -171,7 +171,7 @@ define( function( require ) {
         return null;
       }
 
-      // Taken from an answer in 
+      // Taken from an answer in
       // http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
       var x12 = p1.x - p2.x;
       var x34 = p3.x - p4.x;
@@ -493,7 +493,7 @@ define( function( require ) {
 
       var denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
       // If denominator is 0, the lines are parallel or coincident
-      if ( denom === 0 ) {
+      if ( Math.abs( denom ) < 1e-10 ) {
         return null;
       }
 
@@ -518,7 +518,7 @@ define( function( require ) {
       // the square of the distance between a and b,
       var segmentSquaredLength = a.distanceSquared( b );
 
-      // if the segment length is zero, the a and b point are coincident. return the squared distance between a and point  
+      // if the segment length is zero, the a and b point are coincident. return the squared distance between a and point
       if ( segmentSquaredLength === 0 ) { return point.distanceSquared( a ); }
 
       // the t value parametrize the projection of the point onto the a b line
