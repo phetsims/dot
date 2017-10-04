@@ -62,7 +62,7 @@ define( function( require ) {
       var divisor = max - min;
 
       // get a partial result of value-min between [0,divisor)
-      var partial = ( value - min ) % divisor;
+      var partial = (value - min) % divisor;
       if ( partial < 0 ) {
         // since if value-min < 0, the remainder will give us a negative number
         partial += divisor;
@@ -190,8 +190,8 @@ define( function( require ) {
       var b = p3.x * p4.y - p3.y * p4.x;
 
       return new dot.Vector2(
-        ( a * x34 - x12 * b ) / denom,
-        ( a * y34 - y12 * b ) / denom
+        (a * x34 - x12 * b) / denom,
+        (a * y34 - y12 * b) / denom
       );
     },
 
@@ -229,7 +229,7 @@ define( function( require ) {
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
       var tmp = rayDir.dot( centerToRay );
       var centerToRayDistSq = centerToRay.magnitudeSquared();
-      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
+      var det = 4 * tmp * tmp - 4 * (centerToRayDistSq - radius * radius);
       if ( det < epsilon ) {
         // ray misses sphere entirely
         return null;
@@ -302,8 +302,8 @@ define( function( require ) {
       // TODO: how to handle if discriminant is 0? give unique root or double it?
       // TODO: probably just use Complex for the future
       return [
-        ( -b - sqrt ) / ( 2 * a ),
-        ( -b + sqrt ) / ( 2 * a )
+        (-b - sqrt) / (2 * a),
+        (-b + sqrt) / (2 * a)
       ];
     },
 
@@ -334,8 +334,8 @@ define( function( require ) {
       c /= a;
       d /= a;
 
-      var q = ( 3.0 * c - ( b * b ) ) / 9;
-      var r = ( -(27 * d) + b * (9 * c - 2 * (b * b)) ) / 54;
+      var q = (3.0 * c - (b * b)) / 9;
+      var r = (-(27 * d) + b * (9 * c - 2 * (b * b))) / 54;
       var discriminant = q * q * q + r * r;
       var b3 = b / 3;
 
@@ -359,8 +359,8 @@ define( function( require ) {
         var rr = 2 * Math.sqrt( -q );
         return [
           -b3 + rr * Math.cos( qX / 3 ),
-          -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
-          -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
+          -b3 + rr * Math.cos( (qX + 2 * Math.PI) / 3 ),
+          -b3 + rr * Math.cos( (qX + 4 * Math.PI) / 3 )
         ];
       }
     },
@@ -389,7 +389,7 @@ define( function( require ) {
      * @returns {number}
      */
     linear: function( a1, a2, b1, b2, a3 ) {
-      return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
+      return (b2 - b1) / (a2 - a1) * (a3 - a1) + b1;
     },
 
     /**
@@ -407,7 +407,7 @@ define( function( require ) {
      * @returns {number}
      */
     roundSymmetric: function( value ) {
-      return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) );
+      return ((value < 0) ? -1 : 1) * Math.round( Math.abs( value ) );
     },
 
     /**
@@ -491,15 +491,15 @@ define( function( require ) {
         return null;
       }
 
-      var denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
+      var denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
       // If denominator is 0, the lines are parallel or coincident
       if ( Math.abs( denom ) < 1e-10 ) {
         return null;
       }
 
       // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-      var intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
-      var intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      var intersectionX = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / denom;
+      var intersectionY = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / denom;
       return new dot.Vector2( intersectionX, intersectionY );
     },
 
@@ -596,7 +596,7 @@ define( function( require ) {
      */
     triangleAreaSigned: function( a, b, c ) {
       // TODO: investigate which way we want the sign (Canvas or WebGL style)
-      return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
+      return a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
     },
 
 
