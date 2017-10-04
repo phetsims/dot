@@ -599,6 +599,15 @@ define( function( require ) {
       return a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
     },
 
+    /**
+     * Polyfill for Math.sign from MDN, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
+     * We cannot use Math.sign because it is not supported on IE
+     * @param {number} x
+     * @returns {number}
+     */
+    sign: function( x ) {
+      return ((x > 0) - (x < 0)) || +x;
+    },
 
     /**
      * Function that returns the hyperbolic cosine of a number
