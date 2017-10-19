@@ -190,9 +190,32 @@ define( function( require ) {
       var b = p3.x * p4.y - p3.y * p4.x;
 
       return new dot.Vector2(
-        (a * x34 - x12 * b) / denom,
-        (a * y34 - y12 * b) / denom
+        ( a * x34 - x12 * b ) / denom,
+        ( a * y34 - y12 * b ) / denom
       );
+    },
+
+    /**
+     * Returns the center of a circle that will lie on 3 points (if it exists), otherwise null (if collinear).
+     * @public
+     *
+     * @param {Vector2} p1
+     * @param {Vector2} p2
+     * @param {Vector2} p3
+     * @returns {Vector2|null}
+     */
+    circleCenterFromPoints: function( p1, p2, p3 ) {
+      // TODO: Can we make scratch vectors here, avoiding the circular reference?
+
+      // midpoints between p1-p2 and p2-p3
+      var p12 = new dot.Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
+      var p23 = new dot.Vector2( ( p2.x + p3.x ) / 2, ( p2.y + p3.y ) / 2 );
+
+      // perpendicular points from the minpoints
+      var p12x = new dot.Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
+      var p23x = new dot.Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
+
+      return Util.lineLineIntersection( p12, p12x, p23, p23x );
     },
 
     /**
