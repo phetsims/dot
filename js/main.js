@@ -8,6 +8,7 @@ define( [
   'DOT/Complex',
   'DOT/ConvexHull2',
   'DOT/DampedHarmonic',
+  'DOT/DelaunayTriangulation',
   'DOT/Dimension2',
   'DOT/EigenvalueDecomposition',
   'DOT/LinearFunction',

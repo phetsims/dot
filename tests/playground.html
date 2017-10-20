@@ -26,6 +26,87 @@
       window.phetCore = phetCore;
 
       console.log( 'loaded' );
+
+      window.triTest = function() {
+        setTimeout(function(){
+          window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ) ];
+          window.triangulation = new dot.DelaunayTriangulation( points, [] );
+          triDebug( triangulation );
+        });
+      };
+
+      window.triDebug = function( triangulation ) {
+        var bounds = dot.Bounds2.NOTHING.copy();
+        for ( var i = 0; i < triangulation.vertices.length; i++ ) {
+          bounds.addPoint( triangulation.vertices[ i ].point );
+        }
+        bounds.addPoint( triangulation.artificialMinVertex.point );
+        bounds.addPoint( triangulation.artificialMaxVertex.point );
+
+        var debugSize = 512;
+        var pad = 20;
+        var scale = ( debugSize - pad * 2 ) / Math.max( bounds.width, bounds.height );
+
+        function transformContext( context ) {
+          context.translate( pad, pad );
+          context.scale( scale, -scale );
+          context.translate( -bounds.minX, -bounds.minY - bounds.height );
+        }
+
+        function draw( callback ) {
+          var canvas = document.createElement( 'canvas' );
+          canvas.width = debugSize;
+          canvas.height = debugSize;
+          canvas.style.border = '1px solid black';
+          var context = canvas.getContext( '2d' );
+          transformContext( context );
+          callback( context );
+          document.body.appendChild( canvas );
+        }
+
+        function drawVertex( context, vertex, color ) {
+          context.beginPath();
+          context.arc( vertex.point.x, vertex.point.y, 3 / scale, 0, Math.PI * 2, false );
+          context.closePath();
+          context.fillStyle = color;
+          context.fill();
+        }
+
+        function drawEdge( context, edge ) {
+          context.beginPath();
+          context.moveTo( edge.startVertex.point.x, edge.startVertex.point.y );
+          context.lineTo( edge.endVertex.point.x, edge.endVertex.point.y );
+          context.strokeStyle = 'rgba(0,0,0,0.4)';
+          context.lineWidth = 1 / scale;
+          context.stroke();
+        }
+
+        function drawTriangle( context, triangle ) {
+          context.beginPath();
+          context.moveTo( triangle.aEdge.startVertex.point.x, triangle.aEdge.startVertex.point.y );
+          context.lineTo( triangle.bEdge.startVertex.point.x, triangle.bEdge.startVertex.point.y );
+          context.lineTo( triangle.cEdge.startVertex.point.x, triangle.cEdge.startVertex.point.y );
+          context.closePath();
+          context.fillStyle = 'rgba(0,0,0,0.1)';
+          context.fill();
+        }
+
+        draw( function( context ) {
+          triangulation.vertices.forEach( function( vertex ) {
+            drawVertex( context, vertex, 'rgba(0,0,0,0.4)' );
+          } );
+          drawVertex( context, triangulation.artificialMinVertex, 'rgba(128,0,0,0.4)' );
+          drawVertex( context, triangulation.artificialMaxVertex, 'rgba(128,0,0,0.4)' );
+
+          triangulation.edges.forEach( function( edge ) {
+            drawEdge( context, edge );
+          } );
+
+          triangulation.triangles.forEach( function( triangle ) {
+            drawTriangle( context, triangle );
+          } );
+        } );
+      };
     } );
   } );
 </script>
