@@ -29,7 +29,7 @@
 
       window.triTest = function() {
         setTimeout(function(){
-          window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ) ];
+          window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 3, 5 ), dot.v2( 15, 13 ), dot.v2( 10, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ) ];
           window.triangulation = new dot.DelaunayTriangulation( points, [] );
           triDebug( triangulation );
           while ( triangulation.remainingVertices.length ) {
