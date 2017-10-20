@@ -49,11 +49,14 @@ define( function( require ) {
       return;
     }
 
-    // @private {Array.<Vector2>}
+    // @private {Array.<Vertex>}
     this.vertices = points.map( function( point, index ) {
       return new Vertex( point, index );
     } );
     this.vertices.sort( DelaunayTriangulation.vertexComparison );
+
+    // @private {Array.<Vertex>} - Our initialization will handle our first vertex
+    this.remainingVertices = this.vertices.slice( 1 );
 
     var bounds = Bounds2.NOTHING.copy();
     for ( i = points.length - 1; i >= 0; i-- ) {
@@ -71,11 +74,12 @@ define( function( require ) {
     this.edges.push( new Edge( this.vertices[ 0 ], this.artificialMinVertex ) );
 
     // Set up our first (artificial) triangle.
-    this.triangles.push( new Triangle( this.edges[ 0 ], this.edges[ 1 ], this.edges[ 2 ] ) );
+    this.triangles.push( new Triangle( this.artificialMinVertex, this.artificialMaxVertex, this.vertices[ 0 ],
+                         this.edges[ 1 ], this.edges[ 2 ], this.edges[ 0 ] ) );
 
     // @private {Edge} - The start of our front (the edges at the front of the sweep-line)
     this.firstFrontEdge = this.edges[ 1 ];
-    this.edges[ 1 ].appendEdge( this.edges[ 2 ] );
+    this.edges[ 1 ].connectAfter( this.edges[ 2 ] );
 
     // @private {Edge} - The start of our hull (the edges at the back, making up the convex hull)
     this.firstHullEdge = this.edges[ 0 ];
@@ -84,7 +88,51 @@ define( function( require ) {
   dot.register( 'DelaunayTriangulation', DelaunayTriangulation );
 
   inherit( Object, DelaunayTriangulation, {
+    /**
+     * Moves the triangulation forward by a vertex.
+     * @private
+     */
+    step: function() {
+      // TODO: reverse the array prior to this?
+      var vertex = this.remainingVertices.shift();
 
+      var x = vertex.point.x;
+
+      var frontEdge = this.firstFrontEdge;
+      while ( frontEdge ) {
+        // TODO: epsilon needed here?
+        if ( x > frontEdge.endVertex.point.x ) {
+          var edge1 = new Edge( frontEdge.startVertex, vertex );
+          var edge2 = new Edge( vertex, frontEdge.endVertex );
+          edge1.connectAfter( edge2 );
+          this.edges.push( edge1 );
+          this.edges.push( edge2 );
+          this.triangles.push( new Triangle( frontEdge.endVertex, frontEdge.startVertex, vertex,
+                                             edge1, edge2, frontEdge ) );
+          var previousEdge = frontEdge.previousEdge;
+          var nextEdge = frontEdge.nextEdge;
+          if ( previousEdge ) {
+            previousEdge.disconnectAfter();
+            previousEdge.connectAfter( edge1 );
+          }
+          else {
+            this.firstFrontEdge = edge1;
+          }
+          if ( nextEdge ) {
+            frontEdge.disconnectAfter();
+            edge2.connectAfter( nextEdge );
+          }
+          // TODO: legalization
+          return;
+        }
+        else if ( x === frontEdge.endVertex.x ) {
+          throw new Error( 'Left case unimplemented so far' );
+        }
+        frontEdge = frontEdge.nextEdge;
+      }
+
+      throw new Error( 'Did not find matching front edge?' );
+    }
   }, {
     /**
      * Comparison for sorting points by y, then by x.
@@ -171,12 +219,12 @@ define( function( require ) {
     this.startVertex = startVertex;
     this.endVertex = endVertex;
 
-    // @public {Triangle|null} - Adjacent triangles to the edge
-    this.insideTriangle = null;
-    this.outsideTriangle = null;
+    // @public {Array.<Triangle>} - Adjacent triangles to the edge
+    this.triangles = [];
 
     // @public {Edge|null} - Linked list for the front of the sweep-line (or in the back for the convex hull)
     this.nextEdge = null;
+    this.previousEdge = null;
   }
 
   inherit( Object, Edge, {
@@ -186,43 +234,74 @@ define( function( require ) {
      *
      * @param {Edge} edge
      */
-    appendEdge: function( edge ) {
+    connectAfter: function( edge ) {
       assert && assert( edge instanceof Edge );
       assert && assert( this.endVertex === edge.startVertex );
 
       this.nextEdge = edge;
+      edge.previousEdge = this;
+    },
+
+    // TODO: doc
+    disconnectAfter: function()  {
+      this.nextEdge.previousEdge = null;
+      this.nextEdge = null;
+    },
+
+    /**
+     * Adds an adjacent triangle.
+     * @public
+     *
+     * @param {Triangle} triangle
+     */
+    addTriangle: function( triangle ) {
+      assert && assert( triangle instanceof Triangle );
+      assert && assert( this.triangles.length <= 1 );
+
+      this.triangles.push( triangle );
     }
   } );
 
   /**
-   * Triangle defined by three edges
+   * Triangle defined by three vertices (with edges)
    * @private
    * @constructor
    *
-   * @param {Edge} aEdge
-   * @param {Edge} bEdge
-   * @param {Edge} cEdge
+   * @param {Vertex} aVertex
+   * @param {Vertex} bVertex
+   * @param {Vertex} cVertex
+   * @param {Edge} aEdge - Edge opposite the 'a' vertex
+   * @param {Edge} bEdge - Edge opposite the 'b' vertex
+   * @param {Edge} cEdge - Edge opposite the 'c' vertex
    */
-  function Triangle( aEdge, bEdge, cEdge ) {
+  function Triangle( aVertex, bVertex, cVertex, aEdge, bEdge, cEdge ) {
+    assert && assert( aVertex instanceof Vertex );
+    assert && assert( bVertex instanceof Vertex );
+    assert && assert( cVertex instanceof Vertex );
     assert && assert( aEdge instanceof Edge );
     assert && assert( bEdge instanceof Edge );
     assert && assert( cEdge instanceof Edge );
 
-    // Ensure the points are connected in the expected order
-    assert && assert( aEdge.endVertex === bEdge.startVertex );
-    assert && assert( bEdge.endVertex === cEdge.startVertex );
-    assert && assert( cEdge.endVertex === aEdge.startVertex );
-    assert && assert( Util.triangleAreaSigned( aEdge.startVertex.point, bEdge.startVertex.point, cEdge.startVertex.point ) > 0,
+    assert && assert( aVertex !== aEdge.startVertex && aVertex !== aEdge.endVertex, 'Should be an opposite edge' );
+    assert && assert( bVertex !== bEdge.startVertex && bVertex !== bEdge.endVertex, 'Should be an opposite edge' );
+    assert && assert( cVertex !== cEdge.startVertex && cVertex !== cEdge.endVertex, 'Should be an opposite edge' );
+
+    assert && assert( Util.triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
       'Should be counterclockwise' );
+
+    // @public {Vertex}
+    this.aVertex = aVertex;
+    this.bVertex = bVertex;
+    this.cVertex = cVertex;
 
     // @public {Edge}
     this.aEdge = aEdge;
     this.bEdge = bEdge;
     this.cEdge = cEdge;
 
-    this.aEdge.insideTriangle = this;
-    this.bEdge.insideTriangle = this;
-    this.cEdge.insideTriangle = this;
+    this.aEdge.addTriangle( this );
+    this.bEdge.addTriangle( this );
+    this.cEdge.addTriangle( this );
   }
 
   inherit( Object, Triangle, {
@@ -233,9 +312,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     isArtificial: function() {
-      return this.aEdge.startVertex.isArtificial() ||
-             this.bEdge.startVertex.isArtificial() ||
-             this.cEdge.startVertex.isArtificial();
+      return this.aVertex.isArtificial() || this.bVertex.isArtificial() || this.cVertex.isArtificial();
     }
   } );
 

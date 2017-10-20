@@ -32,6 +32,10 @@
           window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ) ];
           window.triangulation = new dot.DelaunayTriangulation( points, [] );
           triDebug( triangulation );
+          while ( triangulation.remainingVertices.length ) {
+            triangulation.step();
+            triDebug( triangulation );
+          }
         });
       };
 
@@ -43,7 +47,7 @@
         bounds.addPoint( triangulation.artificialMinVertex.point );
         bounds.addPoint( triangulation.artificialMaxVertex.point );
 
-        var debugSize = 512;
+        var debugSize = 256;
         var pad = 20;
         var scale = ( debugSize - pad * 2 ) / Math.max( bounds.width, bounds.height );
 
@@ -72,20 +76,20 @@
           context.fill();
         }
 
-        function drawEdge( context, edge ) {
+        function drawEdge( context, edge, color ) {
           context.beginPath();
           context.moveTo( edge.startVertex.point.x, edge.startVertex.point.y );
           context.lineTo( edge.endVertex.point.x, edge.endVertex.point.y );
-          context.strokeStyle = 'rgba(0,0,0,0.4)';
+          context.strokeStyle = color;
           context.lineWidth = 1 / scale;
           context.stroke();
         }
 
         function drawTriangle( context, triangle ) {
           context.beginPath();
-          context.moveTo( triangle.aEdge.startVertex.point.x, triangle.aEdge.startVertex.point.y );
-          context.lineTo( triangle.bEdge.startVertex.point.x, triangle.bEdge.startVertex.point.y );
-          context.lineTo( triangle.cEdge.startVertex.point.x, triangle.cEdge.startVertex.point.y );
+          context.moveTo( triangle.aVertex.point.x, triangle.aVertex.point.y );
+          context.lineTo( triangle.bVertex.point.x, triangle.bVertex.point.y );
+          context.lineTo( triangle.cVertex.point.x, triangle.cVertex.point.y );
           context.closePath();
           context.fillStyle = 'rgba(0,0,0,0.1)';
           context.fill();
@@ -99,8 +103,14 @@
           drawVertex( context, triangulation.artificialMaxVertex, 'rgba(128,0,0,0.4)' );
 
           triangulation.edges.forEach( function( edge ) {
-            drawEdge( context, edge );
+            drawEdge( context, edge, 'rgba(0,0,0,0.4)' );
           } );
+
+          var frontEdge = triangulation.firstFrontEdge;
+          while ( frontEdge ) {
+            drawEdge( context, frontEdge, 'rgba(255,0,0,0.6)')
+            frontEdge = frontEdge.nextEdge;
+          }
 
           triangulation.triangles.forEach( function( triangle ) {
             drawTriangle( context, triangle );
