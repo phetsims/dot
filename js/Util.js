@@ -575,7 +575,9 @@ define( function( require ) {
      * @param {Vector2} b - Ending point of the line segment
      * @returns {number}
      */
-    distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); },
+    distToSegment: function( point, a, b ) {
+      return Math.sqrt( this.distToSegmentSquared( point, a, b ) );
+    },
 
     /**
      * Determines whether the three points are approximately collinear.
@@ -612,24 +614,30 @@ define( function( require ) {
      * provided are clockwise or counter-clockwise.
      * @public
      *
+     * If the vertices are counterclockwise (in a right-handed coordinate system), then the signed area will be
+     * positive.
+     *
      * @param {Vector2} a
      * @param {Vector2} b
      * @param {Vector2} c
      * @returns {number}
      */
     triangleAreaSigned: function( a, b, c ) {
-      // TODO: investigate which way we want the sign (Canvas or WebGL style)
-      return a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y);
+      return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
     },
 
     /**
-     * Polyfill for Math.sign from MDN, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
+     * Polyfill for Math.sign from MDN, see
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
+     * @public
+     *
      * We cannot use Math.sign because it is not supported on IE
+     *
      * @param {number} x
      * @returns {number}
      */
     sign: function( x ) {
-      return ((x > 0) - (x < 0)) || +x;
+      return ( ( x > 0 ) - ( x < 0 ) ) || +x;
     },
 
     /**
@@ -640,7 +648,7 @@ define( function( require ) {
      * @returns {number}
      */
     cosh: function( value ) {
-      return (Math.exp( value ) + Math.exp( -value )) / 2;
+      return ( Math.exp( value ) + Math.exp( -value ) ) / 2;
     },
 
     /**
@@ -651,7 +659,7 @@ define( function( require ) {
      * @returns {number}
      */
     sinh: function( value ) {
-      return (Math.exp( value ) - Math.exp( -value )) / 2;
+      return ( Math.exp( value ) - Math.exp( -value ) ) / 2;
     },
 
     /**
