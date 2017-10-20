@@ -219,6 +219,39 @@ define( function( require ) {
     },
 
     /**
+     * Returns whether the point p is inside the circle defined by the other three points (p1, p2, p3).
+     * @public
+     *
+     * NOTE: p1,p2,p3 should be specified in a counterclockwise (mathematically) order, and thus should have a positive
+     * signed area.
+     *
+     * See notes in https://en.wikipedia.org/wiki/Delaunay_triangulation.
+     *
+     * @param {Vector2} p1
+     * @param {Vector2} p2
+     * @param {Vector2} p3
+     * @param {Vector2} p
+     * @returns {boolean}
+     */
+    pointInCircleFromPoints: function( p1, p2, p3, p ) {
+      assert && assert( Util.triangleAreaSigned( p1, p2, p3 ) > 0,
+        'Defined points should be in a counterclockwise order' );
+
+      var m00 = p1.x - p.x;
+      var m01 = p1.y - p.y;
+      var m02 = ( p1.x - p.x ) * ( p1.x - p.x ) + ( p1.y - p.y ) * ( p1.y - p.y );
+      var m10 = p2.x - p.x;
+      var m11 = p2.y - p.y;
+      var m12 = ( p2.x - p.x ) * ( p2.x - p.x ) + ( p2.y - p.y ) * ( p2.y - p.y );
+      var m20 = p3.x - p.x;
+      var m21 = p3.y - p.y;
+      var m22 = ( p3.x - p.x ) * ( p3.x - p.x ) + ( p3.y - p.y ) * ( p3.y - p.y );
+
+      var determinant = m00 * m11 * m22 + m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20 - m01 * m10 * m22 - m00 * m12 * m21;
+      return determinant > 0;
+    },
+
+    /**
      * Ray-sphere intersection, returning information about the closest intersection. Assumes the sphere is centered
      * at the origin (for ease of computation), transform the ray to compensate if needed.
      * @public
