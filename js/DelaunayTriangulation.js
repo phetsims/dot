@@ -174,6 +174,75 @@ define( function( require ) {
     },
 
     /**
+     * Builds a triangle between two vertices.
+     * @private
+     *
+     * @param {Edge} firstEdge
+     * @param {Edge} secondEdge
+     * @param {boolean} reversed
+     * @returns {Edge} - The newly created edge
+     */
+    fillBorderTriangle: function( firstEdge, secondEdge, reversed ) {
+      assert && assert( firstEdge instanceof Edge );
+      assert && assert( secondEdge instanceof Edge );
+      assert && assert( typeof reversed === 'boolean' );
+      assert && assert( firstEdge.endVertex === secondEdge.startVertex );
+
+      if ( !reversed ) {
+        var newEdge = new Edge( firstEdge.startVertex, secondEdge.endVertex );
+        this.edges.push( newEdge );
+        this.triangles.push( new Triangle( secondEdge.endVertex, firstEdge.endVertex, firstEdge.startVertex,
+                                           firstEdge, newEdge, secondEdge ) );
+        var previousEdge = firstEdge.previousEdge;
+        var nextEdge = secondEdge.nextEdge;
+        if ( previousEdge ) {
+          previousEdge.disconnectAfter();
+          previousEdge.connectAfter( newEdge );
+        }
+        else {
+          this.firstFrontEdge = newEdge;
+        }
+        if ( nextEdge ) {
+          secondEdge.disconnectAfter();
+          newEdge.connectAfter( nextEdge );
+        }
+        this.legalizeEdge( firstEdge );
+        this.legalizeEdge( secondEdge );
+        return newEdge;
+      }
+      else {
+        throw new Error( 'unimplemented' );
+      }
+    },
+
+    /**
+     * Should be called when there are no more remaining vertices left to be processed.
+     * @private
+     */
+    finalize: function() {
+      // Get an array of front edges, excluding the first and last.
+      var frontEdges = [];
+      var frontEdge = this.firstFrontEdge.nextEdge;
+      while ( frontEdge && frontEdge.nextEdge ) {
+        frontEdges.push( frontEdge );
+        frontEdge = frontEdge.nextEdge;
+      }
+
+      for ( var i = 0; i < frontEdges.length - 1; i++ ) {
+        var firstEdge = frontEdges[ i ];
+        var secondEdge = frontEdges[ i + 1 ];
+        if ( Util.triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
+          var newEdge = this.fillBorderTriangle( firstEdge, secondEdge, false );
+          frontEdges.splice( i, 2, newEdge );
+          // start scanning from behind where we were previously (if possible)
+          i = Math.max( i - 2, -1 );
+          // TODO: remove this!
+          window.triDebug && window.triDebug( this );
+        }
+      }
+    },
+
+    /**
      * Checks an edge to see whether its two adjacent triangles satisfy the delaunay condition (the far point of one
      * triangle should not be contained in the other triangle's circumcircle), and if it is not satisfied, flips the
      * edge so the condition is satisfied.
