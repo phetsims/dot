@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var arrayRemove = require( 'PHET_CORE/arrayRemove' );
   var Bounds2 = require( 'DOT/Bounds2' );
   var dot = require( 'DOT/dot' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -122,16 +123,58 @@ define( function( require ) {
             frontEdge.disconnectAfter();
             edge2.connectAfter( nextEdge );
           }
-          // TODO: legalization
+          this.legalizeEdge( frontEdge );
           return;
         }
         else if ( x === frontEdge.endVertex.x ) {
+          // TODO: remember to legalize?
           throw new Error( 'Left case unimplemented so far' );
         }
         frontEdge = frontEdge.nextEdge;
       }
 
       throw new Error( 'Did not find matching front edge?' );
+    },
+
+    /**
+     * Checks an edge to see whether its two adjacent triangles satisfy the delaunay condition (the far point of one
+     * triangle should not be contained in the other triangle's circumcircle), and if it is not satisfied, flips the
+     * edge so the condition is satisfied.
+     * @private
+     *
+     * @param {Edge} edge
+     */
+    legalizeEdge: function( edge ) {
+      assert && assert( edge.triangles.length === 2 );
+
+      var triangle1 = edge.triangles[ 0 ];
+      var triangle2 = edge.triangles[ 1 ];
+
+      var farVertex1 = triangle1.getVertexOppositeFromEdge( edge );
+      var farVertex2 = triangle2.getVertexOppositeFromEdge( edge );
+
+      if ( Util.pointInCircleFromPoints( triangle1.aVertex.point, triangle1.bVertex.point, triangle1.cVertex.point, farVertex2.point ) ||
+           Util.pointInCircleFromPoints( triangle2.aVertex.point, triangle2.bVertex.point, triangle2.cVertex.point, farVertex1.point ) ) {
+        // TODO: better helper functions for adding/removing triangles (takes care of the edge stuff)
+        triangle1.remove();
+        triangle2.remove();
+        arrayRemove( this.triangles, triangle1 );
+        arrayRemove( this.triangles, triangle2 );
+        arrayRemove( this.edges, edge );
+
+        var newEdge = new Edge( farVertex1, farVertex2 );
+        this.edges.push( newEdge );
+
+        // Construct the new triangles with the correct orientations
+        this.triangles.push( new Triangle( farVertex1, farVertex2, triangle1.getVertexBefore( farVertex1 ),
+                                           triangle2.getEdgeOppositeFromVertex( triangle2.getVertexBefore( farVertex2 ) ),
+                                           triangle1.getEdgeOppositeFromVertex( triangle1.getVertexAfter( farVertex1 ) ),
+                                           newEdge ) );
+        this.triangles.push( new Triangle( farVertex2, farVertex1, triangle2.getVertexBefore( farVertex2 ),
+                                           triangle1.getEdgeOppositeFromVertex( triangle1.getVertexBefore( farVertex1 ) ),
+                                           triangle2.getEdgeOppositeFromVertex( triangle2.getVertexAfter( farVertex2 ) ),
+                                           newEdge ) );
+      }
     }
   }, {
     /**
@@ -214,6 +257,7 @@ define( function( require ) {
   function Edge( startVertex, endVertex ) {
     assert && assert( startVertex instanceof Vertex );
     assert && assert( endVertex instanceof Vertex );
+    assert && assert( startVertex !== endVertex, 'Should be different vertices' );
 
     // @public {Vertex}
     this.startVertex = startVertex;
@@ -259,6 +303,19 @@ define( function( require ) {
       assert && assert( this.triangles.length <= 1 );
 
       this.triangles.push( triangle );
+    },
+
+    /**
+     * Removes an adjacent triangle.
+     * @public
+     *
+     * @param {Triangle} triangle
+     */
+    removeTriangle: function( triangle ) {
+      assert && assert( triangle instanceof Triangle );
+      assert && assert( _.includes( this.triangles, triangle ) );
+
+      arrayRemove( this.triangles, triangle );
     }
   } );
 
@@ -275,6 +332,7 @@ define( function( require ) {
    * @param {Edge} cEdge - Edge opposite the 'c' vertex
    */
   function Triangle( aVertex, bVertex, cVertex, aEdge, bEdge, cEdge ) {
+    // Type checks
     assert && assert( aVertex instanceof Vertex );
     assert && assert( bVertex instanceof Vertex );
     assert && assert( cVertex instanceof Vertex );
@@ -282,9 +340,18 @@ define( function( require ) {
     assert && assert( bEdge instanceof Edge );
     assert && assert( cEdge instanceof Edge );
 
+    // Ensure each vertex is NOT in the opposite edge
     assert && assert( aVertex !== aEdge.startVertex && aVertex !== aEdge.endVertex, 'Should be an opposite edge' );
     assert && assert( bVertex !== bEdge.startVertex && bVertex !== bEdge.endVertex, 'Should be an opposite edge' );
     assert && assert( cVertex !== cEdge.startVertex && cVertex !== cEdge.endVertex, 'Should be an opposite edge' );
+
+    // Ensure each vertex IS in its adjacent edges
+    assert && assert( aVertex === bEdge.startVertex || aVertex === bEdge.endVertex, 'aVertex should be in bEdge' );
+    assert && assert( aVertex === cEdge.startVertex || aVertex === cEdge.endVertex, 'aVertex should be in cEdge' );
+    assert && assert( bVertex === aEdge.startVertex || bVertex === aEdge.endVertex, 'bVertex should be in aEdge' );
+    assert && assert( bVertex === cEdge.startVertex || bVertex === cEdge.endVertex, 'bVertex should be in cEdge' );
+    assert && assert( cVertex === aEdge.startVertex || cVertex === aEdge.endVertex, 'cVertex should be in aEdge' );
+    assert && assert( cVertex === bEdge.startVertex || cVertex === bEdge.endVertex, 'cVertex should be in bEdge' );
 
     assert && assert( Util.triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
       'Should be counterclockwise' );
@@ -306,6 +373,96 @@ define( function( require ) {
 
   inherit( Object, Triangle, {
     /**
+     * Returns the vertex that is opposite from the given edge.
+     * @public
+     *
+     * @param {Edge} edge
+     * @returns {Vertex}
+     */
+    getVertexOppositeFromEdge: function( edge ) {
+      assert && assert( edge instanceof Edge );
+      assert && assert( edge === this.aEdge || edge === this.bEdge || edge === this.cEdge,
+        'Should be an edge that is part of this triangle' );
+
+      if ( edge === this.aEdge ) {
+        return this.aVertex;
+      }
+      else if ( edge === this.bEdge ) {
+        return this.bVertex;
+      }
+      else {
+        return this.cVertex;
+      }
+    },
+
+    /**
+     * Returns the edge that is opposite from the given vertex.
+     * @public
+     *
+     * @param {Vertex} vertex
+     * @returns {Edge}
+     */
+    getEdgeOppositeFromVertex: function( vertex ) {
+      assert && assert( vertex instanceof Vertex );
+      assert && assert( vertex === this.aVertex || vertex === this.bVertex || vertex === this.cVertex,
+        'Should be a vertex that is part of this triangle' );
+
+      if ( vertex === this.aVertex ) {
+        return this.aEdge;
+      }
+      else if ( vertex === this.bVertex ) {
+        return this.bEdge;
+      }
+      else {
+        return this.cEdge;
+      }
+    },
+
+    /**
+     * Returns the vertex that is just before the given vertex (in counterclockwise order).
+     * @public
+     *
+     * @param {Vertex} vertex
+     * @returns {Vertex}
+     */
+    getVertexBefore: function( vertex ) {
+      assert && assert( vertex instanceof Vertex );
+      assert && assert( vertex === this.aVertex || vertex === this.bVertex || vertex === this.cVertex );
+
+      if ( vertex === this.aVertex ) {
+        return this.cVertex;
+      }
+      else if ( vertex === this.bVertex ) {
+        return this.aVertex;
+      }
+      else {
+        return this.bVertex;
+      }
+    },
+
+    /**
+     * Returns the vertex that is just after the given vertex (in counterclockwise order).
+     * @public
+     *
+     * @param {Vertex} vertex
+     * @returns {Vertex}
+     */
+    getVertexAfter: function( vertex ) {
+      assert && assert( vertex instanceof Vertex );
+      assert && assert( vertex === this.aVertex || vertex === this.bVertex || vertex === this.cVertex );
+
+      if ( vertex === this.aVertex ) {
+        return this.bVertex;
+      }
+      else if ( vertex === this.bVertex ) {
+        return this.cVertex;
+      }
+      else {
+        return this.aVertex;
+      }
+    },
+
+    /**
      * Returns whether this is an artificial triangle (has an artificial vertex)
      * @public
      *
@@ -313,6 +470,13 @@ define( function( require ) {
      */
     isArtificial: function() {
       return this.aVertex.isArtificial() || this.bVertex.isArtificial() || this.cVertex.isArtificial();
+    },
+
+    // TODO: doc
+    remove: function() {
+      this.aEdge.removeTriangle( this );
+      this.bEdge.removeTriangle( this );
+      this.cEdge.removeTriangle( this );
     }
   } );
 

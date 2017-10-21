@@ -29,7 +29,8 @@
 
       window.triTest = function() {
         setTimeout(function(){
-          window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 3, 5 ), dot.v2( 15, 13 ), dot.v2( 10, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ) ];
+          window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 4, 11 ), dot.v2( 15, 13 ), dot.v2( 11, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ), dot.v2( 1, 4 ) ];
+          // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 4 ), dot.v2( 6, 4.1 ) ];
           window.triangulation = new dot.DelaunayTriangulation( points, [] );
           triDebug( triangulation );
           while ( triangulation.remainingVertices.length ) {
@@ -95,6 +96,24 @@
           context.fill();
         }
 
+        function drawCircle( context, triangle, vertices ) {
+          context.beginPath();
+          var center = dot.Util.circleCenterFromPoints( triangle.aVertex.point, triangle.bVertex.point, triangle.cVertex.point );
+          var radius = ( triangle.aVertex.point.distance( center ) + triangle.bVertex.point.distance( center ) + triangle.cVertex.point.distance( center ) ) / 3;
+          var ok = true;
+          for ( var i = 0; i < vertices.length; i++ ) {
+            var vertex = vertices[ i ];
+            if ( vertex !== triangle.aVertex && vertex !== triangle.bVertex && vertex !== triangle.cVertex && vertex.point.distance( center ) < radius ) {
+              ok = false;
+              break;
+            }
+          }
+          context.arc( center.x, center.y, radius, 0, Math.PI * 2, false );
+          context.closePath();
+          context.strokeStyle = ok ? 'rgba(0,255,0,0.2)' : 'rgba(255,0,0,0.2)';
+          context.stroke();
+        }
+
         draw( function( context ) {
           triangulation.vertices.forEach( function( vertex ) {
             drawVertex( context, vertex, 'rgba(0,0,0,0.4)' );
@@ -108,12 +127,15 @@
 
           var frontEdge = triangulation.firstFrontEdge;
           while ( frontEdge ) {
-            drawEdge( context, frontEdge, 'rgba(255,0,0,0.6)')
+            drawEdge( context, frontEdge, 'rgba(0,0,255,0.6)')
             frontEdge = frontEdge.nextEdge;
           }
 
           triangulation.triangles.forEach( function( triangle ) {
             drawTriangle( context, triangle );
+          } );
+          triangulation.triangles.forEach( function( triangle ) {
+            drawCircle( context, triangle, triangulation.vertices );
           } );
         } );
       };
