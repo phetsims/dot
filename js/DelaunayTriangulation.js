@@ -5,6 +5,8 @@
  * by Domiter and Zalik (2008), with some details provided by "An efficient sweep-line Delaunay triangulation
  * algorithm" by Zalik (2005).
  *
+ * TODO: Heuristics
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 define( function( require ) {

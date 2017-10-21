@@ -29,11 +29,12 @@
 
       window.triTest = function() {
         setTimeout(function(){
-          window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 4, 11 ), dot.v2( 15, 13 ), dot.v2( 11, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ), dot.v2( 1, 4 ), dot.v2( -8, 3 ), dot.v2( -13, -5 ), dot.v2( -15, 0 ) ];
+          // window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 4, 11 ), dot.v2( 15, 13 ), dot.v2( 11, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ), dot.v2( 1, 4 ), dot.v2( -8, 3 ), dot.v2( -13, -5 ), dot.v2( -15, 0 ) ];
           // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 4 ), dot.v2( 6, 4.1 ) ];
           // window.points = [ dot.v2( 0, 0 ), dot.v2( 5, 5 ), dot.v2( -5, 5 ), dot.v2( 0, 10 ) ];
           // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, -10 ), dot.v2( -10, -10 ) ];
           // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 10 ), dot.v2( 10, 0 ), dot.v2( 0, 10 ) ];
+          window.points = []; for ( var i = 0; i < 20; i++ ) { points.push( dot.v2( Math.random(), Math.random() ) ); }
           window.triangulation = new dot.DelaunayTriangulation( points, [] );
           triDebug( triangulation );
           while ( triangulation.remainingVertices.length ) {
@@ -53,7 +54,7 @@
         bounds.addPoint( triangulation.artificialMinVertex.point );
         bounds.addPoint( triangulation.artificialMaxVertex.point );
 
-        var debugSize = 256;
+        var debugSize = 512;
         var pad = 20;
         var scale = ( debugSize - pad * 2 ) / Math.max( bounds.width, bounds.height );
 
