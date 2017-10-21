@@ -2,7 +2,8 @@
 
 /**
  * Handles constrained Delaunay triangulation based on "Sweep-line algorithm for constrained Delaunay triangulation"
- * by Domiter and Zalik (2008).
+ * by Domiter and Zalik (2008), with some details provided by "An efficient sweep-line Delaunay triangulation
+ * algorithm" by Zalik (2005).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -100,6 +101,8 @@ define( function( require ) {
       var x = vertex.point.x;
 
       var frontEdge = this.firstFrontEdge;
+      var previousEdge;
+      var nextEdge;
       while ( frontEdge ) {
         // TODO: epsilon needed here?
         if ( x > frontEdge.endVertex.point.x ) {
@@ -110,8 +113,8 @@ define( function( require ) {
           this.edges.push( edge2 );
           this.triangles.push( new Triangle( frontEdge.endVertex, frontEdge.startVertex, vertex,
                                              edge1, edge2, frontEdge ) );
-          var previousEdge = frontEdge.previousEdge;
-          var nextEdge = frontEdge.nextEdge;
+          previousEdge = frontEdge.previousEdge;
+          nextEdge = frontEdge.nextEdge;
           if ( previousEdge ) {
             previousEdge.disconnectAfter();
             previousEdge.connectAfter( edge1 );
@@ -126,9 +129,43 @@ define( function( require ) {
           this.legalizeEdge( frontEdge );
           return;
         }
-        else if ( x === frontEdge.endVertex.x ) {
-          // TODO: remember to legalize?
-          throw new Error( 'Left case unimplemented so far' );
+        else if ( x === frontEdge.endVertex.point.x ) {
+          var leftOldEdge = frontEdge.nextEdge;
+          var rightOldEdge = frontEdge;
+          assert && assert( leftOldEdge !== null );
+
+          var middleOldVertex = frontEdge.endVertex;
+          var leftVertex = leftOldEdge.endVertex;
+          var rightVertex = rightOldEdge.startVertex;
+
+          var leftEdge = new Edge( vertex, leftVertex );
+          var rightEdge = new Edge( rightVertex, vertex );
+          var middleEdge = new Edge( middleOldVertex, vertex );
+          rightEdge.connectAfter( leftEdge );
+          this.edges.push( leftEdge );
+          this.edges.push( rightEdge );
+          this.edges.push( middleEdge );
+          this.triangles.push( new Triangle( leftVertex, middleOldVertex, vertex,
+                                             middleEdge, leftEdge, leftOldEdge ) );
+          this.triangles.push( new Triangle( middleOldVertex, rightVertex, vertex,
+                                             rightEdge, middleEdge, rightOldEdge ) );
+          previousEdge = rightOldEdge.previousEdge;
+          nextEdge = leftOldEdge.nextEdge;
+          if ( previousEdge ) {
+            previousEdge.disconnectAfter();
+            previousEdge.connectAfter( rightEdge );
+          }
+          else {
+            this.firstFrontEdge = rightEdge;
+          }
+          if ( nextEdge ) {
+            leftOldEdge.disconnectAfter();
+            leftEdge.connectAfter( nextEdge );
+          }
+          this.legalizeEdge( leftOldEdge );
+          this.legalizeEdge( rightOldEdge );
+          this.legalizeEdge( middleEdge );
+          return;
         }
         frontEdge = frontEdge.nextEdge;
       }
