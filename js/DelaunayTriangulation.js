@@ -47,6 +47,9 @@ define( function( require ) {
     // @public {Array.<Edge>}
     this.edges = [];
 
+    // @public {Array.<Vertex>}
+    this.convexHull = [];
+
     if ( points.length === 0 ) {
       return;
     }
@@ -56,6 +59,9 @@ define( function( require ) {
       return new Vertex( point, index );
     } );
     this.vertices.sort( DelaunayTriangulation.vertexComparison );
+
+    // @private {Vertex}
+    this.bottomVertex = this.vertices[ 0 ];
 
     // @private {Array.<Vertex>} - Our initialization will handle our first vertex
     this.remainingVertices = this.vertices.slice( 1 );
@@ -72,14 +78,14 @@ define( function( require ) {
     this.artificialMaxVertex = new Vertex( new Vector2( bounds.maxX + bounds.width * alpha, bounds.minY - bounds.height * alpha ), -2 );
 
     this.edges.push( new Edge( this.artificialMinVertex, this.artificialMaxVertex ) );
-    this.edges.push( new Edge( this.artificialMaxVertex, this.vertices[ 0 ] ) );
-    this.edges.push( new Edge( this.vertices[ 0 ], this.artificialMinVertex ) );
+    this.edges.push( new Edge( this.artificialMaxVertex, this.bottomVertex ) );
+    this.edges.push( new Edge( this.bottomVertex, this.artificialMinVertex ) );
 
     // Set up our first (artificial) triangle.
-    this.triangles.push( new Triangle( this.artificialMinVertex, this.artificialMaxVertex, this.vertices[ 0 ],
+    this.triangles.push( new Triangle( this.artificialMinVertex, this.artificialMaxVertex, this.bottomVertex,
                          this.edges[ 1 ], this.edges[ 2 ], this.edges[ 0 ] ) );
 
-    // @private {Edge} - The start of our front (the edges at the front of the sweep-line)
+    // @private {Edge|null} - The start of our front (the edges at the front of the sweep-line)
     this.firstFrontEdge = this.edges[ 1 ];
     this.edges[ 1 ].connectAfter( this.edges[ 2 ] );
 
@@ -179,40 +185,34 @@ define( function( require ) {
      *
      * @param {Edge} firstEdge
      * @param {Edge} secondEdge
-     * @param {boolean} reversed
+     * @param {Vertex} firstSideVertex
+     * @param {Vertex} middleVertex
+     * @param {Vertex} secondSideVertex
      * @returns {Edge} - The newly created edge
      */
-    fillBorderTriangle: function( firstEdge, secondEdge, reversed ) {
+    fillBorderTriangle: function( firstEdge, secondEdge, firstSideVertex, middleVertex, secondSideVertex ) {
       assert && assert( firstEdge instanceof Edge );
       assert && assert( secondEdge instanceof Edge );
-      assert && assert( typeof reversed === 'boolean' );
-      assert && assert( firstEdge.endVertex === secondEdge.startVertex );
+      assert && assert( firstSideVertex instanceof Vertex );
+      assert && assert( middleVertex instanceof Vertex );
+      assert && assert( secondSideVertex instanceof Vertex );
 
-      if ( !reversed ) {
-        var newEdge = new Edge( firstEdge.startVertex, secondEdge.endVertex );
-        this.edges.push( newEdge );
-        this.triangles.push( new Triangle( secondEdge.endVertex, firstEdge.endVertex, firstEdge.startVertex,
-                                           firstEdge, newEdge, secondEdge ) );
-        var previousEdge = firstEdge.previousEdge;
-        var nextEdge = secondEdge.nextEdge;
-        if ( previousEdge ) {
-          previousEdge.disconnectAfter();
-          previousEdge.connectAfter( newEdge );
-        }
-        else {
-          this.firstFrontEdge = newEdge;
-        }
-        if ( nextEdge ) {
-          secondEdge.disconnectAfter();
-          newEdge.connectAfter( nextEdge );
-        }
-        this.legalizeEdge( firstEdge );
-        this.legalizeEdge( secondEdge );
-        return newEdge;
-      }
-      else {
-        throw new Error( 'unimplemented' );
-      }
+      assert && assert( middleVertex === firstEdge.startVertex || middleVertex === firstEdge.endVertex,
+        'middleVertex should be in firstEdge' );
+      assert && assert( middleVertex === secondEdge.startVertex || middleVertex === secondEdge.endVertex,
+        'middleVertex should be in secondEdge' );
+      assert && assert( firstSideVertex === firstEdge.startVertex || firstSideVertex === firstEdge.endVertex,
+        'firstSideVertex should be in firstEdge' );
+      assert && assert( secondSideVertex === secondEdge.startVertex || secondSideVertex === secondEdge.endVertex,
+        'secondSideVertex should be in secondEdge' );
+
+      var newEdge = new Edge( firstSideVertex, secondSideVertex );
+      this.edges.push( newEdge );
+      this.triangles.push( new Triangle( secondSideVertex, middleVertex, firstSideVertex,
+                                         firstEdge, newEdge, secondEdge ) );
+      this.legalizeEdge( firstEdge );
+      this.legalizeEdge( secondEdge );
+      return newEdge;
     },
 
     /**
@@ -220,25 +220,95 @@ define( function( require ) {
      * @private
      */
     finalize: function() {
-      // Get an array of front edges, excluding the first and last.
+      // Accumulate front edges, excluding the first and last.
       var frontEdges = [];
       var frontEdge = this.firstFrontEdge.nextEdge;
       while ( frontEdge && frontEdge.nextEdge ) {
         frontEdges.push( frontEdge );
         frontEdge = frontEdge.nextEdge;
       }
+      var firstFrontEdge = this.firstFrontEdge;
+      var lastFrontEdge = frontEdge;
 
+      assert && assert( this.firstFrontEdge.triangles.length === 1 );
+      assert && assert( lastFrontEdge.triangles.length === 1 );
+
+      // Handle adding any triangles not in the convex hull (on the front edge)
       for ( var i = 0; i < frontEdges.length - 1; i++ ) {
         var firstEdge = frontEdges[ i ];
         var secondEdge = frontEdges[ i + 1 ];
         if ( Util.triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
-          var newEdge = this.fillBorderTriangle( firstEdge, secondEdge, false );
+          var newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstEdge.startVertex, firstEdge.endVertex, secondEdge.endVertex );
           frontEdges.splice( i, 2, newEdge );
           // start scanning from behind where we were previously (if possible)
           i = Math.max( i - 2, -1 );
           // TODO: remove this!
           window.triDebug && window.triDebug( this );
         }
+      }
+
+      // Clear out front edge information, no longer needed.
+      this.firstFrontEdge = null;
+
+      // Accumulate back edges and items to get rid of
+      var backEdges = [];
+      var artificialEdges = [ firstFrontEdge ];
+      var currentSplitEdge = firstFrontEdge;
+      while ( currentSplitEdge !== lastFrontEdge ) {
+        var nextTriangle = currentSplitEdge.triangles[ 0 ];
+        nextTriangle.remove();
+        arrayRemove( this.triangles, nextTriangle );
+
+        var edge = nextTriangle.getNonArtificialEdge();
+        if ( edge ) {
+          backEdges.push( edge );
+          var sharedVertex = edge.getSharedVertex( currentSplitEdge );
+          currentSplitEdge = nextTriangle.getEdgeOppositeFromVertex( sharedVertex );
+        }
+        // Our min-max-bottomPoint triangle (pivot, no edge to add)
+        else {
+          assert && assert( currentSplitEdge.startVertex === this.artificialMaxVertex );
+
+          // Remove the "bottom" edge connecting both artificial points
+          artificialEdges.push( nextTriangle.getEdgeOppositeFromVertex( currentSplitEdge.endVertex ) );
+
+          // Pivot
+          currentSplitEdge = nextTriangle.getEdgeOppositeFromVertex( currentSplitEdge.startVertex );
+        }
+        artificialEdges.push( currentSplitEdge );
+      }
+
+      for ( i = 0; i < artificialEdges.length; i++ ) {
+        arrayRemove( this.edges, artificialEdges[ i ] );
+      }
+
+      // TODO: remove this!
+      window.triDebug && window.triDebug( this );
+
+      // Handle adding any triangles not in the convex hull (on the back edge)
+      for ( i = 0; i < backEdges.length - 1; i++ ) {
+        firstEdge = backEdges[ i + 1 ];
+        secondEdge = backEdges[ i ];
+
+        sharedVertex = firstEdge.getSharedVertex( secondEdge );
+        var firstVertex = firstEdge.getOtherVertex( sharedVertex );
+        var secondVertex = secondEdge.getOtherVertex( sharedVertex );
+        if ( Util.triangleAreaSigned( secondVertex.point, sharedVertex.point, firstVertex.point ) > 1e-10 ) {
+          newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstVertex, sharedVertex, secondVertex );
+          backEdges.splice( i, 2, newEdge );
+          // start scanning from behind where we were previously (if possible)
+          i = Math.max( i - 2, -1 );
+          // TODO: remove this!
+          window.triDebug && window.triDebug( this );
+        }
+      }
+
+      for ( i = 0; i < frontEdges.length; i++ ) {
+        this.convexHull.push( frontEdges[ i ].startVertex );
+      }
+      this.convexHull.push( frontEdges[ frontEdges.length - 1 ].endVertex );
+      for ( i = backEdges.length - 1; i >= 1; i-- ) {
+        this.convexHull.push( backEdges[ i ].getSharedVertex( backEdges[ i - 1 ] ) );
       }
     },
 
@@ -378,6 +448,17 @@ define( function( require ) {
   }
 
   inherit( Object, Edge, {
+
+    /**
+     * Returns whether this is an artificial edge (has an artificial vertex)
+     * @public
+     *
+     * @returns {boolean}
+     */
+    isArtificial: function() {
+      return this.startVertex.isArtificial() || this.endVertex.isArtificial();
+    },
+
     /**
      * Appends the edge to the end of this edge (for our linked list).
      * @public
@@ -422,6 +503,84 @@ define( function( require ) {
       assert && assert( _.includes( this.triangles, triangle ) );
 
       arrayRemove( this.triangles, triangle );
+    },
+
+    /**
+     * Returns the triangle in common with both edges.
+     * @public
+     *
+     * @param {Edge} otherEdge
+     * @returns {Triangle}
+     */
+    getSharedTriangle: function( otherEdge ) {
+      assert && assert( otherEdge instanceof Edge );
+
+      for ( var i = 0; i < this.triangles.length; i++ ) {
+        var triangle = this.triangles[ i ];
+        for ( var j = 0; j < otherEdge.triangles.length; j++ ) {
+          if ( otherEdge.triangles[ j ] === triangle ) {
+            return triangle;
+          }
+        }
+      }
+      throw new Error( 'No common triangle' );
+    },
+
+    /**
+     * Returns the vertex in common with both edges.
+     * @public
+     *
+     * @param {Edge} otherEdge
+     * @returns {Vertex}
+     */
+    getSharedVertex: function( otherEdge ) {
+      assert && assert( otherEdge instanceof Edge );
+
+      if ( this.startVertex === otherEdge.startVertex || this.startVertex === otherEdge.endVertex ) {
+        return this.startVertex;
+      }
+      else {
+        assert && assert( this.endVertex === otherEdge.startVertex || this.endVertex === otherEdge.endVertex );
+        return this.endVertex;
+      }
+    },
+
+    /**
+     * Returns the other vertex of the edge.
+     * @public
+     *
+     * @param {Vertex} vertex
+     * @returns {Vertex}
+     */
+    getOtherVertex: function( vertex ) {
+      assert && assert( vertex instanceof Vertex );
+      assert && assert( vertex === this.startVertex || vertex === this.endVertex );
+
+      if ( vertex === this.startVertex ) {
+        return this.endVertex;
+      }
+      else {
+        return this.startVertex;
+      }
+    },
+
+    /**
+     * Returns the other triangle associated with this edge (if there are two).
+     * @public
+     *
+     * @param {Triangle} triangle
+     * @returns {Triangle}
+     */
+    getOtherTriangle: function( triangle ) {
+      assert && assert( triangle instanceof Triangle );
+      assert && assert( this.triangles.length === 2 );
+
+      if ( this.triangles[ 0 ] === triangle ) {
+        return this.triangles[ 1 ];
+      }
+      else {
+        return this.triangles[ 0 ];
+      }
     }
   } );
 
@@ -565,6 +724,33 @@ define( function( require ) {
       }
       else {
         return this.aVertex;
+      }
+    },
+
+    /**
+     * Returns the one non-artificial edge in the triangle (assuming it exists).
+     * @public
+     *
+     * @returns {Edge|null}
+     */
+    getNonArtificialEdge: function() {
+      assert && assert( ( this.aEdge.isArtificial() && this.bEdge.isArtificial() && !this.cEdge.isArtificial() ) ||
+                        ( this.aEdge.isArtificial() && !this.bEdge.isArtificial() && this.cEdge.isArtificial() ) ||
+                        ( !this.aEdge.isArtificial() && this.bEdge.isArtificial() && this.cEdge.isArtificial() ) ||
+                        ( this.aEdge.isArtificial() && this.bEdge.isArtificial() && this.cEdge.isArtificial() ),
+        'At most one edge should be non-artificial' );
+
+      if ( !this.aEdge.isArtificial() ) {
+        return this.aEdge;
+      }
+      else if ( !this.bEdge.isArtificial() ) {
+        return this.bEdge;
+      }
+      else if ( !this.cEdge.isArtificial() ) {
+        return this.cEdge;
+      }
+      else {
+        return null;
       }
     },
 
