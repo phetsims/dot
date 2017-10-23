@@ -131,11 +131,11 @@
             drawEdge( context, edge, 'rgba(0,0,0,0.4)' );
           } );
 
-          var frontEdge = triangulation.firstFrontEdge;
-          while ( frontEdge ) {
-            drawEdge( context, frontEdge, 'rgba(0,0,255,0.6)')
-            frontEdge = frontEdge.nextEdge;
-          }
+          // var frontEdge = triangulation.firstFrontEdge;
+          // while ( frontEdge ) {
+          //   drawEdge( context, frontEdge, 'rgba(0,0,255,0.6)')
+          //   frontEdge = frontEdge.nextEdge;
+          // }
 
           triangulation.triangles.forEach( function( triangle ) {
             drawTriangle( context, triangle );
