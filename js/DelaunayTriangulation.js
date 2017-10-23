@@ -323,7 +323,11 @@ define( function( require ) {
      * @param {Edge} edge
      */
     legalizeEdge: function( edge ) {
-      assert && assert( edge.triangles.length === 2 );
+      // Checking each edge to see if it isn't in our triangulation anymore (or can't be illegal because it doesn't
+      // have multiple triangles) helps a lot.
+      if ( !_.includes( this.edges, edge ) || edge.triangles.length !== 2 ) {
+        return;
+      }
 
       var triangle1 = edge.triangles[ 0 ];
       var triangle2 = edge.triangles[ 1 ];
@@ -343,15 +347,21 @@ define( function( require ) {
         var newEdge = new Edge( farVertex1, farVertex2 );
         this.edges.push( newEdge );
 
+        var triangle1Edge1 = triangle2.getEdgeOppositeFromVertex( triangle2.getVertexBefore( farVertex2 ) );
+        var triangle1Edge2 = triangle1.getEdgeOppositeFromVertex( triangle1.getVertexAfter( farVertex1 ) );
+        var triangle2Edge1 = triangle1.getEdgeOppositeFromVertex( triangle1.getVertexBefore( farVertex1 ) );
+        var triangle2Edge2 = triangle2.getEdgeOppositeFromVertex( triangle2.getVertexAfter( farVertex2 ) );
+
         // Construct the new triangles with the correct orientations
         this.triangles.push( new Triangle( farVertex1, farVertex2, triangle1.getVertexBefore( farVertex1 ),
-                                           triangle2.getEdgeOppositeFromVertex( triangle2.getVertexBefore( farVertex2 ) ),
-                                           triangle1.getEdgeOppositeFromVertex( triangle1.getVertexAfter( farVertex1 ) ),
-                                           newEdge ) );
+                                           triangle1Edge1, triangle1Edge2, newEdge ) );
         this.triangles.push( new Triangle( farVertex2, farVertex1, triangle2.getVertexBefore( farVertex2 ),
-                                           triangle1.getEdgeOppositeFromVertex( triangle1.getVertexBefore( farVertex1 ) ),
-                                           triangle2.getEdgeOppositeFromVertex( triangle2.getVertexAfter( farVertex2 ) ),
-                                           newEdge ) );
+                                           triangle2Edge1, triangle2Edge2, newEdge ) );
+
+        this.legalizeEdge( triangle1Edge1 );
+        this.legalizeEdge( triangle1Edge2 );
+        this.legalizeEdge( triangle2Edge1 );
+        this.legalizeEdge( triangle2Edge2 );
       }
     }
   }, {
