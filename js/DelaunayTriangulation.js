@@ -5,7 +5,8 @@
  * by Domiter and Zalik (2008), with some details provided by "An efficient sweep-line Delaunay triangulation
  * algorithm" by Zalik (2005).
  *
- * TODO: Heuristics
+ * TODO: Second (basin) heuristic not yet implemented.
+ * TODO: Constraints not yet implemented.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -109,8 +110,6 @@ define( function( require ) {
       var x = vertex.point.x;
 
       var frontEdge = this.firstFrontEdge;
-      var previousEdge;
-      var nextEdge;
       while ( frontEdge ) {
         // TODO: epsilon needed here?
         if ( x > frontEdge.endVertex.point.x ) {
@@ -121,20 +120,9 @@ define( function( require ) {
           this.edges.push( edge2 );
           this.triangles.push( new Triangle( frontEdge.endVertex, frontEdge.startVertex, vertex,
                                              edge1, edge2, frontEdge ) );
-          previousEdge = frontEdge.previousEdge;
-          nextEdge = frontEdge.nextEdge;
-          if ( previousEdge ) {
-            previousEdge.disconnectAfter();
-            previousEdge.connectAfter( edge1 );
-          }
-          else {
-            this.firstFrontEdge = edge1;
-          }
-          if ( nextEdge ) {
-            frontEdge.disconnectAfter();
-            edge2.connectAfter( nextEdge );
-          }
+          this.reconnectFrontEdges( frontEdge, frontEdge, edge1, edge2 );
           this.legalizeEdge( frontEdge );
+          this.addHalfPiHeuristic( edge1, edge2 );
           return;
         }
         else if ( x === frontEdge.endVertex.point.x ) {
@@ -157,22 +145,11 @@ define( function( require ) {
                                              middleEdge, leftEdge, leftOldEdge ) );
           this.triangles.push( new Triangle( middleOldVertex, rightVertex, vertex,
                                              rightEdge, middleEdge, rightOldEdge ) );
-          previousEdge = rightOldEdge.previousEdge;
-          nextEdge = leftOldEdge.nextEdge;
-          if ( previousEdge ) {
-            previousEdge.disconnectAfter();
-            previousEdge.connectAfter( rightEdge );
-          }
-          else {
-            this.firstFrontEdge = rightEdge;
-          }
-          if ( nextEdge ) {
-            leftOldEdge.disconnectAfter();
-            leftEdge.connectAfter( nextEdge );
-          }
+          this.reconnectFrontEdges( rightOldEdge, leftOldEdge, rightEdge, leftEdge );
           this.legalizeEdge( leftOldEdge );
           this.legalizeEdge( rightOldEdge );
           this.legalizeEdge( middleEdge );
+          this.addHalfPiHeuristic( rightEdge, leftEdge );
           return;
         }
         frontEdge = frontEdge.nextEdge;
@@ -215,6 +192,80 @@ define( function( require ) {
       this.legalizeEdge( firstEdge );
       this.legalizeEdge( secondEdge );
       return newEdge;
+    },
+
+    /**
+     * Disconnects a section of front edges, and connects a new section.
+     * @private
+     *
+     * Disconnects:
+     * <nextEdge> (cut) <oldLeftEdge> ..... <oldRightEdge> (cut) <previousEdge>
+     *
+     * Connects:
+     * <nextEdge> (join) <newLeftEdge> ..... <newRightEdge> (join) <previousEdge>
+     *
+     * If previousEdge is null, we'll need to set our firstFrontEdge to the newRightEdge.
+     *
+     * @param {Edge} oldRightEdge
+     * @param {Edge} oldLeftEdge
+     * @param {Edge} newRightEdge
+     * @param {Edge} newLeftEdge
+     */
+    reconnectFrontEdges: function( oldRightEdge, oldLeftEdge, newRightEdge, newLeftEdge ) {
+      var previousEdge = oldRightEdge.previousEdge;
+      var nextEdge = oldLeftEdge.nextEdge;
+      if ( previousEdge ) {
+        previousEdge.disconnectAfter();
+        previousEdge.connectAfter( newRightEdge );
+      }
+      else {
+        this.firstFrontEdge = newRightEdge;
+      }
+      if ( nextEdge ) {
+        oldLeftEdge.disconnectAfter();
+        newLeftEdge.connectAfter( nextEdge );
+      }
+    },
+
+    /**
+     * Tries to fill in acute angles with triangles after we add a vertex into the front.
+     * @private
+     *
+     * @param {Edge} rightFrontEdge
+     * @param {Edge} leftFrontEdge
+     */
+    addHalfPiHeuristic: function( rightFrontEdge, leftFrontEdge ) {
+      assert && assert( rightFrontEdge.endVertex === leftFrontEdge.startVertex );
+
+      var middleVertex = rightFrontEdge.endVertex;
+
+      while ( rightFrontEdge.previousEdge &&
+              Util.triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 ) {
+        var previousEdge = rightFrontEdge.previousEdge;
+        var newRightEdge = new Edge( previousEdge.startVertex, middleVertex );
+        this.edges.push( newRightEdge );
+        this.triangles.push( new Triangle( middleVertex, rightFrontEdge.startVertex, previousEdge.startVertex,
+                                           previousEdge, newRightEdge, rightFrontEdge ) );
+
+        this.reconnectFrontEdges( previousEdge, rightFrontEdge, newRightEdge, newRightEdge );
+        this.legalizeEdge( previousEdge );
+        this.legalizeEdge( rightFrontEdge );
+
+        rightFrontEdge = newRightEdge;
+      }
+      while ( leftFrontEdge.nextEdge &&
+              Util.triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 ) {
+        var nextEdge = leftFrontEdge.nextEdge;
+        var newLeftEdge = new Edge( middleVertex, nextEdge.endVertex );
+        this.edges.push( newLeftEdge );
+        this.triangles.push( new Triangle( middleVertex, leftFrontEdge.nextEdge.endVertex, leftFrontEdge.endVertex,
+                                           nextEdge, leftFrontEdge, newLeftEdge ) );
+        this.reconnectFrontEdges( leftFrontEdge, nextEdge, newLeftEdge, newLeftEdge );
+        this.legalizeEdge( nextEdge );
+        this.legalizeEdge( leftFrontEdge );
+
+        leftFrontEdge = newLeftEdge;
+      }
     },
 
     /**
