@@ -240,7 +240,8 @@ define( function( require ) {
       var middleVertex = rightFrontEdge.endVertex;
 
       while ( rightFrontEdge.previousEdge &&
-              Util.triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 ) {
+              Util.triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 &&
+              ( middleVertex.point.minus( rightFrontEdge.startVertex.point ) ).angleBetween( rightFrontEdge.previousEdge.startVertex.point.minus( rightFrontEdge.startVertex.point ) ) < Math.PI / 2 ) {
         var previousEdge = rightFrontEdge.previousEdge;
         var newRightEdge = new Edge( previousEdge.startVertex, middleVertex );
         this.edges.push( newRightEdge );
@@ -254,7 +255,8 @@ define( function( require ) {
         rightFrontEdge = newRightEdge;
       }
       while ( leftFrontEdge.nextEdge &&
-              Util.triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 ) {
+              Util.triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 &&
+              ( middleVertex.point.minus( leftFrontEdge.endVertex.point ) ).angleBetween( leftFrontEdge.nextEdge.endVertex.point.minus( leftFrontEdge.endVertex.point ) ) < Math.PI / 2 ) {
         var nextEdge = leftFrontEdge.nextEdge;
         var newLeftEdge = new Edge( middleVertex, nextEdge.endVertex );
         this.edges.push( newLeftEdge );
