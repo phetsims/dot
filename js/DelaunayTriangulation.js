@@ -42,7 +42,6 @@ define( function( require ) {
 
     // @public {Array.<Array.<number>>}
     this.constraints = constraints;
-    // TODO: record constraints in the Vertex objects
 
     // @public {Array.<Triangle>}
     this.triangles = [];
@@ -59,9 +58,38 @@ define( function( require ) {
 
     // @private {Array.<Vertex>}
     this.vertices = points.map( function( point, index ) {
+      assert && assert( point instanceof Vector2 && point.isFinite() );
+
       return new Vertex( point, index );
     } );
+
+    for ( i = 0; i < this.constraints.length; i++ ) {
+      var constraint = this.constraints[ i ];
+      var firstIndex = constraint[ 0 ];
+      var secondIndex = constraint[ 1 ];
+      assert && assert( typeof firstIndex === 'number' && isFinite( firstIndex ) && firstIndex % 1 === 0 && firstIndex >= 0 && firstIndex < points.length );
+      assert && assert( typeof secondIndex === 'number' && isFinite( secondIndex ) && secondIndex % 1 === 0 && secondIndex >= 0 && secondIndex < points.length );
+      assert && assert( firstIndex !== secondIndex );
+
+      this.vertices[ firstIndex ].constrainedVertices.push( this.vertices[ secondIndex ] );
+    }
+
     this.vertices.sort( DelaunayTriangulation.vertexComparison );
+
+    for ( i = 0; i < this.vertices.length; i++ ) {
+      var vertex = this.vertices[ i ];
+      vertex.sortedIndex = i;
+      for ( var j = vertex.constrainedVertices.length - 1; j >= 0; j-- ) {
+        var otherVertex = vertex.constrainedVertices[ j ];
+
+        // If the "other" vertex is later in the sweep-line order, it should have the reference to the earlier vertex,
+        // not the other way around.
+        if ( otherVertex.sortedIndex === -1 ) {
+          otherVertex.constrainedVertices.push( vertex );
+          vertex.constrainedVertices.splice( j, 1 );
+        }
+      }
+    }
 
     // @private {Vertex}
     this.bottomVertex = this.vertices[ 0 ];
@@ -473,6 +501,12 @@ define( function( require ) {
 
     // @public {number}
     this.index = index;
+
+    // @public {number} - Will be set after construction
+    this.sortedIndex = -1;
+
+    // @public {Array.<Vertex>} - Vertices with "lower" y values that have constrained edges with this vertex.
+    this.constrainedVertices = [];
   }
 
   inherit( Object, Vertex, {
