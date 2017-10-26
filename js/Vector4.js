@@ -779,7 +779,7 @@ define( function( require ) {
   } );
 
   // Sets up pooling on Vector4
-  Poolable.mixin( Vector4, {
+  Poolable.mixInto( Vector4, {
     defaultFactory: function() { return new Vector4(); },
     constructorDuplicateFactory: function( pool ) {
       return function( x, y, z, w ) {

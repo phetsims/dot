@@ -1400,7 +1400,7 @@ define( function( require ) {
     }
   } );
 
-  Poolable.mixin( Bounds3, {
+  Poolable.mixInto( Bounds3, {
     defaultFactory: function() { return Bounds3.NOTHING.copy(); },
     constructorDuplicateFactory: function( pool ) {
       return function( minX, minY, minZ, maxX, maxY, maxZ ) {

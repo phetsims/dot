@@ -974,7 +974,7 @@ define( function( require ) {
     }
   };
 
-  Poolable.mixin( Matrix3, {
+  Poolable.mixInto( Matrix3, {
 
     //The default factory creates an identity matrix
     defaultFactory: function() { return new Matrix3(); },

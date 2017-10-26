@@ -370,7 +370,7 @@ define( function( require ) {
     );
   };
 
-  Poolable.mixin( Quaternion, {
+  Poolable.mixInto( Quaternion, {
     defaultFactory: function() { return new Quaternion(); },
     constructorDuplicateFactory: function( pool ) {
       return function( x, y, z, w ) {
