@@ -8,6 +8,7 @@
  * TODO: Second (basin) heuristic not yet implemented.
  * TODO: Constraints not yet implemented.
  * TODO: Check number of triangles/edges/vertices with Euler's Formula
+ * TODO: Handle "outside" cases (and changing the front edges) for constrained edges
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
