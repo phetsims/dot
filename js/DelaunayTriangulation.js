@@ -7,6 +7,7 @@
  *
  * TODO: Second (basin) heuristic not yet implemented.
  * TODO: Constraints not yet implemented.
+ * TODO: Check number of triangles/edges/vertices with Euler's Formula
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
@@ -151,7 +152,8 @@ define( function( require ) {
           this.reconnectFrontEdges( frontEdge, frontEdge, edge1, edge2 );
           this.legalizeEdge( frontEdge );
           this.addHalfPiHeuristic( edge1, edge2 );
-          return;
+          this.constrainEdges( vertex, edge1, edge2 );
+          break;
         }
         else if ( x === frontEdge.endVertex.point.x ) {
           var leftOldEdge = frontEdge.nextEdge;
@@ -178,12 +180,11 @@ define( function( require ) {
           this.legalizeEdge( rightOldEdge );
           this.legalizeEdge( middleEdge );
           this.addHalfPiHeuristic( rightEdge, leftEdge );
-          return;
+          this.constrainEdges( vertex, rightEdge, leftEdge );
+          break;
         }
         frontEdge = frontEdge.nextEdge;
       }
-
-      throw new Error( 'Did not find matching front edge?' );
     },
 
     /**
@@ -299,6 +300,246 @@ define( function( require ) {
     },
 
     /**
+     * Handles any "edge events" that delete intersecting edges, creating the new edge, and filling in (all only if
+     * necessary).
+     * @private
+     *
+     * @param {Vertex} vertex
+     * @param {Edge} rightFrontEdge
+     * @param {Edge} leftFrontEdge
+     */
+    constrainEdges: function( vertex, rightFrontEdge, leftFrontEdge ) {
+      assert && assert( vertex instanceof Vertex );
+      assert && assert( rightFrontEdge instanceof Edge );
+      assert && assert( leftFrontEdge instanceof Edge );
+      assert && assert( vertex === rightFrontEdge.endVertex );
+      assert && assert( vertex === leftFrontEdge.startVertex );
+
+      for ( var i = 0; i < vertex.constrainedVertices.length; i++ ) {
+        var bottomVertex = vertex.constrainedVertices[ i ];
+
+        // Check if it's one of our front edge vertices (if so, bail out, since the edge already exists)
+        if ( bottomVertex === rightFrontEdge.startVertex || bottomVertex === leftFrontEdge.endVertex ) {
+          break;
+        }
+
+        var leftEdges = [];
+        var rightEdges = [];
+        var currentTriangle = null;
+        var currentEdge = null;
+        var trianglesToRemove = [];
+        var edgesToRemove = [];
+
+        var outsideRight = DelaunayTriangulation.vertexProduct( vertex, rightFrontEdge.startVertex, bottomVertex ) > 0;
+        var outsideLeft = DelaunayTriangulation.vertexProduct( vertex, leftFrontEdge.endVertex, bottomVertex ) < 0;
+
+        // If we start inside, we need to identify which triangle we're inside of.
+        if ( !outsideRight && !outsideLeft ) {
+          assert && assert( rightFrontEdge.triangles.length === 1 );
+          assert && assert( leftFrontEdge.triangles.length === 1 );
+
+          var lastVertex = rightFrontEdge.startVertex;
+          var nextVertex;
+          currentTriangle = rightFrontEdge.triangles[ 0 ];
+          // TODO: Triangle operations to make this more readable
+          while ( DelaunayTriangulation.vertexProduct( vertex, nextVertex = currentTriangle.getEdgeOppositeFromVertex( vertex ).getOtherVertex( lastVertex ), bottomVertex ) < 0 ) {
+            currentTriangle = currentTriangle.getEdgeOppositeFromVertex( lastVertex ).getOtherTriangle( currentTriangle );
+            lastVertex = nextVertex;
+          }
+
+          // If our initial triangle has our vertex and bottomVertex, then bail out (edge already exists)
+          if ( currentTriangle.hasVertex( bottomVertex ) ) {
+            break;
+          }
+
+          trianglesToRemove.push( currentTriangle );
+
+          currentEdge = currentTriangle.getEdgeOppositeFromVertex( vertex );
+          edgesToRemove.push( currentEdge );
+          leftEdges.push( currentTriangle.getEdgeOppositeFromVertex( lastVertex ) );
+          rightEdges.push( currentTriangle.getEdgeOppositeFromVertex( currentEdge.getOtherVertex( lastVertex ) ) );
+          assert && assert( leftEdges[ 0 ].getOtherVertex( vertex ).point.x < rightEdges[ 0 ].getOtherVertex( vertex ).point.x );
+        }
+
+        while ( true ) { // eslint-disable-line no-constant-condition
+          if ( outsideRight ) {
+            // TODO: implement
+            break;
+          }
+          else if ( outsideLeft ) {
+            // TODO: implement
+            break;
+          }
+          else {
+            if ( currentEdge.triangles.length > 1 ) {
+              var nextTriangle = currentEdge.getOtherTriangle( currentTriangle );
+              if ( nextTriangle.hasVertex( bottomVertex ) ) {
+
+                // TODO: do things!
+                trianglesToRemove.push( nextTriangle );
+                leftEdges.push( nextTriangle.getNextEdge( currentEdge ) );
+                rightEdges.push( nextTriangle.getPreviousEdge( currentEdge ) );
+                break;
+              }
+              else {
+                // If this is the next edge intersected
+                var nextEdge;
+                if ( nextTriangle.aEdge !== currentEdge && nextTriangle.aEdge.intersectsConstrainedEdge( vertex, bottomVertex ) ) {
+                  nextEdge = nextTriangle.aEdge;
+                }
+                else if ( nextTriangle.bEdge !== currentEdge && nextTriangle.bEdge.intersectsConstrainedEdge( vertex, bottomVertex ) ) {
+                  nextEdge = nextTriangle.bEdge;
+                }
+                else if ( nextTriangle.cEdge !== currentEdge && nextTriangle.cEdge.intersectsConstrainedEdge( vertex, bottomVertex ) ) {
+                  nextEdge = nextTriangle.cEdge;
+                }
+                assert && assert( nextEdge );
+
+                if ( nextTriangle.getNextEdge( nextEdge ) === currentEdge ) {
+                  leftEdges.push( nextTriangle.getPreviousEdge( nextEdge ) );
+                }
+                else {
+                  rightEdges.push( nextTriangle.getNextEdge( nextEdge ) );
+                }
+
+                currentEdge = nextEdge;
+                edgesToRemove.push( currentEdge );
+
+                currentTriangle = nextTriangle;
+                trianglesToRemove.push( currentTriangle );
+              }
+            }
+            // No other triangle, exited
+            else {
+              if ( bottomVertex.point.x < vertex.point.x ) {
+                outsideLeft = true;
+              }
+              else {
+                outsideRight = true;
+              }
+            }
+          }
+        }
+
+        for ( var j = 0; j < trianglesToRemove.length; j++ ) {
+          var triangleToRemove = trianglesToRemove[ j ];
+          arrayRemove( this.triangles, triangleToRemove );
+          triangleToRemove.remove();
+        }
+
+        for ( j = 0; j < edgesToRemove.length; j++ ) {
+          arrayRemove( this.edges, edgesToRemove[ j ] );
+        }
+
+        var constraintEdge = new Edge( bottomVertex, vertex );
+        constraintEdge.isConstrained = true;
+        this.edges.push( constraintEdge );
+        leftEdges.push( constraintEdge );
+        rightEdges.push( constraintEdge );
+        rightEdges.reverse(); // Put edges in counterclockwise order
+
+        // TODO: remove this!
+        window.triDebug && window.triDebug( this );
+
+        this.triangulatePolygon( leftEdges );
+        this.triangulatePolygon( rightEdges );
+      }
+    },
+
+    /**
+     * Creates edges/triangles to triangulate a simple polygon.
+     * @private
+     *
+     * @param {Array.<Edge>} edges - Should be in counterclockwise order
+     */
+    triangulatePolygon: function( edges ) {
+      // TODO: Something more efficient than ear clipping method below
+      while ( edges.length > 3 ) {
+        for ( var k = 0; k < edges.length; k++ ) {
+          var kx = k < edges.length - 1 ? k + 1 : 0;
+          assert && assert( edges[ k ].getSharedVertex( edges[ kx ] ) );
+        }
+
+        // Check if each triple of vertices is an ear (and if so, remove it)
+        for ( var i = 0; i < edges.length; i++ ) {
+          // Next index
+          var ix = i < edges.length - 1 ? i + 1 : 0;
+
+          // Information about our potential ear
+          var edge = edges[ i ];
+          var nextEdge = edges[ ix ];
+          var sharedVertex = edge.getSharedVertex( nextEdge );
+          var startVertex = edge.getOtherVertex( sharedVertex );
+          var endVertex = nextEdge.getOtherVertex( sharedVertex );
+
+          if ( Util.triangleAreaSigned( startVertex.point, sharedVertex.point,  endVertex.point ) <= 0 ) {
+            continue;
+          }
+
+          // Variables for computing barycentric coordinates
+          var endDelta = endVertex.point.minus( sharedVertex.point );
+          var startDelta = startVertex.point.minus( sharedVertex.point );
+          var endMagnitudeSquared = endDelta.dot( endDelta );
+          var startEndProduct = endDelta.dot( startDelta );
+          var startMagnitudeSquared = startDelta.dot( startDelta );
+          var x = endMagnitudeSquared * startMagnitudeSquared - startEndProduct * startEndProduct;
+
+          // See if there are other vertices in our triangle (it wouldn't be an ear if there is another in it)
+          var lastVertex = edges[ 0 ].getSharedVertex( edges[ edges.length - 1 ] );
+          var hasInteriorVertex = false;
+          for ( var j = 0; j < edges.length; j++ ) {
+            var vertex = edges[ j ].getOtherVertex( lastVertex );
+
+            if ( vertex !== sharedVertex && vertex !== startVertex && vertex !== endVertex ) {
+              var pointDelta = vertex.point.minus( sharedVertex.point );
+              var pointEndProduct = endDelta.dot( pointDelta );
+              var pointStartProduct = startDelta.dot( pointDelta );
+
+              // Compute barycentric coordinates
+              var u = ( startMagnitudeSquared * pointEndProduct - startEndProduct * pointStartProduct ) / x;
+              var v = ( endMagnitudeSquared * pointStartProduct - startEndProduct * pointEndProduct ) / x;
+
+              // Test for whether the point is in our triangle
+              if ( u >= -1e-10 && v >= -1e-10 && u + v < 1 + 1e-10 ) {
+                hasInteriorVertex = true;
+                break;
+              }
+            }
+
+            lastVertex = vertex;
+          }
+
+          // If there is no interior vertex, then we reached an ear.
+          if ( !hasInteriorVertex ) {
+            var newEdge = new Edge( startVertex, endVertex );
+            this.edges.push( newEdge );
+            this.triangles.push( new Triangle( startVertex, sharedVertex, endVertex,
+                                               nextEdge, newEdge, edge ) );
+            if ( ix > i ) {
+              edges.splice( i, 2, newEdge );
+            }
+            else {
+              edges.splice( i, 1, newEdge );
+              edges.splice( ix, 1 );
+            }
+
+            // TODO: remove this!
+            window.triDebug && window.triDebug( this );
+          }
+        }
+      }
+
+      // Fill in the last triangle
+      if ( edges.length === 3 ) {
+        this.triangles.push( new Triangle( edges[ 0 ].getSharedVertex( edges[ 1 ] ), edges[ 1 ].getSharedVertex( edges[ 2 ] ), edges[ 0 ].getSharedVertex( edges[ 2 ] ),
+                                           edges[ 2 ], edges[ 0 ], edges[ 1 ] ) );
+
+        // TODO: remove this!
+        window.triDebug && window.triDebug( this );
+      }
+    },
+
+    /**
      * Should be called when there are no more remaining vertices left to be processed.
      * @private
      */
@@ -406,7 +647,7 @@ define( function( require ) {
     legalizeEdge: function( edge ) {
       // Checking each edge to see if it isn't in our triangulation anymore (or can't be illegal because it doesn't
       // have multiple triangles) helps a lot.
-      if ( !_.includes( this.edges, edge ) || edge.triangles.length !== 2 ) {
+      if ( !_.includes( this.edges, edge ) || edge.triangles.length !== 2 || edge.isConstrained ) {
         return;
       }
 
@@ -480,6 +721,21 @@ define( function( require ) {
         // property?
         return 0;
       }
+    },
+
+    /**
+     * Returns the cross product of (aVertex-sharedVertex) and (bVertex-sharedVertex)
+     * @private
+     *
+     * @param {Vertex} sharedVertex
+     * @param {Vertex} aVertex
+     * @param {Vertex} bVertex
+     * @returns {number}
+     */
+    vertexProduct: function( sharedVertex, aVertex, bVertex ) {
+      var aDiff = aVertex.point.minus( sharedVertex.point );
+      var bDiff = bVertex.point.minus( sharedVertex.point );
+      return aDiff.crossScalar( bDiff );
     }
   } );
 
@@ -544,6 +800,9 @@ define( function( require ) {
     // @public {Edge|null} - Linked list for the front of the sweep-line (or in the back for the convex hull)
     this.nextEdge = null;
     this.previousEdge = null;
+
+    // @public {boolean} - Can be set to note that it was constrained
+    this.isConstrained = false;
   }
 
   inherit( Object, Edge, {
@@ -680,6 +939,20 @@ define( function( require ) {
       else {
         return this.triangles[ 0 ];
       }
+    },
+
+    /**
+     * Returns whether the line segment defined between the vertex and bottomVertex intersect this edge.
+     * @public
+     *
+     * @param {Vertex} vertex
+     * @param {Vertex} bottomVertex
+     * @returns {boolean}
+     */
+    intersectsConstrainedEdge: function( vertex, bottomVertex ) {
+      return Util.lineSegmentIntersection( vertex.point.x, vertex.point.y, bottomVertex.point.x, bottomVertex.point.y,
+                                           this.startVertex.point.x, this.startVertex.point.y,
+                                           this.endVertex.point.x, this.endVertex.point.y );
     }
   } );
 
@@ -736,6 +1009,17 @@ define( function( require ) {
   }
 
   inherit( Object, Triangle, {
+    /**
+     * Returns whether the vertex is one in the triangle.
+     * @public
+     *
+     * @param {Vertex} vertex
+     * @returns {boolean}
+     */
+    hasVertex: function( vertex ) {
+      return this.aVertex === vertex || this.bVertex === vertex || this.cVertex === vertex;
+    },
+
     /**
      * Returns the vertex that is opposite from the given edge.
      * @public
@@ -850,6 +1134,48 @@ define( function( require ) {
       }
       else {
         return null;
+      }
+    },
+
+    /**
+     * Returns the next edge (counterclockwise).
+     * @public
+     *
+     * @param {Edge} edge
+     * @returns {Edge}
+     */
+    getNextEdge: function( edge ) {
+      assert && assert( edge === this.aEdge || edge === this.bEdge || edge === this.cEdge );
+
+      if ( this.aEdge === edge ) {
+        return this.bEdge;
+      }
+      if ( this.bEdge === edge ) {
+        return this.cEdge;
+      }
+      if ( this.cEdge === edge ) {
+        return this.aEdge;
+      }
+    },
+
+    /**
+     * Returns the previous edge (clockwise).
+     * @public
+     *
+     * @param {Edge} edge
+     * @returns {Edge}
+     */
+    getPreviousEdge: function( edge ) {
+      assert && assert( edge === this.aEdge || edge === this.bEdge || edge === this.cEdge );
+
+      if ( this.aEdge === edge ) {
+        return this.cEdge;
+      }
+      if ( this.bEdge === edge ) {
+        return this.aEdge;
+      }
+      if ( this.cEdge === edge ) {
+        return this.bEdge;
       }
     },
 

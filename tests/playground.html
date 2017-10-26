@@ -36,7 +36,9 @@
           // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 10 ), dot.v2( 10, 0 ), dot.v2( 0, 10 ) ];
           // window.points = []; for ( var i = 0; i < 100; i++ ) { points.push( dot.v2( Math.random(), Math.random() ) ); }
           window.points = []; for ( var i = 0; i < 10; i++ ) { for ( var j = 0; j < 10; j++ ) { points.push( dot.v2( i, j ) ); } }
-          window.triangulation = new dot.DelaunayTriangulation( points, [] );
+          window.constraints = [ [ 10, 45 ], [ 46, 51 ] ];
+          // window.constraints = [ [ 10, 45 ] ];
+          window.triangulation = new dot.DelaunayTriangulation( points, constraints );
           triDebug( triangulation );
           while ( triangulation.remainingVertices.length ) {
             triangulation.step();
