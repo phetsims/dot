@@ -12,6 +12,7 @@
     "js-beautify": "~1.5.10"
   },
   "phet": {
+    "requirejsNamespace": "DOT",
     "isJSOnly": true,
     "requiresLodash": true,
     "assignGlobals": {
