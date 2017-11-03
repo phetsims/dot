@@ -553,6 +553,14 @@ define( function( require ) {
         return null;
       }
 
+      // Check if there is an exact endpoint overlap (and then return an exact answer).
+      if ( ( x1 === x3 && y1 === y3 ) || ( x1 === x4 && y1 === y4 ) ) {
+        return new dot.Vector2( x1, y1 );
+      }
+      else if ( ( x2 === x3 && y2 === y3 ) || ( x2 === x4 && y2 === y4 ) ) {
+        return new dot.Vector2( x2, y2 );
+      }
+
       // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
       var intersectionX = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / denom;
       var intersectionY = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / denom;
