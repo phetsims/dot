@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TRandom( random, phetioID ) {
-    assertInstanceOf( random, phet.dot.Random );
+    assert && assertInstanceOf( random, phet.dot.Random );
     TObject.call( this, random, phetioID );
   }
 

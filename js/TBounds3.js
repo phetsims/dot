@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TBounds3( bounds3, phetioID ) {
-    assertInstanceOf( bounds3, phet.dot.Bounds3 );
+    assert && assertInstanceOf( bounds3, phet.dot.Bounds3 );
     TObject.call( this, bounds3, phetioID );
   }
 

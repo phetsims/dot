@@ -24,7 +24,7 @@ define( function( require ) {
    */
   function TBounds2( bounds2, phetioID ) {
     assert && assert( !!bounds2, 'bounds should exist' );
-    assertInstanceOf( bounds2, phet.dot.Bounds2 );
+    assert && assertInstanceOf( bounds2, phet.dot.Bounds2 );
     TObject.call( this, bounds2, phetioID );
   }
 

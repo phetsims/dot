@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TRange( range, phetioID ) {
-    assertInstanceOf( range, phet.dot.Range );
+    assert && assertInstanceOf( range, phet.dot.Range );
     TObject.call( this, range, phetioID );
   }
 

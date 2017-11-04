@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function TVector2( vector2, phetioID ) {
-    assertInstanceOf( vector2, phet.dot.Vector2 );
+    assert && assertInstanceOf( vector2, phet.dot.Vector2 );
     TObject.call( this, vector2, phetioID );
   }
 
