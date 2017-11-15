@@ -1,7 +1,6 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
- *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
@@ -17,39 +16,40 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * Wrapper type for phet/dot's Vector2
-   * @param vector2
+   * Wrapper type for phet/dot's Vector3
+   * @param vector3
    * @param phetioID
    * @constructor
    */
-  function TVector2( vector2, phetioID ) {
-    assert && assertInstanceOf( vector2, phet.dot.Vector2 );
-    ObjectIO.call( this, vector2, phetioID );
+  function Vector3IO( vector3, phetioID ) {
+    assert && assertInstanceOf( vector3, phet.dot.Vector3 );
+    ObjectIO.call( this, vector3, phetioID );
   }
 
-  phetioInherit( ObjectIO, 'TVector2', TVector2, {}, {
-    documentation: 'A numerical object with x/y scalar values',
+  phetioInherit( ObjectIO, 'Vector3IO', Vector3IO, {}, {
+    documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
 
     /**
-     * Decodes a state into a Vector2.
+     * Decodes a state into a Vector3.
      * @param {Object} stateObject
-     * @returns {Vector2}
+     * @returns {Vector3}
      */
     fromStateObject: function( stateObject ) {
-      return new phet.dot.Vector2( stateObject.x, stateObject.y );
+      return new phet.dot.Vector3( stateObject.x, stateObject.y, stateObject.z );
     },
 
     /**
-     * Encodes a Vector2 instance to a state.
-     * @param {Vector2} instance
+     * Encodes a Vector3 instance to a state.
+     * @param {Vector3} instance
      * @returns {Object}
      */
     toStateObject: function( instance ) {
-      return { x: instance.x, y: instance.y };
+      return { x: instance.x, y: instance.y, z: instance.z };
     }
   } );
 
-  dot.register( 'TVector2', TVector2 );
+  dot.register( 'Vector3IO', Vector3IO );
 
-  return TVector2;
+  return Vector3IO;
 } );
+

@@ -17,40 +17,39 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * Wrapper type for phet/dot's Vector3
-   * @param vector3
+   * Wrapper type for phet/dot's Vector2
+   * @param vector2
    * @param phetioID
    * @constructor
    */
-  function TVector3( vector3, phetioID ) {
-    assert && assertInstanceOf( vector3, phet.dot.Vector3 );
-    ObjectIO.call( this, vector3, phetioID );
+  function Vector2IO( vector2, phetioID ) {
+    assert && assertInstanceOf( vector2, phet.dot.Vector2 );
+    ObjectIO.call( this, vector2, phetioID );
   }
 
-  phetioInherit( ObjectIO, 'TVector3', TVector3, {}, {
-    documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
+  phetioInherit( ObjectIO, 'Vector2IO', Vector2IO, {}, {
+    documentation: 'A numerical object with x/y scalar values',
 
     /**
-     * Decodes a state into a Vector3.
+     * Decodes a state into a Vector2.
      * @param {Object} stateObject
-     * @returns {Vector3}
+     * @returns {Vector2}
      */
     fromStateObject: function( stateObject ) {
-      return new phet.dot.Vector3( stateObject.x, stateObject.y, stateObject.z );
+      return new phet.dot.Vector2( stateObject.x, stateObject.y );
     },
 
     /**
-     * Encodes a Vector3 instance to a state.
-     * @param {Vector3} instance
+     * Encodes a Vector2 instance to a state.
+     * @param {Vector2} instance
      * @returns {Object}
      */
     toStateObject: function( instance ) {
-      return { x: instance.x, y: instance.y, z: instance.z };
+      return { x: instance.x, y: instance.y };
     }
   } );
 
-  dot.register( 'TVector3', TVector3 );
+  dot.register( 'Vector2IO', Vector2IO );
 
-  return TVector3;
+  return Vector2IO;
 } );
-
