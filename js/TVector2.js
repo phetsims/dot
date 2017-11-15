@@ -14,7 +14,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
    * Wrapper type for phet/dot's Vector2
@@ -24,10 +24,10 @@ define( function( require ) {
    */
   function TVector2( vector2, phetioID ) {
     assert && assertInstanceOf( vector2, phet.dot.Vector2 );
-    TObject.call( this, vector2, phetioID );
+    ObjectIO.call( this, vector2, phetioID );
   }
 
-  phetioInherit( TObject, 'TVector2', TVector2, {}, {
+  phetioInherit( ObjectIO, 'TVector2', TVector2, {}, {
     documentation: 'A numerical object with x/y scalar values',
 
     /**

@@ -14,7 +14,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
    * Wrapper type for phet/dot's Range
@@ -24,10 +24,10 @@ define( function( require ) {
    */
   function TRange( range, phetioID ) {
     assert && assertInstanceOf( range, phet.dot.Range );
-    TObject.call( this, range, phetioID );
+    ObjectIO.call( this, range, phetioID );
   }
 
-  phetioInherit( TObject, 'TRange', TRange, {}, {
+  phetioInherit( ObjectIO, 'TRange', TRange, {}, {
     documentation: 'A range',
 
     /**

@@ -14,7 +14,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
    * Wrapper type for phet/dot's Bounds2
@@ -25,10 +25,10 @@ define( function( require ) {
   function TBounds2( bounds2, phetioID ) {
     assert && assert( !!bounds2, 'bounds should exist' );
     assert && assertInstanceOf( bounds2, phet.dot.Bounds2 );
-    TObject.call( this, bounds2, phetioID );
+    ObjectIO.call( this, bounds2, phetioID );
   }
 
-  phetioInherit( TObject, 'TBounds2', TBounds2, {}, {
+  phetioInherit( ObjectIO, 'TBounds2', TBounds2, {}, {
     documentation: 'a 2-dimensional bounds rectangle',
 
     /**

@@ -14,7 +14,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
    * Wrapper type for phet/dot's Random
@@ -24,10 +24,10 @@ define( function( require ) {
    */
   function TRandom( random, phetioID ) {
     assert && assertInstanceOf( random, phet.dot.Random );
-    TObject.call( this, random, phetioID );
+    ObjectIO.call( this, random, phetioID );
   }
 
-  phetioInherit( TObject, 'TRandom', TRandom, {}, {
+  phetioInherit( ObjectIO, 'TRandom', TRandom, {}, {
     documentation: 'Generates pseudorandom values'
   } );
 

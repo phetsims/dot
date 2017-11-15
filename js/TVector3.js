@@ -14,7 +14,7 @@ define( function( require ) {
   // phet-io modules
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
   var phetioInherit = require( 'ifphetio!PHET_IO/phetioInherit' );
-  var TObject = require( 'ifphetio!PHET_IO/types/TObject' );
+  var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
    * Wrapper type for phet/dot's Vector3
@@ -24,10 +24,10 @@ define( function( require ) {
    */
   function TVector3( vector3, phetioID ) {
     assert && assertInstanceOf( vector3, phet.dot.Vector3 );
-    TObject.call( this, vector3, phetioID );
+    ObjectIO.call( this, vector3, phetioID );
   }
 
-  phetioInherit( TObject, 'TVector3', TVector3, {}, {
+  phetioInherit( ObjectIO, 'TVector3', TVector3, {}, {
     documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
 
     /**
