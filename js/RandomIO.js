@@ -22,16 +22,16 @@ define( function( require ) {
    * @param phetioID
    * @constructor
    */
-  function TRandom( random, phetioID ) {
+  function RandomIO( random, phetioID ) {
     assert && assertInstanceOf( random, phet.dot.Random );
     ObjectIO.call( this, random, phetioID );
   }
 
-  phetioInherit( ObjectIO, 'TRandom', TRandom, {}, {
+  phetioInherit( ObjectIO, 'RandomIO', RandomIO, {}, {
     documentation: 'Generates pseudorandom values'
   } );
 
-  dot.register( 'TRandom', TRandom );
+  dot.register( 'RandomIO', RandomIO );
 
-  return TRandom;
+  return RandomIO;
 } );

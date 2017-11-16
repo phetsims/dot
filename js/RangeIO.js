@@ -22,12 +22,12 @@ define( function( require ) {
    * @param {string} phetioID
    * @constructor
    */
-  function TRange( range, phetioID ) {
+  function RangeIO( range, phetioID ) {
     assert && assertInstanceOf( range, phet.dot.Range );
     ObjectIO.call( this, range, phetioID );
   }
 
-  phetioInherit( ObjectIO, 'TRange', TRange, {}, {
+  phetioInherit( ObjectIO, 'RangeIO', RangeIO, {}, {
     documentation: 'A range',
 
     /**
@@ -49,7 +49,7 @@ define( function( require ) {
     }
   } );
 
-  dot.register( 'TRange', TRange );
+  dot.register( 'RangeIO', RangeIO );
 
-  return TRange;
+  return RangeIO;
 } );

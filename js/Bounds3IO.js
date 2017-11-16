@@ -17,49 +17,51 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * Wrapper type for phet/dot's Bounds2
-   * @param bounds2
+   * Wrapper type for phet/dot's Bounds3
+   * @param bounds3
    * @param phetioID
    * @constructor
    */
-  function TBounds2( bounds2, phetioID ) {
-    assert && assert( !!bounds2, 'bounds should exist' );
-    assert && assertInstanceOf( bounds2, phet.dot.Bounds2 );
-    ObjectIO.call( this, bounds2, phetioID );
+  function Bounds3IO( bounds3, phetioID ) {
+    assert && assertInstanceOf( bounds3, phet.dot.Bounds3 );
+    ObjectIO.call( this, bounds3, phetioID );
   }
 
-  phetioInherit( ObjectIO, 'TBounds2', TBounds2, {}, {
-    documentation: 'a 2-dimensional bounds rectangle',
+  phetioInherit( ObjectIO, 'Bounds3IO', Bounds3IO, {}, {
+    documentation: 'a 3-dimensional bounds (bounding box)',
 
     /**
-     * Decodes a state into a Bounds2.
+     * Decodes a state into a Bounds3.
      * @param {Object} stateObject
-     * @returns {Bounds2}
+     * @returns {Bounds3}
      */
     fromStateObject: function( stateObject ) {
-      return new phet.dot.Bounds2(
-        stateObject.minX, stateObject.minY,
-        stateObject.maxX, stateObject.maxY
+      return new phet.dot.Bounds3(
+        stateObject.minX, stateObject.minY, stateObject.minZ,
+        stateObject.maxX, stateObject.maxY, stateObject.maxZ
       );
     },
 
     /**
-     * Encodes a Bounds2 instance to a state.
-     * @param {Bounds2} instance
+     * Encodes a Bounds3 instance to a state.
+     * @param {Bounds3} instance
      * @returns {Object}
      */
     toStateObject: function( instance ) {
       return {
         minX: instance.minX,
         minY: instance.minY,
+        minZ: instance.minZ,
 
         maxX: instance.maxX,
-        maxY: instance.maxY
+        maxY: instance.maxY,
+        maxZ: instance.maxZ
       };
     }
   } );
 
-  dot.register( 'TBounds2', TBounds2 );
+  dot.register( 'Bounds3IO', Bounds3IO );
 
-  return TBounds2;
+  return Bounds3IO;
 } );
+
