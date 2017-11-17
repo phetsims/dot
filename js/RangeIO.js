@@ -41,11 +41,12 @@ define( function( require ) {
 
     /**
      * Encodes a Range instance to a state.
-     * @param {Range} instance
+     * @param {Range} range
      * @returns {Object}
      */
-    toStateObject: function( instance ) {
-      return { min: instance.min, max: instance.max };
+    toStateObject: function( range ) {
+      assert && assertInstanceOf( range, phet.dot.Range );
+      return { min: range.min, max: range.max };
     }
   } );
 

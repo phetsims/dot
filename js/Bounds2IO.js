@@ -23,7 +23,6 @@ define( function( require ) {
    * @constructor
    */
   function Bounds2IO( bounds2, phetioID ) {
-    assert && assert( !!bounds2, 'bounds should exist' );
     assert && assertInstanceOf( bounds2, phet.dot.Bounds2 );
     ObjectIO.call( this, bounds2, phetioID );
   }
@@ -45,16 +44,17 @@ define( function( require ) {
 
     /**
      * Encodes a Bounds2 instance to a state.
-     * @param {Bounds2} instance
+     * @param {Bounds2} bounds2
      * @returns {Object}
      */
-    toStateObject: function( instance ) {
+    toStateObject: function( bounds2 ) {
+      assert && assertInstanceOf( bounds2, phet.dot.Bounds2 );
       return {
-        minX: instance.minX,
-        minY: instance.minY,
+        minX: bounds2.minX,
+        minY: bounds2.minY,
 
-        maxX: instance.maxX,
-        maxY: instance.maxY
+        maxX: bounds2.maxX,
+        maxY: bounds2.maxY
       };
     }
   } );

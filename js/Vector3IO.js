@@ -40,11 +40,12 @@ define( function( require ) {
 
     /**
      * Encodes a Vector3 instance to a state.
-     * @param {Vector3} instance
+     * @param {Vector3} vector3
      * @returns {Object}
      */
-    toStateObject: function( instance ) {
-      return { x: instance.x, y: instance.y, z: instance.z };
+    toStateObject: function( vector3 ) {
+      assert && assertInstanceOf( vector3, phet.dot.Vector3 );
+      return { x: vector3.x, y: vector3.y, z: vector3.z };
     }
   } );
 

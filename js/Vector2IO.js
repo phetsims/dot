@@ -41,11 +41,12 @@ define( function( require ) {
 
     /**
      * Encodes a Vector2 instance to a state.
-     * @param {Vector2} instance
+     * @param {Vector2} vector2
      * @returns {Object}
      */
-    toStateObject: function( instance ) {
-      return { x: instance.x, y: instance.y };
+    toStateObject: function( vector2 ) {
+      assert && assertInstanceOf( vector2, phet.dot.Vector2 );
+      return { x: vector2.x, y: vector2.y };
     }
   } );
 

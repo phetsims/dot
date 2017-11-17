@@ -44,18 +44,19 @@ define( function( require ) {
 
     /**
      * Encodes a Bounds3 instance to a state.
-     * @param {Bounds3} instance
+     * @param {Bounds3} bounds3
      * @returns {Object}
      */
-    toStateObject: function( instance ) {
+    toStateObject: function( bounds3 ) {
+      assert && assertInstanceOf( bounds3, phet.dot.Bounds3 );
       return {
-        minX: instance.minX,
-        minY: instance.minY,
-        minZ: instance.minZ,
+        minX: bounds3.minX,
+        minY: bounds3.minY,
+        minZ: bounds3.minZ,
 
-        maxX: instance.maxX,
-        maxY: instance.maxY,
-        maxZ: instance.maxZ
+        maxX: bounds3.maxX,
+        maxY: bounds3.maxY,
+        maxZ: bounds3.maxZ
       };
     }
   } );
