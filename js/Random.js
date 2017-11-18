@@ -32,7 +32,7 @@ define( function( require ) {
       seed: null,
 
       // {boolean} if true, use the seed specified statically in `phet.chipper.randomSeed`.  This value is declared
-      // in initialize-globals.js and can be overriden by PhET-iO for reproducible playback (see PhETIOIO.setRandomSeed).
+      // in initialize-globals.js and can be overriden by PhET-iO for reproducible playback (see PhETIO.setRandomSeed).
       staticSeed: false
 
     }, options );
