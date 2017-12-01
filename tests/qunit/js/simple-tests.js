@@ -9,25 +9,6 @@
     ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
   }
 
-  test( 'Matrix scaling()', function() {
-    var rotation = dot.Matrix3.rotation2( Math.PI / 4 );
-    var translation = dot.Matrix3.translation( 20, 30 );
-    var scale2 = dot.Matrix3.scaling( 2 );
-    var scale2x3y = dot.Matrix3.scaling( 2, 3 );
-
-    // the basics, just to make sure it is working
-    equal( scale2.getScaleVector().x, 2, 'normal x scale' );
-    equal( scale2.getScaleVector().y, 2, 'normal y scale' );
-
-    equal( scale2x3y.getScaleVector().x, 2, 'normal x scale' );
-    equal( scale2x3y.getScaleVector().y, 3, 'normal y scale' );
-
-    var combination = rotation.timesMatrix( scale2 ).timesMatrix( translation );
-
-    approximateEquals( combination.getScaleVector().x, 2, 'rotated x scale' );
-    approximateEquals( combination.getScaleVector().y, 2, 'rotated x scale' );
-  } );
-
   test( 'distance', function() {
     approximateEquals( new dot.Vector2( 2, 0 ).distance( dot.Vector2.ZERO ), 2 );
     approximateEquals( new dot.Vector2( 2, 0 ).distanceSquared( dot.Vector2.ZERO ), 4 );

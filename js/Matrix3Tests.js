@@ -15,6 +15,10 @@ define( function( require ) {
 
   QUnit.module( 'Matrix3' );
 
+  function approximateEquals( assert, a, b, msg ) {
+    assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
+  }
+
   var epsilon = 0.00001;
 
   function approximateEqual( assert, a, b, msg ) {
@@ -234,5 +238,23 @@ define( function( require ) {
     var rotation = Matrix3.rotation2( 0.35264 );
     approximateEqual( assert, rotation.getScaleVector().x, 1, 'rotation x' );
     approximateEqual( assert, rotation.getScaleVector().y, 1, 'rotation x' );
+  } );
+
+  QUnit.test( 'Matrix scaling()', function( assert ) {
+    var rotation = Matrix3.rotation2( Math.PI / 4 );
+    var translation = Matrix3.translation( 20, 30 );
+    var scale2 = Matrix3.scaling( 2 );
+    var scale2x3y = Matrix3.scaling( 2, 3 );
+
+    // the basics, just to make sure it is working
+    assert.equal( scale2.getScaleVector().x, 2, 'normal x scale' );
+    assert.equal( scale2.getScaleVector().y, 2, 'normal y scale' );
+    assert.equal( scale2x3y.getScaleVector().x, 2, 'normal x scale' );
+    assert.equal( scale2x3y.getScaleVector().y, 3, 'normal y scale' );
+
+    var combination = rotation.timesMatrix( scale2 ).timesMatrix( translation );
+
+    approximateEquals( assert, combination.getScaleVector().x, 2, 'rotated x scale' );
+    approximateEquals( assert, combination.getScaleVector().y, 2, 'rotated x scale' );
   } );
 } );
