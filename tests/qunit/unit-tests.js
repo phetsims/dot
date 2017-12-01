@@ -17,6 +17,4 @@ function runDotTests( pathToTestBase ) { // eslint-disable-line no-unused-vars
 
   loadTestFile( 'js/simple-tests.js' );
   loadTestFile( 'js/transform3.js' );
-  loadTestFile( 'js/modulo.js' );
-  loadTestFile( 'js/matrix-ops3.js' );
 }
