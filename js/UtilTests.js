@@ -110,4 +110,48 @@ define( function( require ) {
     approximateEquals( assert, f( p1, p2, p2 ), 36 );
     approximateEquals( assert, f( p3, p2, p2 ), 2 );
   } );
+
+  QUnit.test( 'linear map', function( assert ) {
+    approximateEquals( assert, Util.linear( 4, 8, 8, 0, 4 ), 8 );
+    approximateEquals( assert, Util.linear( 4, 8, 8, 0, 8 ), 0 );
+    approximateEquals( assert, Util.linear( 4, 8, 8, 0, 6 ), 4 );
+  } );
+
+  QUnit.test( 'clamp', function( assert ) {
+    assert.equal( Util.clamp( 5, 1, 4 ), 4 );
+    assert.equal( Util.clamp( 3, 1, 4 ), 3 );
+    assert.equal( Util.clamp( 0, 1, 4 ), 1 );
+  } );
+
+  QUnit.test( 'rangeInclusive', function( assert ) {
+    var arr = Util.rangeInclusive( 2, 4 );
+    assert.equal( arr.length, 3 );
+    assert.equal( arr[ 0 ], 2 );
+    assert.equal( arr[ 1 ], 3 );
+    assert.equal( arr[ 2 ], 4 );
+
+    arr = Util.rangeInclusive( 4, 2 );
+    assert.equal( arr.length, 0 );
+  } );
+
+  QUnit.test( 'rangeExclusive', function( assert ) {
+    var arr = Util.rangeExclusive( 2, 4 );
+    assert.equal( arr.length, 1 );
+    assert.equal( arr[ 0 ], 3 );
+
+    arr = Util.rangeExclusive( 4, 2 );
+    assert.equal( arr.length, 0 );
+  } );
+
+  QUnit.test( 'toRadians', function( assert ) {
+    approximateEquals( assert, Util.toRadians( 90 ), Math.PI / 2 );
+    approximateEquals( assert, Util.toRadians( 45 ), Math.PI / 4 );
+    approximateEquals( assert, Util.toRadians( -45 ), -Math.PI / 4 );
+  } );
+
+  QUnit.test( 'toDegrees', function( assert ) {
+    approximateEquals( assert, 90, Util.toDegrees( Math.PI / 2 ) );
+    approximateEquals( assert, 45, Util.toDegrees( Math.PI / 4 ) );
+    approximateEquals( assert, -45, Util.toDegrees( -Math.PI / 4 ) );
+  } );
 } );
