@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   require( 'DOT/BinPackerTests' );
   require( 'DOT/Bounds2Tests' );
+  require( 'DOT/ComplexTests' );
 
   // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
   QUnit.start();
