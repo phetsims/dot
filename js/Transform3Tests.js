@@ -135,4 +135,11 @@ define( function( require ) {
     assert.ok( t.transformPosition2( new Vector2( 2, 4 ) ).equalsEpsilon( new Vector2( -16, 4 ), epsilon ) );
     assert.ok( t.inversePosition2( new Vector2( 2, 4 ) ).equalsEpsilon( new Vector2( 2, -0.5 ), epsilon ) );
   } );
+
+  QUnit.test( 'transform creation and setting', function( assert ) {
+    var t = new Transform3();
+    t.append( Matrix3.rotation2( Math.PI ) );
+
+    assert.expect( 0 ); // eslint-disable-line no-undef
+  } );
 } );

@@ -17,6 +17,8 @@ define( function( require ) {
   require( 'DOT/MatrixOps3Tests' );
   require( 'DOT/UtilTests' );
   require( 'DOT/Transform3Tests' );
+  require( 'DOT/LinearFunctionTests' );
+  require( 'DOT/Vector2Tests' );
 
   // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
   QUnit.start();
