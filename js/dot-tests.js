@@ -13,6 +13,7 @@ define( function( require ) {
   require( 'DOT/Bounds2Tests' );
   require( 'DOT/ComplexTests' );
   require( 'DOT/DampedHarmonicTests' );
+  require( 'DOT/Matrix3Tests' );
 
   // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
   QUnit.start();
