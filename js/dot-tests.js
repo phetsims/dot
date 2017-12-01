@@ -14,6 +14,7 @@ define( function( require ) {
   require( 'DOT/ComplexTests' );
   require( 'DOT/DampedHarmonicTests' );
   require( 'DOT/Matrix3Tests' );
+  require( 'DOT/MatrixOps3Tests' );
 
   // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
   QUnit.start();
