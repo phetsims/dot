@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Bounds2 tests
+ * Vector2 tests
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
