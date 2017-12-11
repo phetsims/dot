@@ -139,7 +139,6 @@ define( function( require ) {
   QUnit.test( 'transform creation and setting', function( assert ) {
     var t = new Transform3();
     t.append( Matrix3.rotation2( Math.PI ) );
-
-    assert.expect( 0 ); // eslint-disable-line no-undef
+    assert.ok( true, 'so we have at least 1 test in this set' );
   } );
 } );
