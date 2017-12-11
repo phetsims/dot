@@ -62,7 +62,7 @@ define( function( require ) {
       var divisor = max - min;
 
       // get a partial result of value-min between [0,divisor)
-      var partial = (value - min) % divisor;
+      var partial = ( value - min ) % divisor;
       if ( partial < 0 ) {
         // since if value-min < 0, the remainder will give us a negative number
         partial += divisor;
@@ -285,7 +285,7 @@ define( function( require ) {
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
       var tmp = rayDir.dot( centerToRay );
       var centerToRayDistSq = centerToRay.magnitudeSquared();
-      var det = 4 * tmp * tmp - 4 * (centerToRayDistSq - radius * radius);
+      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
       if ( det < epsilon ) {
         // ray misses sphere entirely
         return null;
@@ -358,8 +358,8 @@ define( function( require ) {
       // TODO: how to handle if discriminant is 0? give unique root or double it?
       // TODO: probably just use Complex for the future
       return [
-        (-b - sqrt) / (2 * a),
-        (-b + sqrt) / (2 * a)
+        ( -b - sqrt ) / ( 2 * a ),
+        ( -b + sqrt ) / ( 2 * a )
       ];
     },
 
@@ -390,8 +390,8 @@ define( function( require ) {
       c /= a;
       d /= a;
 
-      var q = (3.0 * c - (b * b)) / 9;
-      var r = (-(27 * d) + b * (9 * c - 2 * (b * b))) / 54;
+      var q = ( 3.0 * c - ( b * b ) ) / 9;
+      var r = ( -( 27 * d ) + b * ( 9 * c - 2 * ( b * b ) ) ) / 54;
       var discriminant = q * q * q + r * r;
       var b3 = b / 3;
 
@@ -415,8 +415,8 @@ define( function( require ) {
         var rr = 2 * Math.sqrt( -q );
         return [
           -b3 + rr * Math.cos( qX / 3 ),
-          -b3 + rr * Math.cos( (qX + 2 * Math.PI) / 3 ),
-          -b3 + rr * Math.cos( (qX + 4 * Math.PI) / 3 )
+          -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
+          -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
         ];
       }
     },
@@ -445,7 +445,7 @@ define( function( require ) {
      * @returns {number}
      */
     linear: function( a1, a2, b1, b2, a3 ) {
-      return (b2 - b1) / (a2 - a1) * (a3 - a1) + b1;
+      return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
     },
 
     /**
@@ -463,7 +463,7 @@ define( function( require ) {
      * @returns {number}
      */
     roundSymmetric: function( value ) {
-      return ((value < 0) ? -1 : 1) * Math.round( Math.abs( value ) );
+      return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) );
     },
 
     /**
@@ -535,7 +535,7 @@ define( function( require ) {
       // See http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf
       // @returns {number}
       var ccw = function( a, b, c, d, e, f ) {
-        return (f - b) * (c - a) - (d - b) * (e - a);
+        return ( f - b ) * ( c - a ) - ( d - b ) * ( e - a );
       };
 
       // Check if intersection doesn't exist. See http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
@@ -547,7 +547,7 @@ define( function( require ) {
         return null;
       }
 
-      var denom = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+      var denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
       // If denominator is 0, the lines are parallel or coincident
       if ( Math.abs( denom ) < 1e-10 ) {
         return null;
@@ -562,8 +562,8 @@ define( function( require ) {
       }
 
       // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-      var intersectionX = ((x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)) / denom;
-      var intersectionY = ((x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)) / denom;
+      var intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      var intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
       return new dot.Vector2( intersectionX, intersectionY );
     },
 
@@ -586,7 +586,7 @@ define( function( require ) {
       if ( segmentSquaredLength === 0 ) { return point.distanceSquared( a ); }
 
       // the t value parametrize the projection of the point onto the a b line
-      var t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / segmentSquaredLength;
+      var t = ( ( point.x - a.x ) * ( b.x - a.x ) + ( point.y - a.y ) * ( b.y - a.y ) ) / segmentSquaredLength;
 
       var distanceSquared;
 
@@ -600,7 +600,7 @@ define( function( require ) {
       }
       else {
         // if 0<t<1, the projection point lies along the line joining a and b.
-        distanceSquared = point.distanceSquared( new dot.Vector2( a.x + t * (b.x - a.x), a.y + t * (b.y - a.y) ) );
+        distanceSquared = point.distanceSquared( new dot.Vector2( a.x + t * ( b.x - a.x ), a.y + t * ( b.y - a.y ) ) );
       }
 
       return distanceSquared;
