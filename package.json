@@ -13,6 +13,7 @@
   },
   "phet": {
     "requirejsNamespace": "DOT",
+    "buildStandalone": true,
     "isJSOnly": true,
     "requiresLodash": true,
     "assignGlobals": {
