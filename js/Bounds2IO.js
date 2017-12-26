@@ -18,8 +18,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/dot's Bounds2
-   * @param bounds2
-   * @param phetioID
+   * @param {Bounds2} bounds2
+   * @param {string} phetioID
    * @constructor
    */
   function Bounds2IO( bounds2, phetioID ) {

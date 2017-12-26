@@ -18,8 +18,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/dot's Random
-   * @param random
-   * @param phetioID
+   * @param {Random} random
+   * @param {string} phetioID
    * @constructor
    */
   function RandomIO( random, phetioID ) {

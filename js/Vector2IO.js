@@ -18,8 +18,8 @@ define( function( require ) {
 
   /**
    * Wrapper type for phet/dot's Vector2
-   * @param vector2
-   * @param phetioID
+   * @param {Vector2} vector2
+   * @param {string} phetioID
    * @constructor
    */
   function Vector2IO( vector2, phetioID ) {
