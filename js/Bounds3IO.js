@@ -17,7 +17,7 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * Wrapper type for phet/dot's Bounds3
+   * IO type for phet/dot's Bounds3
    * @param {Bounds3} bounds3
    * @param {string} phetioID
    * @constructor

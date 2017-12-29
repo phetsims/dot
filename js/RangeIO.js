@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * PhET-iO wrapper type for Range.
+ * IO type for Range.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -17,7 +17,7 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * Wrapper type for phet/dot's Range
+   * IO type for phet/dot's Range
    * @param {Range} range
    * @param {string} phetioID
    * @constructor

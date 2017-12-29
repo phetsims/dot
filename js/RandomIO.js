@@ -17,7 +17,7 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * Wrapper type for phet/dot's Random
+   * IO type for phet/dot's Random
    * @param {Random} random
    * @param {string} phetioID
    * @constructor
