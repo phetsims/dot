@@ -17,7 +17,6 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * IO type for phet/dot's Range
    * @param {Range} range
    * @param {string} phetioID
    * @constructor

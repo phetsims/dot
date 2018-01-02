@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * IO type for Random
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -17,7 +18,6 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * IO type for phet/dot's Random
    * @param {Random} random
    * @param {string} phetioID
    * @constructor

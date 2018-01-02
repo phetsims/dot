@@ -1,6 +1,8 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * IO type for Vector3
+ *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
@@ -16,7 +18,6 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * IO type for phet/dot's Vector3
    * @param {Vector3} vector3
    * @param {string} phetioID
    * @constructor

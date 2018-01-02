@@ -1,6 +1,7 @@
 // Copyright 2016, University of Colorado Boulder
 
 /**
+ * IO Type for Bounds3
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
@@ -17,7 +18,6 @@ define( function( require ) {
   var ObjectIO = require( 'ifphetio!PHET_IO/types/ObjectIO' );
 
   /**
-   * IO type for phet/dot's Bounds3
    * @param {Bounds3} bounds3
    * @param {string} phetioID
    * @constructor
