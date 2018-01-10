@@ -31,18 +31,6 @@ define( function( require ) {
     documentation: 'a 2-dimensional bounds rectangle',
 
     /**
-     * Decodes a state into a Bounds2.
-     * @param {Object} stateObject
-     * @returns {Bounds2}
-     */
-    fromStateObject: function( stateObject ) {
-      return new phet.dot.Bounds2(
-        stateObject.minX, stateObject.minY,
-        stateObject.maxX, stateObject.maxY
-      );
-    },
-
-    /**
      * Encodes a Bounds2 instance to a state.
      * @param {Bounds2} bounds2
      * @returns {Object}
@@ -56,6 +44,18 @@ define( function( require ) {
         maxX: bounds2.maxX,
         maxY: bounds2.maxY
       };
+    },
+
+    /**
+     * Decodes a state into a Bounds2.
+     * @param {Object} stateObject
+     * @returns {Bounds2}
+     */
+    fromStateObject: function( stateObject ) {
+      return new phet.dot.Bounds2(
+        stateObject.minX, stateObject.minY,
+        stateObject.maxX, stateObject.maxY
+      );
     }
   } );
 

@@ -30,15 +30,6 @@ define( function( require ) {
     documentation: 'A range',
 
     /**
-     * Decodes a state into a Range.
-     * @param {Object} stateObject
-     * @returns {Range}
-     */
-    fromStateObject: function( stateObject ) {
-      return new phet.dot.Range( stateObject.min, stateObject.max );
-    },
-
-    /**
      * Encodes a Range instance to a state.
      * @param {Range} range
      * @returns {Object}
@@ -46,6 +37,15 @@ define( function( require ) {
     toStateObject: function( range ) {
       assert && assertInstanceOf( range, phet.dot.Range );
       return { min: range.min, max: range.max };
+    },
+
+    /**
+     * Decodes a state into a Range.
+     * @param {Object} stateObject
+     * @returns {Range}
+     */
+    fromStateObject: function( stateObject ) {
+      return new phet.dot.Range( stateObject.min, stateObject.max );
     }
   } );
 

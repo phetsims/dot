@@ -31,18 +31,6 @@ define( function( require ) {
     documentation: 'a 3-dimensional bounds (bounding box)',
 
     /**
-     * Decodes a state into a Bounds3.
-     * @param {Object} stateObject
-     * @returns {Bounds3}
-     */
-    fromStateObject: function( stateObject ) {
-      return new phet.dot.Bounds3(
-        stateObject.minX, stateObject.minY, stateObject.minZ,
-        stateObject.maxX, stateObject.maxY, stateObject.maxZ
-      );
-    },
-
-    /**
      * Encodes a Bounds3 instance to a state.
      * @param {Bounds3} bounds3
      * @returns {Object}
@@ -58,6 +46,18 @@ define( function( require ) {
         maxY: bounds3.maxY,
         maxZ: bounds3.maxZ
       };
+    },
+
+    /**
+     * Decodes a state into a Bounds3.
+     * @param {Object} stateObject
+     * @returns {Bounds3}
+     */
+    fromStateObject: function( stateObject ) {
+      return new phet.dot.Bounds3(
+        stateObject.minX, stateObject.minY, stateObject.minZ,
+        stateObject.maxX, stateObject.maxY, stateObject.maxZ
+      );
     }
   } );
 

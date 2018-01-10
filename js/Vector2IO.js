@@ -31,15 +31,6 @@ define( function( require ) {
     documentation: 'A numerical object with x/y scalar values',
 
     /**
-     * Decodes a state into a Vector2.
-     * @param {Object} stateObject
-     * @returns {Vector2}
-     */
-    fromStateObject: function( stateObject ) {
-      return new phet.dot.Vector2( stateObject.x, stateObject.y );
-    },
-
-    /**
      * Encodes a Vector2 instance to a state.
      * @param {Vector2} vector2
      * @returns {Object}
@@ -47,6 +38,15 @@ define( function( require ) {
     toStateObject: function( vector2 ) {
       assert && assertInstanceOf( vector2, phet.dot.Vector2 );
       return { x: vector2.x, y: vector2.y };
+    },
+
+    /**
+     * Decodes a state into a Vector2.
+     * @param {Object} stateObject
+     * @returns {Vector2}
+     */
+    fromStateObject: function( stateObject ) {
+      return new phet.dot.Vector2( stateObject.x, stateObject.y );
     }
   } );
 

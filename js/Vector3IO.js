@@ -31,15 +31,6 @@ define( function( require ) {
     documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
 
     /**
-     * Decodes a state into a Vector3.
-     * @param {Object} stateObject
-     * @returns {Vector3}
-     */
-    fromStateObject: function( stateObject ) {
-      return new phet.dot.Vector3( stateObject.x, stateObject.y, stateObject.z );
-    },
-
-    /**
      * Encodes a Vector3 instance to a state.
      * @param {Vector3} vector3
      * @returns {Object}
@@ -47,6 +38,15 @@ define( function( require ) {
     toStateObject: function( vector3 ) {
       assert && assertInstanceOf( vector3, phet.dot.Vector3 );
       return { x: vector3.x, y: vector3.y, z: vector3.z };
+    },
+
+    /**
+     * Decodes a state into a Vector3.
+     * @param {Object} stateObject
+     * @returns {Vector3}
+     */
+    fromStateObject: function( stateObject ) {
+      return new phet.dot.Vector3( stateObject.x, stateObject.y, stateObject.z );
     }
   } );
 
