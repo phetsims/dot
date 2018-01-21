@@ -26,6 +26,7 @@ define( function( require ) {
    * @param {number} [y] - Y coordinate, defaults to 0 if not provided
    */
   function Vector2( x, y ) {
+
     // @public {number} - The X coordinate of the vector.
     this.x = x !== undefined ? x : 0;
 
@@ -537,7 +538,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     blend: function( vector, ratio ) {
-      return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
+      return new Vector2( this.x + ( vector.x - this.x ) * ratio, this.y + ( vector.y - this.y ) * ratio );
     },
 
     /**
