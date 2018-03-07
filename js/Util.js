@@ -513,6 +513,16 @@ define( function( require ) {
     },
 
     /**
+     * Returns true if two numbers are within epsilon of each other.
+     *
+     * @param {number} epsilon
+     * @return {boolean}
+     */
+    equalsEpsilon: function( a, b, epsilon ) {
+      return Math.abs( a - b ) <= epsilon;
+    },
+
+    /**
      * Computes the intersection of the two line segments $(x_1,y_1)(x_2,y_2)$ and $(x_3,y_3)(x_4,y_4)$. If there is no
      * intersection, null is returned.
      * @public
