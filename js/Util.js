@@ -158,7 +158,7 @@ define( function( require ) {
      * @returns {number}
      */
     lcm: function( a, b ) {
-      return ( a * b ) / Util.gcd( a, b );
+      return Math.abs( a * b ) / Util.gcd( a, b );
     },
 
     /**
