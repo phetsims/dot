@@ -141,7 +141,8 @@ define( function( require ) {
     },
 
     /**
-     * Greatest Common Denominator, using https://en.wikipedia.org/wiki/Euclidean_algorithm
+     * Greatest Common Divisor, using https://en.wikipedia.org/wiki/Euclidean_algorithm. See
+     * https://en.wikipedia.org/wiki/Greatest_common_divisor
      * @public
      *
      * @param {number} a
