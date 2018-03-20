@@ -152,6 +152,16 @@ define( function( require ) {
     },
 
     /**
+     * Least Common Multiple (aka Least Common Divisor)
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
+     */
+    lcm: function( a, b ) {
+      return ( a * b ) / Util.gcd( a, b );
+    },
+
+    /**
      * Intersection point between the lines defined by the line segments p1-2 and p3-p4. If the
      * lines are not properly defined, null is returned. If there are no intersections or infinitely many,
      * e.g. parallel lines, null is returned.
