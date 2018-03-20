@@ -146,13 +146,16 @@ define( function( require ) {
      *
      * @param {number} a
      * @param {number} b
+     * @returns {number}
      */
     gcd: function( a, b ) {
       return Math.abs( b === 0 ? a : this.gcd( b, a % b ) );
     },
 
     /**
-     * Least Common Multiple (aka Least Common Divisor)
+     * Least Common Multiple, https://en.wikipedia.org/wiki/Least_common_multiple
+     * @public
+     *
      * @param {number} a
      * @param {number} b
      * @returns {number}
