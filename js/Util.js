@@ -148,7 +148,7 @@ define( function( require ) {
      * @param {number} b
      */
     gcd: function( a, b ) {
-      return b === 0 ? a : this.gcd( b, a % b );
+      return Math.abs( b === 0 ? a : this.gcd( b, a % b ) );
     },
 
     /**
