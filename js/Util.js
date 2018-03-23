@@ -459,6 +459,7 @@ define( function( require ) {
      * @returns {number}
      */
     linear: function( a1, a2, b1, b2, a3 ) {
+      assert && assert( typeof a3 === 'number', 'linear requires a number to evaluate' );
       return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
     },
 
