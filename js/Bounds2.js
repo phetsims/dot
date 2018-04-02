@@ -587,6 +587,34 @@ define( function( require ) {
     },
 
     /**
+     * Returns the smallest bounds that contains both this bounds and the x value provided.
+     * @public
+     *
+     * This is the immutable form of the function addX(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x
+     * @returns {Bounds2}
+     */
+    withX: function( x ) {
+      return this.copy().addX( x );
+    },
+
+    /**
+     * Returns the smallest bounds that contains both this bounds and the y value provided.
+     * @public
+     *
+     * This is the immutable form of the function addY(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} y
+     * @returns {Bounds2}
+     */
+    withY: function( y ) {
+      return this.copy().addY( y );
+    },
+
+    /**
      * A copy of this bounds, with minX replaced with the input.
      * @public
      *
@@ -1038,6 +1066,40 @@ define( function( require ) {
      */
     addPoint: function( point ) {
       return this.addCoordinates( point.x, point.y );
+    },
+
+    /**
+     * Modifies this bounds so that it is guaranteed to include the given x value (if it didn't already). If the x value
+     * was already contained, nothing will be done.
+     * @public
+     *
+     * This is the mutable form of the function withX(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @returns {Bounds2}
+     */
+    addX: function( x ) {
+      this.minX = Math.min( x, this.minX );
+      this.maxX = Math.max( x, this.maxX );
+      return this;
+    },
+
+    /**
+     * Modifies this bounds so that it is guaranteed to include the given y value (if it didn't already). If the y value
+     * was already contained, nothing will be done.
+     * @public
+     *
+     * This is the mutable form of the function withY(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} y
+     * @returns {Bounds2}
+     */
+    addY: function( y ) {
+      this.minY = Math.min( y, this.minY );
+      this.maxY = Math.max( y, this.maxY );
+      return this;
     },
 
     /**
