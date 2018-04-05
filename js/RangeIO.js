@@ -27,7 +27,7 @@ define( function( require ) {
   }
 
   phetioInherit( ObjectIO, 'RangeIO', RangeIO, {}, {
-    documentation: 'A range',
+    documentation: 'A range with "min" and a "max" members.',
 
     /**
      * Encodes a Range instance to a state.
