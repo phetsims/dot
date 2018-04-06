@@ -530,6 +530,8 @@ define( function( require ) {
     /**
      * Returns true if two numbers are within epsilon of each other.
      *
+     * @param {number} a
+     * @param {number} b
      * @param {number} epsilon
      * @return {boolean}
      */
@@ -770,6 +772,43 @@ define( function( require ) {
       z0 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.cos( TWO_PI * u2 );
       z1 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.sin( TWO_PI * u2 );
       return z0 * sigma + mu;
+    },
+
+    /**
+     * Get the median from a sorted array of numbers.
+     * @param {Array.<number>} sortedArray
+     * @returns {number}
+     */
+    getMedianFromSortedArray: function( sortedArray ) {
+      assert && assert( sortedArray instanceof Array );
+      sortedArray.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
+
+      if ( sortedArray.length === 0 ) {
+        return 0;
+      }
+
+      var half = Math.floor( sortedArray.length / 2 );
+
+      if ( sortedArray.length % 2 ) {
+        return sortedArray[ half ];
+      }
+      else {
+        return ( sortedArray[ half - 1 ] + sortedArray[ half ] ) / 2.0;
+      }
+    },
+
+    /**
+     * Get the median from an unsorted array of numbers
+     * @param {Array.<number>} numbers
+     * @returns {number}
+     */
+    median: function( numbers ) {
+      assert && assert( numbers instanceof Array );
+      numbers.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
+
+      numbers.sort( function( a, b ) { return a - b; } );
+
+      return this.getMedianFromSortedArray( numbers );
     }
   };
   dot.register( 'Util', Util );

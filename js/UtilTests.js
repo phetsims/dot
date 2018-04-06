@@ -154,4 +154,31 @@ define( function( require ) {
     approximateEquals( assert, 45, Util.toDegrees( Math.PI / 4 ) );
     approximateEquals( assert, -45, Util.toDegrees( -Math.PI / 4 ) );
   } );
+
+  QUnit.test( 'median', function( assert ) {
+
+    if ( window.assert ) {
+      assert.throws( function() {
+        Util.median( [ 'test' ] );
+      } );
+      assert.throws( function() {
+        Util.median( 'hi' );
+      } );
+      assert.throws( function() {
+        Util.median( [ 45, 'test' ] );
+      } );
+    }
+    assert.equal( Util.median( [ 3, 2, 1 ] ), 2 );
+    assert.equal( Util.median( [ 2, 3, 1 ] ), 2 );
+    assert.equal( Util.median( [ 1, 2, 3 ] ), 2 );
+    assert.equal( Util.median( [ 1, 3, 2 ] ), 2 );
+    assert.equal( Util.median( [ 1, 300, 2 ] ), 2 );
+    assert.equal( Util.median( [ 1, 2, 2, 2 ] ), 2 );
+    assert.equal( Util.median( [ 1, 1, 3, 20 ] ), 2 );
+    assert.equal( Util.median( [ 1, 1, 5, 20 ] ), 3 );
+    assert.equal( Util.median( [ 1 ] ), 1 );
+    assert.equal( Util.median( [ 500 ] ), 500 );
+    assert.equal( Util.median( [] ), 0 );
+  } );
+
 } );
