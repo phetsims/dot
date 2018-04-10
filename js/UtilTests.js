@@ -178,7 +178,7 @@ define( function( require ) {
     assert.equal( Util.median( [ 1, 1, 5, 20 ] ), 3 );
     assert.equal( Util.median( [ 1 ] ), 1 );
     assert.equal( Util.median( [ 500 ] ), 500 );
-    assert.equal( Util.median( [] ), 0 );
+    assert.equal( Util.median( [] ), null );
   } );
 
 } );

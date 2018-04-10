@@ -775,40 +775,28 @@ define( function( require ) {
     },
 
     /**
-     * Get the median from a sorted array of numbers.
-     * @param {Array.<number>} sortedArray
-     * @returns {number}
-     */
-    getMedianFromSortedArray: function( sortedArray ) {
-      assert && assert( sortedArray instanceof Array );
-      sortedArray.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
-
-      if ( sortedArray.length === 0 ) {
-        return 0;
-      }
-
-      var half = Math.floor( sortedArray.length / 2 );
-
-      if ( sortedArray.length % 2 ) {
-        return sortedArray[ half ];
-      }
-      else {
-        return ( sortedArray[ half - 1 ] + sortedArray[ half ] ) / 2.0;
-      }
-    },
-
-    /**
      * Get the median from an unsorted array of numbers
-     * @param {Array.<number>} numbers
-     * @returns {number}
+     * @param {Array.<number>} numbers - (un)sorted array
+     * @returns {number|null} - null if array is empty
      */
     median: function( numbers ) {
-      assert && assert( numbers instanceof Array );
-      numbers.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
+      assert && assert( Array.isArray( numbers ) );
+      assert && numbers.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
 
       numbers.sort( function( a, b ) { return a - b; } );
 
-      return this.getMedianFromSortedArray( numbers );
+      if ( numbers.length === 0 ) {
+        return null;
+      }
+
+      var half = Math.floor( numbers.length / 2 );
+
+      if ( numbers.length % 2 ) {
+        return numbers[ half ];
+      }
+      else {
+        return ( numbers[ half - 1 ] + numbers[ half ] ) / 2.0;
+      }
     }
   };
   dot.register( 'Util', Util );
