@@ -776,6 +776,8 @@ define( function( require ) {
 
     /**
      * Get the median from an unsorted array of numbers
+     * @public
+     *
      * @param {Array.<number>} numbers - (un)sorted array
      * @returns {number|null} - null if array is empty
      */
@@ -795,7 +797,7 @@ define( function( require ) {
         return numbers[ half ];
       }
       else {
-        return ( numbers[ half - 1 ] + numbers[ half ] ) / 2.0;
+        return ( numbers[ half - 1 ] + numbers[ half ] ) / 2;
       }
     }
   };
