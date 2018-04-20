@@ -897,6 +897,24 @@ define( function( require ) {
       return new Bounds2( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
     },
 
+    /**
+     * Returns an interpolated value of this bounds and the argument.
+     * @public
+     *
+     * @param {Bounds2} bounds
+     * @param {number} ratio - 0 will result in a copy of `this`, 1 will result in bounds, and in-between controls the
+     *                         amount of each.
+     */
+    blend: function( bounds, ratio ) {
+      var t = 1 - ratio;
+      return new Bounds2(
+        t * this.minX + ratio * bounds.minX,
+        t * this.minY + ratio * bounds.minY,
+        t * this.maxX + ratio * bounds.maxX,
+        t * this.maxY + ratio * bounds.maxY
+      );
+    },
+
     /*---------------------------------------------------------------------------*
      * Mutable operations
      *
