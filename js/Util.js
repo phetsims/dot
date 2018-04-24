@@ -159,10 +159,10 @@ define( function( require ) {
      *
      * @param {number} a
      * @param {number} b
-     * @returns {number}
+     * @returns {number} lcm, an integer
      */
     lcm: function( a, b ) {
-      return Math.abs( a * b ) / Util.gcd( a, b );
+      return Util.roundSymmetric( Math.abs( a * b ) / Util.gcd( a, b ) );
     },
 
     /**
