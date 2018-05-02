@@ -28,7 +28,7 @@ define( function( require ) {
   }
 
   phetioInherit( ObjectIO, 'Vector2IO', Vector2IO, {}, {
-    documentation: 'A numerical object with x/y scalar values',
+    documentation: 'A numerical object with x and y properties, like {x:3,y:4}',
 
     /**
      * Encodes a Vector2 instance to a state.
