@@ -12,6 +12,7 @@
     "js-beautify": "~1.5.10"
   },
   "phet": {
+    "generatedUnitTests": true,
     "requirejsNamespace": "DOT",
     "buildStandalone": true,
     "isJSOnly": true,
