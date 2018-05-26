@@ -22,6 +22,7 @@ define( [
   'DOT/QRDecomposition',
   'DOT/Quaternion',
   'DOT/Random',
+  'DOT/Range',
   'DOT/Ray2',
   'DOT/Ray3',
   'DOT/Rectangle',
