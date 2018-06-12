@@ -814,6 +814,22 @@ define( function( require ) {
         multiplier *= 10;
       }
       return count;
+    },
+
+    /**
+     * Rounds a value to a multiple of a specified interval.
+     * Examples:
+     * roundToInterval( 0.567, 0.01 ) -> 0.57
+     * roundToInterval( 0.567, 0.02 ) -> 0.56
+     * roundToInterval( 5.67, 0.5 ) -> 5.5
+     *
+     * @param {number} value
+     * @param {number} interval
+     * @returns {number}
+     */
+    roundToInterval: function( value, interval ) {
+      return Util.toFixedNumber( Util.roundSymmetric( value / interval ) * interval,
+        Util.numberOfDecimalPlaces( interval ) );
     }
   };
   dot.register( 'Util', Util );
