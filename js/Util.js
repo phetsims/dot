@@ -799,6 +799,21 @@ define( function( require ) {
       else {
         return ( numbers[ half - 1 ] + numbers[ half ] ) / 2;
       }
+    },
+
+    /**
+     * Determines the number of decimal places in a value.
+     * @param {number} value
+     * @returns {number}
+     */
+    numberOfDecimalPlaces: function( value ) {
+      var count = 0;
+      var multiplier = 1;
+      while ( ( value * multiplier ) % 1 !== 0 ) {
+        count++;
+        multiplier *= 10;
+      }
+      return count;
     }
   };
   dot.register( 'Util', Util );
