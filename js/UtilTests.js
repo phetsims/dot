@@ -181,4 +181,30 @@ define( function( require ) {
     assert.equal( Util.median( [] ), null );
   } );
 
+  QUnit.test( 'numberOfDecimalPlaces', function( assert ) {
+    assert.equal( Util.numberOfDecimalPlaces( 10 ), 0 );
+    assert.equal( Util.numberOfDecimalPlaces( -10 ), 0 );
+    assert.equal( Util.numberOfDecimalPlaces( 10.1 ), 1 );
+    assert.equal( Util.numberOfDecimalPlaces( -10.1 ), 1 );
+    assert.equal( Util.numberOfDecimalPlaces( 10.10 ), 1 );
+    assert.equal( Util.numberOfDecimalPlaces( -10.10 ), 1 );
+    assert.equal( Util.numberOfDecimalPlaces( 0.567 ), 3 );
+    assert.equal( Util.numberOfDecimalPlaces( -0.567 ), 3 );
+    assert.equal( Util.numberOfDecimalPlaces( 0.001 ), 3 );
+    assert.equal( Util.numberOfDecimalPlaces( -0.001 ), 3 );
+  } );
+
+  QUnit.test( 'roundToInterval', function( assert ) {
+    assert.equal( Util.roundToInterval( 0.567, 0.01 ), 0.57 );
+    assert.equal( Util.roundToInterval( -0.567, 0.01 ), -0.57 );
+    assert.equal( Util.roundToInterval( 0.567, 0.02 ), 0.56 );
+    assert.equal( Util.roundToInterval( -0.567, 0.02 ), -0.56 );
+    assert.equal( Util.roundToInterval( 5.67, 0.5 ), 5.5 );
+    assert.equal( Util.roundToInterval( -5.67, 0.5 ), -5.5 );
+    assert.equal( Util.roundToInterval( 5.67, 2 ), 6 );
+    assert.equal( Util.roundToInterval( -5.67, 2 ), -6 );
+    assert.equal( Util.roundToInterval( 4.9, 2 ), 4 );
+    assert.equal( Util.roundToInterval( -4.9, 2 ), -4 );
+  } );
+
 } );
