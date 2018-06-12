@@ -755,6 +755,48 @@ define( function( require ) {
       z0 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.cos( TWO_PI * u2 );
       z1 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.sin( TWO_PI * u2 );
       return z0 * sigma + mu;
+    },
+
+    /**
+     * Get the median from an unsorted array of numbers
+     * @public
+     *
+     * @param {Array.<number>} numbers - (un)sorted array
+     * @returns {number|null} - null if array is empty
+     */
+    median: function( numbers ) {
+      assert && assert( Array.isArray( numbers ) );
+      assert && numbers.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
+
+      numbers.sort( function( a, b ) { return a - b; } );
+
+      if ( numbers.length === 0 ) {
+        return null;
+      }
+
+      var half = Math.floor( numbers.length / 2 );
+
+      if ( numbers.length % 2 ) {
+        return numbers[ half ];
+      }
+      else {
+        return ( numbers[ half - 1 ] + numbers[ half ] ) / 2;
+      }
+    },
+
+    /**
+     * Determines the number of decimal places in a value.
+     * @param {number} value
+     * @returns {number}
+     */
+    numberOfDecimalPlaces: function( value ) {
+      var count = 0;
+      var multiplier = 1;
+      while ( ( value * multiplier ) % 1 !== 0 ) {
+        count++;
+        multiplier *= 10;
+      }
+      return count;
     }
   };
   dot.register( 'Util', Util );
