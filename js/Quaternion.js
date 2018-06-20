@@ -371,7 +371,7 @@ define( function( require ) {
   };
 
   Poolable.mixInto( Quaternion, {
-    initialize: Quaternion.prototype.set
+    initialize: Quaternion.prototype.setXYZW
   } );
 
   return Quaternion;
