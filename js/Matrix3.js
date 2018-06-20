@@ -35,7 +35,8 @@ define( function( require ) {
   function Matrix3( argumentsShouldNotExist ) {
 
     //Make sure no clients are expecting to create a matrix with non-identity values
-    assert && assert( !argumentsShouldNotExist, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
+    // TODO: see https://github.com/phetsims/dot/issues/74
+    // assert && assert( !argumentsShouldNotExist, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
 
     // entries stored in column-major format
     this.entries = createIdentityArray();
