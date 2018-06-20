@@ -17,8 +17,8 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var ExperimentalPoolable = require( 'PHET_CORE/ExperimentalPoolable' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
   var Vector2 = require( 'DOT/Vector2' );
 
   // Temporary instances to be used in the transform method.
@@ -1426,7 +1426,7 @@ define( function( require ) {
     }
   } );
 
-  ExperimentalPoolable.mixInto( Bounds2, {
+  Poolable.mixInto( Bounds2, {
     initialize: Bounds2.prototype.setMinMax
   } );
 

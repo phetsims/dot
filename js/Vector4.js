@@ -11,8 +11,8 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var ExperimentalPoolable = require( 'PHET_CORE/ExperimentalPoolable' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
 
   require( 'DOT/Util' );
   // require( 'DOT/Vector3' ); // commented out so Require.js doesn't complain about the circular dependency
@@ -779,7 +779,7 @@ define( function( require ) {
   } );
 
   // Sets up pooling on Vector4
-  ExperimentalPoolable.mixInto( Vector4, {
+  Poolable.mixInto( Vector4, {
     initialize: Vector4.prototype.setXYZW
   } );
 

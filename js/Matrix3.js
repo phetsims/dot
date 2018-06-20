@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var ExperimentalPoolable = require( 'PHET_CORE/ExperimentalPoolable' );
+  var Poolable = require( 'PHET_CORE/Poolable' );
 
   var FastArray = dot.FastArray;
 
@@ -975,7 +975,7 @@ define( function( require ) {
     }
   };
 
-  ExperimentalPoolable.mixInto( Matrix3, {
+  Poolable.mixInto( Matrix3, {
     initialize: Matrix3.prototype.rowMajor,
     useDefaultConstruction: true,
     maxSize: 300
