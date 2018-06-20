@@ -17,8 +17,8 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
+  var ExperimentalPoolable = require( 'PHET_CORE/ExperimentalPoolable' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
 
   require( 'DOT/Vector3' );
 
@@ -1399,19 +1399,8 @@ define( function( require ) {
       return new Bounds3( x, y, z, x, y, z );
     }
   } );
-
-  Poolable.mixInto( Bounds3, {
-    defaultFactory: function() { return Bounds3.NOTHING.copy(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( minX, minY, minZ, maxX, maxY, maxZ ) {
-        if ( pool.length ) {
-          return pool.pop().setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
-        }
-        else {
-          return new Bounds3( minX, minY, minZ, maxX, maxY, maxZ );
-        }
-      };
-    }
+  ExperimentalPoolable.mixInto( Bounds3, {
+    initialize: Bounds3.prototype.setMinMax
   } );
 
   /**

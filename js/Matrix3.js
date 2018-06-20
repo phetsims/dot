@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  var ExperimentalPoolable = require( 'PHET_CORE/ExperimentalPoolable' );
 
   var FastArray = dot.FastArray;
 
@@ -974,17 +974,10 @@ define( function( require ) {
     }
   };
 
-  Poolable.mixInto( Matrix3, {
-
-    //The default factory creates an identity matrix
-    defaultFactory: function() { return new Matrix3(); },
-
-    constructorDuplicateFactory: function( pool ) {
-      return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
-        var instance = pool.length ? pool.pop() : new Matrix3();
-        return instance.rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
-      };
-    }
+  ExperimentalPoolable.mixInto( Matrix3, {
+    initialize: Matrix3.prototype.rowMajor,
+    useDefaultConstruction: true,
+    maxSize: 300
   } );
 
   // create an immutable

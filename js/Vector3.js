@@ -10,8 +10,8 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
+  var ExperimentalPoolable = require( 'PHET_CORE/ExperimentalPoolable' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
 
   require( 'DOT/Util' );
   require( 'DOT/Vector2' );
@@ -798,18 +798,8 @@ define( function( require ) {
   } );
 
   // Sets up pooling on Vector3
-  Poolable.mixInto( Vector3, {
-    defaultFactory: function() { return new Vector3(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( x, y, z ) {
-        if ( pool.length ) {
-          return pool.pop().setXY( x, y, z );
-        }
-        else {
-          return new Vector3( x, y, z );
-        }
-      };
-    }
+  ExperimentalPoolable.mixInto( Vector3, {
+    initialize: Vector3.prototype.setXYZ
   } );
 
   /*---------------------------------------------------------------------------*

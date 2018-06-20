@@ -13,7 +13,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  var ExperimentalPoolable = require( 'PHET_CORE/ExperimentalPoolable' );
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix3' );
   require( 'DOT/Util' );
@@ -370,18 +370,8 @@ define( function( require ) {
     );
   };
 
-  Poolable.mixInto( Quaternion, {
-    defaultFactory: function() { return new Quaternion(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( x, y, z, w ) {
-        if ( pool.length ) {
-          return pool.pop().set( x, y, z, w );
-        }
-        else {
-          return new Quaternion( x, y, z, w );
-        }
-      };
-    }
+  ExperimentalPoolable.mixInto( Quaternion, {
+    initialize: Quaternion.prototype.set
   } );
 
   return Quaternion;
