@@ -141,6 +141,23 @@ define( function( require ) {
     },
 
     /**
+     * Workaround for broken modulo operator.
+     * E.g. on iOS9, 1e10 % 1e10 -> 2.65249474e-315
+     * See https://github.com/phetsims/dot/issues/75
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
+     */
+    mod: function( a, b ) {
+      if ( a / b % 1 === 0 ) {
+        return 0; // a is a multiple of b
+      }
+      else {
+        return a % b;
+      }
+    },
+
+    /**
      * Greatest Common Divisor, using https://en.wikipedia.org/wiki/Euclidean_algorithm. See
      * https://en.wikipedia.org/wiki/Greatest_common_divisor
      * @public
@@ -150,7 +167,7 @@ define( function( require ) {
      * @returns {number}
      */
     gcd: function( a, b ) {
-      return Math.abs( b === 0 ? a : this.gcd( b, a % b ) );
+      return Math.abs( b === 0 ? a : this.gcd( b, Util.mod( a, b ) ) );
     },
 
     /**
