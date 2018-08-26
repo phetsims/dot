@@ -31,8 +31,6 @@ define( function( require ) {
    */
   function Quaternion( x, y, z, w ) {
     this.setXYZW( x, y, z, w );
-
-    phetAllocation && phetAllocation( 'Quaternion' );
   }
 
   dot.register( 'Quaternion', Quaternion );

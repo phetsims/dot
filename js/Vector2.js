@@ -35,8 +35,6 @@ define( function( require ) {
 
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );
-
-    phetAllocation && phetAllocation( 'Vector2' );
   }
 
   dot.register( 'Vector2', Vector2 );

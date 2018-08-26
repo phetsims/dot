@@ -24,8 +24,6 @@ define( function( require ) {
     this.direction = direction; // @public (read-only)
 
     assert && assert( Math.abs( direction.magnitude() - 1 ) < 0.01 , 'the direction must be a unit vector');
-
-    phetAllocation && phetAllocation( 'Ray3' );
   }
 
   dot.register( 'Ray3', Ray3 );

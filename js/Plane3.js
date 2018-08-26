@@ -25,8 +25,6 @@ define( function( require ) {
     this.distance = distance; // @public (read-only)
 
     assert && assert( Math.abs( normal.magnitude() - 1 ) < 0.01, 'the normal vector must be a unit vector' );
-
-    phetAllocation && phetAllocation( 'Plane3' );
   }
 
   dot.register( 'Plane3', Plane3 );

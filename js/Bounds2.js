@@ -48,8 +48,6 @@ define( function( require ) {
 
     // @public {number} - The maximum Y coordinate of the bounds.
     this.maxY = maxY;
-
-    phetAllocation && phetAllocation( 'Bounds2' );
   }
 
   dot.register( 'Bounds2', Bounds2 );

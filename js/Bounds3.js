@@ -54,8 +54,6 @@ define( function( require ) {
 
     // @public {number} - The maximum Z coordinate of the bounds.
     this.maxZ = maxZ;
-
-    phetAllocation && phetAllocation( 'Bounds3' );
   }
 
   dot.register( 'Bounds3', Bounds3 );

@@ -61,8 +61,6 @@ define( function( require ) {
     if ( matrix ) {
       this.setMatrix( matrix );
     }
-
-    phetAllocation && phetAllocation( 'Transform3' );
   }
 
   dot.register( 'Transform3', Transform3 );

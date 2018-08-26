@@ -40,7 +40,6 @@ define( function( require ) {
     // entries stored in column-major format
     this.entries = createIdentityArray();
 
-    phetAllocation && phetAllocation( 'Matrix3' );
     this.type = Types.IDENTITY;
   }
 

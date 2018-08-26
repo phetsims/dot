@@ -27,8 +27,6 @@ define( function( require ) {
     this.radius = radius;
 
     assert && assert( radius >= 0, 'the radius of a sphere should be positive' );
-
-    phetAllocation && phetAllocation( 'Sphere3' );
   }
 
   dot.register( 'Sphere3', Sphere3 );
