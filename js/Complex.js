@@ -4,7 +4,7 @@
  * A complex number with mutable and immutable methods.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
- * @author Chris Malley
+ * @author Chris Malley (PixelZoom, Inc.)
  * @author Matt Pennington
  */
 
