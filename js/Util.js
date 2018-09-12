@@ -370,7 +370,8 @@ define( function( require ) {
      *
      * @param {number} a
      * @param {number} b
-     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots.
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
+     *                                  a multiplicity larger than 1, it will be repeated that many times.
      */
     solveLinearRootsReal: function( a, b ) {
       if ( a === 0 ) {
@@ -394,19 +395,15 @@ define( function( require ) {
      * @param {number} a
      * @param {number} b
      * @param {number} c
-     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots.
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
+     *                                  a multiplicity larger than 1, it will be repeated that many times.
      */
     solveQuadraticRootsReal: function( a, b, c ) {
-      // Check for a degenerate case where we don't have a quadratic
-      if ( a === 0 ) {
-        return Util.solveLinearRootsReal( b, c );
-      }
-
+      // Check for a degenerate case where we don't have a quadratic, or if the order of magnitude is such where the
+      // linear solution would be expected
       var epsilon = 1E7;
-
-      //We need to test whether a is several orders of magnitude less than b or c. If so, return the result as a solution to the linear (easy) equation
       if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon ) {
-        return [ -c / b ];
+        return Util.solveLinearRootsReal( b, c );
       }
 
       var discriminant = b * b - 4 * a * c;
@@ -431,7 +428,8 @@ define( function( require ) {
      * @param {number} b
      * @param {number} c
      * @param {number} d
-     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots.
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
+     *                                  a multiplicity larger than 1, it will be repeated that many times.
      */
     solveCubicRootsReal: function( a, b, c, d ) {
       // TODO: a Complex type!
@@ -448,7 +446,7 @@ define( function( require ) {
         return Util.solveQuadraticRootsReal( b, c, d );
       }
       if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
-        return Util.solveQuadraticRootsReal( a, b, c );
+        return [ 0 ].concat( Util.solveQuadraticRootsReal( a, b, c ) );
       }
 
       b /= a;
@@ -460,7 +458,7 @@ define( function( require ) {
       var discriminant = q * q * q + r * r;
       var b3 = b / 3;
 
-      if ( discriminant > 0 ) {
+      if ( discriminant > 1e-7 ) {
         // a single real root
         var dsqrt = Math.sqrt( discriminant );
         return [ Util.cubeRoot( r + dsqrt ) + Util.cubeRoot( r - dsqrt ) - b3 ];
@@ -470,7 +468,7 @@ define( function( require ) {
       if ( discriminant === 0 ) {
         // contains a double root
         var rsqrt = Util.cubeRoot( r );
-        var doubleRoot = b3 - rsqrt;
+        var doubleRoot = -b3 - rsqrt;
         return [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
       }
       else {
