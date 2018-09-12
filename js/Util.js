@@ -365,15 +365,43 @@ define( function( require ) {
     },
 
     /**
-     * Returns an array of the real roots of the quadratic equation $ax^2 + bx + c=0$ (there will be between 0 and 2 roots).
+     * Returns an array of the real roots of the quadratic equation $ax + b=0$, or null if every value is a solution.
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots.
+     */
+    solveLinearRootsReal: function( a, b ) {
+      if ( a === 0 ) {
+        if ( b === 0 ) {
+          return null;
+        }
+        else {
+          return [];
+        }
+      }
+      else {
+        return [ -b / a ];
+      }
+    },
+
+    /**
+     * Returns an array of the real roots of the quadratic equation $ax^2 + bx + c=0$, or null if every value is a
+     * solution. If a is nonzero, there should be between 0 and 2 (inclusive) values returned.
      * @public
      *
      * @param {number} a
      * @param {number} b
      * @param {number} c
-     * @returns {Array.<number>}
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots.
      */
     solveQuadraticRootsReal: function( a, b, c ) {
+      // Check for a degenerate case where we don't have a quadratic
+      if ( a === 0 ) {
+        return Util.solveLinearRootsReal( b, c );
+      }
+
       var epsilon = 1E7;
 
       //We need to test whether a is several orders of magnitude less than b or c. If so, return the result as a solution to the linear (easy) equation
@@ -395,17 +423,23 @@ define( function( require ) {
     },
 
     /**
-     * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$ (there will be between 0 and 3 roots).
+     * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$, or null if every value is a
+     * solution. If a is nonzero, there should be between 0 and 3 (inclusive) values returned.
      * @public
      *
      * @param {number} a
      * @param {number} b
      * @param {number} c
      * @param {number} d
-     * @returns {Array.<number>}
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots.
      */
     solveCubicRootsReal: function( a, b, c, d ) {
       // TODO: a Complex type!
+
+      // Check for a degenerate case where we don't have a cubic
+      if ( a === 0 ) {
+        return Util.solveQuadraticRootsReal( b, c, d );
+      }
 
       //We need to test whether a is several orders of magnitude less than b, c, d
       var epsilon = 1E7;
