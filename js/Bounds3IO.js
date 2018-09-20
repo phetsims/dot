@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function Bounds3IO( bounds3, phetioID ) {
-    assert && assertInstanceOf( bounds3, phet.dot.Bounds3 );
+    assert && assertInstanceOf( bounds3, dot.Bounds3 );
     ObjectIO.call( this, bounds3, phetioID );
   }
 
@@ -36,7 +36,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( bounds3 ) {
-      assert && assertInstanceOf( bounds3, phet.dot.Bounds3 );
+      assert && assertInstanceOf( bounds3, dot.Bounds3 );
       return {
         minX: bounds3.minX,
         minY: bounds3.minY,
@@ -54,7 +54,7 @@ define( function( require ) {
      * @returns {Bounds3}
      */
     fromStateObject: function( stateObject ) {
-      return new phet.dot.Bounds3(
+      return new dot.Bounds3(
         stateObject.minX, stateObject.minY, stateObject.minZ,
         stateObject.maxX, stateObject.maxY, stateObject.maxZ
       );

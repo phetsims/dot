@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function Vector3IO( vector3, phetioID ) {
-    assert && assertInstanceOf( vector3, phet.dot.Vector3 );
+    assert && assertInstanceOf( vector3, dot.Vector3 );
     ObjectIO.call( this, vector3, phetioID );
   }
 
@@ -36,7 +36,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( vector3 ) {
-      assert && assertInstanceOf( vector3, phet.dot.Vector3 );
+      assert && assertInstanceOf( vector3, dot.Vector3 );
       return { x: vector3.x, y: vector3.y, z: vector3.z };
     },
 
@@ -46,7 +46,7 @@ define( function( require ) {
      * @returns {Vector3}
      */
     fromStateObject: function( stateObject ) {
-      return new phet.dot.Vector3( stateObject.x, stateObject.y, stateObject.z );
+      return new dot.Vector3( stateObject.x, stateObject.y, stateObject.z );
     }
   } );
 

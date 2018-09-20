@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function RandomIO( random, phetioID ) {
-    assert && assertInstanceOf( random, phet.dot.Random );
+    assert && assertInstanceOf( random, dot.Random );
     ObjectIO.call( this, random, phetioID );
   }
 

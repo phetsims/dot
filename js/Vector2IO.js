@@ -23,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function Vector2IO( vector2, phetioID ) {
-    assert && assertInstanceOf( vector2, phet.dot.Vector2 );
+    assert && assertInstanceOf( vector2, dot.Vector2 );
     ObjectIO.call( this, vector2, phetioID );
   }
 
@@ -36,7 +36,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( vector2 ) {
-      assert && assertInstanceOf( vector2, phet.dot.Vector2 );
+      assert && assertInstanceOf( vector2, dot.Vector2 );
       return { x: vector2.x, y: vector2.y };
     },
 
@@ -46,7 +46,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     fromStateObject: function( stateObject ) {
-      return new phet.dot.Vector2( stateObject.x, stateObject.y );
+      return new dot.Vector2( stateObject.x, stateObject.y );
     }
   } );
 

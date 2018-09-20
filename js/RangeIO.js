@@ -22,7 +22,7 @@ define( function( require ) {
    * @constructor
    */
   function RangeIO( range, phetioID ) {
-    assert && assertInstanceOf( range, phet.dot.Range );
+    assert && assertInstanceOf( range, dot.Range );
     ObjectIO.call( this, range, phetioID );
   }
 
@@ -35,7 +35,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( range ) {
-      assert && assertInstanceOf( range, phet.dot.Range );
+      assert && assertInstanceOf( range, dot.Range );
       return { min: range.min, max: range.max };
     },
 
@@ -45,7 +45,7 @@ define( function( require ) {
      * @returns {Range}
      */
     fromStateObject: function( stateObject ) {
-      return new phet.dot.Range( stateObject.min, stateObject.max );
+      return new dot.Range( stateObject.min, stateObject.max );
     }
   } );
 
