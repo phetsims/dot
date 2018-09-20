@@ -7,12 +7,20 @@
     "url": "https://github.com/phetsims/dot.git"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-requirejs": "~0.4.0",
-    "grunt-eslint": "~17.2.0",
-    "uglify-js": "~2.4.0",
-    "requirejs": "~2.1.8",
+    "grunt": "~1.0.0",
     "esprima": "~2.7.0",
     "js-beautify": "~1.5.10"
+  },
+  "phet": {
+    "generatedUnitTests": true,
+    "requirejsNamespace": "DOT",
+    "buildStandalone": true,
+    "isJSOnly": true,
+    "requiresLodash": true,
+    "assignGlobals": {
+      "dot": "DOT/main",
+      "axon": "AXON/main",
+      "phetCore": "PHET_CORE/main"
+    }
   }
 }

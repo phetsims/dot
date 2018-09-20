@@ -31,9 +31,9 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Bounds2 = require( 'DOT/Bounds2' );
   var dot = require( 'DOT/dot' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Bounds2 = require( 'DOT/Bounds2' );
 
   /**
    * Creates a BinPacker with the specified containing bounds.
@@ -85,7 +85,10 @@ define( function( require ) {
       bin.unuse();
     },
 
-    // @private, for debugging purposes
+    /**
+     * @private, for debugging purposes
+     * @returns {string}
+     */
     toString: function() {
       var result = '';
 
@@ -276,7 +279,10 @@ define( function( require ) {
       this.parent && this.parent.attemptToCollapse();
     },
 
-    // @private for debugging purposes
+    /**
+     * @private, for debugging purposes
+     * @returns {string}
+     */
     toString: function() {
       return this.bounds.toString() + ( this.isUsed ? ' used' : '' );
     }

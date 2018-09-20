@@ -10,30 +10,43 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
-  /*
-   * @constructor
-   * @param {Vector3} center - The center of the sphere
+  /**
+   *
+   * @param {Vector3} center  - The center of the sphere
    * @param {number} radius - The radius of the sphere
+   * @constructor
    */
   function Sphere3( center, radius ) {
+
+    // @public {Vector3} - The location of the center of the sphere
     this.center = center;
+
+    // @public {number} -  the radius of the sphere
     this.radius = radius;
 
-    assert && assert( radius >= 0 );
-
-    phetAllocation && phetAllocation( 'Sphere3' );
+    assert && assert( radius >= 0, 'the radius of a sphere should be positive' );
   }
 
   dot.register( 'Sphere3', Sphere3 );
 
-  Sphere3.prototype = {
-    constructor: Sphere3,
+  inherit( Object, Sphere3, {
 
-    /*
+    /**
+     * Determines if a ray (a half-line) intersects this sphere.
+     * A successful intersection returns the result the closest intersection in the form { distance, hitPoint, normal, fromOutside },
+     * distance: {number} distance to the intersection point
+     * hitPoint: {Vector3} the intersection point
+     * normal: {Vector3} the normal vector on the sphere at the point of intersection. (the normal vector points outwards the sphere by convention)
+     * fromOutside: {boolean} is the ray half-line intersecting the sphere from the outside of a sphere or from the inside.
+     *
+     * Returns null if the ray misses the sphere
+     *
+     * @public
      * @param {Ray3} ray - The ray to intersect with the sphere
-     * @param {number} epsilon - A small varing-point value to be used to handle intersections tangent to the sphere
-     * @returns An intersection result { distance, hitPoint, normal, fromOutside }, or null if the sphere is behind the ray
+     * @param {number} epsilon - A small varying-point value to be used to handle intersections tangent to the sphere
+     * @returns {{ distance: number, hitPoint: Vector3, normal, fromOutside: boolean }| null}
      */
     intersect: function( ray, epsilon ) {
       var raydir = ray.direction;
@@ -91,11 +104,17 @@ define( function( require ) {
       }
     },
 
-    /*
+    /**
+     *
+     * Returns the intersections of a ray with a sphere. There will be 0 or 2 intersections, with
+     * the "proper" intersection first, if applicable (closest in front of the ray).
+     * Note that this method makes the implicit assumptions that the ray's origin does not lie inside the sphere.
+     *
+     * @public
      * @param {Ray3} ray - The ray to intersect with the sphere
-     * @param {number} epsilon - A small varing-point value to be used to handle intersections tangent to the sphere
-     * @returns An array of intersection results like { distance, hitPoint, normal, fromOutside }. Will be 0 or 2, with
-     *          the "proper" intersection first, if applicable (closest in front of the ray).
+     * @param {number} epsilon - A small varying-point value to be used to handle intersections tangent to the sphere
+     * @returns {Array.<{distance:number, hitPoint:Vector3, normal:Vector3, fromOutside:boolean }>| null} -  An array of intersection
+     *                                                                         results like { distance, hitPoint, normal, fromOutside }.
      */
     intersections: function( ray, epsilon ) {
       var raydir = ray.direction;
@@ -156,7 +175,7 @@ define( function( require ) {
         return [ resultA, resultB ];
       }
     }
-  };
+  } );
 
   return Sphere3;
 } );

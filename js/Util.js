@@ -141,29 +141,69 @@ define( function( require ) {
     },
 
     /**
-     * Greatest Common Denominator, using https://en.wikipedia.org/wiki/Euclidean_algorithm
+     * Workaround for broken modulo operator.
+     * E.g. on iOS9, 1e10 % 1e10 -> 2.65249474e-315
+     * See https://github.com/phetsims/dot/issues/75
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
+     */
+    mod: function( a, b ) {
+      if ( a / b % 1 === 0 ) {
+        return 0; // a is a multiple of b
+      }
+      else {
+        return a % b;
+      }
+    },
+
+    /**
+     * Greatest Common Divisor, using https://en.wikipedia.org/wiki/Euclidean_algorithm. See
+     * https://en.wikipedia.org/wiki/Greatest_common_divisor
      * @public
      *
      * @param {number} a
      * @param {number} b
+     * @returns {number}
      */
     gcd: function( a, b ) {
-      return b === 0 ? a : this.gcd( b, a % b );
+      return Math.abs( b === 0 ? a : this.gcd( b, Util.mod( a, b ) ) );
     },
 
     /**
-     * Intersection point between the lines defined by the line segments p1-2 and p3-p4. Currently does not handle
-     * parallel lines.
+     * Least Common Multiple, https://en.wikipedia.org/wiki/Least_common_multiple
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     * @returns {number} lcm, an integer
+     */
+    lcm: function( a, b ) {
+      return Util.roundSymmetric( Math.abs( a * b ) / Util.gcd( a, b ) );
+    },
+
+    /**
+     * Intersection point between the lines defined by the line segments p1-2 and p3-p4. If the
+     * lines are not properly defined, null is returned. If there are no intersections or infinitely many,
+     * e.g. parallel lines, null is returned.
      * @public
      *
      * @param {Vector2} p1
      * @param {Vector2} p2
      * @param {Vector2} p3
      * @param {Vector2} p4
-     * @returns {Vector2}
+     * @returns {Vector2|null}
      */
     lineLineIntersection: function( p1, p2, p3, p4 ) {
-      // Taken from an answer in http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
+      var epsilon = 1e-10;
+
+      // If the endpoints are the same, they don't properly define a line
+      if ( p1.equals( p2 ) || p3.equals( p4 ) ) {
+        return null;
+      }
+
+      // Taken from an answer in
+      // http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
       var x12 = p1.x - p2.x;
       var x34 = p3.x - p4.x;
       var y12 = p1.y - p2.y;
@@ -171,6 +211,12 @@ define( function( require ) {
 
       var denom = x12 * y34 - y12 * x34;
 
+      // If the denominator is 0, lines are parallel or coincident
+      if ( Math.abs( denom ) < epsilon ) {
+        return null;
+      }
+
+      // define intersection using determinants, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
       var a = p1.x * p2.y - p1.y * p2.x;
       var b = p3.x * p4.y - p3.y * p4.x;
 
@@ -178,6 +224,62 @@ define( function( require ) {
         ( a * x34 - x12 * b ) / denom,
         ( a * y34 - y12 * b ) / denom
       );
+    },
+
+    /**
+     * Returns the center of a circle that will lie on 3 points (if it exists), otherwise null (if collinear).
+     * @public
+     *
+     * @param {Vector2} p1
+     * @param {Vector2} p2
+     * @param {Vector2} p3
+     * @returns {Vector2|null}
+     */
+    circleCenterFromPoints: function( p1, p2, p3 ) {
+      // TODO: Can we make scratch vectors here, avoiding the circular reference?
+
+      // midpoints between p1-p2 and p2-p3
+      var p12 = new dot.Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
+      var p23 = new dot.Vector2( ( p2.x + p3.x ) / 2, ( p2.y + p3.y ) / 2 );
+
+      // perpendicular points from the minpoints
+      var p12x = new dot.Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
+      var p23x = new dot.Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
+
+      return Util.lineLineIntersection( p12, p12x, p23, p23x );
+    },
+
+    /**
+     * Returns whether the point p is inside the circle defined by the other three points (p1, p2, p3).
+     * @public
+     *
+     * NOTE: p1,p2,p3 should be specified in a counterclockwise (mathematically) order, and thus should have a positive
+     * signed area.
+     *
+     * See notes in https://en.wikipedia.org/wiki/Delaunay_triangulation.
+     *
+     * @param {Vector2} p1
+     * @param {Vector2} p2
+     * @param {Vector2} p3
+     * @param {Vector2} p
+     * @returns {boolean}
+     */
+    pointInCircleFromPoints: function( p1, p2, p3, p ) {
+      assert && assert( Util.triangleAreaSigned( p1, p2, p3 ) > 0,
+        'Defined points should be in a counterclockwise order' );
+
+      var m00 = p1.x - p.x;
+      var m01 = p1.y - p.y;
+      var m02 = ( p1.x - p.x ) * ( p1.x - p.x ) + ( p1.y - p.y ) * ( p1.y - p.y );
+      var m10 = p2.x - p.x;
+      var m11 = p2.y - p.y;
+      var m12 = ( p2.x - p.x ) * ( p2.x - p.x ) + ( p2.y - p.y ) * ( p2.y - p.y );
+      var m20 = p3.x - p.x;
+      var m21 = p3.y - p.y;
+      var m22 = ( p3.x - p.x ) * ( p3.x - p.x ) + ( p3.y - p.y ) * ( p3.y - p.y );
+
+      var determinant = m00 * m11 * m22 + m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20 - m01 * m10 * m22 - m00 * m12 * m21;
+      return determinant > 0;
     },
 
     /**
@@ -263,20 +365,45 @@ define( function( require ) {
     },
 
     /**
-     * Returns an array of the real roots of the quadratic equation $ax^2 + bx + c=0$ (there will be between 0 and 2 roots).
+     * Returns an array of the real roots of the quadratic equation $ax + b=0$, or null if every value is a solution.
+     * @public
+     *
+     * @param {number} a
+     * @param {number} b
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
+     *                                  a multiplicity larger than 1, it will be repeated that many times.
+     */
+    solveLinearRootsReal: function( a, b ) {
+      if ( a === 0 ) {
+        if ( b === 0 ) {
+          return null;
+        }
+        else {
+          return [];
+        }
+      }
+      else {
+        return [ -b / a ];
+      }
+    },
+
+    /**
+     * Returns an array of the real roots of the quadratic equation $ax^2 + bx + c=0$, or null if every value is a
+     * solution. If a is nonzero, there should be between 0 and 2 (inclusive) values returned.
      * @public
      *
      * @param {number} a
      * @param {number} b
      * @param {number} c
-     * @returns {Array.<number>}
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
+     *                                  a multiplicity larger than 1, it will be repeated that many times.
      */
     solveQuadraticRootsReal: function( a, b, c ) {
+      // Check for a degenerate case where we don't have a quadratic, or if the order of magnitude is such where the
+      // linear solution would be expected
       var epsilon = 1E7;
-
-      //We need to test whether a is several orders of magnitude less than b or c. If so, return the result as a solution to the linear (easy) equation
       if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon ) {
-        return [ -c / b ];
+        return Util.solveLinearRootsReal( b, c );
       }
 
       var discriminant = b * b - 4 * a * c;
@@ -293,17 +420,24 @@ define( function( require ) {
     },
 
     /**
-     * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$ (there will be between 0 and 3 roots).
+     * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$, or null if every value is a
+     * solution. If a is nonzero, there should be between 0 and 3 (inclusive) values returned.
      * @public
      *
      * @param {number} a
      * @param {number} b
      * @param {number} c
      * @param {number} d
-     * @returns {Array.<number>}
+     * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
+     *                                  a multiplicity larger than 1, it will be repeated that many times.
      */
     solveCubicRootsReal: function( a, b, c, d ) {
       // TODO: a Complex type!
+
+      // Check for a degenerate case where we don't have a cubic
+      if ( a === 0 ) {
+        return Util.solveQuadraticRootsReal( b, c, d );
+      }
 
       //We need to test whether a is several orders of magnitude less than b, c, d
       var epsilon = 1E7;
@@ -312,7 +446,7 @@ define( function( require ) {
         return Util.solveQuadraticRootsReal( b, c, d );
       }
       if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
-        return Util.solveQuadraticRootsReal( a, b, c );
+        return [ 0 ].concat( Util.solveQuadraticRootsReal( a, b, c ) );
       }
 
       b /= a;
@@ -320,11 +454,11 @@ define( function( require ) {
       d /= a;
 
       var q = ( 3.0 * c - ( b * b ) ) / 9;
-      var r = ( -(27 * d) + b * (9 * c - 2 * (b * b)) ) / 54;
+      var r = ( -( 27 * d ) + b * ( 9 * c - 2 * ( b * b ) ) ) / 54;
       var discriminant = q * q * q + r * r;
       var b3 = b / 3;
 
-      if ( discriminant > 0 ) {
+      if ( discriminant > 1e-7 ) {
         // a single real root
         var dsqrt = Math.sqrt( discriminant );
         return [ Util.cubeRoot( r + dsqrt ) + Util.cubeRoot( r - dsqrt ) - b3 ];
@@ -334,7 +468,7 @@ define( function( require ) {
       if ( discriminant === 0 ) {
         // contains a double root
         var rsqrt = Util.cubeRoot( r );
-        var doubleRoot = b3 - rsqrt;
+        var doubleRoot = -b3 - rsqrt;
         return [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
       }
       else {
@@ -374,6 +508,7 @@ define( function( require ) {
      * @returns {number}
      */
     linear: function( a1, a2, b1, b2, a3 ) {
+      assert && assert( typeof a3 === 'number', 'linear requires a number to evaluate' );
       return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
     },
 
@@ -437,7 +572,20 @@ define( function( require ) {
      * @returns {boolean}
      */
     isInteger: function( n ) {
-      return ( typeof n === 'number' ) && ( n % 1 === 0 );
+      assert && assert( typeof n === 'number', 'isInteger requires its argument to be a number: ' + n );
+      return n % 1 === 0;
+    },
+
+    /**
+     * Returns true if two numbers are within epsilon of each other.
+     *
+     * @param {number} a
+     * @param {number} b
+     * @param {number} epsilon
+     * @return {boolean}
+     */
+    equalsEpsilon: function( a, b, epsilon ) {
+      return Math.abs( a - b ) <= epsilon;
     },
 
     /**
@@ -456,35 +604,45 @@ define( function( require ) {
      * @returns {Vector2|null}
      */
     lineSegmentIntersection: function( x1, y1, x2, y2, x3, y3, x4, y4 ) {
-      /*
-       * Algorithm taken from Paul Bourke, 1989:
-       * http://paulbourke.net/geometry/pointlineplane/
-       * http://paulbourke.net/geometry/pointlineplane/pdb.c
-       * Ported from MathUtil.java on 9/20/2013 by @samreid
-       */
-      var numA = ( x4 - x3 ) * ( y1 - y3 ) - ( y4 - y3 ) * ( x1 - x3 );
-      var numB = ( x2 - x1 ) * ( y1 - y3 ) - ( y2 - y1 ) * ( x1 - x3 );
-      var denom = ( y4 - y3 ) * ( x2 - x1 ) - ( x4 - x3 ) * ( y2 - y1 );
 
-      // If denominator is 0, the lines are parallel or coincident
-      if ( denom === 0 ) {
+      // @private
+      // Determines counterclockwiseness. Positive if counterclockwise, negative if clockwise, zero if straight line
+      // Point1(a,b), Point2(c,d), Point3(e,f)
+      // See http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf
+      // @returns {number}
+      var ccw = function( a, b, c, d, e, f ) {
+        return ( f - b ) * ( c - a ) - ( d - b ) * ( e - a );
+      };
+
+      // Check if intersection doesn't exist. See http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
+      // If point1 and point2 are on opposite sides of line 3 4, exactly one of the two triples 1, 3, 4 and 2, 3, 4
+      // is in counterclockwise order.
+      if ( ccw( x1, y1, x3, y3, x4, y4 ) * ccw( x2, y2, x3, y3, x4, y4 ) > 0 ||
+           ccw( x3, y3, x1, y1, x2, y2 ) * ccw( x4, y4, x1, y1, x2, y2 ) > 0
+      ) {
         return null;
       }
-      else {
-        var ua = numA / denom;
-        var ub = numB / denom;
 
-        // ua and ub must both be in the range 0 to 1 for the segments to have an intersection pt.
-        if ( !( ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1 ) ) {
-          return null;
-        }
-        else {
-          var x = x1 + ua * ( x2 - x1 );
-          var y = y1 + ua * ( y2 - y1 );
-          return new dot.Vector2( x, y );
-        }
+      var denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
+      // If denominator is 0, the lines are parallel or coincident
+      if ( Math.abs( denom ) < 1e-10 ) {
+        return null;
       }
+
+      // Check if there is an exact endpoint overlap (and then return an exact answer).
+      if ( ( x1 === x3 && y1 === y3 ) || ( x1 === x4 && y1 === y4 ) ) {
+        return new dot.Vector2( x1, y1 );
+      }
+      else if ( ( x2 === x3 && y2 === y3 ) || ( x2 === x4 && y2 === y4 ) ) {
+        return new dot.Vector2( x2, y2 );
+      }
+
+      // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
+      var intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      var intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      return new dot.Vector2( intersectionX, intersectionY );
     },
+
 
     /**
      * Squared distance from a point to a line segment squared.
@@ -497,16 +655,36 @@ define( function( require ) {
      * @returns {number}
      */
     distToSegmentSquared: function( point, a, b ) {
-      var segmentLength = a.distanceSquared( b );
-      if ( segmentLength === 0 ) { return point.distanceSquared( a ); }
-      var t = ((point.x - a.x) * (b.x - a.x) + (point.y - a.y) * (b.y - a.y)) / segmentLength;
-      return t < 0 ? point.distanceSquared( a ) :
-             t > 1 ? point.distanceSquared( b ) :
-             point.distanceSquared( new dot.Vector2( a.x + t * (b.x - a.x), a.y + t * (b.y - a.y) ) );
+      // the square of the distance between a and b,
+      var segmentSquaredLength = a.distanceSquared( b );
+
+      // if the segment length is zero, the a and b point are coincident. return the squared distance between a and point
+      if ( segmentSquaredLength === 0 ) { return point.distanceSquared( a ); }
+
+      // the t value parametrize the projection of the point onto the a b line
+      var t = ( ( point.x - a.x ) * ( b.x - a.x ) + ( point.y - a.y ) * ( b.y - a.y ) ) / segmentSquaredLength;
+
+      var distanceSquared;
+
+      if ( t < 0 ) {
+        // if t<0, the projection point is outside the ab line, beyond a
+        distanceSquared = point.distanceSquared( a );
+      }
+      else if ( t > 1 ) {
+        // if t>1, the projection past is outside the ab segment, beyond b,
+        distanceSquared = point.distanceSquared( b );
+      }
+      else {
+        // if 0<t<1, the projection point lies along the line joining a and b.
+        distanceSquared = point.distanceSquared( new dot.Vector2( a.x + t * ( b.x - a.x ), a.y + t * ( b.y - a.y ) ) );
+      }
+
+      return distanceSquared;
+
     },
 
     /**
-     * Squared distance from a point to a line segment squared.
+     * distance from a point to a line segment squared.
      * @public
      *
      * @param {Vector2} point - The point
@@ -514,7 +692,9 @@ define( function( require ) {
      * @param {Vector2} b - Ending point of the line segment
      * @returns {number}
      */
-    distToSegment: function( point, a, b ) { return Math.sqrt( this.distToSegmentSquared( point, a, b ) ); },
+    distToSegment: function( point, a, b ) {
+      return Math.sqrt( this.distToSegmentSquared( point, a, b ) );
+    },
 
     /**
      * Determines whether the three points are approximately collinear.
@@ -551,14 +731,52 @@ define( function( require ) {
      * provided are clockwise or counter-clockwise.
      * @public
      *
+     * If the vertices are counterclockwise (in a right-handed coordinate system), then the signed area will be
+     * positive.
+     *
      * @param {Vector2} a
      * @param {Vector2} b
      * @param {Vector2} c
      * @returns {number}
      */
     triangleAreaSigned: function( a, b, c ) {
-      // TODO: investigate which way we want the sign (Canvas or WebGL style)
       return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
+    },
+
+    /**
+     * Polyfill for Math.sign from MDN, see
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
+     * @public
+     *
+     * We cannot use Math.sign because it is not supported on IE
+     *
+     * @param {number} x
+     * @returns {number}
+     */
+    sign: function( x ) {
+      return ( ( x > 0 ) - ( x < 0 ) ) || +x;
+    },
+
+    /**
+     * Function that returns the hyperbolic cosine of a number
+     * @public
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    cosh: function( value ) {
+      return ( Math.exp( value ) + Math.exp( -value ) ) / 2;
+    },
+
+    /**
+     * Function that returns the hyperbolic sine of a number
+     * @public
+     *
+     * @param {number} value
+     * @returns {number}
+     */
+    sinh: function( value ) {
+      return ( Math.exp( value ) - Math.exp( -value ) ) / 2;
     },
 
     /**
@@ -582,9 +800,10 @@ define( function( require ) {
      *
      * @param {number} mu - The mean of the Gaussian
      * @param {number} sigma - The standard deviation of the Gaussian
+     * @param {Random} random - the source of randomness
      * @returns {number}
      */
-    boxMullerTransform: function( mu, sigma ) {
+    boxMullerTransform: function( mu, sigma, random ) {
       generate = !generate;
 
       if ( !generate ) {
@@ -594,14 +813,72 @@ define( function( require ) {
       var u1;
       var u2;
       do {
-        u1 = Math.random();
-        u2 = Math.random();
+        u1 = random.nextDouble();
+        u2 = random.nextDouble();
       }
       while ( u1 <= EPSILON );
 
       z0 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.cos( TWO_PI * u2 );
       z1 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.sin( TWO_PI * u2 );
       return z0 * sigma + mu;
+    },
+
+    /**
+     * Get the median from an unsorted array of numbers
+     * @public
+     *
+     * @param {Array.<number>} numbers - (un)sorted array
+     * @returns {number|null} - null if array is empty
+     */
+    median: function( numbers ) {
+      assert && assert( Array.isArray( numbers ) );
+      assert && numbers.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
+
+      numbers.sort( function( a, b ) { return a - b; } );
+
+      if ( numbers.length === 0 ) {
+        return null;
+      }
+
+      var half = Math.floor( numbers.length / 2 );
+
+      if ( numbers.length % 2 ) {
+        return numbers[ half ];
+      }
+      else {
+        return ( numbers[ half - 1 ] + numbers[ half ] ) / 2;
+      }
+    },
+
+    /**
+     * Determines the number of decimal places in a value.
+     * @param {number} value
+     * @returns {number}
+     */
+    numberOfDecimalPlaces: function( value ) {
+      var count = 0;
+      var multiplier = 1;
+      while ( ( value * multiplier ) % 1 !== 0 ) {
+        count++;
+        multiplier *= 10;
+      }
+      return count;
+    },
+
+    /**
+     * Rounds a value to a multiple of a specified interval.
+     * Examples:
+     * roundToInterval( 0.567, 0.01 ) -> 0.57
+     * roundToInterval( 0.567, 0.02 ) -> 0.56
+     * roundToInterval( 5.67, 0.5 ) -> 5.5
+     *
+     * @param {number} value
+     * @param {number} interval
+     * @returns {number}
+     */
+    roundToInterval: function( value, interval ) {
+      return Util.toFixedNumber( Util.roundSymmetric( value / interval ) * interval,
+        Util.numberOfDecimalPlaces( interval ) );
     }
   };
   dot.register( 'Util', Util );
@@ -615,6 +892,7 @@ define( function( require ) {
   dot.toRadians = Util.toRadians;
   dot.toDegrees = Util.toDegrees;
   dot.lineLineIntersection = Util.lineLineIntersection;
+  dot.lineSegmentIntersection = Util.lineSegmentIntersection;
   dot.sphereRayIntersection = Util.sphereRayIntersection;
   dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
   dot.solveCubicRootsReal = Util.solveCubicRootsReal;

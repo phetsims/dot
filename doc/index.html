@@ -13,9 +13,12 @@
   <link rel="stylesheet" href="../../sherpa/lib/syntaxhighlighter-3.0.83/shCore.css">
   <link rel="stylesheet" href="../../sherpa/lib/syntaxhighlighter-3.0.83/shThemeDefault.css">
 
+  <!-- Before loading other things (that might error), create hooks to report errors/loads for continuous testing -->
+  <script src="../../aqua/js/pageload-connector.js"></script>
+
   <!-- jQuery and LoDash are dependencies -->
   <script src="../../sherpa/lib/jquery-2.1.0.min.js"></script>
-  <script src="../../sherpa/lib/lodash-2.4.1.min.js"></script>
+  <script src="../../sherpa/lib/lodash-4.17.4.min.js"></script>
 
   <!-- For the styling -->
   <script src="../../sherpa/lib/bootstrap-2.2.2.js"></script>
@@ -29,10 +32,10 @@
     MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 
   </script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   <!-- Our code, in either the concatenated 'with comments' version or the minified version -->
-  <script src="../build/development/dot.js"></script>
+  <script src="../build/dot.min.js"></script>
 
   <style type="text/css">
     .exampleScene {
@@ -40,7 +43,7 @@
       border: 1px solid black;
       display: block;
     }
-    
+
     #sidebar {
       background-color: #eee;
       position: fixed;
@@ -58,7 +61,7 @@
       -webkit-box-shadow: 0 0 20px #ccc;
       -moz-box-shadow: 0 0 20px #ccc;
     }
-    
+
     #apiList {
       background-color: #eee;
       position: relative;
@@ -66,118 +69,118 @@
       border-left: none;
       padding: 10px;
     }
-    
+
     .ph2 {
       font-weight: bold;
       font-size: 18px;
     }
-    
+
     .navlink {
       font-weight: bold;
     }
-    
+
     .sublink {
       padding-left: 1em;
     }
-    
+
     .args {
       font-weight: normal;
       font-size: 90%;
       color: #000;
       vertical-align: middle;
     }
-    
+
     .this {
       font-weight: normal;
       font-size: 90%;
       color: #000;
       vertical-align: middle;
     }
-    
+
     .return {
       font-weight: normal;
       font-size: 95%;
       vertical-align: middle;
     }
-    
+
     .property {
       font-weight: normal;
       font-size: 95%;
       vertical-align: middle;
     }
-    
+
     .inherit {
       font-weight: normal;
       font-size: 95%;
       vertical-align: middle;
       padding-left: 10px;
     }
-    
+
     .entryName {
       vertical-align: middle
     }
-    
+
     .type {
       /*color: #d14;*/
       color: #0088cc;
     }
-    
+
     .type::before {
       content: "{";
     }
-    
+
     .type::after {
       content: "}";
     }
-    
+
     .param td {
       vertical-align: top;
     }
-    
+
     .params {
       margin: 0 20px;
     }
-    
+
     .explicitSetterGetter {
       font-weight: normal;
       padding-left: 15px;
     }
-    
+
     .optional::before {
       content: "[";
       color: #888;
     }
-    
+
     .optional::after {
       content: "]";
       color: #888;
     }
-    
+
     .navSection {
       font-size: 20px;
       font-weight: bold;
       margin-top: 0;
       margin-bottom: 10px;
     }
-    
+
     .navSection a {
       color: #333;
     }
-    
+
     h4 {
       margin-top: 25px;
     }
-    
+
     h5 {
       border-top: 1px solid #e2e2e2;
       padding-top: 10px;
       margin-top: 13px;
     }
-    
+
     #codeContainer {
       height: 100%;
     }
-    
+
     #codeIndex {
       position: fixed;
       top: 41px;
@@ -189,11 +192,11 @@
       background-color: #eee;
       overflow: auto;
     }
-    
+
     #codeIndexInner {
       padding: 20px;
     }
-    
+
     #codeContent {
       margin-left: 250px;
       padding: 10px;
@@ -238,6 +241,7 @@
         <div id="collapse-BinPacker" class="collapse">
           <a class="sublink" href="#binPacker-allocate">allocate</a>
           <br><a class="sublink" href="#binPacker-deallocate">deallocate</a>
+          <br><a class="sublink" href="#binPacker-toString">toString</a>
           <br><a class="sublink" href="#binPacker-bin-bounds">bounds</a>
           <br>
         </div><a class="navlink" href="#bounds2" data-toggle="collapse" data-target="#collapse-Bounds2" onclick="$( '.collapse.in' ).collapse( 'toggle' ); return true;">Bounds2</a>
@@ -302,6 +306,7 @@
           <br><a class="sublink" href="#bounds2-leftTop">leftTop</a>
           <br><a class="sublink" href="#bounds2-maximumDistanceToPointSquared">maximumDistanceToPointSquared</a>
           <br><a class="sublink" href="#bounds2-minimumDistanceToPointSquared">minimumDistanceToPointSquared</a>
+          <br><a class="sublink" href="#bounds2-offset">offset</a>
           <br><a class="sublink" href="#bounds2-right">right</a>
           <br><a class="sublink" href="#bounds2-rightBottom">rightBottom</a>
           <br><a class="sublink" href="#bounds2-rightCenter">rightCenter</a>
@@ -333,6 +338,7 @@
           <br><a class="sublink" href="#bounds2-withMaxY">withMaxY</a>
           <br><a class="sublink" href="#bounds2-withMinX">withMinX</a>
           <br><a class="sublink" href="#bounds2-withMinY">withMinY</a>
+          <br><a class="sublink" href="#bounds2-withOffsets">withOffsets</a>
           <br><a class="sublink" href="#bounds2-withPoint">withPoint</a>
           <br><a class="sublink" href="#bounds2-x">x</a>
           <br><a class="sublink" href="#bounds2-y">y</a>
@@ -452,10 +458,36 @@
           <br><a class="sublink" href="#complex-real">real</a>
           <br><a class="sublink" href="#complex-imaginary">imaginary</a>
           <br><a class="sublink" href="#complex-real">real</a>
+          <br><a class="sublink" href="#complex-add">add</a>
           <br><a class="sublink" href="#complex-conjugate">conjugate</a>
+          <br><a class="sublink" href="#complex-conjugated">conjugated</a>
+          <br><a class="sublink" href="#complex-copy">copy</a>
+          <br><a class="sublink" href="#complex-cos">cos</a>
+          <br><a class="sublink" href="#complex-cosOf">cosOf</a>
+          <br><a class="sublink" href="#complex-divide">divide</a>
           <br><a class="sublink" href="#complex-dividedBy">dividedBy</a>
+          <br><a class="sublink" href="#complex-equals">equals</a>
+          <br><a class="sublink" href="#complex-equalsEpsilon">equalsEpsilon</a>
+          <br><a class="sublink" href="#complex-exponentiate">exponentiate</a>
           <br><a class="sublink" href="#complex-exponentiated">exponentiated</a>
+          <br><a class="sublink" href="#complex-magnitude">magnitude</a>
+          <br><a class="sublink" href="#complex-magnitudeSquared">magnitudeSquared</a>
+          <br><a class="sublink" href="#complex-minus">minus</a>
+          <br><a class="sublink" href="#complex-multiply">multiply</a>
+          <br><a class="sublink" href="#complex-phase">phase</a>
+          <br><a class="sublink" href="#complex-plus">plus</a>
+          <br><a class="sublink" href="#complex-set">set</a>
+          <br><a class="sublink" href="#complex-setImaginary">setImaginary</a>
+          <br><a class="sublink" href="#complex-setPolar">setPolar</a>
+          <br><a class="sublink" href="#complex-setReal">setReal</a>
+          <br><a class="sublink" href="#complex-setRealImaginary">setRealImaginary</a>
+          <br><a class="sublink" href="#complex-sin">sin</a>
+          <br><a class="sublink" href="#complex-sinOf">sinOf</a>
           <br><a class="sublink" href="#complex-sqrt">sqrt</a>
+          <br><a class="sublink" href="#complex-sqrtOf">sqrtOf</a>
+          <br><a class="sublink" href="#complex-square">square</a>
+          <br><a class="sublink" href="#complex-squared">squared</a>
+          <br><a class="sublink" href="#complex-subtract">subtract</a>
           <br><a class="sublink" href="#complex-times">times</a>
           <br><a class="sublink" href="#complex-toString">toString</a>
           <br>
@@ -554,6 +586,7 @@
           <a class="sublink" href="#util-arePointsCollinear">arePointsCollinear</a>
           <br><a class="sublink" href="#util-boxMullerTransform">boxMullerTransform</a>
           <br><a class="sublink" href="#util-clamp">clamp</a>
+          <br><a class="sublink" href="#util-cosh">cosh</a>
           <br><a class="sublink" href="#util-cubeRoot">cubeRoot</a>
           <br><a class="sublink" href="#util-distToSegment">distToSegment</a>
           <br><a class="sublink" href="#util-distToSegmentSquared">distToSegmentSquared</a>
@@ -568,6 +601,7 @@
           <br><a class="sublink" href="#util-rangeExclusive">rangeExclusive</a>
           <br><a class="sublink" href="#util-rangeInclusive">rangeInclusive</a>
           <br><a class="sublink" href="#util-roundSymmetric">roundSymmetric</a>
+          <br><a class="sublink" href="#util-sinh">sinh</a>
           <br><a class="sublink" href="#util-solveCubicRootsReal">solveCubicRootsReal</a>
           <br><a class="sublink" href="#util-solveQuadraticRootsReal">solveQuadraticRootsReal</a>
           <br><a class="sublink" href="#util-sphereRayIntersection">sphereRayIntersection</a>
@@ -816,7 +850,7 @@ git clone https://github.com/phetsims/dot.git</pre>
 
       <pre>
 cd dot
-npm install
+npm update
 grunt</pre>
 
       <p>
@@ -891,6 +925,7 @@ for ( var i = 0; i < 100; i++ ) {
           <td>The bin that was returned from allocate().</td>
         </tr>
       </table>
+      <h5 id="binPacker-toString" class="section"><span class="entryName">toString</span>() :<span class="return"> <span class="type">string</span></span></h5>
       <div id="binPacker-bin"></div>
       <h4 id="binPacker-bin-constructor" class="section">Bin( <span class="args"> <a href="#bounds2" class="type">Bounds2</a> bounds</span>, <span class="args"> <span class="type">Bin|null</span> parent</span> )</h4>
       <p>
@@ -919,25 +954,25 @@ for ( var i = 0; i < 100; i++ ) {
           <td> <span class="type">number</span></td>
           <td>minX</td>
           <td> - </td>
-          <td>The intial minimum X coordinate of the bounds.</td>
+          <td>The initial minimum X coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>minY</td>
           <td> - </td>
-          <td>The intial minimum Y coordinate of the bounds.</td>
+          <td>The initial minimum Y coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>maxX</td>
           <td> - </td>
-          <td>The intial maximum X coordinate of the bounds.</td>
+          <td>The initial maximum X coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>maxY</td>
           <td> - </td>
-          <td>The intial maximum Y coordinate of the bounds.</td>
+          <td>The initial maximum Y coordinate of the bounds.</td>
         </tr>
       </table>
       <h5 id="bounds2-EVERYTHING" class="section"><span class="entryName">Bounds2.EVERYTHING</span><span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
@@ -961,9 +996,10 @@ for ( var i = 0; i < 100; i++ ) {
       <p>
         Additionally, intersections with NOTHING will always return a Bounds2 equivalent to NOTHING.
       </p>
-      <h5 id="bounds2-point" class="section"><span class="entryName">Bounds2.point</span>( <span class="args"> <span class="type">number</span> x</span>, <span class="args"> <span class="type">number</span> y</span> ) :<span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
+      <h5 id="bounds2-point" class="section"><span class="entryName">Bounds2.point</span>( <span class="args"> <span class="type">number|Vector2</span> x</span>, <span class="args"> <span class="type">number] </span> undefined</span> ) :<span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
       <p>
-        Returns a new Bounds2 object that only contains the specified point (x,y). Useful for being dilated to form a bounding box around a point. Note that the bounds will not be "empty" as it contains (x,y), but it will have zero area.
+        Returns a new Bounds2 object that only contains the specified point (x,y). Useful for being dilated to form a bounding box around a point. Note that the bounds will not be "empty" as it contains (x,y), but it will have zero area. The x and y coordinates
+        can be specified by numbers or with at Vector2
       </p>
       <h5 id="bounds2-rect" class="section"><span class="entryName">Bounds2.rect</span>( <span class="args"> <span class="type">number</span> x</span>, <span class="args"> <span class="type">number</span> y</span>, <span class="args"> <span class="type">number</span> width</span>, <span class="args"> <span class="type">number</span> height</span> ) :<span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
       <p>
@@ -1351,6 +1387,39 @@ for ( var i = 0; i < 100; i++ ) {
       <p>
         The squared distance from the input point to the point closest to it inside the bounding box.
       </p>
+      <h5 id="bounds2-offset" class="section"><span class="entryName">offset</span>( <span class="args"> <span class="type">number</span> left</span>, <span class="args"> <span class="type">number</span> top</span>, <span class="args"> <span class="type">number</span> right</span>, <span class="args"> <span class="type">number</span> bottom</span> ) :<span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
+      <p>
+        Expands this bounds independently for each side (or if some offsets are negative, will contract those sides).
+      </p>
+      <p>
+        This is the mutable form of the function withOffsets(). This will mutate (change) this bounds, in addition to returning this bounds itself.
+      </p>
+      <table class="params">
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>left</td>
+          <td> - </td>
+          <td>Amount to expand to the left (subtracts from minX)</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>top</td>
+          <td> - </td>
+          <td>Amount to expand to the top (subtracts from minY)</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>right</td>
+          <td> - </td>
+          <td>Amount to expand to the right (adds to maxX)</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>bottom</td>
+          <td> - </td>
+          <td>Amount to expand to the bottom (adds to maxY)</td>
+        </tr>
+      </table>
       <h5 id="bounds2-right" class="section"><span class="entryName">right</span> <span class="property"> <span class="type">number</span></span> <span class="entryName explicitSetterGetter">getRight() :<span class="return"> <span class="type">number</span></span></span></h5>
       <p>
         Alias for maxX, when thinking in the UI-layout manner.
@@ -1552,6 +1621,39 @@ for ( var i = 0; i < 100; i++ ) {
       <p>
         This is the immutable form of the function setMinY(). This will return a new bounds, and will not modify this bounds.
       </p>
+      <h5 id="bounds2-withOffsets" class="section"><span class="entryName">withOffsets</span>( <span class="args"> <span class="type">number</span> left</span>, <span class="args"> <span class="type">number</span> top</span>, <span class="args"> <span class="type">number</span> right</span>, <span class="args"> <span class="type">number</span> bottom</span> ) :<span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
+      <p>
+        A bounding box that is expanded by a specific amount on all sides (or if some offsets are negative, will contract those sides).
+      </p>
+      <p>
+        This is the immutable form of the function offset(). This will return a new bounds, and will not modify this bounds.
+      </p>
+      <table class="params">
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>left</td>
+          <td> - </td>
+          <td>Amount to expand to the left (subtracts from minX)</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>top</td>
+          <td> - </td>
+          <td>Amount to expand to the top (subtracts from minY)</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>right</td>
+          <td> - </td>
+          <td>Amount to expand to the right (adds to maxX)</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>bottom</td>
+          <td> - </td>
+          <td>Amount to expand to the bottom (adds to maxY)</td>
+        </tr>
+      </table>
       <h5 id="bounds2-withPoint" class="section"><span class="entryName">withPoint</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> point</span> ) :<span class="return"> <a href="#bounds2" class="type">Bounds2</a></span></h5>
       <p>
         The smallest bounds that contains this bounds and the input point, returned as a copy.
@@ -1587,37 +1689,37 @@ for ( var i = 0; i < 100; i++ ) {
           <td> <span class="type">number</span></td>
           <td>minX</td>
           <td> - </td>
-          <td>The intial minimum X coordinate of the bounds.</td>
+          <td>The initial minimum X coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>minY</td>
           <td> - </td>
-          <td>The intial minimum Y coordinate of the bounds.</td>
+          <td>The initial minimum Y coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>minZ</td>
           <td> - </td>
-          <td>The intial minimum Z coordinate of the bounds.</td>
+          <td>The initial minimum Z coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>maxX</td>
           <td> - </td>
-          <td>The intial maximum X coordinate of the bounds.</td>
+          <td>The initial maximum X coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>maxY</td>
           <td> - </td>
-          <td>The intial maximum Y coordinate of the bounds.</td>
+          <td>The initial maximum Y coordinate of the bounds.</td>
         </tr>
         <tr class="param">
           <td> <span class="type">number</span></td>
           <td>maxZ</td>
           <td> - </td>
-          <td>The intial maximum Z coordinate of the bounds.</td>
+          <td>The initial maximum Z coordinate of the bounds.</td>
         </tr>
       </table>
       <h5 id="bounds3-EVERYTHING" class="section"><span class="entryName">Bounds3.EVERYTHING</span><span class="return"> <a href="#bounds3" class="type">Bounds3</a></span></h5>
@@ -2317,9 +2419,9 @@ for ( var i = 0; i < 100; i++ ) {
       </p>
       <h3 id="complex" class="section">Complex</h3>
       <p>
-        A complex number fhat is immutable. Extends Vector2 for many common operations that need to treat the complex number as a vector $\begin{bmatrix} a \\ b \end{bmatrix}$ for the real number $a+bi$.
+        A complex number with mutable and immutable methods.
       </p>
-      <h4 id="complex-constructor" class="section">Complex( <span class="args"> <span class="type">number</span> real</span>, <span class="args"> <span class="type">number</span> imaginary</span> )</h4>
+      <h4 id="complex-constructor" class="section">Complex( <span class="args"> <span class="type">number</span> real</span>, <span class="args"> <span class="type">number</span> imaginary</span> ) <span class="inherit">extends  <span class="type">Object</span></span></h4>
       <p>
         Creates a complex number, that has both a real and imaginary part.
       </p>
@@ -2369,25 +2471,163 @@ for ( var i = 0; i < 100; i++ ) {
       <p>
         The real part. For a complex number $a+bi$, this is $a$.
       </p>
+      <h5 id="complex-add" class="section"><span class="entryName">add</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Addition of this Complex and another Complex, returning a copy.
+      </p>
+      <p>
+        This is the mutable form of the function plus(). This will modify and return this.
+      </p>
       <h5 id="complex-conjugate" class="section"><span class="entryName">conjugate</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
       <p>
-        Complex conjugate.
+        Complex conjugate. Mutable form of conjugated
+      </p>
+      <h5 id="complex-conjugated" class="section"><span class="entryName">conjugated</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Complex conjugate. Immutable form of conjugate
+      </p>
+      <h5 id="complex-copy" class="section"><span class="entryName">copy</span>( <span class="args"> <a href="#complex" class="type">Complex</a> <span class="optional">complex</span></span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Creates a copy of this complex, or if a complex is passed in, set that complex's values to ours.
+      </p>
+      <p>
+        This is the immutable form of the function set(), if a complex is provided. This will return a new complex, and will not modify this complex.
+      </p>
+      <table class="params">
+        <tr class="param">
+          <td> <a href="#complex" class="type">Complex</a></td>
+          <td><span class="optional">complex</span></td>
+          <td> - </td>
+          <td>If not provided, creates a new Complex with filled in values. Otherwise, fills in the values of the provided complex so that it equals this complex.</td>
+        </tr>
+      </table>
+      <h5 id="complex-cos" class="section"><span class="entryName">cos</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Cosine. Mutable form of cosOf.
+      </p>
+      <h5 id="complex-cosOf" class="section"><span class="entryName">cosOf</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Cosine. Immutable form of cos.
+      </p>
+      <h5 id="complex-divide" class="section"><span class="entryName">divide</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Mutable Complex division. The immutable form is dividedBy.
       </p>
       <h5 id="complex-dividedBy" class="section"><span class="entryName">dividedBy</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
       <p>
-        Complex division.
+        Complex division. Immutable version of divide
+      </p>
+      <h5 id="complex-equals" class="section"><span class="entryName">equals</span>( <span class="args"> <a href="#complex" class="type">Complex</a> other</span> ) :<span class="return"> <span class="type">boolean</span></span></h5>
+      <p>
+        Exact equality comparison between this Complex and another Complex.
+      </p>
+      <h5 id="complex-equalsEpsilon" class="section"><span class="entryName">equalsEpsilon</span>( <span class="args"> <a href="#complex" class="type">Complex</a> other</span>, <span class="args"> <span class="type">number</span> epsilon</span> ) :<span class="return"> <span class="type">boolean</span></span></h5>
+      <p>
+        Approximate equality comparison between this Complex and another Complex.
+      </p>
+      <h5 id="complex-exponentiate" class="section"><span class="entryName">exponentiate</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sets this Complex to e to the power of this complex number. $e^{a+bi}=e^a\cos b + i\sin b$. This is the mutable version of exponentiated
       </p>
       <h5 id="complex-exponentiated" class="section"><span class="entryName">exponentiated</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
       <p>
-        Takes e to the power of this complex number. $e^{a+bi}=e^a\cos b + i\sin b$.
+        Takes e to the power of this complex number. $e^{a+bi}=e^a\cos b + i\sin b$. This is the immutable form of exponentiate.
+      </p>
+      <h5 id="complex-magnitude" class="section"><span class="entryName">magnitude</span>() :<span class="return"> <span class="type">number</span></span></h5>
+      <p>
+        The magnitude (Euclidean/L2 Norm) of this complex number, i.e. $\sqrt{a^2+b^2}$.
+      </p>
+      <h5 id="complex-magnitudeSquared" class="section"><span class="entryName">magnitudeSquared</span>() :<span class="return"> <span class="type">number</span></span></h5>
+      <p>
+        The squared magnitude (square of the Euclidean/L2 Norm) of this complex, i.e. $a^2+b^2$.
+      </p>
+      <h5 id="complex-minus" class="section"><span class="entryName">minus</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Subtraction of this Complex by another Complex c, returning a copy.
+      </p>
+      <p>
+        This is the immutable form of the function subtract(). This will return a new Complex, and will not modify this Complex.
+      </p>
+      <h5 id="complex-multiply" class="section"><span class="entryName">multiply</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Mutable Complex multiplication.
+      </p>
+      <h5 id="complex-phase" class="section"><span class="entryName">phase</span>() :<span class="return"> <span class="type">number</span></span></h5>
+      <p>
+        The phase / argument of the complex number.
+      </p>
+      <h5 id="complex-plus" class="section"><span class="entryName">plus</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Addition of this Complex and another Complex, returning a copy.
+      </p>
+      <p>
+        This is the immutable form of the function add(). This will return a new Complex, and will not modify this Complex.
+      </p>
+      <h5 id="complex-set" class="section"><span class="entryName">set</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sets the components of this complex to be a copy of the parameter
+      </p>
+      <p>
+        This is the mutable form of the function copy(). This will mutate (change) this complex, in addition to returning this complex itself.
+      </p>
+      <h5 id="complex-setImaginary" class="section"><span class="entryName">setImaginary</span>( <span class="args"> <span class="type">number</span> imaginary</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sets the imaginary component of this complex, returning this
+      </p>
+      <h5 id="complex-setPolar" class="section"><span class="entryName">setPolar</span>( <span class="args"> <span class="type">number</span> magnitude</span>, <span class="args"> <span class="type">number</span> phase</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sets this Complex's value to be the a,b values matching the given magnitude and phase (in radians), changing this Complex, and returning itself.
+      </p>
+      <table class="params">
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>phase</td>
+          <td> - </td>
+          <td>In radians</td>
+        </tr>
+      </table>
+      <h5 id="complex-setReal" class="section"><span class="entryName">setReal</span>( <span class="args"> <span class="type">number</span> real</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sets the real component of this complex, returning this
+      </p>
+      <h5 id="complex-setRealImaginary" class="section"><span class="entryName">setRealImaginary</span>( <span class="args"> <span class="type">number</span> real</span>, <span class="args"> <span class="type">number</span> imaginary</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sets all of the components of this complex, returning this
+      </p>
+      <h5 id="complex-sin" class="section"><span class="entryName">sin</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sine. Mutable form of sinOf.
+      </p>
+      <h5 id="complex-sinOf" class="section"><span class="entryName">sinOf</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Sine. Immutable form of sin.
       </p>
       <h5 id="complex-sqrt" class="section"><span class="entryName">sqrt</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
       <p>
-        Square root.
+        Square root. Mutable form of sqrtOf.
+      </p>
+      <h5 id="complex-sqrtOf" class="section"><span class="entryName">sqrtOf</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Square root. Immutable form of sqrt.
+      </p>
+      <h5 id="complex-square" class="section"><span class="entryName">square</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Squares this complex number. This is the mutable version of squared.
+      </p>
+      <h5 id="complex-squared" class="section"><span class="entryName">squared</span>() :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Returns the square of this complex number and does not modify it. This is the immutable version of square.
+      </p>
+      <h5 id="complex-subtract" class="section"><span class="entryName">subtract</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
+      <p>
+        Subtraction of another Complex from this Complex, returning a copy.
+      </p>
+      <p>
+        This is the mutable form of the function minus(). This will modify and return this.
       </p>
       <h5 id="complex-times" class="section"><span class="entryName">times</span>( <span class="args"> <a href="#complex" class="type">Complex</a> c</span> ) :<span class="return"> <a href="#complex" class="type">Complex</a></span></h5>
       <p>
-        Complex multiplication.
+        Complex multiplication. Immutable version of multiply
       </p>
       <h5 id="complex-toString" class="section"><span class="entryName">toString</span>() :<span class="return"> <span class="type">string</span></span></h5>
       <p>
@@ -2662,10 +2902,24 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       <p>
         Like prepend(), but prepends the other transform's matrix.
       </p>
-      <h5 id="transform3-prependTranslation" class="section"><span class="entryName">prependTranslation</span>( <span class="args"> <a href="#matrix3" class="type">Matrix3</a> matrix</span> )</h5>
+      <h5 id="transform3-prependTranslation" class="section"><span class="entryName">prependTranslation</span>( <span class="args"> <span class="type">number</span> x</span>, <span class="args"> <span class="type">number</span> y</span> )</h5>
       <p>
         Optimized prepended translation such that: this.matrix = translation( x, y ) * this.matrix.
       </p>
+      <table class="params">
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>x</td>
+          <td> - </td>
+          <td> x-coordinate</td>
+        </tr>
+        <tr class="param">
+          <td> <span class="type">number</span></td>
+          <td>y</td>
+          <td> - </td>
+          <td> y-coordinate</td>
+        </tr>
+      </table>
       <h5 id="transform3-setMatrix" class="section"><span class="entryName">setMatrix</span>( <span class="args"> <a href="#matrix3" class="type">Matrix3</a> matrix</span> )</h5>
       <p>
         Sets the value of the primary matrix directly from a Matrix3. Does not change the Matrix3 instance of this Transform3.
@@ -2885,7 +3139,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       <p>
         Determines whether the three points are approximately collinear.
       </p>
-      <h5 id="util-boxMullerTransform" class="section"><span class="entryName">Util.boxMullerTransform</span>( <span class="args"> <span class="type">number</span> mu</span>, <span class="args"> <span class="type">number</span> sigma</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <h5 id="util-boxMullerTransform" class="section"><span class="entryName">Util.boxMullerTransform</span>( <span class="args"> <span class="type">number</span> mu</span>, <span class="args"> <span class="type">number</span> sigma</span>, <span class="args"> <a href="#random" class="type">Random</a> random</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
         Generates a random Gaussian sample with the given mean and standard deviation. This method relies on the "static" variables generate, z0, and z1 defined above. Random.js is the primary client of this function, but it is defined here so it can be used
         other places more easily if need be. Code inspired by example here: https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform.
@@ -2903,10 +3157,20 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
           <td> - </td>
           <td>The standard deviation of the Gaussian</td>
         </tr>
+        <tr class="param">
+          <td> <a href="#random" class="type">Random</a></td>
+          <td>random</td>
+          <td> - </td>
+          <td>the source of randomness</td>
+        </tr>
       </table>
       <h5 id="util-clamp" class="section"><span class="entryName">Util.clamp</span>( <span class="args"> <span class="type">number</span> value</span>, <span class="args"> <span class="type">number</span> min</span>, <span class="args"> <span class="type">number</span> max</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
         Returns the original value if it is inclusively within the [max,min] range. If it's below the range, min is returned, and if it's above the range, max is returned.
+      </p>
+      <h5 id="util-cosh" class="section"><span class="entryName">Util.cosh</span>( <span class="args"> <span class="type">number</span> value</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>
+        Function that returns the hyperbolic cosine of a number
       </p>
       <h5 id="util-cubeRoot" class="section"><span class="entryName">Util.cubeRoot</span>( <span class="args"> <span class="type">number</span> x</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
@@ -2914,7 +3178,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       </p>
       <h5 id="util-distToSegment" class="section"><span class="entryName">Util.distToSegment</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> point</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> a</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> b</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
-        Squared distance from a point to a line segment squared.
+        distance from a point to a line segment squared.
       </p>
       <table class="params">
         <tr class="param">
@@ -2968,9 +3232,9 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       <p>
         Returns whether the input is a number that is an integer (no fractional part).
       </p>
-      <h5 id="util-lineLineIntersection" class="section"><span class="entryName">Util.lineLineIntersection</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> p1</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p2</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p3</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p4</span> ) :<span class="return"> <a href="#vector2" class="type">Vector2</a></span></h5>
+      <h5 id="util-lineLineIntersection" class="section"><span class="entryName">Util.lineLineIntersection</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> p1</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p2</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p3</span>, <span class="args"> <a href="#vector2" class="type">Vector2</a> p4</span> ) :<span class="return"> <span class="type">Vector2|null</span></span></h5>
       <p>
-        Intersection point between the lines defined by the line segments p1-2 and p3-p4. Currently does not handle parallel lines.
+        Intersection point between the lines defined by the line segments p1-2 and p3-p4. If the lines are not properly defined, null is returned. If there are no intersections or infinitely many, e.g. parallel lines, null is returned.
       </p>
       <h5 id="util-lineSegmentIntersection" class="section"><span class="entryName">Util.lineSegmentIntersection</span>( <span class="args"> <span class="type">number</span> x1</span>, <span class="args"> <span class="type">number</span> y1</span>, <span class="args"> <span class="type">number</span> x2</span>, <span class="args"> <span class="type">number</span> y2</span>, <span class="args"> <span class="type">number</span> x3</span>, <span class="args"> <span class="type">number</span> y3</span>, <span class="args"> <span class="type">number</span> x4</span>, <span class="args"> <span class="type">number</span> y4</span> ) :<span class="return"> <span class="type">Vector2|null</span></span></h5>
       <p>
@@ -3025,6 +3289,10 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
           <td>`</td>
         </tr>
       </table>
+      <h5 id="util-sinh" class="section"><span class="entryName">Util.sinh</span>( <span class="args"> <span class="type">number</span> value</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <p>
+        Function that returns the hyperbolic sine of a number
+      </p>
       <h5 id="util-solveCubicRootsReal" class="section"><span class="entryName">Util.solveCubicRootsReal</span>( <span class="args"> <span class="type">number</span> a</span>, <span class="args"> <span class="type">number</span> b</span>, <span class="args"> <span class="type">number</span> c</span>, <span class="args"> <span class="type">number</span> d</span> ) :<span class="return"> <span class="type">Array.&lt;number&gt;</span></span></h5>
       <p>
         Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$ (there will be between 0 and 3 roots).
@@ -3225,9 +3493,9 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       <p>
         The squared Euclidean distance between this vector (treated as a point) and another point.
       </p>
-      <h5 id="vector2-distanceSquaredXY" class="section"><span class="entryName">distanceSquaredXY</span>( <span class="args"> <a href="#vector2" class="type">Vector2</a> point</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <h5 id="vector2-distanceSquaredXY" class="section"><span class="entryName">distanceSquaredXY</span>( <span class="args"> <span class="type">number</span> x</span>, <span class="args"> <span class="type">number</span> y</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
-        The squared Euclidean distance between this vector (treated as a point) and another point (x,y).
+        The squared Euclidean distance between this vector (treated as a point) and another point with coordinates (x,y).
       </p>
       <h5 id="vector2-distanceXY" class="section"><span class="entryName">distanceXY</span>( <span class="args"> <span class="type">number</span> x</span>, <span class="args"> <span class="type">number</span> y</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
@@ -3487,7 +3755,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       </p>
       <h3 id="vector3" class="section">Vector3</h3>
       <p>
-        Basic 3-dimensional vector, represented as (x,y).
+        Basic 3-dimensional vector, represented as (x,y,z).
       </p>
       <h4 id="vector3-constructor" class="section">Vector3( <span class="args"> <span class="type">number</span> <span class="optional">x</span></span>, <span class="args"> <span class="type">number</span> <span class="optional">y</span></span>, <span class="args"> <span class="type">number</span> <span class="optional">z</span></span> ) <span class="inherit">extends  <span class="type">Object</span></span></h4>
       <p>
@@ -3638,7 +3906,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       <p>
         The squared Euclidean distance between this vector (treated as a point) and another point.
       </p>
-      <h5 id="vector3-distanceSquaredXYZ" class="section"><span class="entryName">distanceSquaredXYZ</span>( <span class="args"> <a href="#vector3" class="type">Vector3</a> point</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <h5 id="vector3-distanceSquaredXYZ" class="section"><span class="entryName">distanceSquaredXYZ</span>( <span class="args"> <span class="type">number</span> x</span>, <span class="args"> <span class="type">number</span> y</span>, <span class="args"> <span class="type">number</span> z</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
         The squared Euclidean distance between this vector (treated as a point) and another point (x,y,z).
       </p>
@@ -3991,7 +4259,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
       <p>
         The squared Euclidean distance between this vector (treated as a point) and another point.
       </p>
-      <h5 id="vector4-distanceSquaredXYZW" class="section"><span class="entryName">distanceSquaredXYZW</span>( <span class="args"> <a href="#vector4" class="type">Vector4</a> point</span> ) :<span class="return"> <span class="type">number</span></span></h5>
+      <h5 id="vector4-distanceSquaredXYZW" class="section"><span class="entryName">distanceSquaredXYZW</span>( <span class="args"> <span class="type">number</span> x</span>, <span class="args"> <span class="type">number</span> y</span>, <span class="args"> <span class="type">number</span> z</span>, <span class="args"> <span class="type">number</span> w</span> ) :<span class="return"> <span class="type">number</span></span></h5>
       <p>
         The squared Euclidean distance between this vector (treated as a point) and another point (x,y,z,w).
       </p>

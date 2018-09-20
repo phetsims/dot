@@ -1,11 +1,10 @@
 // Copyright 2013-2015, University of Colorado Boulder
 
 /**
- * Basic 3-dimensional vector, represented as (x,y).
+ * Basic 3-dimensional vector, represented as (x,y,z).
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-
 define( function( require ) {
   'use strict';
 
@@ -40,8 +39,6 @@ define( function( require ) {
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );
     assert && assert( typeof this.z === 'number', 'z needs to be a number' );
-
-    phetAllocation && phetAllocation( 'Vector3' );
   }
 
   dot.register( 'Vector3', Vector3 );
@@ -116,7 +113,9 @@ define( function( require ) {
      * The squared Euclidean distance between this vector (treated as a point) and another point (x,y,z).
      * @public
      *
-     * @param {Vector3} point
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
      * @returns {number}
      */
     distanceSquaredXYZ: function( x, y, z ) {
@@ -258,6 +257,19 @@ define( function( require ) {
       else {
         return new Vector3( this.x / mag, this.y / mag, this.z / mag );
       }
+    },
+
+    /**
+     * Returns a copy of this vector with each component rounded by Util.roundSymmetric.
+     * @public
+     *
+     * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @returns {Vector3}
+     */
+    roundedSymmetric: function() {
+      return this.copy().roundSymmetric();
     },
 
     /**
@@ -751,6 +763,21 @@ define( function( require ) {
       else {
         return this.divideScalar( mag );
       }
+    },
+
+    /**
+     * Rounds each component of this vector with Util.roundSymmetric.
+     * @public
+     *
+     * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
+     * to returning the vector itself.
+     *
+     * @returns {Vector3}
+     */
+    roundSymmetric: function() {
+      return this.setXYZ( dot.Util.roundSymmetric( this.x ),
+                          dot.Util.roundSymmetric( this.y ),
+                          dot.Util.roundSymmetric( this.z ) );
     }
   }, {
     /**
@@ -760,7 +787,7 @@ define( function( require ) {
      * @param {Vector3} start - Start unit vector
      * @param {Vector3} end - End unit vector
      * @param {number} ratio  - Between 0 (at start vector) and 1 (at end vector)
-     * @return Spherical linear interpolation between the start and end
+     * @returns {Vector3} Spherical linear interpolation between the start and end
      */
     slerp: function( start, end, ratio ) {
       // NOTE: we can't create a require() loop here
@@ -769,18 +796,8 @@ define( function( require ) {
   } );
 
   // Sets up pooling on Vector3
-  Poolable.mixin( Vector3, {
-    defaultFactory: function() { return new Vector3(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( x, y, z ) {
-        if ( pool.length ) {
-          return pool.pop().setXY( x, y, z );
-        }
-        else {
-          return new Vector3( x, y, z );
-        }
-      };
-    }
+  Poolable.mixInto( Vector3, {
+    initialize: Vector3.prototype.setXYZ
   } );
 
   /*---------------------------------------------------------------------------*

@@ -1,29 +1,34 @@
-(function() {
-  module( 'Dot: BinPacker' );
+// Copyright 2017, University of Colorado Boulder
 
-  var BinPacker = dot.BinPacker;
-  var Bounds2 = dot.Bounds2;
+/**
+ * BinPacker tests
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
+ */
+define( function( require ) {
+  'use strict';
 
-  function approximateComplexEquals( a, b, msg ) {
-    var epsilon = 0.00001;
-    ok( a.equalsEpsilon( b, epsilon ), msg + ' expected: ' + b.toString() + ', result: ' + a.toString() );
-  }
+  // modules
+  var BinPacker = require( 'DOT/BinPacker' );
+  var Bounds2 = require( 'DOT/Bounds2' );
 
-  test( 'Entire BinPacker allocation', function() {
+  QUnit.module( 'BinPacker' );
+
+  QUnit.test( 'Entire BinPacker allocation', function( assert ) {
     var p = new BinPacker( new Bounds2( 0, 0, 1, 1 ) );
     var bin = p.allocate( 1, 1 );
-    ok( bin, 'Should have a bin' );
-    ok( !p.allocate( 1, 1 ), 'Should not be able to fit another bin' );
+    assert.ok( bin, 'Should have a bin' );
+    assert.ok( !p.allocate( 1, 1 ), 'Should not be able to fit another bin' );
   } );
 
-  test( 'Many bins', function() {
+  QUnit.test( 'Many bins', function( assert ) {
     function checkNoOverlappingBins( array, containingBounds ) {
       for ( var i = 0; i < array.length; i++ ) {
-        if ( array[i] ) {
-          ok( array[i].bounds.intersection( containingBounds ).equals( array[i].bounds ), 'Bin containment in packer' );
+        if ( array[ i ] ) {
+          assert.ok( array[ i ].bounds.intersection( containingBounds ).equals( array[ i ].bounds ), 'Bin containment in packer' );
           for ( var j = 0; j < array.length; j++ ) {
-            if ( array[i] && array[j] ) {
-              ok( !array[i].bounds.intersection( array[j] ).hasNonzeroArea(), 'Bin intersection' );
+            if ( array[ i ] && array[ j ] ) {
+              assert.ok( !array[ i ].bounds.intersection( array[ j ] ).hasNonzeroArea(), 'Bin intersection' );
             }
           }
         }
@@ -117,9 +122,9 @@
 
     // remove some (every other one)
     for ( var i = 0; i < bins.length; i += 2 ) {
-      if ( bins[i] ) {
-        p.deallocate( bins[i] );
-        bins[i] = null;
+      if ( bins[ i ] ) {
+        p.deallocate( bins[ i ] );
+        bins[ i ] = null;
       }
     }
 
@@ -147,16 +152,15 @@
     checkNoOverlappingBins( bins, bounds );
 
     // remove all bins
-    for ( var i = 0; i < bins.length; i ++ ) {
-      if ( bins[i] ) {
-        p.deallocate( bins[i] );
-        bins[i] = null;
+    for ( i = 0; i < bins.length; i++ ) {
+      if ( bins[ i ] ) {
+        p.deallocate( bins[ i ] );
+        bins[ i ] = null;
       }
     }
 
     // once empty, ensure we can allocate the full thing
     var fullBin = p.allocate( 1, 1 );
-    ok( fullBin, 'Allocation of full bin' );
+    assert.ok( fullBin, 'Allocation of full bin' );
   } );
-
-})();
+} );

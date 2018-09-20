@@ -44,8 +44,6 @@ define( function( require ) {
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );
     assert && assert( typeof this.z === 'number', 'z needs to be a number' );
     assert && assert( typeof this.w === 'number', 'w needs to be a number' );
-
-    phetAllocation && phetAllocation( 'Vector4' );
   }
 
   dot.register( 'Vector4', Vector4 );
@@ -119,7 +117,10 @@ define( function( require ) {
      * The squared Euclidean distance between this vector (treated as a point) and another point (x,y,z,w).
      * @public
      *
-     * @param {Vector4} point
+     * @param {number} x
+     * @param {number} y
+     * @param {number} z
+     * @param {number} w
      * @returns {number}
      */
     distanceSquaredXYZW: function( x, y, z, w ) {
@@ -241,13 +242,22 @@ define( function( require ) {
      * @returns {Vector4}
      */
     normalized: function() {
-      var mag = this.magnitude();
-      if ( mag === 0 ) {
-        throw new Error( 'Cannot normalize a zero-magnitude vector' );
-      }
-      else {
-        return new Vector4( this.x / mag, this.y / mag, this.z / mag, this.w / mag );
-      }
+      var magnitude = this.magnitude();
+      assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude vector' );
+      return this.dividedScalar( magnitude );
+    },
+
+    /**
+     * Returns a copy of this vector with each component rounded by Util.roundSymmetric.
+     * @public
+     *
+     * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @returns {Vector2}
+     */
+    roundedSymmetric: function() {
+      return this.copy().roundSymmetric();
     },
 
     /**
@@ -746,26 +756,29 @@ define( function( require ) {
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
-      else {
-        return this.divideScalar( mag );
-      }
-      return this;
+      return this.divideScalar( mag );
+    },
+
+    /**
+     * Rounds each component of this vector with Util.roundSymmetric.
+     * @public
+     *
+     * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
+     * to returning the vector itself.
+     *
+     * @returns {Vector4}
+     */
+    roundSymmetric: function() {
+      return this.setXYZW( dot.Util.roundSymmetric( this.x ),
+                           dot.Util.roundSymmetric( this.y ),
+                           dot.Util.roundSymmetric( this.z ),
+                           dot.Util.roundSymmetric( this.w ) );
     }
   } );
 
   // Sets up pooling on Vector4
-  Poolable.mixin( Vector4, {
-    defaultFactory: function() { return new Vector4(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( x, y, z, w ) {
-        if ( pool.length ) {
-          return pool.pop().setXY( x, y, z, w );
-        }
-        else {
-          return new Vector4( x, y, z, w );
-        }
-      };
-    }
+  Poolable.mixInto( Vector4, {
+    initialize: Vector4.prototype.setXYZW
   } );
 
   /*---------------------------------------------------------------------------*

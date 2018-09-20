@@ -393,7 +393,6 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }

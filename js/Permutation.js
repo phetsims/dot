@@ -109,9 +109,9 @@ define( function( require ) {
 
     withIndicesPermuted: function( indices ) {
       var result = [];
-      var that = this;
+      var self = this;
       Permutation.forEachPermutation( indices, function( integers ) {
-        var oldIndices = that.indices;
+        var oldIndices = self.indices;
         var newPermutation = oldIndices.slice( 0 );
 
         for ( var i = 0; i < indices.length; i++ ) {

@@ -26,22 +26,27 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
+  /**
+   *
+   * @param {Matrix} matrix - must be a square matrix
+   * @constructor
+   */
   function EigenvalueDecomposition( matrix ) {
     var i;
     var j;
 
     var A = matrix.entries;
-    this.n = matrix.getColumnDimension(); // Row and column dimension (square matrix).
+    this.n = matrix.getColumnDimension(); // @private  Row and column dimension (square matrix).
     var n = this.n;
-    this.V = new Float32Array( n * n ); // Array for internal storage of eigenvectors.
+    this.V = new ArrayType( n * n ); // @private Array for internal storage of eigenvectors.
 
     // Arrays for internal storage of eigenvalues.
-    this.d = new Float32Array( n );
-    this.e = new Float32Array( n );
+    this.d = new ArrayType( n ); // @private
+    this.e = new ArrayType( n ); // @private
 
     this.issymmetric = true;
     for ( j = 0; (j < n) && this.issymmetric; j++ ) {
@@ -65,8 +70,8 @@ define( function( require ) {
 
     }
     else {
-      this.H = new Float32Array( n * n ); // Array for internal storage of nonsymmetric Hessenberg form.
-      this.ort = new Float32Array( n ); // // Working storage for nonsymmetric algorithm.
+      this.H = new ArrayType( n * n ); // Array for internal storage of nonsymmetric Hessenberg form.
+      this.ort = new ArrayType( n ); // // Working storage for nonsymmetric algorithm.
 
       for ( j = 0; j < n; j++ ) {
         for ( i = 0; i < n; i++ ) {
@@ -87,22 +92,38 @@ define( function( require ) {
   EigenvalueDecomposition.prototype = {
     constructor: EigenvalueDecomposition,
 
-    // Return the eigenvector matrix
+    /**
+     * Returns a square array of all eigenvectors arranged in a columnar format
+     * @public
+     * @returns {ArrayType.<number>} - a n*n matrix
+     */
     getV: function() {
       return this.V.copy();
     },
 
-    // {Array} Return the real parts of the eigenvalues
+    /**
+     * Returns an array that contains the real part of the eigenvalues
+     * @public
+     * @returns {ArrayType.<number>} - a one dimensional array
+     */
     getRealEigenvalues: function() {
       return this.d;
     },
 
-    // {Array} Return the imaginary parts of the eigenvalues
+    /**
+     * Returns an array that contains the imaginary parts of the eigenvalues
+     * @public
+     * @returns {ArrayType.<number>} - a one dimensional array
+     */
     getImagEigenvalues: function() {
       return this.e;
     },
 
-    // Return the block diagonal eigenvalue matrix
+    /**
+     * Return the block diagonal eigenvalue matrix
+     * @public
+     * @returns {Matrix} - a n * n matrix
+     */
     getD: function() {
       var n = this.n;
       var d = this.d;
@@ -125,7 +146,10 @@ define( function( require ) {
       return X;
     },
 
-    // Symmetric Householder reduction to tridiagonal form.
+    /**
+     * Symmetric Householder reduction to tridiagonal form.
+     * @private
+     */
     tred2: function() {
       var n = this.n;
       var V = this.V;
@@ -252,7 +276,10 @@ define( function( require ) {
       e[ 0 ] = 0.0;
     },
 
-    // Symmetric tridiagonal QL algorithm.
+    /**
+     * Symmetric tridiagonal QL algorithm.
+     * @private
+     */
     tql2: function() {
       var n = this.n;
       var V = this.V;
@@ -382,7 +409,10 @@ define( function( require ) {
       }
     },
 
-    // Nonsymmetric reduction to Hessenberg form.
+    /**
+     *  Nonsymmetric reduction to Hessenberg form.
+     *  @private
+     */
     orthes: function() {
       var n = this.n;
       var V = this.V;
@@ -501,7 +531,15 @@ define( function( require ) {
       }
     },
 
-    // Nonsymmetric reduction from Hessenberg to real Schur form.
+    /**
+     * This methods finds the eigenvalues and eigenvectors
+     * of a real upper hessenberg matrix by the QR algorithm
+     *
+     * Nonsymmetric reduction from Hessenberg to real Schur form.
+     * https://en.wikipedia.org/wiki/QR_algorithm
+     *
+     * @private
+     */
     hqr2: function() {
       var n;
       var V = this.V;

@@ -11,7 +11,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
@@ -34,7 +34,7 @@ define( function( require ) {
       this.piv[ i ] = i;
     }
     this.pivsign = 1;
-    var LUcolj = new Float32Array( m );
+    var LUcolj = new ArrayType( m );
 
     // Outer loop.
 
@@ -149,7 +149,7 @@ define( function( require ) {
     },
 
     getDoublePivot: function() {
-      var vals = new Float32Array( this.m );
+      var vals = new ArrayType( this.m );
       for ( var i = 0; i < this.m; i++ ) {
         vals[ i ] = this.piv[ i ];
       }

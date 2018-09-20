@@ -27,12 +27,12 @@ define( function( require ) {
    * @constructor
    * @public
    *
-   * @param {number} minX - The intial minimum X coordinate of the bounds.
-   * @param {number} minY - The intial minimum Y coordinate of the bounds.
-   * @param {number} minZ - The intial minimum Z coordinate of the bounds.
-   * @param {number} maxX - The intial maximum X coordinate of the bounds.
-   * @param {number} maxY - The intial maximum Y coordinate of the bounds.
-   * @param {number} maxZ - The intial maximum Z coordinate of the bounds.
+   * @param {number} minX - The initial minimum X coordinate of the bounds.
+   * @param {number} minY - The initial minimum Y coordinate of the bounds.
+   * @param {number} minZ - The initial minimum Z coordinate of the bounds.
+   * @param {number} maxX - The initial maximum X coordinate of the bounds.
+   * @param {number} maxY - The initial maximum Y coordinate of the bounds.
+   * @param {number} maxZ - The initial maximum Z coordinate of the bounds.
    */
   function Bounds3( minX, minY, minZ, maxX, maxY, maxZ ) {
     assert && assert( maxY !== undefined, 'Bounds3 requires 4 parameters' );
@@ -54,8 +54,6 @@ define( function( require ) {
 
     // @public {number} - The maximum Z coordinate of the bounds.
     this.maxZ = maxZ;
-
-    phetAllocation && phetAllocation( 'Bounds3' );
   }
 
   dot.register( 'Bounds3', Bounds3 );
@@ -654,7 +652,7 @@ define( function( require ) {
     /**
      * A bounding box (still axis-aligned) that contains the transformed shape of this bounds, applying the matrix as
      * an affine transformation.
-     * @pubic
+     * @public
      *
      * NOTE: bounds.transformed( matrix ).transformed( inverse ) may be larger than the original box, if it includes
      * a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in area to cover
@@ -753,7 +751,7 @@ define( function( require ) {
      * @param {number} amount
      * @returns {Bounds3}
      */
-    eroded: function( d ) { return this.dilated( -d ); },
+    eroded: function( amount ) { return this.dilated( -amount ); },
 
     /**
      * A bounding box that is contracted horizontally (on the left and right) by the specified amount.
@@ -1120,7 +1118,7 @@ define( function( require ) {
     /**
      * Modifies this bounds so that it would fully contain a transformed version if its previous value, applying the
      * matrix as an affine transformation.
-     * @pubic
+     * @public
      *
      * NOTE: bounds.transform( matrix ).transform( inverse ) may be larger than the original box, if it includes
      * a rotation that isn't a multiple of $\pi/2$. This is because the bounds may expand in area to cover
@@ -1399,19 +1397,8 @@ define( function( require ) {
       return new Bounds3( x, y, z, x, y, z );
     }
   } );
-
-  Poolable.mixin( Bounds3, {
-    defaultFactory: function() { return Bounds3.NOTHING.copy(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( minX, minY, minZ, maxX, maxY, maxZ ) {
-        if ( pool.length ) {
-          return pool.pop().setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
-        }
-        else {
-          return new Bounds3( minX, minY, minZ, maxX, maxY, maxZ );
-        }
-      };
-    }
+  Poolable.mixInto( Bounds3, {
+    initialize: Bounds3.prototype.setMinMax
   } );
 
   /**

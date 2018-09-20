@@ -11,7 +11,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   var isArray = require( 'PHET_CORE/isArray' );
 
@@ -23,6 +23,14 @@ define( function( require ) {
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
 
+  /**
+   *
+   * @param {number} m - number of rows
+   * @param {number} n - number of columns
+   * @param {number[]} [filler]
+   * @param {boolean} [fast]
+   * @constructor
+   */
   function Matrix( m, n, filler, fast ) {
     this.m = m;
     this.n = n;
@@ -40,7 +48,7 @@ define( function( require ) {
       }
 
       // entries stored in row-major format
-      this.entries = new Float32Array( size );
+      this.entries = new ArrayType(size);
 
       if ( isArray( filler ) ) {
         assert && assert( filler.length === size );
@@ -92,7 +100,7 @@ define( function( require ) {
     },
 
     getArrayCopy: function() {
-      return new Float32Array( this.entries );
+      return new ArrayType( this.entries );
     },
 
     getRowDimension: function() {
@@ -108,10 +116,24 @@ define( function( require ) {
       return i * this.n + j;
     },
 
+    /**
+     * get the matrix element (i,j)
+     * with the convention that row and column indices start at zero
+     * @param {number} i - row index
+     * @param {number} j - column index
+     * @returns {number}
+     */
     get: function( i, j ) {
       return this.entries[ this.index( i, j ) ];
     },
 
+    /**
+     * set the matrix element (i,j) to a value s
+     * with the convention that row and column indices start at zero
+     * @param {number} i - row index
+     * @param {number} j - column index
+     * @param {number} s - value of the matrix element
+     */
     set: function( i, j, s ) {
       this.entries[ this.index( i, j ) ] = s;
     },
@@ -327,7 +349,7 @@ define( function( require ) {
           throw new Error( 'Matrix inner dimensions must agree.' );
         }
         result = new Matrix( this.m, matrix.n );
-        var matrixcolj = new Float32Array( this.n );
+        var matrixcolj = new ArrayType( this.n );
         for ( j = 0; j < matrix.n; j++ ) {
           for ( k = 0; k < this.n; k++ ) {
             matrixcolj[ k ] = matrix.entries[ matrix.index( k, j ) ];
@@ -464,6 +486,23 @@ define( function( require ) {
     return result;
   };
 
+  /**
+   * Returns a square diagonal matrix, whose entries along the diagonal are specified by the passed-in array, and the
+   * other entries are 0.
+   * @public
+   *
+   * @param {Array.<number>} diagonalValues
+   * @returns {Matrix}
+   */
+  Matrix.diagonalMatrix = function( diagonalValues ) {
+    var n = diagonalValues.length;
+    var result = new Matrix( n, n ); // Should fill in zeros
+    for ( var i = 0; i < n; i++ ) {
+      result.entries[ result.index( i, i ) ] = diagonalValues[ i ];
+    }
+    return result;
+  };
+
   Matrix.rowVector2 = function( vector ) {
     return new Matrix( 1, 2, [ vector.x, vector.y ] );
   };
@@ -525,7 +564,7 @@ define( function( require ) {
   Matrix.fromVectors2 = function( vectors ) {
     var dimension = 2;
     var n = vectors.length;
-    var data = new Float32Array( dimension * n );
+    var data = new ArrayType( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
       var vector = vectors[ i ];
@@ -539,7 +578,7 @@ define( function( require ) {
   Matrix.fromVectors3 = function( vectors ) {
     var dimension = 3;
     var n = vectors.length;
-    var data = new Float32Array( dimension * n );
+    var data = new ArrayType( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
       var vector = vectors[ i ];
@@ -554,7 +593,7 @@ define( function( require ) {
   Matrix.fromVectors4 = function( vectors ) {
     var dimension = 4;
     var n = vectors.length;
-    var data = new Float32Array( dimension * n );
+    var data = new ArrayType( dimension * n );
 
     for ( var i = 0; i < n; i++ ) {
       var vector = vectors[ i ];

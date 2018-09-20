@@ -21,21 +21,31 @@ define( function( require ) {
   require( 'DOT/Util' );
 
   /**
-   * @param {Number} a1
-   * @param {Number} a2
-   * @param {Number} b1
-   * @param {Number} b2
-   * @param {Boolean} clamp clamp the result to the provided ranges, false by default
+   * @param {number} a1
+   * @param {number} a2
+   * @param {number} b1
+   * @param {number} b2
+   * @param {boolean} [clamp] - clamp the result to the provided ranges, false by default
    * @constructor
    */
   function LinearFunction( a1, a2, b1, b2, clamp ) {
 
     clamp = _.isUndefined( clamp ) ? false : clamp;
 
-    /*
+    /**
      * Linearly interpolate two points and evaluate the line equation for a third point.
      * f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
      * Optionally clamp the result to the range [b1,b2].
+     *
+     * @private
+     *
+     * @param {number} a1
+     * @param {number} a2
+     * @param {number} b1
+     * @param {number} b2
+     * @param {number} a3
+     * @param {boolean} clamp
+     * @returns {number}
      */
     var map = function( a1, a2, b1, b2, a3, clamp ) {
       var b3 = dot.Util.linear( a1, a2, b1, b2, a3 );
@@ -47,12 +57,25 @@ define( function( require ) {
       return b3;
     };
 
-    // Maps from a to b.
+    /**
+     * Maps from a to b.
+     * @public
+     *
+     * @param {number} a3
+     * @returns {number}
+     */
     var evaluate = function( a3 ) {
       return map( a1, a2, b1, b2, a3, clamp );
     };
 
-    // Maps from b to a.
+
+    /**
+     * Maps from b to a
+     * @public
+     *
+     * @param {number} b3
+     * @returns {number}
+     */
     evaluate.inverse = function( b3 ) {
       return map( b1, b2, a1, a2, b3, clamp );
     };

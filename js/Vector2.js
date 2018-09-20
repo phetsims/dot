@@ -14,6 +14,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Poolable = require( 'PHET_CORE/Poolable' );
   require( 'DOT/Util' );
+
   // require( 'DOT/Vector3' ); // commented out since Require.js complains about the circular dependency
 
   /**
@@ -25,6 +26,7 @@ define( function( require ) {
    * @param {number} [y] - Y coordinate, defaults to 0 if not provided
    */
   function Vector2( x, y ) {
+
     // @public {number} - The X coordinate of the vector.
     this.x = x !== undefined ? x : 0;
 
@@ -33,8 +35,6 @@ define( function( require ) {
 
     assert && assert( typeof this.x === 'number', 'x needs to be a number' );
     assert && assert( typeof this.y === 'number', 'y needs to be a number' );
-
-    phetAllocation && phetAllocation( 'Vector2' );
   }
 
   dot.register( 'Vector2', Vector2 );
@@ -103,10 +103,11 @@ define( function( require ) {
     },
 
     /**
-     * The squared Euclidean distance between this vector (treated as a point) and another point (x,y).
+     * The squared Euclidean distance between this vector (treated as a point) and another point with coordinates (x,y).
      * @public
      *
-     * @param {Vector2} point
+     * @param {number} x
+     * @param {number} y
      * @returns {number}
      */
     distanceSquaredXY: function( x, y ) {
@@ -257,6 +258,19 @@ define( function( require ) {
       else {
         return new Vector2( this.x / mag, this.y / mag );
       }
+    },
+
+    /**
+     * Returns a copy of this vector with each component rounded by Util.roundSymmetric.
+     * @public
+     *
+     * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
+     * this vector.
+     *
+     * @returns {Vector2}
+     */
+    roundedSymmetric: function() {
+      return this.copy().roundSymmetric();
     },
 
     /**
@@ -458,6 +472,62 @@ define( function( require ) {
     },
 
     /**
+     * Mutable method that rotates this vector about an x,y point.
+     * @public
+     *
+     * @param {number} x - origin of rotation in x
+     * @param {number} y - origin of rotation in y
+     * @param {number} angle - radians to rotate
+     * @returns {Vector2} this for chaining
+     */
+    rotateAboutXY: function( x, y, angle ) {
+      var dx = this.x - x;
+      var dy = this.y - y;
+      var cos = Math.cos( angle );
+      var sin = Math.sin( angle );
+      this.x = x + dx * cos - dy * sin;
+      this.y = y + dx * sin + dy * cos;
+      return this; // for chaining
+    },
+
+    /**
+     * Same as rotateAboutXY but with a point argument.
+     * @public
+     *
+     * @param {Vector2} point
+     * @param {number} angle
+     * @returns {Vector2} this for chaining
+     */
+    rotateAboutPoint: function( point, angle ) {
+      return this.rotateAboutXY( point.x, point.y, angle );
+    },
+
+    /**
+     * Immutable method that returns a new Vector2 that is rotated about the given point.
+     * @public
+     *
+     * @param {number} x - origin for rotation in x
+     * @param {number} y - origin for rotation in y
+     * @param {number} angle - radians to rotate
+     * @returns {Vector2} the new Vector2
+     */
+    rotatedAboutXY: function( x, y, angle ) {
+      return new Vector2( this.x, this.y ).rotateAboutXY( x, y, angle );
+    },
+
+    /**
+     * Immutable method that returns a new Vector2 rotated about the given point.
+     * @public
+     *
+     * @param {Vector2} point
+     * @param {number} angle
+     * @returns {Vector2} the new Vector2
+     */
+    rotatedAboutPoint: function( point, angle ) {
+      return this.rotatedAboutXY( point.x, point.y, angle );
+    },
+
+    /**
      * A linear interpolation between this vector (ratio=0) and another vector (ratio=1).
      * @public
      *
@@ -466,7 +536,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     blend: function( vector, ratio ) {
-      return new Vector2( this.x + (vector.x - this.x) * ratio, this.y + (vector.y - this.y) * ratio );
+      return new Vector2( this.x + ( vector.x - this.x ) * ratio, this.y + ( vector.y - this.y ) * ratio );
     },
 
     /**
@@ -751,6 +821,20 @@ define( function( require ) {
     },
 
     /**
+     * Rounds each component of this vector with Util.roundSymmetric.
+     * @public
+     *
+     * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
+     * to returning the vector itself.
+     *
+     * @returns {Vector2}
+     */
+    roundSymmetric: function() {
+      return this.setXY( dot.Util.roundSymmetric( this.x ),
+        dot.Util.roundSymmetric( this.y ) );
+    },
+
+    /**
      * Rotates this vector by the angle (in radians), changing this vector.
      * @public
      *
@@ -811,22 +895,37 @@ define( function( require ) {
      */
     fromStateObject: function( stateObject ) {
       return new Vector2( stateObject.x, stateObject.y );
+    },
+
+    /**
+     * Allocation-free implementation that gets the angle between two vectors
+     *
+     * @param {Vector2} startVector
+     * @param {Vector2} endVector
+     * @returns {number} the angle between the vectors
+     */
+    getAngleBetweenVectors: function( startVector, endVector ) {
+      var dx = endVector.x - startVector.x;
+      var dy = endVector.y - startVector.y;
+      return Math.atan2( dy, dx );
+    },
+
+    /**
+     * Allocation-free way to get the distance between vectors.
+     * @param {Vector2} startVector
+     * @param {Vector2} endVector
+     * @returns {number} the angle between the vectors
+     */
+    getDistanceBetweenVectors: function( startVector, endVector ) {
+      var dx = endVector.x - startVector.x;
+      var dy = endVector.y - startVector.y;
+      return Math.sqrt( dx * dx + dy * dy );
     }
   } );
 
   // Sets up pooling on Vector2
-  Poolable.mixin( Vector2, {
-    defaultFactory: function() { return new Vector2(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( x, y ) {
-        if ( pool.length ) {
-          return pool.pop().setXY( x, y );
-        }
-        else {
-          return new Vector2( x, y );
-        }
-      };
-    }
+  Poolable.mixInto( Vector2, {
+    initialize: Vector2.prototype.setXY
   } );
 
   /*---------------------------------------------------------------------------*

@@ -11,7 +11,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
@@ -39,14 +39,14 @@ define( function( require ) {
      throw new IllegalArgumentException("Jama SVD only works for m >= n"); }
      */
     var nu = min( m, n );
-    this.s = new Float32Array( min( m + 1, n ) );
+    this.s = new ArrayType( min( m + 1, n ) );
     var s = this.s;
-    this.U = new Float32Array( m * nu );
+    this.U = new ArrayType( m * nu );
     var U = this.U;
-    this.V = new Float32Array( n * n );
+    this.V = new ArrayType( n * n );
     var V = this.V;
-    var e = new Float32Array( n );
-    var work = new Float32Array( m );
+    var e = new ArrayType( n );
+    var work = new ArrayType( m );
     var wantu = true;
     var wantv = true;
 
@@ -470,6 +470,9 @@ define( function( require ) {
           p--;
         }
           break;
+
+        default:
+          throw new Error( 'invalid kase: ' + kase );
       }
     }
   }
@@ -480,7 +483,7 @@ define( function( require ) {
     constructor: SingularValueDecomposition,
 
     getU: function() {
-      return new dot.Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is Float32Array
+      return new dot.Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is ArrayType
     },
 
     getV: function() {
@@ -522,6 +525,29 @@ define( function( require ) {
       }
       return r;
     }
+  };
+
+  /**
+   * Constructs the Moore-Penrose pseudoinverse of the specified matrix, using the SVD construction.
+   * @public
+   *
+   * See https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_pseudoinverse for details. Helpful for
+   * linear least-squares regression.
+   *
+   * @param {Matrix} matrix, m x n
+   * @returns {Matrix} - n x m
+   */
+  SingularValueDecomposition.pseudoinverse = function( matrix ) {
+    var svd = new SingularValueDecomposition( matrix );
+    var sigmaPseudoinverse = dot.Matrix.diagonalMatrix( svd.getSingularValues().map( function( value ) {
+      if ( Math.abs( value ) < 1e-300 ) {
+        return 0;
+      }
+      else {
+        return 1 / value;
+      }
+    } ) );
+    return svd.getV().times( sigmaPseudoinverse ).times( svd.getU().transpose() );
   };
 
   return SingularValueDecomposition;

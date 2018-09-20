@@ -12,9 +12,9 @@
 define( function( require ) {
   'use strict';
 
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Events = require( 'AXON/Events' );
   var dot = require( 'DOT/dot' );
+  var Events = require( 'AXON/Events' );
+  var inherit = require( 'PHET_CORE/inherit' );
 
   require( 'DOT/Matrix3' );
   require( 'DOT/Vector2' );
@@ -61,8 +61,6 @@ define( function( require ) {
     if ( matrix ) {
       this.setMatrix( matrix );
     }
-
-    phetAllocation && phetAllocation( 'Transform3' );
   }
 
   dot.register( 'Transform3', Transform3 );
@@ -129,7 +127,8 @@ define( function( require ) {
      * Optimized prepended translation such that: this.matrix = translation( x, y ) * this.matrix.
      * @public
      *
-     * @param {Matrix3} matrix
+     * @param {number} x -  x-coordinate
+     * @param {number} y -  y-coordinate
      */
     prependTranslation: function( x, y ) {
       // See scenery#119 for more details on the need.
@@ -396,7 +395,7 @@ define( function( require ) {
 
     /**
      * Returns bounds (axis-aligned) that contains the transformed bounds rectangle.
-     * @pubic
+     * @public
      *
      * NOTE: transform.inverseBounds2( transform.transformBounds2( bounds ) ) may be larger than the original box,
      * if it includes a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in
@@ -411,7 +410,7 @@ define( function( require ) {
 
     /**
      * Returns a transformed kite.Shape.
-     * @pubic
+     * @public
      *
      * @param {Shape} shape
      * @returns {Shape}
@@ -422,7 +421,7 @@ define( function( require ) {
 
     /**
      * Returns a transformed ray.
-     * @pubic
+     * @public
      *
      * @param {Ray2} ray
      * @returns {Ray2}
@@ -554,7 +553,7 @@ define( function( require ) {
 
     /**
      * Returns bounds (axis-aligned) that contains the inverse-transformed bounds rectangle.
-     * @pubic
+     * @public
      *
      * NOTE: transform.inverseBounds2( transform.transformBounds2( bounds ) ) may be larger than the original box,
      * if it includes a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in
@@ -563,13 +562,13 @@ define( function( require ) {
      * @param {Bounds2} bounds
      * @returns {Bounds2}
      */
-    inverseBounds2: function( bounds2 ) {
-      return bounds2.transformed( this.getInverse() );
+    inverseBounds2: function( bounds ) {
+      return bounds.transformed( this.getInverse() );
     },
 
     /**
      * Returns an inverse-transformed kite.Shape.
-     * @pubic
+     * @public
      *
      * This is the inverse of transformShape()
      *
@@ -582,7 +581,7 @@ define( function( require ) {
 
     /**
      * Returns an inverse-transformed ray.
-     * @pubic
+     * @public
      *
      * This is the inverse of transformRay2()
      *

@@ -11,7 +11,7 @@ define( function( require ) {
 
   var dot = require( 'DOT/dot' );
 
-  var Float32Array = window.Float32Array || Array;
+  var ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
@@ -26,7 +26,7 @@ define( function( require ) {
     this.n = matrix.getColumnDimension();
     var n = this.n;
 
-    this.Rdiag = new Float32Array( n );
+    this.Rdiag = new ArrayType( n );
 
     var i;
     var j;

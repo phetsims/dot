@@ -17,9 +17,9 @@ define( function( require ) {
   'use strict';
 
   var dot = require( 'DOT/dot' );
-  var Vector2 = require( 'DOT/Vector2' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Poolable = require( 'PHET_CORE/Poolable' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // Temporary instances to be used in the transform method.
   var scratchVector2 = new dot.Vector2();
@@ -29,10 +29,10 @@ define( function( require ) {
    * @constructor
    * @public
    *
-   * @param {number} minX - The intial minimum X coordinate of the bounds.
-   * @param {number} minY - The intial minimum Y coordinate of the bounds.
-   * @param {number} maxX - The intial maximum X coordinate of the bounds.
-   * @param {number} maxY - The intial maximum Y coordinate of the bounds.
+   * @param {number} minX - The initial minimum X coordinate of the bounds.
+   * @param {number} minY - The initial minimum Y coordinate of the bounds.
+   * @param {number} maxX - The initial maximum X coordinate of the bounds.
+   * @param {number} maxY - The initial maximum Y coordinate of the bounds.
    */
   function Bounds2( minX, minY, maxX, maxY ) {
     assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
@@ -48,8 +48,6 @@ define( function( require ) {
 
     // @public {number} - The maximum Y coordinate of the bounds.
     this.maxY = maxY;
-
-    phetAllocation && phetAllocation( 'Bounds2' );
   }
 
   dot.register( 'Bounds2', Bounds2 );
@@ -587,6 +585,34 @@ define( function( require ) {
     },
 
     /**
+     * Returns the smallest bounds that contains both this bounds and the x value provided.
+     * @public
+     *
+     * This is the immutable form of the function addX(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} x
+     * @returns {Bounds2}
+     */
+    withX: function( x ) {
+      return this.copy().addX( x );
+    },
+
+    /**
+     * Returns the smallest bounds that contains both this bounds and the y value provided.
+     * @public
+     *
+     * This is the immutable form of the function addY(). This will return a new bounds, and will not modify
+     * this bounds.
+     *
+     * @param {number} y
+     * @returns {Bounds2}
+     */
+    withY: function( y ) {
+      return this.copy().addY( y );
+    },
+
+    /**
      * A copy of this bounds, with minX replaced with the input.
      * @public
      *
@@ -685,7 +711,7 @@ define( function( require ) {
     /**
      * A bounding box (still axis-aligned) that contains the transformed shape of this bounds, applying the matrix as
      * an affine transformation.
-     * @pubic
+     * @public
      *
      * NOTE: bounds.transformed( matrix ).transformed( inverse ) may be larger than the original box, if it includes
      * a rotation that isn't a multiple of $\pi/2$. This is because the returned bounds may expand in area to cover
@@ -769,7 +795,7 @@ define( function( require ) {
      * @param {number} amount
      * @returns {Bounds2}
      */
-    eroded: function( d ) { return this.dilated( -d ); },
+    eroded: function( amount ) { return this.dilated( -amount ); },
 
     /**
      * A bounding box that is contracted horizontally (on the left and right) by the specified amount.
@@ -867,6 +893,24 @@ define( function( require ) {
      */
     shifted: function( x, y ) {
       return new Bounds2( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
+    },
+
+    /**
+     * Returns an interpolated value of this bounds and the argument.
+     * @public
+     *
+     * @param {Bounds2} bounds
+     * @param {number} ratio - 0 will result in a copy of `this`, 1 will result in bounds, and in-between controls the
+     *                         amount of each.
+     */
+    blend: function( bounds, ratio ) {
+      var t = 1 - ratio;
+      return new Bounds2(
+        t * this.minX + ratio * bounds.minX,
+        t * this.minY + ratio * bounds.minY,
+        t * this.maxX + ratio * bounds.maxX,
+        t * this.maxY + ratio * bounds.maxY
+      );
     },
 
     /*---------------------------------------------------------------------------*
@@ -1041,6 +1085,40 @@ define( function( require ) {
     },
 
     /**
+     * Modifies this bounds so that it is guaranteed to include the given x value (if it didn't already). If the x value
+     * was already contained, nothing will be done.
+     * @public
+     *
+     * This is the mutable form of the function withX(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} x
+     * @returns {Bounds2}
+     */
+    addX: function( x ) {
+      this.minX = Math.min( x, this.minX );
+      this.maxX = Math.max( x, this.maxX );
+      return this;
+    },
+
+    /**
+     * Modifies this bounds so that it is guaranteed to include the given y value (if it didn't already). If the y value
+     * was already contained, nothing will be done.
+     * @public
+     *
+     * This is the mutable form of the function withY(). This will mutate (change) this bounds, in addition to returning
+     * this bounds itself.
+     *
+     * @param {number} y
+     * @returns {Bounds2}
+     */
+    addY: function( y ) {
+      this.minY = Math.min( y, this.minY );
+      this.maxY = Math.max( y, this.maxY );
+      return this;
+    },
+
+    /**
      * Modifies this bounds so that its boundaries are integer-aligned, rounding the minimum boundaries down and the
      * maximum boundaries up (expanding as necessary).
      * @public
@@ -1081,7 +1159,7 @@ define( function( require ) {
     /**
      * Modifies this bounds so that it would fully contain a transformed version if its previous value, applying the
      * matrix as an affine transformation.
-     * @pubic
+     * @public
      *
      * NOTE: bounds.transform( matrix ).transform( inverse ) may be larger than the original box, if it includes
      * a rotation that isn't a multiple of $\pi/2$. This is because the bounds may expand in area to cover
@@ -1328,11 +1406,11 @@ define( function( require ) {
     /**
      * Returns a new Bounds2 object that only contains the specified point (x,y). Useful for being dilated to form a
      * bounding box around a point. Note that the bounds will not be "empty" as it contains (x,y), but it will have
-     * zero area.
+     * zero area. The x and y coordinates can be specified by numbers or with at Vector2
      * @public
      *
-     * @param {number} x
-     * @param {number} y
+     * @param {number|Vector2} x
+     * @param [number] y
      * @returns {Bounds2}
      */
     point: function( x, y ) {
@@ -1346,18 +1424,8 @@ define( function( require ) {
     }
   } );
 
-  Poolable.mixin( Bounds2, {
-    defaultFactory: function() { return Bounds2.NOTHING.copy(); },
-    constructorDuplicateFactory: function( pool ) {
-      return function( minX, minY, maxX, maxY ) {
-        if ( pool.length ) {
-          return pool.pop().setMinMax( minX, minY, maxX, maxY );
-        }
-        else {
-          return new Bounds2( minX, minY, maxX, maxY );
-        }
-      };
-    }
+  Poolable.mixInto( Bounds2, {
+    initialize: Bounds2.prototype.setMinMax
   } );
 
   /**

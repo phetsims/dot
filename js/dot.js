@@ -5,9 +5,6 @@ define( function( require ) {
 
   var Namespace = require( 'PHET_CORE/Namespace' );
 
-  // object allocation tracking
-  window.phetAllocation = require( 'PHET_CORE/phetAllocation' );
-
   var dot = new Namespace( 'dot' );
 
   dot.register( 'v2', function( x, y ) { return new dot.Vector2( x, y ); } );

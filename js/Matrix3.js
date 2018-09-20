@@ -40,7 +40,6 @@ define( function( require ) {
     // entries stored in column-major format
     this.entries = createIdentityArray();
 
-    phetAllocation && phetAllocation( 'Matrix3' );
     this.type = Types.IDENTITY;
   }
 
@@ -49,7 +48,7 @@ define( function( require ) {
   Matrix3.Types = {
     // NOTE: if an inverted matrix of a type is not that type, change inverted()!
     // NOTE: if two matrices with identical types are multiplied, the result should have the same type. if not, changed timesMatrix()!
-    // NOTE: on adding a type, exaustively check all type usage
+    // NOTE: on adding a type, exhaustively check all type usage
     OTHER: 0, // default
     IDENTITY: 1,
     TRANSLATION_2D: 2,
@@ -66,7 +65,7 @@ define( function( require ) {
   Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
   Matrix3.scaling = function( x, y ) { return Matrix3.dirtyFromPool().setToScale( x, y ); };
   Matrix3.scale = Matrix3.scaling;
-  Matrix3.affine = function( m00, m10, m01, m11, m02, m12 ) { return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
+  Matrix3.affine = function( m00, m01, m02, m10, m11, m12 ) { return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
   Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return Matrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
 
   // axis is a normalized Vector3, angle in radians.
@@ -75,6 +74,8 @@ define( function( require ) {
   Matrix3.rotationX = function( angle ) { return Matrix3.dirtyFromPool().setToRotationX( angle ); };
   Matrix3.rotationY = function( angle ) { return Matrix3.dirtyFromPool().setToRotationY( angle ); };
   Matrix3.rotationZ = function( angle ) { return Matrix3.dirtyFromPool().setToRotationZ( angle ); };
+
+  Matrix3.translationRotation = function( x, y, angle ) { return Matrix3.dirtyFromPool().setToTranslationRotation( x, y, angle ); };
 
   // standard 2d rotation
   Matrix3.rotation2 = Matrix3.rotationZ;
@@ -360,7 +361,6 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break;
         case Types.OTHER:
           det = this.getDeterminant();
           if ( det !== 0 ) {
@@ -380,7 +380,6 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
@@ -617,7 +616,6 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break;
         case Types.OTHER:
           det = this.getDeterminant();
           if ( det !== 0 ) {
@@ -637,7 +635,6 @@ define( function( require ) {
           else {
             throw new Error( 'Matrix could not be inverted, determinant === 0' );
           }
-          break;
         default:
           throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
       }
@@ -793,6 +790,21 @@ define( function( require ) {
         s, c, 0,
         0, 0, 1,
         Types.AFFINE );
+    },
+
+    setToTranslationRotation: function( x, y, angle ) {
+      var c = Math.cos( angle );
+      var s = Math.sin( angle );
+
+      return this.rowMajor(
+        c, -s, x,
+        s, c, y,
+        0, 0, 1,
+        Types.AFFINE );
+    },
+
+    setToTranslationRotationPoint: function( translation, angle ) {
+      return this.setToTranslationRotation( translation.x, translation.y, angle );
     },
 
     setToSVGMatrix: function( svgMatrix ) {
@@ -961,17 +973,10 @@ define( function( require ) {
     }
   };
 
-  Poolable.mixin( Matrix3, {
-
-    //The default factory creates an identity matrix
-    defaultFactory: function() { return new Matrix3(); },
-
-    constructorDuplicateFactory: function( pool ) {
-      return function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
-        var instance = pool.length ? pool.pop() : new Matrix3();
-        return instance.rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
-      };
-    }
+  Poolable.mixInto( Matrix3, {
+    initialize: Matrix3.prototype.rowMajor,
+    useDefaultConstruction: true,
+    maxSize: 300
   } );
 
   // create an immutable

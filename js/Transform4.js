@@ -24,16 +24,22 @@ define( function( require ) {
 
   var scratchMatrix = new dot.Matrix4();
 
+  /**
+   * check if the matrix is Finite and is of type Matrix4
+   * @private
+   * @param matrix
+   * @returns {boolean}
+   */
   function checkMatrix( matrix ) {
     return ( matrix instanceof dot.Matrix4 ) && matrix.isFinite();
   }
 
   /**
    * Creates a transform based around an initial matrix.
-   * @constructor
    * @public
    *
    * @param {Matrix4} matrix
+   * @constructor
    */
   function Transform4( matrix ) {
     Events.call( this );
@@ -63,8 +69,6 @@ define( function( require ) {
     if ( matrix ) {
       this.setMatrix( matrix );
     }
-
-    phetAllocation && phetAllocation( 'Transform4' );
   }
 
   dot.register( 'Transform4', Transform4 );
@@ -351,7 +355,7 @@ define( function( require ) {
 
     /**
      * Returns a transformed ray.
-     * @pubic
+     * @public
      *
      * @param {Ray3} ray
      * @returns {Ray3}
@@ -453,7 +457,7 @@ define( function( require ) {
 
     /**
      * Returns an inverse-transformed ray.
-     * @pubic
+     * @public
      *
      * This is the inverse of transformRay()
      *
