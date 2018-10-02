@@ -93,7 +93,7 @@ define( function( require ) {
       return other instanceof RangeWithValue &&
              this.min === other.min &&
              this.max === other.max &&
-             this.defaultValue === other.defaultValue;
+             this._defaultValue === other.defaultValue;
     }
   } );
 } );
