@@ -78,7 +78,7 @@ define( function( require ) {
      * @override
      */
     toString: function() {
-      return '[RangeWithValue (min:' + this._min + ' max:' + this._max + ' defaultValue:' + this._defaultValue + ')]';
+      return '[RangeWithValue (min:' + this.min + ' max:' + this.max + ' defaultValue:' + this._defaultValue + ')]';
     },
 
     /**
@@ -91,9 +91,9 @@ define( function( require ) {
      */
     equals: function( other ) {
       return other instanceof RangeWithValue &&
-             this._min === other.min &&
-             this._max === other.max &&
-             this._defaultValue === other.defaultValue;
+             this.min === other.min &&
+             this.max === other.max &&
+             this.defaultValue === other.defaultValue;
     }
   } );
 } );
