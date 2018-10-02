@@ -25,11 +25,7 @@ define( function( require ) {
       openMax: true
     }, options );
 
-    // @public (read-only) - the minimum value of the range
-    this.min = min;
-
-    // @public (read-only) - the maximum value of the range
-    this.max = max;
+    Range.call( this, min, max );
 
     // @public (read-only) - interval open at minimum value (excludes the min in comparisons)
     this.openMin = options.openMin;
