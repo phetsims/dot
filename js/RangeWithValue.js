@@ -4,6 +4,7 @@
  * A numeric range with an optional default value.
  *
  * @author Chris Malley (PixelZoom, Inc.)
+ * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -26,7 +27,9 @@ define( function( require ) {
     // @private - the default value of the range
     this._defaultValue = ( defaultValue === undefined ) ? min : defaultValue;
 
-    assert && assert( ( this._defaultValue >= min ) && ( this._defaultValue <= max ) );
+    assert && assert( this._defaultValue >= min && this._defaultValue <= max,
+      'Default value must be less than or equal to max and greater than or equal to min: ' + this._defaultValue
+    );
   }
 
   dot.register( 'RangeWithValue', RangeWithValue );
@@ -72,9 +75,10 @@ define( function( require ) {
      * Converts the attributes of this range to a string
      * @public
      * @returns {string}
+     * @override
      */
     toString: function() {
-      return '[Range (min:' + this._min + ' max:' + this._max + ' defaultValue:' + this._defaultValue + ')]';
+      return '[RangeWithValue (min:' + this._min + ' max:' + this._max + ' defaultValue:' + this._defaultValue + ')]';
     },
 
     /**
@@ -83,9 +87,13 @@ define( function( require ) {
      * @public
      * @param {Range} other
      * @returns {boolean}
+     * @override
      */
     equals: function( other ) {
-      return other instanceof Range && this._min === other.min && this._max === other.max;
+      return other instanceof RangeWithValue &&
+             this._min === other.min &&
+             this._max === other.max &&
+             this._defaultValue === other.defaultValue;
     }
   } );
 } );
