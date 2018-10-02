@@ -5,6 +5,7 @@
  *
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Andrew Adare
+ * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 define( function( require ) {
   'use strict';
@@ -19,12 +20,12 @@ define( function( require ) {
   function Range( min, max ) {
 
     // @public (read-only) - the minimum value of the range
-    this.min = min;
+    this._min = min;
 
     // @public (read-only) - the maximum value of the range
-    this.max = max;
+    this._max = max;
 
-    assert && assert( min <= max );
+    assert && assert( min <= max, 'max must be greater than or equal to min. min: ' + min + ', max: ' + max );
   }
 
   dot.register( 'Range', Range );
@@ -34,12 +35,74 @@ define( function( require ) {
     constructor: Range,
 
     /**
+     * Getter for min
+     * @returns {number}
+     * @public
+     */
+    getMin: function() {
+      return this._min;
+    },
+    get min() {
+      return this.getMin();
+    },
+
+    /**
+     * Setter for min
+     * @public
+     * @param {number} min
+     */
+    setMin: function( min ) {
+      assert && assert( min <= this._max, 'min must be less than or equal to max: ' + min );
+      this._min = min;
+    },
+    set min( min ) {
+      this.setMin( min );
+    },
+
+    /**
+     * Getter for max
+     * @returns {number}
+     * @public
+     */
+    getMax: function() {
+      return this._max;
+    },
+    get max() {
+      return this.getMax();
+    },
+
+    /**
+     * Setter for max
+     * @public
+     * @param {number} max
+     */
+    setMax: function( max ) {
+      assert && assert( this._min <= max, 'max must be greater than or equal to min: ' + max );
+      this._max = max;
+    },
+    set max( max ) {
+      this.setMax( max );
+    },
+
+    /**
+     * Sets the minimum and maximum value of the range
+     * @public
+     * @param {number} min
+     * @param {number} max
+     */
+    setMinMax: function( min, max ) {
+      assert && assert( min <= max, 'max must be greater than or equal to min. min: ' + min + ', max: ' + max );
+      this._min = min;
+      this._max = max;
+    },
+
+    /**
      * Makes a copy of this range
      * @public
      * @returns {Range}
      */
     copy: function() {
-      return new Range( this.min, this.max );
+      return new Range( this._min, this._max );
     },
 
     /**
@@ -48,7 +111,7 @@ define( function( require ) {
      * @returns {number}
      */
     getLength: function() {
-      return this.max - this.min;
+      return this._max - this._min;
     },
 
     /**
@@ -57,7 +120,7 @@ define( function( require ) {
      * @returns {number}
      */
     getCenter: function() {
-      return (this.max + this.min) / 2;
+      return ( this._max + this._min ) / 2;
     },
 
     /**
@@ -67,7 +130,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     contains: function( value ) {
-      return ( value >= this.min ) && ( value <= this.max );
+      return ( value >= this._min ) && ( value <= this._max );
     },
 
     /**
@@ -77,7 +140,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     containsRange: function( range ) {
-      return this.min <= range.min && this.max >= range.max;
+      return this._min <= range.min && this._max >= range.max;
     },
 
     /**
@@ -87,7 +150,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     intersects: function( range ) {
-      return ( this.max >= range.min ) && ( range.max >= this.min );
+      return ( this._max >= range.min ) && ( range.max >= this._min );
     },
 
     /**
@@ -98,7 +161,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     intersectsExclusive: function( range ) {
-      return ( this.max > range.min ) && ( range.max > this.min );
+      return ( this._max > range.min ) && ( range.max > this._min );
     },
 
     /**
@@ -107,7 +170,7 @@ define( function( require ) {
      * @returns {string}
      */
     toString: function() {
-      return '[Range (min:' + this.min + ' max:' + this.max + ')]';
+      return '[Range (min:' + this._min + ' max:' + this._max + ')]';
     },
 
     /**
@@ -117,7 +180,7 @@ define( function( require ) {
      * @returns {number}
      */
     constrainValue: function( value ) {
-      return Math.min( Math.max( value, this.min ), this.max );
+      return Math.min( Math.max( value, this._min ), this._max );
     },
 
     /**
@@ -127,7 +190,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     equals: function( other ) {
-      return this.min === other.min && this.max === other.max;
+      return this._min === other.min && this._max === other.max;
     }
   };
 
