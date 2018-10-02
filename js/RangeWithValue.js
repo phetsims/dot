@@ -47,12 +47,34 @@ define( function( require ) {
     },
 
     /**
+     * Setter for min
+     * @param {number} min
+     * @public
+     * @override
+     */
+    setMin: function( min ) {
+      assert && assert( this._defaultValue >= min, 'min must be less than or equal to default value: ' + min );
+      Range.prototype.setMin.call( this, min );
+    },
+
+    /**
+     * Setter for max
+     * @param {number} max
+     * @public
+     * @override
+     */
+    setMax: function( max ) {
+      assert && assert( this._defaultValue <= max, 'max must be greater than or equal to default value: ' + max );
+      Range.prototype.setMax.call( this, max );
+    },
+
+    /**
      * Converts the attributes of this range to a string
      * @public
      * @returns {string}
      */
     toString: function() {
-      return '[Range (min:' + this.min + ' max:' + this.max + ' defaultValue:' + this.defaultValue + ')]';
+      return '[Range (min:' + this._min + ' max:' + this._max + ' defaultValue:' + this._defaultValue + ')]';
     },
 
     /**
@@ -63,9 +85,8 @@ define( function( require ) {
      * @returns {boolean}
      */
     equals: function( other ) {
-      return other instanceof Range && this.min === other.min && this.max === other.max;
+      return other instanceof Range && this._min === other.min && this._max === other.max;
     }
-
   } );
 } );
 
