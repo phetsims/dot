@@ -86,7 +86,7 @@ define( function( require ) {
      * @override
      */
     equals: function( object ) {
-      return ( object.constructor === RangeWithValue ) &&
+      return ( object.constructor === this.constructor ) &&
              ( this._defaultValue === object.defaultValue ) &&
              Range.prototype.equals.call( this, object );
     }
