@@ -191,6 +191,14 @@ define( function( require ) {
      */
     equals: function( object ) {
       return ( object instanceof Range ) && ( this._min === object.min ) && ( this._max === object.max );
+    },
+
+    /**
+     * In https://github.com/phetsims/dot/issues/57, defaultValue was moved to RangeWithValue.
+     * This ES5 getter catches programming errors where defaultValue is still used with Range.
+     */
+    get defaultValue() {
+      throw new Error( 'defaultValue is undefined, did you mean to use RangeWithValue?' );
     }
   };
 
