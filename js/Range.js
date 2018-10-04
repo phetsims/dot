@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2018, University of Colorado Boulder
 
 /**
  * A numeric range.
@@ -19,13 +19,13 @@ define( function( require ) {
    */
   function Range( min, max ) {
 
-    // @public (read-only) - the minimum value of the range
+    assert && assert( min <= max, 'max must be >= min. min: ' + min + ', max: ' + max );
+
+    // @private the minimum value of the range
     this._min = min;
 
-    // @public (read-only) - the maximum value of the range
+    // @private the maximum value of the range
     this._max = max;
-
-    assert && assert( min <= max, 'max must be greater than or equal to min. min: ' + min + ', max: ' + max );
   }
 
   dot.register( 'Range', Range );
@@ -52,7 +52,7 @@ define( function( require ) {
      * @param {number} min
      */
     setMin: function( min ) {
-      assert && assert( min <= this._max, 'min must be less than or equal to max: ' + min );
+      assert && assert( min <= this._max, 'min must be <= max: ' + min );
       this._min = min;
     },
     set min( min ) {
@@ -77,7 +77,7 @@ define( function( require ) {
      * @param {number} max
      */
     setMax: function( max ) {
-      assert && assert( this._min <= max, 'max must be greater than or equal to min: ' + max );
+      assert && assert( this._min <= max, 'max must be >= to min: ' + max );
       this._max = max;
     },
     set max( max ) {
@@ -91,7 +91,7 @@ define( function( require ) {
      * @param {number} max
      */
     setMinMax: function( min, max ) {
-      assert && assert( min <= max, 'max must be greater than or equal to min. min: ' + min + ', max: ' + max );
+      assert && assert( min <= max, 'max must be >= to min. min: ' + min + ', max: ' + max );
       this._min = min;
       this._max = max;
     },
@@ -140,7 +140,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     containsRange: function( range ) {
-      return this._min <= range.min && this._max >= range.max;
+      return ( this._min <= range.min ) && ( this._max >= range.max );
     },
 
     /**
@@ -184,13 +184,13 @@ define( function( require ) {
     },
 
     /**
-     * Determines if this range is equal to other range.
+     * Determines if this Range is equal to some object.
      * @public
-     * @param {Range} other
+     * @param {*} object
      * @returns {boolean}
      */
-    equals: function( other ) {
-      return this._min === other.min && this._max === other.max;
+    equals: function( object ) {
+      return ( object instanceof Range ) && ( this._min === object.min ) && ( this._max === object.max );
     }
   };
 

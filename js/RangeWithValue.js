@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2018, University of Colorado Boulder
 
 /**
  * A numeric range with an optional default value.
@@ -19,17 +19,15 @@ define( function( require ) {
    * @param {number} [defaultValue] - default value inside the range
    * @constructor
    */
-
   function RangeWithValue( min, max, defaultValue ) {
+
+    defaultValue = ( defaultValue === undefined ) ? min : defaultValue;
+    assert && assert( defaultValue >= min && defaultValue <= max, 'defaultValue out of range: ' + defaultValue );
 
     Range.call( this, min, max );
 
-    // @private - the default value of the range
-    this._defaultValue = ( defaultValue === undefined ) ? min : defaultValue;
-
-    assert && assert( this._defaultValue >= min && this._defaultValue <= max,
-      'Default value must be less than or equal to max and greater than or equal to min: ' + this._defaultValue
-    );
+    // @private
+    this._defaultValue = defaultValue;
   }
 
   dot.register( 'RangeWithValue', RangeWithValue );
@@ -38,7 +36,6 @@ define( function( require ) {
 
     /**
      * Getter for defaultValue
-     *
      * @returns {number}
      * @public
      */
@@ -56,7 +53,7 @@ define( function( require ) {
      * @override
      */
     setMin: function( min ) {
-      assert && assert( this._defaultValue >= min, 'min must be less than or equal to default value: ' + min );
+      assert && assert( this._defaultValue >= min, 'min must be <= defaultValue: ' + min );
       Range.prototype.setMin.call( this, min );
     },
 
@@ -67,7 +64,7 @@ define( function( require ) {
      * @override
      */
     setMax: function( max ) {
-      assert && assert( this._defaultValue <= max, 'max must be greater than or equal to default value: ' + max );
+      assert && assert( this._defaultValue <= max, 'max must be >= defaultValue: ' + max );
       Range.prototype.setMax.call( this, max );
     },
 
@@ -82,18 +79,16 @@ define( function( require ) {
     },
 
     /**
-     * Determines if this range is equal to other range.
-     * Note the default values must match as well.
+     * Determines if this RangeWithValue is equal to some object.
      * @public
-     * @param {Range} other
+     * @param {*} object
      * @returns {boolean}
      * @override
      */
-    equals: function( other ) {
-      return other instanceof RangeWithValue &&
-             this.min === other.min &&
-             this.max === other.max &&
-             this._defaultValue === other.defaultValue;
+    equals: function( object ) {
+      return ( object instanceof RangeWithValue ) &&
+             ( this._defaultValue === object.defaultValue ) &&
+             Range.prototype.equals.call( this, object );
     }
   } );
 } );
