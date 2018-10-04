@@ -16,15 +16,15 @@ define( function( require ) {
   /**
    * @param {number} min - the minimum value of the range
    * @param {number} max - the maximum value of the range
-   * @param {number} [defaultValue] - default value inside the range
+   * @param {number} defaultValue - default value inside the range
    * @constructor
    */
   function RangeWithValue( min, max, defaultValue ) {
 
-    defaultValue = ( defaultValue === undefined ) ? min : defaultValue;
-    assert && assert( defaultValue >= min && defaultValue <= max, 'defaultValue out of range: ' + defaultValue );
-
     Range.call( this, min, max );
+
+    assert && assert( defaultValue !== undefined, 'default value is required' );
+    assert && assert( defaultValue >= min && defaultValue <= max, 'defaultValue is out of range: ' + defaultValue );
 
     // @private
     this._defaultValue = defaultValue;
