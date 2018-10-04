@@ -190,7 +190,7 @@ define( function( require ) {
      * @returns {boolean}
      */
     equals: function( object ) {
-      return ( object instanceof Range ) && ( this._min === object.min ) && ( this._max === object.max );
+      return ( object.constructor === Range ) && ( this._min === object.min ) && ( this._max === object.max );
     },
 
     /**
