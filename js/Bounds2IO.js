@@ -34,6 +34,7 @@ define( function( require ) {
      * Encodes a Bounds2 instance to a state.
      * @param {Bounds2} bounds2
      * @returns {Object}
+     * @override
      */
     toStateObject: function( bounds2 ) {
       assert && assertInstanceOf( bounds2, dot.Bounds2 );
@@ -50,6 +51,7 @@ define( function( require ) {
      * Decodes a state into a Bounds2.
      * @param {Object} stateObject
      * @returns {Bounds2}
+     * @override
      */
     fromStateObject: function( stateObject ) {
       return new dot.Bounds2(
