@@ -34,6 +34,7 @@ define( function( require ) {
      * Encodes a Bounds3 instance to a state.
      * @param {Bounds3} bounds3
      * @returns {Object}
+     * @override
      */
     toStateObject: function( bounds3 ) {
       assert && assertInstanceOf( bounds3, dot.Bounds3 );
@@ -52,6 +53,7 @@ define( function( require ) {
      * Decodes a state into a Bounds3.
      * @param {Object} stateObject
      * @returns {Bounds3}
+     * @override
      */
     fromStateObject: function( stateObject ) {
       return new dot.Bounds3(
