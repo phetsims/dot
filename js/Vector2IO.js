@@ -31,6 +31,15 @@ define( function( require ) {
     documentation: 'A numerical object with x and y properties, like {x:3,y:4}',
 
     /**
+     * @override
+     * @public
+     * @param {*} instance
+     * @returns {boolean}
+     */
+    isInstance: function( instance ) { return instance instanceof dot.Vector2; },
+
+
+    /**
      * Encodes a Vector2 instance to a state.
      * @param {Vector2} vector2
      * @returns {Object}
