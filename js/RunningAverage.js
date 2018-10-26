@@ -35,6 +35,8 @@ define( function( require ) {
 
     // @private {number} - number of samples received so far
     this.numSamples = 0;
+
+    this.clear();
   }
 
   dot.register( 'RunningAverage', RunningAverage );
@@ -57,6 +59,8 @@ define( function( require ) {
 
     /**
      * Gets the current value of the running average.
+     * @public
+     *
      * @returns {number}
      */
     getRunningAverage: function() {
@@ -64,20 +68,35 @@ define( function( require ) {
     },
 
     /**
-     * Add a data point to the average and return the new running average.
-     * @param {number} sample
+     * Returns whether the number of samples is at least as large as the window size (the buffer is full).
      * @public
+     *
+     * @returns {boolean}
+     */
+    isSaturated: function() {
+      return this.numSamples >= this.windowSize;
+    },
+
+    /**
+     * Add a data point to the average and return the new running average.
+     * @public
+     *
+     * @param {number} sample
+     * @returns {number}
      */
     updateRunningAverage: function( sample ) {
+      assert && assert( typeof sample === 'number' && isFinite( sample ) );
 
       // Limit at the window size
       this.numSamples = Math.min( this.windowSize, this.numSamples + 1 );
 
       // Remove the old sample (will be 0 if there was no sample yet, due to clear())
       this.total -= this.samples[ this.sampleIndex ];
+      assert && assert( isFinite( this.total ) );
 
       // Add in the new sample
       this.total += sample;
+      assert && assert( isFinite( this.total ) );
 
       // Overwrite in the array and move to the next index
       this.samples[ this.sampleIndex ] = sample;
