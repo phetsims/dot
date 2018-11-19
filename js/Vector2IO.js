@@ -46,7 +46,7 @@ define( function( require ) {
      */
     toStateObject: function( vector2 ) {
       assert && assertInstanceOf( vector2, dot.Vector2 );
-      return { x: vector2.x, y: vector2.y };
+      return vector2.toStateObject();
     },
 
     /**
@@ -55,7 +55,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     fromStateObject: function( stateObject ) {
-      return new dot.Vector2( stateObject.x, stateObject.y );
+      return dot.Vector2.fromStateObject( stateObject );
     }
   } );
 
