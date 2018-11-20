@@ -10,7 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var Bounds = require( 'DOT/Bounds2' );
+  var Bounds2 = require( 'DOT/Bounds2' );
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
