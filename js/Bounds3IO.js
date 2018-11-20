@@ -10,6 +10,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Bounds3 = require( 'DOT/Bounds3' );
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
@@ -23,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function Bounds3IO( bounds3, phetioID ) {
-    assert && assertInstanceOf( bounds3, dot.Bounds3 );
+    assert && assertInstanceOf( bounds3, Bounds3 );
     ObjectIO.call( this, bounds3, phetioID );
   }
 
@@ -37,7 +38,7 @@ define( function( require ) {
      * @override
      */
     toStateObject: function( bounds3 ) {
-      assert && assertInstanceOf( bounds3, dot.Bounds3 );
+      assert && assertInstanceOf( bounds3, Bounds3 );
       return {
         minX: bounds3.minX,
         minY: bounds3.minY,
@@ -56,7 +57,7 @@ define( function( require ) {
      * @override
      */
     fromStateObject: function( stateObject ) {
-      return new dot.Bounds3(
+      return new Bounds3(
         stateObject.minX, stateObject.minY, stateObject.minZ,
         stateObject.maxX, stateObject.maxY, stateObject.maxZ
       );

@@ -12,6 +12,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
+  var Range = require( 'DOT/Range' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
@@ -22,7 +23,7 @@ define( function( require ) {
    * @constructor
    */
   function RangeIO( range, phetioID ) {
-    assert && assertInstanceOf( range, dot.Range );
+    assert && assertInstanceOf( range, Range );
     ObjectIO.call( this, range, phetioID );
   }
 
@@ -35,7 +36,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( range ) {
-      assert && assertInstanceOf( range, dot.Range );
+      assert && assertInstanceOf( range, Range );
       return { min: range.min, max: range.max };
     },
 
@@ -45,7 +46,7 @@ define( function( require ) {
      * @returns {Range}
      */
     fromStateObject: function( stateObject ) {
-      return new dot.Range( stateObject.min, stateObject.max );
+      return new Range( stateObject.min, stateObject.max );
     }
   } );
 

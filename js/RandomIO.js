@@ -13,6 +13,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
+  var Random = require( 'DOT/Random' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
@@ -23,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function RandomIO( random, phetioID ) {
-    assert && assertInstanceOf( random, dot.Random );
+    assert && assertInstanceOf( random, Random );
     ObjectIO.call( this, random, phetioID );
   }
 

@@ -13,6 +13,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   // ifphetio
   var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
@@ -23,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function Vector2IO( vector2, phetioID ) {
-    assert && assertInstanceOf( vector2, dot.Vector2 );
+    assert && assertInstanceOf( vector2, Vector2 );
     ObjectIO.call( this, vector2, phetioID );
   }
 
@@ -36,7 +37,7 @@ define( function( require ) {
      * @param {*} instance
      * @returns {boolean}
      */
-    isInstance: function( instance ) { return instance instanceof dot.Vector2; },
+    isInstance: function( instance ) { return instance instanceof Vector2; },
 
 
     /**
@@ -45,7 +46,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( vector2 ) {
-      assert && assertInstanceOf( vector2, dot.Vector2 );
+      assert && assertInstanceOf( vector2, Vector2 );
       return vector2.toStateObject();
     },
 
@@ -55,7 +56,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     fromStateObject: function( stateObject ) {
-      return dot.Vector2.fromStateObject( stateObject );
+      return Vector2.fromStateObject( stateObject );
     }
   } );
 
