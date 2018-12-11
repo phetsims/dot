@@ -12,24 +12,9 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   var Poolable = require( 'PHET_CORE/Poolable' );
 
-  var FastArray = dot.FastArray;
-
   require( 'DOT/Vector2' );
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix4' );
-
-  var identityFastArray = new FastArray( 9 );
-  identityFastArray[ 0 ] = 1;
-  identityFastArray[ 4 ] = 1;
-  identityFastArray[ 8 ] = 1;
-
-  var createIdentityArray = FastArray === Array ?
-                            function() {
-                              return [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
-                            } :
-                            function() {
-                              return new FastArray( identityFastArray );
-                            };
 
   // Create an identity matrix
   function Matrix3( argumentsShouldNotExist ) {
@@ -38,7 +23,7 @@ define( function( require ) {
     assert && assert( !argumentsShouldNotExist, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
 
     // entries stored in column-major format
-    this.entries = createIdentityArray();
+    this.entries = [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
 
     this.type = Types.IDENTITY;
   }
@@ -901,20 +886,6 @@ define( function( require ) {
       }
     },
 
-    setTo32Bit: function() {
-      if ( window.Float32Array ) {
-        this.entries = new window.Float32Array( this.entries );
-      }
-      return this;
-    },
-
-    setTo64Bit: function() {
-      if ( window.Float64Array ) {
-        this.entries = new window.Float64Array( this.entries );
-      }
-      return this;
-    },
-
     /*---------------------------------------------------------------------------*
      * Mutable operations (changes the parameter)
      *----------------------------------------------------------------------------*/
@@ -970,6 +941,26 @@ define( function( require ) {
           this.entries[ 7 ]
         );
       }
+    },
+
+    /**
+     * Copies the entries of this matrix over to an arbitrary array (typed or normal).
+     * @public
+     *
+     * @param {Array|Float32Array|Float64Array} array
+     * @returns {Array|Float32Array|Float64Array} - Returned for chaining
+     */
+    copyToArray: function( array ) {
+      array[ 0 ] = this.m00();
+      array[ 1 ] = this.m10();
+      array[ 2 ] = this.m20();
+      array[ 3 ] = this.m01();
+      array[ 4 ] = this.m11();
+      array[ 5 ] = this.m21();
+      array[ 6 ] = this.m02();
+      array[ 7 ] = this.m12();
+      array[ 8 ] = this.m22();
+      return array;
     }
   };
 
