@@ -1,7 +1,7 @@
-// Copyright 2013-2018, University of Colorado Boulder
+// Copyright 2013-2019, University of Colorado Boulder
 
 /**
- * A numeric range with an optional default value.
+ * A numeric range with a required default value.
  *
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Chris Klusendorf (PhET Interactive Simulations)
@@ -66,6 +66,19 @@ define( function( require ) {
     setMax: function( max ) {
       assert && assert( this._defaultValue <= max, 'max must be >= defaultValue: ' + max );
       Range.prototype.setMax.call( this, max );
+    },
+
+    /**
+     * Setter for min and max
+     * @param {number} min
+     * @param {number} max
+     * @public
+     * @override
+     */
+    setMinMax: function( min, max ) {
+      assert && assert( this._defaultValue >= min, 'min must be <= defaultValue: ' + min );
+      assert && assert( this._defaultValue <= max, 'max must be >= defaultValue: ' + max );
+      Range.prototype.setMinMax.call( this, min, max );
     },
 
     /**
