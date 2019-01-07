@@ -34,6 +34,7 @@ define( function( require ) {
     this.openMax = options.openMax;
 
     // if the interval is open, ensure that the min is strictly less than the max
+    assert && assert( this.openMin || this.openMax, 'use Range type if min and max are inclusive' );
     assert && ( ( this.openMin || this.openMax ) ? assert( min < max ) : assert( min <= max ) );
   }
 
