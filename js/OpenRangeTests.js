@@ -1,7 +1,7 @@
 // Copyright 2017, University of Colorado Boulder
 
 /**
- * Bounds2 tests
+ * OpenRange tests
  *
  * @author Michael Barlow (PhET Interactive Simulations)
  */
