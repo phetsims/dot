@@ -25,28 +25,28 @@ define( require => {
   QUnit.test( 'methods', assert => {
 
     // test a valid and invalid setMin()
-    const range1 = new Range( 1, 10 );
-    range1.setMin( 9 );
-    assert.equal( range1.min, 9, 'setMin() succeeds when min < max' );
-    window.assert && assert.throws( () => { range1.setMin( 11 ); }, 'setMin() fails when min > max' );
+    let range = new Range( 1, 10 );
+    range.setMin( 9 );
+    assert.equal( range.min, 9, 'setMin() succeeds when min < max' );
+    window.assert && assert.throws( () => { range.setMin( 11 ); }, 'setMin() fails when min > max' );
 
     // test a valid and invalid setMax()
-    const range2 = new Range( 1, 10 );
-    range2.setMax( 2 );
-    assert.equal( range2.max, 2, 'setMax() succeeds when max > min' );
-    window.assert && assert.throws( () => { range2.setMax( 0 ); }, 'setMax() fails when max < min' );
+    range = new Range( 1, 10 );
+    range.setMax( 2 );
+    assert.equal( range.max, 2, 'setMax() succeeds when max > min' );
+    window.assert && assert.throws( () => { range.setMax( 0 ); }, 'setMax() fails when max < min' );
 
     // test a true and false equals()
-    const range3 = new Range( 1, 10 );
-    const range4 = new Range( 1, 10 );
-    assert.ok( range3.equals( range4 ), 'equals() succeeds when range1 === range2' );
-    range4.setMin( 2 );
-    assert.notOk( range3.equals( range4 ), 'equals() fails when range1 !== range2' );
+    const range1 = new Range( 1, 10 );
+    const range2 = new Range( 1, 10 );
+    assert.ok( range1.equals( range2 ), 'equals() succeeds when range1 === range2' );
+    range2.setMin( 2 );
+    assert.notOk( range1.equals( range2 ), 'equals() fails when range1 !== range2' );
 
     // test a valid and invalid setMinMax()
-    const range5 = new Range( 1, 10 );
-    range5.setMinMax( 2, 11 );
-    assert.ok( range5.equals( new Range( 2, 11 ) ), 'setMinMax() succeeds when min < max' );
-    window.assert && assert.throws( () => { range5.setMinMax( 10, 1 ); }, 'setMinMax() fails when min > max' );
+    range = new Range( 1, 10 );
+    range.setMinMax( 2, 11 );
+    assert.ok( range.equals( new Range( 2, 11 ) ), 'setMinMax() succeeds when min < max' );
+    window.assert && assert.throws( () => { range.setMinMax( 10, 1 ); }, 'setMinMax() fails when min > max' );
   } );
 } );
