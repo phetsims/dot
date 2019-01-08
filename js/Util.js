@@ -582,7 +582,7 @@ define( function( require ) {
      * @param {number} a
      * @param {number} b
      * @param {number} epsilon
-     * @return {boolean}
+     * @returns {boolean}
      */
     equalsEpsilon: function( a, b, epsilon ) {
       return Math.abs( a - b ) <= epsilon;
