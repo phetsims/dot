@@ -35,12 +35,43 @@ define( function( require ) {
 
     // if the interval is open, ensure that the min is strictly less than the max
     assert && assert( this.openMin || this.openMax, 'use Range type if min and max are inclusive' );
-    assert && ( ( this.openMin || this.openMax ) ? assert( min < max ) : assert( min <= max ) );
+    assert && assert( min < max, 'must instantiate OpenRange with min strictly less than max' );
   }
 
   dot.register( 'OpenRange', OpenRange );
 
   return inherit( Range, OpenRange, {
+
+    /**
+    * OpenRange override for setMin.
+    * @override
+    * @param  {number} min
+    */
+    setMin: function( min ) {
+      assert && assert( min < this._max, 'min must be strictly less than max for OpenRange' );
+      Range.prototype.setMin.call( this, min );
+    },
+
+    /**
+     * OpenRange override for setMax.
+     * @override
+     * @param  {number} max
+     */
+    setMax: function( max ) {
+      assert && assert( max > this._min, 'max must be strictly greater than min for OpenRange' );
+      Range.prototype.setMax.call( this, max );
+    },
+
+    /**
+     * OpenRange override for setMinMax. Ensures that min is strictly less than max.
+     * @override
+     * @param  {number} min
+     * @param  {number} max
+     */
+    setMinMax: function( min, max ) {
+      assert && assert( min < max, 'min must be strictly less than max in OpenRange' );
+      Range.prototype.setMinMax.call( this, min, max );
+    },
 
     /**
      * Determines if this range contains the value
@@ -104,9 +135,9 @@ define( function( require ) {
      * @returns {boolean}
      */
     equals: function( other ) {
-      return other     instanceof Range &&
-             this.min         === other.min &&
-             this.max         === other.max &&
+      return other        instanceof Range &&
+             this.min     === other.min &&
+             this.max     === other.max &&
              this.openMin === other.openMin &&
              this.openMax === other.openMax;
     }

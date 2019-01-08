@@ -54,10 +54,28 @@ define( function( require ) {
     assert.ok( openRange.containsRange( new Range( 1.000000001, 2 ) ), '(1, 10) contains [1.000000001, 2]' );
   } );
 
+  QUnit.test( 'setter overrides', function( assert ) {
+    var openRange = new OpenRange( 1, 10 );
+    assert.notOk( openRange.setMin( 2 ), 'can set min < max' );
+    assert.throws( function() { openRange.setMin( 10 ); }, 'cannot set min = max in OpenRange' );
+    openRange = new OpenRange( 1, 10 );
+    assert.notOk( openRange.setMax( 2 ), 'can set max > min' );
+    assert.throws( function() { openRange.setMax( 1 ); }, 'cannot set min = max in OpenRange' );
+  } );
+
   QUnit.test( 'assertion failures', function( assert ) {
     assert.throws( function() { return new OpenRange( 1, 10, { openMin: false, openMax: false } ); }, 'include both min and max throws an error' );
     assert.throws( function() { return new OpenRange( 1, 1, minHalfOpenOptions ); }, 'min open range with min === max throws an error' );
     assert.throws( function() { return new OpenRange( 1, 1, maxHalfOpenOptions ); }, 'max open range with min === max throws an error' );
     assert.throws( function() { return new OpenRange( 1, 1 ); }, 'full open range with min === max throws an error' );
+
+    var range = new OpenRange( 1, 10 );
+    assert.throws( function() { range.setMin( 10 ); }, 'setting min equal to max throws an error' );
+    range = new OpenRange( 1, 10 );
+    assert.throws( function() { range.setMin( 11 ); }, 'setting min greater than max throws an error' );
+    range = new OpenRange( 1, 10 );
+    assert.throws( function() { range.setMax( 1 ); }, 'setting max equal to min throws an error' );
+    range = new OpenRange( 1, 10 );
+    assert.throws( function() { range.setMax( 0 ); }, 'setting max less than min throws an error' );
   } );
 } );
