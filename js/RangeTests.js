@@ -27,13 +27,13 @@ define( require => {
     // test a valid and invalid setMin()
     let range = new Range( 1, 10 );
     range.setMin( 9 );
-    assert.equal( range.min, 9, 'setMin() succeeds when min < max' );
+    assert.equal( range.min, 9, 'setMin() succeeds when min <= max' );
     window.assert && assert.throws( () => { range.setMin( 11 ); }, 'setMin() fails when min > max' );
 
     // test a valid and invalid setMax()
     range = new Range( 1, 10 );
     range.setMax( 2 );
-    assert.equal( range.max, 2, 'setMax() succeeds when max > min' );
+    assert.equal( range.max, 2, 'setMax() succeeds when max >= min' );
     window.assert && assert.throws( () => { range.setMax( 0 ); }, 'setMax() fails when max < min' );
 
     // test a true and false equals()
@@ -46,7 +46,7 @@ define( require => {
     // test a valid and invalid setMinMax()
     range = new Range( 1, 10 );
     range.setMinMax( 2, 11 );
-    assert.ok( range.equals( new Range( 2, 11 ) ), 'setMinMax() succeeds when min < max' );
+    assert.ok( range.equals( new Range( 2, 11 ) ), 'setMinMax() succeeds when min <= max' );
     window.assert && assert.throws( () => { range.setMinMax( 10, 1 ); }, 'setMinMax() fails when min > max' );
   } );
 } );

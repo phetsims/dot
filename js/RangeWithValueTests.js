@@ -30,14 +30,14 @@ define( require => {
     // test a valid and invalid setMin()
     let rangeWithValue = new RangeWithValue( 1, 10, 3 );
     rangeWithValue.setMin( 2 );
-    assert.equal( rangeWithValue.min, 2, 'setMin() succeeds when min < defaultValue < max' );
-    window.assert && assert.throws( () => { rangeWithValue.setMin( 4 ); }, 'setMin() fails when defaultValue < min < max' );
+    assert.equal( rangeWithValue.min, 2, 'setMin() succeeds when min <= defaultValue <= max' );
+    window.assert && assert.throws( () => { rangeWithValue.setMin( 4 ); }, 'setMin() fails when defaultValue < min' );
 
     // test a valid and invalid setMax()
     rangeWithValue = new RangeWithValue( 1, 10, 8 );
     rangeWithValue.setMax( 9 );
-    assert.equal( rangeWithValue.max, 9, 'setMax() succeeds when max > defaultValue > min' );
-    window.assert && assert.throws( () => { rangeWithValue.setMax( 7 ); }, 'setMax() fails when defaultValue > max > min' );
+    assert.equal( rangeWithValue.max, 9, 'setMax() succeeds when max >= defaultValue >= min' );
+    window.assert && assert.throws( () => { rangeWithValue.setMax( 7 ); }, 'setMax() fails when defaultValue > max' );
 
     // test a true and false equals()
     rangeWithValue = new RangeWithValue( 1, 10, 5 );
@@ -53,7 +53,7 @@ define( require => {
     // test a valid and invalid setMinMax()
     rangeWithValue = new RangeWithValue( 1, 10, 5 );
     rangeWithValue.setMinMax( 2, 9 );
-    assert.ok( rangeWithValue.equals( new RangeWithValue( 2, 9, 5 ) ), 'setMinMax() succeeds when min < defaultValue < max' );
+    assert.ok( rangeWithValue.equals( new RangeWithValue( 2, 9, 5 ) ), 'setMinMax() succeeds when min <= defaultValue <= max' );
     window.assert && assert.throws( () => {
       rangeWithValue.setMinMax( 3, 4 );
       }, 'setMinMax() fails when default value is out of range'
