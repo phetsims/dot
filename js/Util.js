@@ -846,6 +846,8 @@ define( function( require ) {
         return numbers[ half ];
       }
       else {
+
+        // if there are an even number of entries, take the median of the center 2
         return ( numbers[ half - 1 ] + numbers[ half ] ) / 2;
       }
     },
