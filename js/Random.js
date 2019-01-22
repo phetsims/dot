@@ -1,4 +1,5 @@
 // Copyright 2015-2016, University of Colorado Boulder
+/* eslint-disable bad-sim-text */ // Needs randomness, since this is the source of joist's randomness.
 
 /**
  * Random number generator with an optional seed.

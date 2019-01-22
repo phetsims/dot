@@ -1,4 +1,5 @@
 // Copyright 2015, University of Colorado Boulder
+/* eslint-disable bad-sim-text */ // Needs randomness, and can't use joist's randomness source
 
 /**
  * Given a rectangular containing area, takes care of allocating and deallocating smaller rectangular "bins" that fit

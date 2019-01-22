@@ -1,4 +1,5 @@
 // Copyright 2013-2015, University of Colorado Boulder
+/* eslint-disable bad-sim-text */ // Needs Math.round to implement the symmetric rounding
 
 /**
  * Utility functions for Dot, placed into the dot.X namespace.
