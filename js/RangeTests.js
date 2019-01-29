@@ -24,16 +24,20 @@ define( require => {
 
   QUnit.test( 'methods', assert => {
 
-    // test a valid and invalid setMin()
+    // test valid and invalid setMin()
     let range = new Range( 1, 10 );
     range.setMin( 9 );
     assert.equal( range.min, 9, 'setMin() succeeds when min <= max' );
+    range.setMin( 10 );
+    assert.equal( range.min, 10, 'setMin() succeeds when min <= max' );
     window.assert && assert.throws( () => { range.setMin( 11 ); }, 'setMin() fails when min > max' );
 
-    // test a valid and invalid setMax()
+    // test valid and invalid setMax()
     range = new Range( 1, 10 );
     range.setMax( 2 );
     assert.equal( range.max, 2, 'setMax() succeeds when max >= min' );
+    range.setMax( 1 );
+    assert.equal( range.max, 1, 'setMax() succeeds when max >= min' );
     window.assert && assert.throws( () => { range.setMax( 0 ); }, 'setMax() fails when max < min' );
 
     // test a true and false equals()
@@ -43,10 +47,12 @@ define( require => {
     range2.setMin( 2 );
     assert.notOk( range1.equals( range2 ), 'equals() fails when range1 !== range2' );
 
-    // test a valid and invalid setMinMax()
+    // test valid and invalid setMinMax()
     range = new Range( 1, 10 );
     range.setMinMax( 2, 11 );
     assert.ok( range.equals( new Range( 2, 11 ) ), 'setMinMax() succeeds when min <= max' );
+    range.setMinMax( 5, 5 );
+    assert.ok( range.equals( new Range( 5, 5 ) ), 'setMinMax() succeeds when min <= max' );
     window.assert && assert.throws( () => { range.setMinMax( 10, 1 ); }, 'setMinMax() fails when min > max' );
   } );
 } );
