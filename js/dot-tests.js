@@ -18,6 +18,7 @@ define( function( require ) {
   require( 'DOT/OpenRangeTests' );
   require( 'DOT/RangeTests' );
   require( 'DOT/RangeWithValueTests' );
+  require( 'DOT/StatsTests' );
   require( 'DOT/UtilTests' );
   require( 'DOT/Transform3Tests' );
   require( 'DOT/LinearFunctionTests' );

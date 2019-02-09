@@ -825,35 +825,6 @@ define( function( require ) {
     },
 
     /**
-     * Get the median from an unsorted array of numbers
-     * @public
-     *
-     * @param {Array.<number>} numbers - (un)sorted array
-     * @returns {number|null} - null if array is empty
-     */
-    median: function( numbers ) {
-      assert && assert( Array.isArray( numbers ) );
-      assert && numbers.forEach( function( n ) { assert && assert( typeof n === 'number' ); } );
-
-      numbers.sort( function( a, b ) { return a - b; } );
-
-      if ( numbers.length === 0 ) {
-        return null;
-      }
-
-      var half = Math.floor( numbers.length / 2 );
-
-      if ( numbers.length % 2 ) {
-        return numbers[ half ];
-      }
-      else {
-
-        // if there are an even number of entries, take the median of the center 2
-        return ( numbers[ half - 1 ] + numbers[ half ] ) / 2;
-      }
-    },
-
-    /**
      * Determines the number of decimal places in a value.
      * @param {number} value
      * @returns {number}
