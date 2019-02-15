@@ -147,8 +147,12 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    angle: function() {
+    getAngle: function() {
       return Math.atan2( this.y, this.x );
+    },
+
+    get angle() {
+      return this.getAngle();
     },
 
     /**
@@ -466,7 +470,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     rotated: function( angle ) {
-      var newAngle = this.angle() + angle;
+      var newAngle = this.angle + angle;
       var mag = this.magnitude();
       return new Vector2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
@@ -845,7 +849,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     rotate: function( angle ) {
-      var newAngle = this.angle() + angle;
+      var newAngle = this.angle + angle;
       var mag = this.magnitude();
       return this.setXY( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
