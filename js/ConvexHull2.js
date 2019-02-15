@@ -88,7 +88,7 @@ define( function( require ) {
 
       // sorts the points by their angle. Between 0 and PI
       points = _.sortBy( points, function( point ) {
-        return point.minus( p ).angle();
+        return point.minus( p ).angle;
       } );
 
       // remove p from points (relies on the above statement making a defensive copy)
