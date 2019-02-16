@@ -132,7 +132,7 @@ define( function( require ) {
      */
     timesVector3: function( v ) {
       if ( v.magnitude() === 0 ) {
-        return new dot.Vector3();
+        return new dot.Vector3( 0, 0, 0 );
       }
 
       // TODO: optimization?

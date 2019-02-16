@@ -1150,7 +1150,7 @@ define( function( require ) {
 
       // using mutable vector so we don't create excessive instances of Vector2 during this
       // make sure all 4 corners are inside this transformed bounding box
-      var vector = new dot.Vector3();
+      var vector = new dot.Vector3( 0, 0, 0 );
 
       function withIt( vector ) {
         minX = Math.min( minX, vector.x );

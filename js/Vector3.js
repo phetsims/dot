@@ -22,23 +22,24 @@ define( function( require ) {
    * @constructor
    * @public
    *
-   * @param {number} [x] - X coordinate, defaults to 0 if not provided
-   * @param {number} [y] - Y coordinate, defaults to 0 if not provided
-   * @param {number} [z] - Z coordinate, defaults to 0 if not provided
+   * @param {number} x - X coordinate, defaults to 0 if not provided
+   * @param {number} y - Y coordinate, defaults to 0 if not provided
+   * @param {number} z - Z coordinate, defaults to 0 if not provided
    */
   function Vector3( x, y, z ) {
+
+    assert && assert( typeof x === 'number', 'x needs to be a number' );
+    assert && assert( typeof y === 'number', 'y needs to be a number' );
+    assert && assert( typeof z === 'number', 'z needs to be a number' );
+
     // @public {number} - The X coordinate of the vector.
-    this.x = x !== undefined ? x : 0;
+    this.x = x;
 
     // @public {number} - The Y coordinate of the vector.
-    this.y = y !== undefined ? y : 0;
+    this.y = y;
 
     // @public {number} - The Z coordinate of the vector.
-    this.z = z !== undefined ? z : 0;
-
-    assert && assert( typeof this.x === 'number', 'x needs to be a number' );
-    assert && assert( typeof this.y === 'number', 'y needs to be a number' );
-    assert && assert( typeof this.z === 'number', 'z needs to be a number' );
+    this.z = z;
   }
 
   dot.register( 'Vector3', Vector3 );
@@ -776,8 +777,8 @@ define( function( require ) {
      */
     roundSymmetric: function() {
       return this.setXYZ( dot.Util.roundSymmetric( this.x ),
-                          dot.Util.roundSymmetric( this.y ),
-                          dot.Util.roundSymmetric( this.z ) );
+        dot.Util.roundSymmetric( this.y ),
+        dot.Util.roundSymmetric( this.z ) );
     }
   }, {
     /**
