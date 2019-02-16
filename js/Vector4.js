@@ -780,7 +780,8 @@ define( function( require ) {
 
   // Sets up pooling on Vector4
   Poolable.mixInto( Vector4, {
-    initialize: Vector4.prototype.setXYZW
+    initialize: Vector4.prototype.setXYZW,
+    defaultArguments: [ 0, 0, 0, 0 ]
   } );
 
   /*---------------------------------------------------------------------------*
