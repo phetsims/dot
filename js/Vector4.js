@@ -15,6 +15,7 @@ define( function( require ) {
   var Poolable = require( 'PHET_CORE/Poolable' );
 
   require( 'DOT/Util' );
+
   // require( 'DOT/Vector3' ); // commented out so Require.js doesn't complain about the circular dependency
 
   /**
@@ -22,28 +23,29 @@ define( function( require ) {
    * @constructor
    * @public
    *
-   * @param {number} [x] - X coordinate, defaults to 0 if not provided
-   * @param {number} [y] - Y coordinate, defaults to 0 if not provided
-   * @param {number} [z] - Z coordinate, defaults to 0 if not provided
-   * @param {number} [w] - W coordinate, defaults to 1 if not provided (convenience for homogeneous coordinates)
+   * @param {number} x - X coordinate
+   * @param {number} y - Y coordinate
+   * @param {number} z - Z coordinate
+   * @param {number} w - W coordinate
    */
   function Vector4( x, y, z, w ) {
+
+    assert && assert( typeof x === 'number', 'x needs to be a number' );
+    assert && assert( typeof y === 'number', 'y needs to be a number' );
+    assert && assert( typeof z === 'number', 'z needs to be a number' );
+    assert && assert( typeof w === 'number', 'w needs to be a number' );
+
     // @public {number} - The X coordinate of the vector.
-    this.x = x !== undefined ? x : 0;
+    this.x = x;
 
     // @public {number} - The Y coordinate of the vector.
-    this.y = y !== undefined ? y : 0;
+    this.y = y;
 
     // @public {number} - The Z coordinate of the vector.
-    this.z = z !== undefined ? z : 0;
+    this.z = z;
 
     // @public {number} - The W coordinate of the vector. Default is 1, for ease with homogeneous coordinates.
-    this.w = w !== undefined ? w : 1;
-
-    assert && assert( typeof this.x === 'number', 'x needs to be a number' );
-    assert && assert( typeof this.y === 'number', 'y needs to be a number' );
-    assert && assert( typeof this.z === 'number', 'z needs to be a number' );
-    assert && assert( typeof this.w === 'number', 'w needs to be a number' );
+    this.w = w;
   }
 
   dot.register( 'Vector4', Vector4 );
@@ -770,9 +772,9 @@ define( function( require ) {
      */
     roundSymmetric: function() {
       return this.setXYZW( dot.Util.roundSymmetric( this.x ),
-                           dot.Util.roundSymmetric( this.y ),
-                           dot.Util.roundSymmetric( this.z ),
-                           dot.Util.roundSymmetric( this.w ) );
+        dot.Util.roundSymmetric( this.y ),
+        dot.Util.roundSymmetric( this.z ),
+        dot.Util.roundSymmetric( this.w ) );
     }
   } );
 

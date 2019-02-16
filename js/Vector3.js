@@ -22,9 +22,9 @@ define( function( require ) {
    * @constructor
    * @public
    *
-   * @param {number} x - X coordinate, defaults to 0 if not provided
-   * @param {number} y - Y coordinate, defaults to 0 if not provided
-   * @param {number} z - Z coordinate, defaults to 0 if not provided
+   * @param {number} x - X coordinate
+   * @param {number} y - Y coordinate
+   * @param {number} z - Z coordinate
    */
   function Vector3( x, y, z ) {
 
