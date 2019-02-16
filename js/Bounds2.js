@@ -22,7 +22,7 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
 
   // Temporary instances to be used in the transform method.
-  var scratchVector2 = new dot.Vector2();
+  var scratchVector2 = new dot.Vector2( 0, 0 );
 
   /**
    * Creates a 2-dimensional bounds (bounding box).

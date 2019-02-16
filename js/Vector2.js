@@ -22,19 +22,18 @@ define( function( require ) {
    * @constructor
    * @public
    *
-   * @param {number} [x] - X coordinate, defaults to 0 if not provided
-   * @param {number} [y] - Y coordinate, defaults to 0 if not provided
+   * @param {number} x - X coordinate
+   * @param {number} y - Y coordinate
    */
   function Vector2( x, y ) {
+    assert && assert( typeof x === 'number', 'x needs to be a number' );
+    assert && assert( typeof y === 'number', 'y needs to be a number' );
 
     // @public {number} - The X coordinate of the vector.
-    this.x = x !== undefined ? x : 0;
+    this.x = x;
 
     // @public {number} - The Y coordinate of the vector.
-    this.y = y !== undefined ? y : 0;
-
-    assert && assert( typeof this.x === 'number', 'x needs to be a number' );
-    assert && assert( typeof this.y === 'number', 'y needs to be a number' );
+    this.y = y;
   }
 
   dot.register( 'Vector2', Vector2 );
@@ -886,7 +885,7 @@ define( function( require ) {
      * @returns {Vector2}
      */
     createPolar: function( magnitude, angle ) {
-      return new Vector2().setPolar( magnitude, angle );
+      return new Vector2( 0, 0 ).setPolar( magnitude, angle );
     },
 
     /**
