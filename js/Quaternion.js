@@ -131,7 +131,7 @@ define( function( require ) {
      * @returns {Vector3}
      */
     timesVector3: function( v ) {
-      if ( v.magnitude() === 0 ) {
+      if ( v.magnitude === 0 ) {
         return new dot.Vector3( 0, 0, 0 );
       }
 
@@ -149,8 +149,12 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    magnitude: function() {
+    getMagnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
+    },
+
+    get magnitude() {
+      return this.getMagnitude();
     },
 
     /**
@@ -170,7 +174,7 @@ define( function( require ) {
      * @returns {Quaternion}
      */
     normalized: function() {
-      var magnitude = this.magnitude();
+      var magnitude = this.magnitude;
       assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude quaternion' );
       return this.timesScalar( 1 / magnitude );
     },

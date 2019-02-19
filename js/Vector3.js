@@ -55,8 +55,11 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    magnitude: function() {
+    getMagnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
+    },
+    get magnitude() {
+      return this.getMagnitude();
     },
 
     /**
@@ -251,7 +254,7 @@ define( function( require ) {
      * @returns {Vector3}
      */
     normalized: function() {
-      var mag = this.magnitude();
+      var mag = this.magnitude;
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
@@ -583,7 +586,7 @@ define( function( require ) {
      * @returns {Vector3}
      */
     setMagnitude: function( magnitude ) {
-      var scale = magnitude / this.magnitude();
+      var scale = magnitude / this.magnitude;
       return this.multiplyScalar( scale );
     },
 
@@ -757,7 +760,7 @@ define( function( require ) {
      * @returns {Vector3}
      */
     normalize: function() {
-      var mag = this.magnitude();
+      var mag = this.magnitude;
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }

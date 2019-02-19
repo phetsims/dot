@@ -71,8 +71,12 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    magnitude: function() {
+    getMagnitude: function() {
       return Math.sqrt( this.magnitudeSquared() );
+    },
+
+    get magnitude() {
+      return this.getMagnitude();
     },
 
     /**
@@ -177,7 +181,7 @@ define( function( require ) {
      * @returns {Complex}
      */
     sqrtOf: function() {
-      var mag = this.magnitude();
+      var mag = this.magnitude;
       return new Complex( Math.sqrt( ( mag + this.real ) / 2 ),
         ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
     },
@@ -395,7 +399,7 @@ define( function( require ) {
      * @returns {Complex}
      */
     sqrt: function() {
-      var mag = this.magnitude();
+      var mag = this.magnitude;
       return this.setRealImaginary( Math.sqrt( ( mag + this.real ) / 2 ),
         ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
     },

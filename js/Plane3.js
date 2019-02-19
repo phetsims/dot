@@ -24,7 +24,7 @@ define( function( require ) {
     this.normal = normal; // @public (read-only)
     this.distance = distance; // @public (read-only)
 
-    assert && assert( Math.abs( normal.magnitude() - 1 ) < 0.01, 'the normal vector must be a unit vector' );
+    assert && assert( Math.abs( normal.magnitude - 1 ) < 0.01, 'the normal vector must be a unit vector' );
   }
 
   dot.register( 'Plane3', Plane3 );
@@ -59,7 +59,7 @@ define( function( require ) {
    */
   Plane3.fromTriangle = function( a, b, c ) {
     var normal = ( c.minus( a ) ).cross( b.minus( a ) );
-    if ( normal.magnitude() === 0 ) {
+    if ( normal.magnitude === 0 ) {
       return null;
     }
     normal.normalize();

@@ -224,7 +224,7 @@ define( function( require ) {
     },
     get translation() { return this.getTranslation(); },
 
-    // returns a vector that is equivalent to ( T(1,0,0).magnitude(), T(0,1,0).magnitude(), T(0,0,1).magnitude() )
+    // returns a vector that is equivalent to ( T(1,0,0).magnitude, T(0,1,0).magnitude, T(0,0,1).magnitude )
     // where T is a relative transform
     getScaleVector: function() {
       var m0003 = this.m00() + this.m03();

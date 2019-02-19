@@ -23,7 +23,7 @@ define( function( require ) {
     this.position = position;  // @public (read-only)
     this.direction = direction; // @public (read-only)
 
-    assert && assert( Math.abs( direction.magnitude() - 1 ) < 0.01 , 'the direction must be a unit vector');
+    assert && assert( Math.abs( direction.magnitude - 1 ) < 0.01, 'the direction must be a unit vector' );
   }
 
   dot.register( 'Ray3', Ray3 );
