@@ -34,10 +34,8 @@ define( function( require ) {
     /**
      * @override
      * @public
-     * @param {*} instance
-     * @returns {boolean}
      */
-    isInstance: function( instance ) { return instance instanceof Vector2; },
+    validator: { valueType: Vector2 },
 
 
     /**
