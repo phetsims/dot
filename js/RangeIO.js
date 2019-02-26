@@ -13,9 +13,7 @@ define( function( require ) {
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Range = require( 'DOT/Range' );
-
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var validate = require( 'AXON/validate' );
 
   /**
    * @param {Range} range
@@ -23,12 +21,12 @@ define( function( require ) {
    * @constructor
    */
   function RangeIO( range, phetioID ) {
-    assert && assertInstanceOf( range, Range );
     ObjectIO.call( this, range, phetioID );
   }
 
   phetioInherit( ObjectIO, 'RangeIO', RangeIO, {}, {
     documentation: 'A range with "min" and a "max" members.',
+    validator: { valueType: Range },
 
     /**
      * Encodes a Range instance to a state.
@@ -36,7 +34,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( range ) {
-      assert && assertInstanceOf( range, Range );
+      validate( range, this.validator );
       return { min: range.min, max: range.max };
     },
 

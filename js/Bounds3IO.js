@@ -14,9 +14,7 @@ define( function( require ) {
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
-
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var validate = require( 'AXON/validate' );
 
   /**
    * @param {Bounds3} bounds3
@@ -24,12 +22,12 @@ define( function( require ) {
    * @constructor
    */
   function Bounds3IO( bounds3, phetioID ) {
-    assert && assertInstanceOf( bounds3, Bounds3 );
     ObjectIO.call( this, bounds3, phetioID );
   }
 
   phetioInherit( ObjectIO, 'Bounds3IO', Bounds3IO, {}, {
     documentation: 'a 3-dimensional bounds (bounding box)',
+    validator: { valueType: Bounds3 },
 
     /**
      * Encodes a Bounds3 instance to a state.
@@ -38,7 +36,7 @@ define( function( require ) {
      * @override
      */
     toStateObject: function( bounds3 ) {
-      assert && assertInstanceOf( bounds3, Bounds3 );
+      validate( bounds3, this.validator );
       return {
         minX: bounds3.minX,
         minY: bounds3.minY,

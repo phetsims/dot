@@ -14,9 +14,7 @@ define( function( require ) {
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
   var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Vector3 = require( 'DOT/Vector3' );
-
-  // ifphetio
-  var assertInstanceOf = require( 'ifphetio!PHET_IO/assertInstanceOf' );
+  var validate = require( 'AXON/validate' );
 
   /**
    * @param {Vector3} vector3
@@ -24,12 +22,12 @@ define( function( require ) {
    * @constructor
    */
   function Vector3IO( vector3, phetioID ) {
-    assert && assertInstanceOf( vector3, Vector3 );
     ObjectIO.call( this, vector3, phetioID );
   }
 
   phetioInherit( ObjectIO, 'Vector3IO', Vector3IO, {}, {
     documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
+    validator: { valueType: Vector3 },
 
     /**
      * Encodes a Vector3 instance to a state.
@@ -37,7 +35,7 @@ define( function( require ) {
      * @returns {Object}
      */
     toStateObject: function( vector3 ) {
-      assert && assertInstanceOf( vector3, Vector3 );
+      validate( vector3, this.validator );
       return { x: vector3.x, y: vector3.y, z: vector3.z };
     },
 
