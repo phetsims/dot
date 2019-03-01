@@ -458,8 +458,12 @@ define( function( require ) {
      *
      * @returns {Vector2}
      */
-    perpendicular: function() {
+    getPerpendicular: function() {
       return new Vector2( this.y, -this.x );
+    },
+
+    get perpendicular() {
+      return this.getPerpendicular();
     },
 
     /**
