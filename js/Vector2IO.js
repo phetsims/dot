@@ -34,7 +34,6 @@ define( function( require ) {
      */
     validator: { valueType: Vector2 },
 
-
     /**
      * Encodes a Vector2 instance to a state.
      * @param {Vector2} vector2
