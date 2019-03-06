@@ -22,11 +22,10 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( initialValue, options ) {
-      options = _.extend( {
+      super( initialValue, _.extend( {
         valueType: Vector2,
         phetioType: PropertyIO( Vector2IO )
-      } );
-      super( initialValue, options );
+      }, options ) );
     }
   }
 
