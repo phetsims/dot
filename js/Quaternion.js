@@ -150,9 +150,8 @@ define( function( require ) {
      * @returns {number}
      */
     getMagnitude: function() {
-      return Math.sqrt( this.magnitudeSquared() );
+      return Math.sqrt( this.magnitudeSquared );
     },
-
     get magnitude() {
       return this.getMagnitude();
     },
@@ -163,8 +162,11 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    magnitudeSquared: function() {
+    getMagnitudeSquared: function() {
       return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+    },
+    get magnitudeSquared() {
+      return this.getMagnitudeSquared();
     },
 
     /**
@@ -199,7 +201,7 @@ define( function( require ) {
     toRotationMatrix: function() {
       // see http://en.wikipedia.org/wiki/Rotation_matrix#Quaternion
 
-      var norm = this.magnitudeSquared();
+      var norm = this.magnitudeSquared;
       var flip = ( norm === 1 ) ? 2 : ( norm > 0 ) ? 2 / norm : 0;
 
       var xx = this.x * this.x * flip;

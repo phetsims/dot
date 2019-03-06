@@ -56,7 +56,7 @@ define( function( require ) {
      * @returns {number}
      */
     getMagnitude: function() {
-      return Math.sqrt( this.magnitudeSquared() );
+      return Math.sqrt( this.magnitudeSquared );
     },
     get magnitude() {
       return this.getMagnitude();
@@ -68,8 +68,11 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    magnitudeSquared: function() {
+    getMagnitudeSquared: function() {
       return this.dot( this );
+    },
+    get magnitudeSquared() {
+      return this.getMagnitudeSquared();
     },
 
     /**

@@ -72,9 +72,8 @@ define( function( require ) {
      * @returns {number}
      */
     getMagnitude: function() {
-      return Math.sqrt( this.magnitudeSquared() );
+      return Math.sqrt( this.magnitudeSquared );
     },
-
     get magnitude() {
       return this.getMagnitude();
     },
@@ -85,10 +84,12 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    magnitudeSquared: function() {
+    getMagnitudeSquared: function() {
       return this.real * this.real + this.imaginary * this.imaginary;
     },
-
+    get magnitudeSquared() {
+      return this.getMagnitudeSquared();
+    },
 
     /**
      * Exact equality comparison between this Complex and another Complex.
@@ -166,7 +167,7 @@ define( function( require ) {
      * @returns {Complex}
      */
     dividedBy: function( c ) {
-      var cMag = c.magnitudeSquared();
+      var cMag = c.magnitudeSquared;
       return new Complex(
         ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
         ( this.imaginary * c.real - this.real * c.imaginary ) / cMag
@@ -362,7 +363,7 @@ define( function( require ) {
      * @returns {Complex}
      */
     divide: function( c ) {
-      var cMag = c.magnitudeSquared();
+      var cMag = c.magnitudeSquared;
       return this.setRealImaginary(
         ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
         ( this.imaginary * c.real - this.real * c.imaginary ) / cMag

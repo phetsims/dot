@@ -62,7 +62,7 @@ define( function( require ) {
      * @returns {number}
      */
     getMagnitude: function() {
-      return Math.sqrt( this.magnitudeSquared() );
+      return Math.sqrt( this.magnitudeSquared );
     },
 
     get magnitude() {
@@ -75,8 +75,11 @@ define( function( require ) {
      *
      * @returns {number}
      */
-    magnitudeSquared: function() {
-      this.dot( this );
+    getMagnitudeSquared: function() {
+      return this.dot( this );
+    },
+    get magnitudeSquared() {
+      return this.getMagnitudeSquared();
     },
 
     /**
@@ -116,7 +119,7 @@ define( function( require ) {
      * @returns {number}
      */
     distanceSquared: function( point ) {
-      return this.minus( point ).magnitudeSquared();
+      return this.minus( point ).magnitudeSquared;
     },
 
     /**
