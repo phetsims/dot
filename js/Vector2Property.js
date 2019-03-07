@@ -22,6 +22,10 @@ define( require => {
      * @param {Object} [options]
      */
     constructor( initialValue, options ) {
+
+      assert && assert( !options || !options.hasOwnProperty( 'valueType' ), 'valueType is set by BooleanProperty' );
+      assert && assert( !options || !options.hasOwnProperty( 'phetioType' ), 'phetioType is set by BooleanProperty' );
+
       super( initialValue, _.extend( {
         valueType: Vector2,
         phetioType: PropertyIO( Vector2IO )
