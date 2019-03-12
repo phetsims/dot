@@ -23,13 +23,19 @@ define( require => {
      */
     constructor( initialValue, options ) {
 
-      assert && assert( !options || !options.hasOwnProperty( 'valueType' ), 'valueType is set by BooleanProperty' );
-      assert && assert( !options || !options.hasOwnProperty( 'phetioType' ), 'phetioType is set by BooleanProperty' );
+      // client cannot specify superclass options that are controlled by Vector2Property
+      if ( options ) {
+        assert && assert( !options.hasOwnProperty( 'valueType' ), 'Vector2Property sets valueType' );
+        assert && assert( !options.hasOwnProperty( 'phetioType' ), 'Vector2Property sets phetioType' );
+      }
 
-      super( initialValue, _.extend( {
+      // Fill in superclass options that are controlled by Vector2Property.
+      options = _.extend( {
         valueType: Vector2,
         phetioType: PropertyIO( Vector2IO )
-      }, options ) );
+      }, options );
+
+      super( initialValue, options );
     }
   }
 
