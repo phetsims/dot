@@ -1,7 +1,7 @@
 // Copyright 2019, University of Colorado Boulder
 
 /**
- * Convenience subtype of Property that takes only Vector2 values (no null values)
+ * Property whose value must be a Vector2.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
