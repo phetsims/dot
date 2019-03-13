@@ -1425,7 +1425,8 @@ define( function( require ) {
   } );
 
   Poolable.mixInto( Bounds2, {
-    initialize: Bounds2.prototype.setMinMax
+    initialize: Bounds2.prototype.setMinMax,
+    defaultArguments: [ Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ]
   } );
 
   /**
