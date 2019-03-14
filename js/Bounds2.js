@@ -1424,11 +1424,6 @@ define( function( require ) {
     }
   } );
 
-  Poolable.mixInto( Bounds2, {
-    initialize: Bounds2.prototype.setMinMax,
-    defaultArguments: [ Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ]
-  } );
-
   /**
    * A contant Bounds2 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".
    * @public
@@ -1456,6 +1451,13 @@ define( function( require ) {
    * @constant {Bounds2} EVERYTHING
    */
   Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
+
+  Poolable.mixInto( Bounds2, {
+    initialize: Bounds2.prototype.setMinMax,
+
+    // set default arguments to match Bounds2.NOTHING
+    defaultArguments: [ Bounds2.NOTHING.minX, Bounds2.NOTHING.minY, Bounds2.NOTHING.maxX, Bounds2.NOTHING.maxY ]
+  } );
 
   function catchImmutableSetterLowHangingFruit( bounds ) {
     bounds.setMinMax = function() { throw new Error( 'Attempt to set \"setMinMax\" of an immutable Bounds2 object' ); };
