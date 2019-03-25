@@ -23,6 +23,7 @@ define( function( require ) {
   require( 'DOT/Transform3Tests' );
   require( 'DOT/LinearFunctionTests' );
   require( 'DOT/Vector2Tests' );
+  require( 'DOT/Vector2PropertyTests' );
 
   // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
   QUnit.start();
