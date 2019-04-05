@@ -16,6 +16,7 @@ define( function( require ) {
   require( 'DOT/Matrix3Tests' );
   require( 'DOT/MatrixOps3Tests' );
   require( 'DOT/OpenRangeTests' );
+  require( 'DOT/PiecewiseLinearFunctionTests' );
   require( 'DOT/RangeTests' );
   require( 'DOT/RangeWithValueTests' );
   require( 'DOT/StatsTests' );
