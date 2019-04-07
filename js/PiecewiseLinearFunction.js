@@ -2,6 +2,8 @@
 
 /**
  * Evaluates points on a piecewise linear function.
+ *
+ * @author Sam Reid (PhET Interactive Simulations)
  */
 define( require => {
   'use strict';
