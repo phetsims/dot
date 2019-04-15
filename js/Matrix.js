@@ -48,7 +48,7 @@ define( function( require ) {
       }
 
       // entries stored in row-major format
-      this.entries = new ArrayType(size);
+      this.entries = new ArrayType( size );
 
       if ( isArray( filler ) ) {
         assert && assert( filler.length === size );
@@ -185,7 +185,7 @@ define( function( require ) {
     },
 
     norm2: function() {
-      return (new dot.SingularValueDecomposition( this ).norm2());
+      return ( new dot.SingularValueDecomposition( this ).norm2() );
     },
 
     normInf: function() {
@@ -234,10 +234,9 @@ define( function( require ) {
 
     plusEquals: function( matrix ) {
       this.checkMatrixDimensions( matrix );
-      var result = new Matrix( this.m, this.n );
       for ( var i = 0; i < this.m; i++ ) {
         for ( var j = 0; j < this.n; j++ ) {
-          var index = result.index( i, j );
+          var index = this.index( i, j );
           this.entries[ index ] = this.entries[ index ] + matrix.entries[ index ];
         }
       }
@@ -387,8 +386,8 @@ define( function( require ) {
     },
 
     solve: function( matrix ) {
-      return (this.m === this.n ? (new dot.LUDecomposition( this )).solve( matrix ) :
-              (new dot.QRDecomposition( this )).solve( matrix ));
+      return ( this.m === this.n ? ( new dot.LUDecomposition( this ) ).solve( matrix ) :
+               ( new dot.QRDecomposition( this ) ).solve( matrix ) );
     },
 
     solveTranspose: function( matrix ) {
@@ -480,7 +479,7 @@ define( function( require ) {
     var result = new Matrix( m, n );
     for ( var i = 0; i < m; i++ ) {
       for ( var j = 0; j < n; j++ ) {
-        result.entries[ result.index( i, j ) ] = (i === j ? 1.0 : 0.0);
+        result.entries[ result.index( i, j ) ] = ( i === j ? 1.0 : 0.0 );
       }
     }
     return result;
