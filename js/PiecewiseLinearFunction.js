@@ -48,11 +48,16 @@ define( require => {
         const arrayElement = array[ i ];
         const delta = x - arrayElement;
         const abs = Math.abs( delta );
+
+        // Check for exact match
+        if ( arrayElement === x ) {
+          return array[ i + 1 ];
+        }
         if ( arrayElement <= x && abs < lowerDelta ) {
           lowerIndex = i;
           lowerDelta = abs;
         }
-        else if ( arrayElement >= x && abs < upperDelta ) {
+        if ( arrayElement >= x && abs < upperDelta ) {
           upperIndex = i;
           upperDelta = abs;
         }
