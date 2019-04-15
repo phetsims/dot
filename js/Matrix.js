@@ -243,6 +243,27 @@ define( function( require ) {
       return this;
     },
 
+    /**
+     * A linear interpolation between this Matrix (ratio=0) and another Matrix (ratio=1).
+     * @public
+     *
+     * @param {Matrix} matrix
+     * @param {number} ratio - Not necessarily constrained in [0, 1]
+     * @returns {Matrix}
+     */
+    blendEquals: function( matrix, ratio ) {
+      this.checkMatrixDimensions( matrix );
+      for ( let i = 0; i < this.m; i++ ) {
+        for ( let j = 0; j < this.n; j++ ) {
+          const index = this.index( i, j );
+          const a = this.entries[ index ];
+          const b = matrix.entries[ index ];
+          this.entries[ index ] = a + ( b - a ) * ratio;
+        }
+      }
+      return this;
+    },
+
     minus: function( matrix ) {
       this.checkMatrixDimensions( matrix );
       var result = new Matrix( this.m, this.n );
