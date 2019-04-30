@@ -141,6 +141,19 @@ define( function( require ) {
     },
 
     /**
+     * Randomly selects a double in the range [min,max).
+     * @param {number} min
+     * @param {number} max
+     * @returns {number}
+     */
+    nextDoubleBetween: function ( min, max ) {
+      assert && assert( min < max, 'min must be < max' );
+      const value = min + this.nextDouble() * ( max - min );
+      assert && assert( value >= min && value < max, `value out of range: ${value}` );
+      return value;
+    },
+
+    /**
      * Returns the next gaussian-distributed random number from this random number generator sequence.
      * The distribution of the random numbers is gaussian, with a mean = 0 and standard deviation = 1
      * @public
