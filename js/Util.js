@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2019, University of Colorado Boulder
 /* eslint-disable bad-sim-text */ // Needs Math.round to implement the symmetric rounding
 
 /**

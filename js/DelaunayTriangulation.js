@@ -1,4 +1,4 @@
-// Copyright 2015, University of Colorado Boulder
+// Copyright 2017, University of Colorado Boulder
 
 /**
  * Handles constrained Delaunay triangulation based on "Sweep-line algorithm for constrained Delaunay triangulation"

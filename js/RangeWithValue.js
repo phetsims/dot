@@ -1,4 +1,4 @@
-// Copyright 2013-2019, University of Colorado Boulder
+// Copyright 2016-2019, University of Colorado Boulder
 
 /**
  * A numeric range with a required default value.

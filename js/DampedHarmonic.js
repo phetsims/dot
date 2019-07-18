@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2017, University of Colorado Boulder
 
 /**
  * Solves for a specific solution of a damped harmonic oscillator

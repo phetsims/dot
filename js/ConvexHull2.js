@@ -1,4 +1,4 @@
-// Copyright 2013-2015, University of Colorado Boulder
+// Copyright 2013-2019, University of Colorado Boulder
 /* eslint-disable bad-sim-text */ // Needs randomness, and can't use joist's randomness source
 
 /**

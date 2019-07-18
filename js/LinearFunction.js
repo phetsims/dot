@@ -1,4 +1,4 @@
-// Copyright 2013-2014, University of Colorado Boulder
+// Copyright 2013-2016, University of Colorado Boulder
 
 /**
  * Function for doing a linear mapping between two domains ('a' and 'b').
