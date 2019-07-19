@@ -1,4 +1,4 @@
-// Copyright 2013-2016, University of Colorado Boulder
+// Copyright 2013-2019, University of Colorado Boulder
 
 /**
  * An immutable permutation that can permute an array

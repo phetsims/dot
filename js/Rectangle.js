@@ -1,4 +1,4 @@
-// Copyright 2013-2017, University of Colorado Boulder
+// Copyright 2013-2019, University of Colorado Boulder
 
 /**
  * A 2D rectangle-shaped bounded area, with a convenience name and constructor. Totally functionally
