@@ -12,24 +12,14 @@ define( function( require ) {
   // modules
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var Random = require( 'DOT/Random' );
 
-  /**
-   * @param {Random} random
-   * @param {string} phetioID
-   * @constructor
-   */
-  function RandomIO( random, phetioID ) {
-    ObjectIO.call( this, random, phetioID );
-  }
+  class RandomIO extends ObjectIO {}
 
-  phetioInherit( ObjectIO, 'RandomIO', RandomIO, {}, {
-    documentation: 'Generates pseudorandom values',
-    validator: { valueType: Random }
-  } );
+  RandomIO.documentation = 'Generates pseudorandom values';
+  RandomIO.validator = { valueType: Random };
+  RandomIO.typeName = 'RandomIO';
+  ObjectIO.validateSubtype( RandomIO );
 
-  dot.register( 'RandomIO', RandomIO );
-
-  return RandomIO;
+  return dot.register( 'RandomIO', RandomIO );
 } );

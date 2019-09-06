@@ -13,21 +13,9 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var validate = require( 'AXON/validate' );
 
-  /**
-   * @param {Bounds2} bounds2
-   * @param {string} phetioID
-   * @constructor
-   */
-  function Bounds2IO( bounds2, phetioID ) {
-    ObjectIO.call( this, bounds2, phetioID );
-  }
-
-  phetioInherit( ObjectIO, 'Bounds2IO', Bounds2IO, {}, {
-    documentation: 'a 2-dimensional bounds rectangle',
-    validator: { valueType: Bounds2 },
+  class Bounds2IO extends ObjectIO {
 
     /**
      * Encodes a Bounds2 instance to a state.
@@ -35,7 +23,7 @@ define( function( require ) {
      * @returns {Object}
      * @override
      */
-    toStateObject: function( bounds2 ) {
+    static toStateObject( bounds2 ) {
       validate( bounds2, this.validator );
       return {
         minX: bounds2.minX,
@@ -44,7 +32,7 @@ define( function( require ) {
         maxX: bounds2.maxX,
         maxY: bounds2.maxY
       };
-    },
+    }
 
     /**
      * Decodes a state into a Bounds2.
@@ -52,15 +40,18 @@ define( function( require ) {
      * @returns {Bounds2}
      * @override
      */
-    fromStateObject: function( stateObject ) {
+    static fromStateObject( stateObject ) {
       return new Bounds2(
         stateObject.minX, stateObject.minY,
         stateObject.maxX, stateObject.maxY
       );
     }
-  } );
+  }
 
-  dot.register( 'Bounds2IO', Bounds2IO );
+  Bounds2IO.documentation = 'a 2-dimensional bounds rectangle';
+  Bounds2IO.validator = { valueType: Bounds2 };
+  Bounds2IO.typeName = 'Bounds2IO';
+  ObjectIO.validateSubtype( Bounds2IO );
 
-  return Bounds2IO;
+  return dot.register( 'Bounds2IO', Bounds2IO );
 } );

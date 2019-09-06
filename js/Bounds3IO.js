@@ -13,21 +13,10 @@ define( function( require ) {
   var Bounds3 = require( 'DOT/Bounds3' );
   var dot = require( 'DOT/dot' );
   var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var phetioInherit = require( 'TANDEM/phetioInherit' );
   var validate = require( 'AXON/validate' );
 
-  /**
-   * @param {Bounds3} bounds3
-   * @param {string} phetioID
-   * @constructor
-   */
-  function Bounds3IO( bounds3, phetioID ) {
-    ObjectIO.call( this, bounds3, phetioID );
-  }
+  class Bounds3IO extends ObjectIO {
 
-  phetioInherit( ObjectIO, 'Bounds3IO', Bounds3IO, {}, {
-    documentation: 'a 3-dimensional bounds (bounding box)',
-    validator: { valueType: Bounds3 },
 
     /**
      * Encodes a Bounds3 instance to a state.
@@ -35,7 +24,7 @@ define( function( require ) {
      * @returns {Object}
      * @override
      */
-    toStateObject: function( bounds3 ) {
+    static toStateObject( bounds3 ) {
       validate( bounds3, this.validator );
       return {
         minX: bounds3.minX,
@@ -46,7 +35,7 @@ define( function( require ) {
         maxY: bounds3.maxY,
         maxZ: bounds3.maxZ
       };
-    },
+    }
 
     /**
      * Decodes a state into a Bounds3.
@@ -54,16 +43,19 @@ define( function( require ) {
      * @returns {Bounds3}
      * @override
      */
-    fromStateObject: function( stateObject ) {
+    static fromStateObject( stateObject ) {
       return new Bounds3(
         stateObject.minX, stateObject.minY, stateObject.minZ,
         stateObject.maxX, stateObject.maxY, stateObject.maxZ
       );
     }
-  } );
+  }
 
-  dot.register( 'Bounds3IO', Bounds3IO );
+  Bounds3IO.documentation = 'a 3-dimensional bounds (bounding box)';
+  Bounds3IO.validator = { valueType: Bounds3 };
+  Bounds3IO.typeName = 'Bounds3IO';
+  ObjectIO.validateSubtype( Bounds3IO );
 
-  return Bounds3IO;
+  return dot.register( 'Bounds3IO', Bounds3IO );
 } );
 
