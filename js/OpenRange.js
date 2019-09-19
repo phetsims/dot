@@ -112,8 +112,8 @@ define( require => {
      * @returns {string}
      */
     toString: function() {
-      var leftBracket = this.openMin ? '(' : '[';
-      var rightBracket = this.openMax ? ')' : ']';
+      const leftBracket = this.openMin ? '(' : '[';
+      const rightBracket = this.openMax ? ')' : ']';
       return '[Range ' + leftBracket + 'min:' + this.min + ' max:' + this.max + rightBracket + ']';
     },
 

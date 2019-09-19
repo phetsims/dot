@@ -52,7 +52,7 @@ define( require => {
       this.numSamples = 0;
 
       // Need to clear all of the samples
-      for ( var i = 0; i < this.windowSize; i++ ) {
+      for ( let i = 0; i < this.windowSize; i++ ) {
         this.samples[ i ] = 0;
       }
     },

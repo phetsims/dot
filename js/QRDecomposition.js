@@ -11,7 +11,7 @@ define( require => {
 
   const dot = require( 'DOT/dot' );
 
-  var ArrayType = window.Float64Array || Array;
+  const ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
@@ -20,22 +20,22 @@ define( require => {
 
     // TODO: size!
     this.QR = matrix.getArrayCopy();
-    var QR = this.QR;
+    const QR = this.QR;
     this.m = matrix.getRowDimension();
-    var m = this.m;
+    const m = this.m;
     this.n = matrix.getColumnDimension();
-    var n = this.n;
+    const n = this.n;
 
     this.Rdiag = new ArrayType( n );
 
-    var i;
-    var j;
-    var k;
+    let i;
+    let j;
+    let k;
 
     // Main loop.
     for ( k = 0; k < n; k++ ) {
       // Compute 2-norm of k-th column without under/overflow.
-      var nrm = 0;
+      let nrm = 0;
       for ( i = k; i < m; i++ ) {
         nrm = dot.Matrix.hypot( nrm, QR[ this.matrix.index( i, k ) ] );
       }
@@ -52,7 +52,7 @@ define( require => {
 
         // Apply transformation to remaining columns.
         for ( j = k + 1; j < n; j++ ) {
-          var s = 0.0;
+          let s = 0.0;
           for ( i = k; i < m; i++ ) {
             s += QR[ this.matrix.index( i, k ) ] * QR[ this.matrix.index( i, j ) ];
           }
@@ -65,13 +65,13 @@ define( require => {
       this.Rdiag[ k ] = -nrm;
     }
   };
-  var QRDecomposition = dot.QRDecomposition;
+  const QRDecomposition = dot.QRDecomposition;
 
   QRDecomposition.prototype = {
     constructor: QRDecomposition,
 
     isFullRank: function() {
-      for ( var j = 0; j < this.n; j++ ) {
+      for ( let j = 0; j < this.n; j++ ) {
         if ( this.Rdiag[ j ] === 0 ) {
           return false;
         }
@@ -80,9 +80,9 @@ define( require => {
     },
 
     getH: function() {
-      var result = new dot.Matrix( this.m, this.n );
-      for ( var i = 0; i < this.m; i++ ) {
-        for ( var j = 0; j < this.n; j++ ) {
+      const result = new dot.Matrix( this.m, this.n );
+      for ( let i = 0; i < this.m; i++ ) {
+        for ( let j = 0; j < this.n; j++ ) {
           if ( i >= j ) {
             result.entries[ result.index( i, j ) ] = this.QR[ this.matrix.index( i, j ) ];
           }
@@ -95,9 +95,9 @@ define( require => {
     },
 
     getR: function() {
-      var result = new dot.Matrix( this.n, this.n );
-      for ( var i = 0; i < this.n; i++ ) {
-        for ( var j = 0; j < this.n; j++ ) {
+      const result = new dot.Matrix( this.n, this.n );
+      for ( let i = 0; i < this.n; i++ ) {
+        for ( let j = 0; j < this.n; j++ ) {
           if ( i < j ) {
             result.entries[ result.index( i, j ) ] = this.QR[ this.matrix.index( i, j ) ];
           }
@@ -113,10 +113,10 @@ define( require => {
     },
 
     getQ: function() {
-      var i;
-      var j;
-      var k;
-      var result = new dot.Matrix( this.m, this.n );
+      let i;
+      let j;
+      let k;
+      const result = new dot.Matrix( this.m, this.n );
       for ( k = this.n - 1; k >= 0; k-- ) {
         for ( i = 0; i < this.m; i++ ) {
           result.entries[ result.index( i, k ) ] = 0.0;
@@ -124,7 +124,7 @@ define( require => {
         result.entries[ result.index( k, k ) ] = 1.0;
         for ( j = k; j < this.n; j++ ) {
           if ( this.QR[ this.matrix.index( k, k ) ] !== 0 ) {
-            var s = 0.0;
+            let s = 0.0;
             for ( i = k; i < this.m; i++ ) {
               s += this.QR[ this.matrix.index( i, k ) ] * result.entries[ result.index( i, j ) ];
             }
@@ -146,18 +146,18 @@ define( require => {
         throw new Error( 'Matrix is rank deficient.' );
       }
 
-      var i;
-      var j;
-      var k;
+      let i;
+      let j;
+      let k;
 
       // Copy right hand side
-      var nx = matrix.getColumnDimension();
-      var X = matrix.getArrayCopy();
+      const nx = matrix.getColumnDimension();
+      const X = matrix.getArrayCopy();
 
       // Compute Y = transpose(Q)*matrix
       for ( k = 0; k < this.n; k++ ) {
         for ( j = 0; j < nx; j++ ) {
-          var s = 0.0;
+          let s = 0.0;
           for ( i = k; i < this.m; i++ ) {
             s += this.QR[ this.matrix.index( i, k ) ] * X[ matrix.index( i, j ) ];
           }

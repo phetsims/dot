@@ -17,10 +17,10 @@ module.exports = function( grunt ) {
   'use strict';
 
   grunt.registerTask( 'doc-dot', 'Generates Documentation', function() {
-    var indexHTML = '';
-    var contentHTML = '';
+    let indexHTML = '';
+    let contentHTML = '';
 
-    var localTypeIds = {
+    const localTypeIds = {
       BinPacker: 'binPacker',
       Bin: 'binPacker-bin',
       Bounds2: 'bounds2',
@@ -54,21 +54,21 @@ module.exports = function( grunt ) {
       Vector4: 'vector4'
     };
 
-    var externalTypeURLs = {
+    const externalTypeURLs = {
       Events: '../../axon/doc#events',
       Shape: '../../kite/doc#shape'
     };
 
     function docFile( file, baseName, typeNames ) {
-      var codeFile = fs.readFileSync( file, 'utf8' );
-      var program = esprima.parse( codeFile, {
+      const codeFile = fs.readFileSync( file, 'utf8' );
+      const program = esprima.parse( codeFile, {
         attachComment: true
       } );
-      var doc = extractDocumentation( program );
+      const doc = extractDocumentation( program );
       if ( baseName === 'ConvexHull2' ) { // for testing
         // console.log( JSON.stringify( doc, null, 2 ) );
       }
-      var htmlDoc = documentationToHTML( doc, baseName, typeNames, localTypeIds, externalTypeURLs );
+      const htmlDoc = documentationToHTML( doc, baseName, typeNames, localTypeIds, externalTypeURLs );
 
       indexHTML += htmlDoc.indexHTML;
       contentHTML += htmlDoc.contentHTML;
@@ -87,9 +87,9 @@ module.exports = function( grunt ) {
     docFile( 'js/Vector3.js', 'Vector3', [ 'Vector3' ] );
     docFile( 'js/Vector4.js', 'Vector4', [ 'Vector4' ] );
 
-    var template = fs.readFileSync( 'doc/template.html', 'utf8' );
+    const template = fs.readFileSync( 'doc/template.html', 'utf8' );
 
-    var html = template.replace( '{{API_INDEX}}', indexHTML ).replace( '{{API_CONTENT}}', contentHTML );
+    let html = template.replace( '{{API_INDEX}}', indexHTML ).replace( '{{API_CONTENT}}', contentHTML );
 
     html = beautify_html( html, { indent_size: 2 } );
 

@@ -11,61 +11,61 @@ define( require => {
 
   const dot = require( 'DOT/dot' );
 
-  var ArrayType = window.Float64Array || Array;
+  const ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
   function SingularValueDecomposition( matrix ) {
     this.matrix = matrix;
 
-    var Arg = matrix;
+    const Arg = matrix;
 
     // Derived from LINPACK code.
     // Initialize.
-    var A = Arg.getArrayCopy();
+    const A = Arg.getArrayCopy();
     this.m = Arg.getRowDimension();
     this.n = Arg.getColumnDimension();
-    var m = this.m;
-    var n = this.n;
+    const m = this.m;
+    const n = this.n;
 
-    var min = Math.min;
-    var max = Math.max;
-    var pow = Math.pow;
-    var abs = Math.abs;
+    const min = Math.min;
+    const max = Math.max;
+    const pow = Math.pow;
+    const abs = Math.abs;
 
     /* Apparently the failing cases are only a proper subset of (m<n),
      so let's not throw error.  Correct fix to come later?
      if (m<n) {
      throw new IllegalArgumentException("Jama SVD only works for m >= n"); }
      */
-    var nu = min( m, n );
+    const nu = min( m, n );
     this.s = new ArrayType( min( m + 1, n ) );
-    var s = this.s;
+    const s = this.s;
     this.U = new ArrayType( m * nu );
-    var U = this.U;
+    const U = this.U;
     this.V = new ArrayType( n * n );
-    var V = this.V;
-    var e = new ArrayType( n );
-    var work = new ArrayType( m );
-    var wantu = true;
-    var wantv = true;
+    const V = this.V;
+    const e = new ArrayType( n );
+    const work = new ArrayType( m );
+    const wantu = true;
+    const wantv = true;
 
-    var i;
-    var j;
-    var k;
-    var t;
-    var f;
+    let i;
+    let j;
+    let k;
+    let t;
+    let f;
 
-    var cs;
-    var sn;
+    let cs;
+    let sn;
 
-    var hypot = dot.Matrix.hypot;
+    const hypot = dot.Matrix.hypot;
 
     // Reduce A to bidiagonal form, storing the diagonal elements
     // in s and the super-diagonal elements in e.
 
-    var nct = min( m - 1, n );
-    var nrt = max( 0, min( n - 2, m ) );
+    const nct = min( m - 1, n );
+    const nrt = max( 0, min( n - 2, m ) );
     for ( k = 0; k < max( nct, nrt ); k++ ) {
       if ( k < nct ) {
 
@@ -168,7 +168,7 @@ define( require => {
 
     // Set up the final bidiagonal matrix or order p.
 
-    var p = min( n, m + 1 );
+    let p = min( n, m + 1 );
     if ( nct < n ) {
       s[ nct ] = A[ nct * n + nct ];
     }
@@ -243,10 +243,10 @@ define( require => {
 
     // Main iteration loop for the singular values.
 
-    var pp = p - 1;
-    var iter = 0;
-    var eps = pow( 2.0, -52.0 );
-    var tiny = pow( 2.0, -966.0 );
+    const pp = p - 1;
+    let iter = 0;
+    const eps = pow( 2.0, -52.0 );
+    const tiny = pow( 2.0, -966.0 );
     while ( p > 0 ) {
       var kase;
 
@@ -365,15 +365,15 @@ define( require => {
 
           // Calculate the shift.
 
-          var scale = max( max( max( max( abs( s[ p - 1 ] ), abs( s[ p - 2 ] ) ), abs( e[ p - 2 ] ) ), abs( s[ k ] ) ), abs( e[ k ] ) );
-          var sp = s[ p - 1 ] / scale;
-          var spm1 = s[ p - 2 ] / scale;
-          var epm1 = e[ p - 2 ] / scale;
-          var sk = s[ k ] / scale;
-          var ek = e[ k ] / scale;
-          var b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
-          var c = (sp * epm1) * (sp * epm1);
-          var shift = 0.0;
+          const scale = max( max( max( max( abs( s[ p - 1 ] ), abs( s[ p - 2 ] ) ), abs( e[ p - 2 ] ) ), abs( s[ k ] ) ), abs( e[ k ] ) );
+          const sp = s[ p - 1 ] / scale;
+          const spm1 = s[ p - 2 ] / scale;
+          const epm1 = e[ p - 2 ] / scale;
+          const sk = s[ k ] / scale;
+          const ek = e[ k ] / scale;
+          const b = ((spm1 + sp) * (spm1 - sp) + epm1 * epm1) / 2.0;
+          const c = (sp * epm1) * (sp * epm1);
+          let shift = 0.0;
           if ( (b !== 0.0) || (c !== 0.0) ) {
             shift = Math.sqrt( b * b + c );
             if ( b < 0.0 ) {
@@ -382,7 +382,7 @@ define( require => {
             shift = c / (b + shift);
           }
           f = (sk + sp) * (sk - sp) + shift;
-          var g = sk * ek;
+          let g = sk * ek;
 
           // Chase zeros.
 
@@ -495,9 +495,9 @@ define( require => {
     },
 
     getS: function() {
-      var result = new dot.Matrix( this.n, this.n );
-      for ( var i = 0; i < this.n; i++ ) {
-        for ( var j = 0; j < this.n; j++ ) {
+      const result = new dot.Matrix( this.n, this.n );
+      for ( let i = 0; i < this.n; i++ ) {
+        for ( let j = 0; j < this.n; j++ ) {
           result.entries[ result.index( i, j ) ] = 0.0;
         }
         result.entries[ result.index( i, i ) ] = this.s[ i ];
@@ -515,10 +515,10 @@ define( require => {
 
     rank: function() {
       // changed to 23 from 52 (bits of mantissa), since we are using floats here!
-      var eps = Math.pow( 2.0, -23.0 );
-      var tol = Math.max( this.m, this.n ) * this.s[ 0 ] * eps;
-      var r = 0;
-      for ( var i = 0; i < this.s.length; i++ ) {
+      const eps = Math.pow( 2.0, -23.0 );
+      const tol = Math.max( this.m, this.n ) * this.s[ 0 ] * eps;
+      let r = 0;
+      for ( let i = 0; i < this.s.length; i++ ) {
         if ( this.s[ i ] > tol ) {
           r++;
         }
@@ -538,8 +538,8 @@ define( require => {
    * @returns {Matrix} - n x m
    */
   SingularValueDecomposition.pseudoinverse = function( matrix ) {
-    var svd = new SingularValueDecomposition( matrix );
-    var sigmaPseudoinverse = dot.Matrix.diagonalMatrix( svd.getSingularValues().map( function( value ) {
+    const svd = new SingularValueDecomposition( matrix );
+    const sigmaPseudoinverse = dot.Matrix.diagonalMatrix( svd.getSingularValues().map( function( value ) {
       if ( Math.abs( value ) < 1e-300 ) {
         return 0;
       }

@@ -43,7 +43,7 @@ define( require => {
       assert && assert( false, 'cannot specify seed and staticSeed, use one or the other' );
     }
 
-    var seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
+    const seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
     this.setSeed( seed );
   }
 
@@ -77,7 +77,7 @@ define( require => {
      * @returns {number} - an integer
      */
     nextInt: function( n ) {
-      var value = this.nextDouble() * n;
+      const value = this.nextDouble() * n;
       return value | 0; // convert to int by removing the decimal places
     },
 
@@ -94,7 +94,7 @@ define( require => {
       assert && assert( Util.isInteger( min ), 'min must be an integer: ' + min );
       assert && assert( Util.isInteger( max ), 'max must be an integer: ' + max );
 
-      var range = max - min;
+      const range = max - min;
       return this.nextInt( range + 1 ) + min;
     },
 
@@ -105,7 +105,7 @@ define( require => {
      */
     sample: function( array ) {
       assert && assert( array.length > 0, 'Array should have at least 1 item.' );
-      var index = this.nextIntBetween( 0, array.length - 1 );
+      const index = this.nextIntBetween( 0, array.length - 1 );
       return array[ index ];
     },
 
@@ -118,12 +118,12 @@ define( require => {
      */
     shuffle: function( array ) {
       assert && assert( array, 'Array should exist' );
-      var self = this;
-      var index = -1;
-      var result = new Array( array.length );
+      const self = this;
+      let index = -1;
+      const result = new Array( array.length );
 
       _.forEach( array, function( value ) {
-        var rand = self.nextIntBetween( 0, ++index );
+        const rand = self.nextIntBetween( 0, ++index );
         result[ index ] = result[ rand ];
         result[ rand ] = value;
       } );

@@ -15,18 +15,18 @@ define( require => {
   QUnit.module( 'BinPacker' );
 
   QUnit.test( 'Entire BinPacker allocation', function( assert ) {
-    var p = new BinPacker( new Bounds2( 0, 0, 1, 1 ) );
-    var bin = p.allocate( 1, 1 );
+    const p = new BinPacker( new Bounds2( 0, 0, 1, 1 ) );
+    const bin = p.allocate( 1, 1 );
     assert.ok( bin, 'Should have a bin' );
     assert.ok( !p.allocate( 1, 1 ), 'Should not be able to fit another bin' );
   } );
 
   QUnit.test( 'Many bins', function( assert ) {
     function checkNoOverlappingBins( array, containingBounds ) {
-      for ( var i = 0; i < array.length; i++ ) {
+      for ( let i = 0; i < array.length; i++ ) {
         if ( array[ i ] ) {
           assert.ok( array[ i ].bounds.intersection( containingBounds ).equals( array[ i ].bounds ), 'Bin containment in packer' );
-          for ( var j = 0; j < array.length; j++ ) {
+          for ( let j = 0; j < array.length; j++ ) {
             if ( array[ i ] && array[ j ] ) {
               assert.ok( !array[ i ].bounds.intersection( array[ j ] ).hasNonzeroArea(), 'Bin intersection' );
             }
@@ -35,11 +35,11 @@ define( require => {
       }
     }
 
-    var bounds = new Bounds2( 0, 0, 1, 1 );
+    const bounds = new Bounds2( 0, 0, 1, 1 );
 
     // manual selection
-    var p = new BinPacker( bounds );
-    var bins = [];
+    let p = new BinPacker( bounds );
+    let bins = [];
     bins.push( p.allocate( 0.5, 0.5 ) );
     bins.push( p.allocate( 0.7, 0.5 ) );
     bins.push( p.allocate( 0.25, 0.25 ) );
@@ -160,7 +160,7 @@ define( require => {
     }
 
     // once empty, ensure we can allocate the full thing
-    var fullBin = p.allocate( 1, 1 );
+    const fullBin = p.allocate( 1, 1 );
     assert.ok( fullBin, 'Allocation of full bin' );
   } );
 } );

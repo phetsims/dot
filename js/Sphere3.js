@@ -49,35 +49,35 @@ define( require => {
      * @returns {{ distance: number, hitPoint: Vector3, normal, fromOutside: boolean }| null}
      */
     intersect: function( ray, epsilon ) {
-      var raydir = ray.direction;
-      var pos = ray.position;
-      var centerToRay = pos.minus( this.center );
+      const raydir = ray.direction;
+      const pos = ray.position;
+      const centerToRay = pos.minus( this.center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
-      var tmp = raydir.dot( centerToRay );
-      var centerToRayDistSq = centerToRay.magnitudeSquared;
-      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - this.radius * this.radius );
+      const tmp = raydir.dot( centerToRay );
+      const centerToRayDistSq = centerToRay.magnitudeSquared;
+      const det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - this.radius * this.radius );
       if ( det < epsilon ) {
         // ray misses sphere entirely
         return null;
       }
 
-      var base = raydir.dot( this.center ) - raydir.dot( pos );
-      var sqt = Math.sqrt( det ) / 2;
+      const base = raydir.dot( this.center ) - raydir.dot( pos );
+      const sqt = Math.sqrt( det ) / 2;
 
       // the "first" entry point distance into the sphere. if we are inside the sphere, it is behind us
-      var ta = base - sqt;
+      const ta = base - sqt;
 
       // the "second" entry point distance
-      var tb = base + sqt;
+      const tb = base + sqt;
 
       if ( tb < epsilon ) {
         // sphere is behind ray, so don't return an intersection
         return null;
       }
 
-      var hitPositionB = ray.pointAtDistance( tb );
-      var normalB = hitPositionB.minus( this.center ).normalized();
+      const hitPositionB = ray.pointAtDistance( tb );
+      const normalB = hitPositionB.minus( this.center ).normalized();
 
       if ( ta < epsilon ) {
         // we are inside the sphere
@@ -91,8 +91,8 @@ define( require => {
       }
       else {
         // two possible hits
-        var hitPositionA = ray.pointAtDistance( ta );
-        var normalA = hitPositionA.minus( this.center ).normalized();
+        const hitPositionA = ray.pointAtDistance( ta );
+        const normalA = hitPositionA.minus( this.center ).normalized();
 
         // close hit, we have out => in
         return {
@@ -117,46 +117,46 @@ define( require => {
      *                                                                         results like { distance, hitPoint, normal, fromOutside }.
      */
     intersections: function( ray, epsilon ) {
-      var raydir = ray.direction;
-      var pos = ray.position;
-      var centerToRay = pos.minus( this.center );
+      const raydir = ray.direction;
+      const pos = ray.position;
+      const centerToRay = pos.minus( this.center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
-      var tmp = raydir.dot( centerToRay );
-      var centerToRayDistSq = centerToRay.magnitudeSquared;
-      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - this.radius * this.radius );
+      const tmp = raydir.dot( centerToRay );
+      const centerToRayDistSq = centerToRay.magnitudeSquared;
+      const det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - this.radius * this.radius );
       if ( det < epsilon ) {
         // ray misses sphere entirely
         return [];
       }
 
-      var base = raydir.dot( this.center ) - raydir.dot( pos );
-      var sqt = Math.sqrt( det ) / 2;
+      const base = raydir.dot( this.center ) - raydir.dot( pos );
+      const sqt = Math.sqrt( det ) / 2;
 
       // the "first" entry point distance into the sphere. if we are inside the sphere, it is behind us
-      var ta = base - sqt;
+      const ta = base - sqt;
 
       // the "second" entry point distance
-      var tb = base + sqt;
+      const tb = base + sqt;
 
       if ( tb < epsilon ) {
         // sphere is behind ray, so don't return an intersection
         return [];
       }
 
-      var hitPositionB = ray.pointAtDistance( tb );
-      var normalB = hitPositionB.minus( this.center ).normalized();
+      const hitPositionB = ray.pointAtDistance( tb );
+      const normalB = hitPositionB.minus( this.center ).normalized();
 
-      var hitPositionA = ray.pointAtDistance( ta );
-      var normalA = hitPositionA.minus( this.center ).normalized();
+      const hitPositionA = ray.pointAtDistance( ta );
+      const normalA = hitPositionA.minus( this.center ).normalized();
 
-      var resultB = {
+      const resultB = {
         distance: tb,
         hitPoint: hitPositionB,
         normal: normalB.negated(),
         fromOutside: false
       };
-      var resultA = {
+      const resultA = {
         distance: ta,
         hitPoint: hitPositionA,
         normal: normalA,

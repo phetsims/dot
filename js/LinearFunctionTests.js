@@ -19,7 +19,7 @@ define( require => {
   }
 
   QUnit.test( 'LinearFunction', function( assert ) {
-    var f = new LinearFunction( 4, 8, 8, 0 ); // not clamped
+    const f = new LinearFunction( 4, 8, 8, 0 ); // not clamped
 
     approximateEquals( assert, f( 0 ), 16 );
     approximateEquals( assert, f( 4 ), 8 );
@@ -30,7 +30,7 @@ define( require => {
     approximateEquals( assert, f.inverse( 0 ), 8 );
     approximateEquals( assert, f.inverse( 4 ), 6 );
 
-    var g = new LinearFunction( 4, 8, 8, 0, true ); // clamped
+    const g = new LinearFunction( 4, 8, 8, 0, true ); // clamped
 
     approximateEquals( assert, g( 0 ), 8 );
     approximateEquals( assert, g( 4 ), 8 );

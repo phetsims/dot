@@ -24,8 +24,8 @@ define( require => {
   // An identity permutation with a specific number of elements
   Permutation.identity = function( size ) {
     assert && assert( size >= 0 );
-    var indices = new Array( size );
-    for ( var i = 0; i < size; i++ ) {
+    const indices = new Array( size );
+    for ( let i = 0; i < size; i++ ) {
       indices[ i ] = i;
     }
     return new Permutation( indices );
@@ -33,7 +33,7 @@ define( require => {
 
   // lists all permutations that have a given size
   Permutation.permutations = function( size ) {
-    var result = [];
+    const result = [];
     Permutation.forEachPermutation( dot.rangeInclusive( 0, size - 1 ), function( integers ) {
       result.push( new Permutation( integers ) );
     } );
@@ -52,15 +52,15 @@ define( require => {
       callback( prefix );
     }
     else {
-      for ( var i = 0; i < array.length; i++ ) {
-        var element = array[ i ];
+      for ( let i = 0; i < array.length; i++ ) {
+        const element = array[ i ];
 
         // remove the element from the array
-        var nextArray = array.slice( 0 );
+        const nextArray = array.slice( 0 );
         nextArray.splice( i, 1 );
 
         // add it into the prefix
-        var nextPrefix = prefix.slice( 0 );
+        const nextPrefix = prefix.slice( 0 );
         nextPrefix.push( element );
 
         recursiveForEachPermutation( nextArray, nextPrefix, callback );
@@ -86,8 +86,8 @@ define( require => {
         }
 
         // permute it as an array
-        var result = new Array( arrayOrInt.length );
-        for ( var i = 0; i < arrayOrInt.length; i++ ) {
+        const result = new Array( arrayOrInt.length );
+        for ( let i = 0; i < arrayOrInt.length; i++ ) {
           result[ i ] = arrayOrInt[ this.indices[ i ] ];
         }
         return result;
@@ -100,21 +100,21 @@ define( require => {
 
     // The inverse of this permutation
     inverted: function() {
-      var newPermutation = new Array( this.size() );
-      for ( var i = 0; i < this.size(); i++ ) {
+      const newPermutation = new Array( this.size() );
+      for ( let i = 0; i < this.size(); i++ ) {
         newPermutation[ this.indices[ i ] ] = i;
       }
       return new Permutation( newPermutation );
     },
 
     withIndicesPermuted: function( indices ) {
-      var result = [];
-      var self = this;
+      const result = [];
+      const self = this;
       Permutation.forEachPermutation( indices, function( integers ) {
-        var oldIndices = self.indices;
-        var newPermutation = oldIndices.slice( 0 );
+        const oldIndices = self.indices;
+        const newPermutation = oldIndices.slice( 0 );
 
-        for ( var i = 0; i < indices.length; i++ ) {
+        for ( let i = 0; i < indices.length; i++ ) {
           newPermutation[ indices[ i ] ] = oldIndices[ integers[ i ] ];
         }
         result.push( new Permutation( newPermutation ) );
@@ -128,10 +128,10 @@ define( require => {
   };
 
   Permutation.testMe = function( console ) {
-    var a = new Permutation( [ 1, 4, 3, 2, 0 ] );
+    const a = new Permutation( [ 1, 4, 3, 2, 0 ] );
     console.log( a.toString() );
 
-    var b = a.inverted();
+    const b = a.inverted();
     console.log( b.toString() );
 
     console.log( b.withIndicesPermuted( [ 0, 3, 4 ] ).toString() );

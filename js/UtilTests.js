@@ -25,7 +25,7 @@ define( require => {
     const bSorted = b.slice().sort();
 
     assert.equal( a.length, b.length, msg + ' (length different)' );
-    for ( var i = 0; i < a.length; i++ ) {
+    for ( let i = 0; i < a.length; i++ ) {
       approximateEquals( assert, aSorted[ i ], bSorted[ i ], msg + ' (index ' + i + ')' );
     }
   }
@@ -49,29 +49,29 @@ define( require => {
     assert.equal( Util.roundSymmetric( 0.3 ), 0, '0.3 => 0' );
     assert.equal( Util.roundSymmetric( 0.8 ), 1, '0.8 => 1' );
     assert.equal( Util.roundSymmetric( -0.5 ), -1, '-0.5 => -1' );
-    for ( var i = 0; i < 20; i++ ) {
+    for ( let i = 0; i < 20; i++ ) {
       assert.equal( Util.roundSymmetric( i ), i, i + ' integer' );
       assert.equal( Util.roundSymmetric( -i ), -i, -i + ' integer' );
       assert.equal( Util.roundSymmetric( i + 0.5 ), i + 1, ( i + 0.5 ) + ' => ' + ( i + 1 ) );
       assert.equal( Util.roundSymmetric( -i - 0.5 ), -i - 1, ( -i - 0.5 ) + ' => ' + ( -i - 1 ) );
     }
 
-    var original = dot.v2( 1.5, -2.5 );
-    var rounded = original.roundedSymmetric();
+    const original = dot.v2( 1.5, -2.5 );
+    const rounded = original.roundedSymmetric();
     assert.ok( original.equals( dot.v2( 1.5, -2.5 ) ), 'sanity' );
     assert.ok( rounded.equals( dot.v2( 2, -3 ) ), 'rounded' );
-    var result = original.roundSymmetric();
+    const result = original.roundSymmetric();
     assert.equal( result, original, 'reflexive' );
     assert.ok( original.equals( rounded ), 'both rounded now' );
   } );
 
   QUnit.test( 'lineLineIntersection', function( assert ) {
-    var f = Util.lineLineIntersection;
+    const f = Util.lineLineIntersection;
 
-    var p1 = Vector2.ZERO;
-    var p2 = new Vector2( 1, 1 );
-    var p3 = new Vector2( -10, 10 );
-    var p4 = new Vector2( -12, 8 );
+    const p1 = Vector2.ZERO;
+    const p2 = new Vector2( 1, 1 );
+    const p3 = new Vector2( -10, 10 );
+    const p4 = new Vector2( -12, 8 );
 
     assert.equal( f( p1, p2, p3, p4 ), null );
     assert.equal( f( p1, p4, p4, p1 ), null );
@@ -81,15 +81,15 @@ define( require => {
   } );
 
   QUnit.test( 'lineSegmentIntersection', function( assert ) {
-    var h = Util.lineSegmentIntersection;
+    const h = Util.lineSegmentIntersection;
 
-    var p1 = dot.Vector2.ZERO;
-    var p2 = new dot.Vector2( 1, 1 );
-    var p3 = new dot.Vector2( -10, 8 );
-    var p4 = new dot.Vector2( -3, -3 );
-    var p5 = new dot.Vector2( 8, -10 );
+    const p1 = dot.Vector2.ZERO;
+    const p2 = new dot.Vector2( 1, 1 );
+    const p3 = new dot.Vector2( -10, 8 );
+    const p4 = new dot.Vector2( -3, -3 );
+    const p5 = new dot.Vector2( 8, -10 );
 
-    var f = function( p1, p2, p3, p4 ) {
+    const f = function( p1, p2, p3, p4 ) {
       return h( p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
     };
 
@@ -108,11 +108,11 @@ define( require => {
   } );
 
   QUnit.test( 'distToSegmentSquared', function( assert ) {
-    var f = Util.distToSegmentSquared;
+    const f = Util.distToSegmentSquared;
 
-    var p1 = Vector2.ZERO;
-    var p2 = new Vector2( -6, 0 );
-    var p3 = new Vector2( -5, 1 );
+    const p1 = Vector2.ZERO;
+    const p2 = new Vector2( -6, 0 );
+    const p3 = new Vector2( -5, 1 );
 
     approximateEquals( assert, f( p1, p2, p3 ), 26 );
     approximateEquals( assert, f( p2, p3, p1 ), 2 );
@@ -134,7 +134,7 @@ define( require => {
   } );
 
   QUnit.test( 'rangeInclusive', function( assert ) {
-    var arr = Util.rangeInclusive( 2, 4 );
+    let arr = Util.rangeInclusive( 2, 4 );
     assert.equal( arr.length, 3 );
     assert.equal( arr[ 0 ], 2 );
     assert.equal( arr[ 1 ], 3 );
@@ -145,7 +145,7 @@ define( require => {
   } );
 
   QUnit.test( 'rangeExclusive', function( assert ) {
-    var arr = Util.rangeExclusive( 2, 4 );
+    let arr = Util.rangeExclusive( 2, 4 );
     assert.equal( arr.length, 1 );
     assert.equal( arr[ 0 ], 3 );
 

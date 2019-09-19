@@ -13,13 +13,13 @@ define( require => {
   const OpenRange = require( 'DOT/OpenRange' );
   const Range = require( 'DOT/Range' );
 
-  var minHalfOpenOptions = { openMax: false };
-  var maxHalfOpenOptions = { openMin: false };
+  const minHalfOpenOptions = { openMax: false };
+  const maxHalfOpenOptions = { openMin: false };
 
   QUnit.module( 'OpenRange');
 
   QUnit.test( 'half open min', function( assert ) {
-    var testMinOpenRange = new OpenRange( 1, 10, minHalfOpenOptions );
+    const testMinOpenRange = new OpenRange( 1, 10, minHalfOpenOptions );
     assert.notOk( testMinOpenRange.contains( 1 ), '(1, 10] does not contain 1' );
     assert.notOk( testMinOpenRange.intersects( new Range( 0, 1 ) ), '(1, 10] does not intersect [0, 1]' );
     assert.notOk( testMinOpenRange.containsRange( new Range( 1, 2 ), '(1, 10] does not contain [1, 2]' ) );
@@ -29,7 +29,7 @@ define( require => {
   } );
 
   QUnit.test( 'half open max', function( assert ) {
-    var maxOpenRange = new OpenRange( 1, 10, maxHalfOpenOptions );
+    const maxOpenRange = new OpenRange( 1, 10, maxHalfOpenOptions );
     assert.notOk( maxOpenRange.contains( 10 ), '[1, 10) does not contain 10' );
     assert.notOk( maxOpenRange.intersects( new Range( 10, 11 ) ), '[1, 10) does not intersect [10,11]' );
     assert.notOk( maxOpenRange.containsRange( new Range( 9, 10 ), '[1, 10) does not contiain [9, 10]' ) );
@@ -39,7 +39,7 @@ define( require => {
   } );
 
   QUnit.test( 'fully open range', function( assert ) {
-    var openRange = new OpenRange( 1, 10 );
+    const openRange = new OpenRange( 1, 10 );
     assert.notOk( openRange.contains( 1 ), '(1, 10) does not contain 1' );
     assert.notOk( openRange.contains( 10 ), '(1, 10) does not contain 10' );
     assert.notOk( openRange.intersects( new Range( 0, 1 ) ), '(1, 10) does not intersect [0, 1]' );
@@ -55,7 +55,7 @@ define( require => {
   } );
 
   QUnit.test( 'setter overrides', function( assert ) {
-    var openRange = new OpenRange( 1, 10 );
+    let openRange = new OpenRange( 1, 10 );
     assert.notOk( openRange.setMin( 2 ), 'can set min < max' );
     window.assert && assert.throws( function() { openRange.setMin( 10 ); }, 'cannot set min = max in OpenRange' );
     openRange = new OpenRange( 1, 10 );
@@ -70,7 +70,7 @@ define( require => {
       assert.throws( function() { return new OpenRange( 1, 1, maxHalfOpenOptions ); }, 'max open range with min === max throws an error' );
       assert.throws( function() { return new OpenRange( 1, 1 ); }, 'full open range with min === max throws an error' );
 
-      var range = new OpenRange( 1, 10 );
+      let range = new OpenRange( 1, 10 );
       assert.throws( function() { range.setMin( 10 ); }, 'setting min equal to max throws an error' );
       range = new OpenRange( 1, 10 );
       assert.throws( function() { range.setMin( 11 ); }, 'setting min greater than max throws an error' );

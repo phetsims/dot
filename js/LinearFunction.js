@@ -47,11 +47,11 @@ define( require => {
      * @param {boolean} clamp
      * @returns {number}
      */
-    var map = function( a1, a2, b1, b2, a3, clamp ) {
-      var b3 = dot.Util.linear( a1, a2, b1, b2, a3 );
+    const map = function( a1, a2, b1, b2, a3, clamp ) {
+      let b3 = dot.Util.linear( a1, a2, b1, b2, a3 );
       if ( clamp ) {
-        var max = Math.max( b1, b2 );
-        var min = Math.min( b1, b2 );
+        const max = Math.max( b1, b2 );
+        const min = Math.min( b1, b2 );
         b3 = dot.Util.clamp( b3, min, max );
       }
       return b3;
@@ -64,7 +64,7 @@ define( require => {
      * @param {number} a3
      * @returns {number}
      */
-    var evaluate = function( a3 ) {
+    const evaluate = function( a3 ) {
       return map( a1, a2, b1, b2, a3, clamp );
     };
 

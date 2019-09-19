@@ -14,13 +14,13 @@ define( require => {
   // require( 'DOT/Vector2' ); // Require.js doesn't like the circular reference
 
   // constants
-  var EPSILON = Number.MIN_VALUE;
-  var TWO_PI = 2 * Math.PI;
+  const EPSILON = Number.MIN_VALUE;
+  const TWO_PI = 2 * Math.PI;
 
   // "static" variables used in boxMullerTransform
-  var generate;
-  var z0;
-  var z1;
+  let generate;
+  let z0;
+  let z1;
 
   var Util = {
     /**
@@ -60,10 +60,10 @@ define( require => {
     moduloBetweenDown: function( value, min, max ) {
       assert && assert( max > min, 'max > min required for moduloBetween' );
 
-      var divisor = max - min;
+      const divisor = max - min;
 
       // get a partial result of value-min between [0,divisor)
-      var partial = ( value - min ) % divisor;
+      let partial = ( value - min ) % divisor;
       if ( partial < 0 ) {
         // since if value-min < 0, the remainder will give us a negative number
         partial += divisor;
@@ -100,8 +100,8 @@ define( require => {
       if ( b < a ) {
         return [];
       }
-      var result = new Array( b - a + 1 );
-      for ( var i = a; i <= b; i++ ) {
+      const result = new Array( b - a + 1 );
+      for ( let i = a; i <= b; i++ ) {
         result[ i - a ] = i;
       }
       return result;
@@ -196,7 +196,7 @@ define( require => {
      * @returns {Vector2|null}
      */
     lineLineIntersection: function( p1, p2, p3, p4 ) {
-      var epsilon = 1e-10;
+      const epsilon = 1e-10;
 
       // If the endpoints are the same, they don't properly define a line
       if ( p1.equals( p2 ) || p3.equals( p4 ) ) {
@@ -205,12 +205,12 @@ define( require => {
 
       // Taken from an answer in
       // http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
-      var x12 = p1.x - p2.x;
-      var x34 = p3.x - p4.x;
-      var y12 = p1.y - p2.y;
-      var y34 = p3.y - p4.y;
+      const x12 = p1.x - p2.x;
+      const x34 = p3.x - p4.x;
+      const y12 = p1.y - p2.y;
+      const y34 = p3.y - p4.y;
 
-      var denom = x12 * y34 - y12 * x34;
+      const denom = x12 * y34 - y12 * x34;
 
       // If the denominator is 0, lines are parallel or coincident
       if ( Math.abs( denom ) < epsilon ) {
@@ -218,8 +218,8 @@ define( require => {
       }
 
       // define intersection using determinants, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-      var a = p1.x * p2.y - p1.y * p2.x;
-      var b = p3.x * p4.y - p3.y * p4.x;
+      const a = p1.x * p2.y - p1.y * p2.x;
+      const b = p3.x * p4.y - p3.y * p4.x;
 
       return new dot.Vector2(
         ( a * x34 - x12 * b ) / denom,
@@ -240,12 +240,12 @@ define( require => {
       // TODO: Can we make scratch vectors here, avoiding the circular reference?
 
       // midpoints between p1-p2 and p2-p3
-      var p12 = new dot.Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
-      var p23 = new dot.Vector2( ( p2.x + p3.x ) / 2, ( p2.y + p3.y ) / 2 );
+      const p12 = new dot.Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
+      const p23 = new dot.Vector2( ( p2.x + p3.x ) / 2, ( p2.y + p3.y ) / 2 );
 
       // perpendicular points from the minpoints
-      var p12x = new dot.Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
-      var p23x = new dot.Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
+      const p12x = new dot.Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
+      const p23x = new dot.Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
 
       return Util.lineLineIntersection( p12, p12x, p23, p23x );
     },
@@ -269,17 +269,17 @@ define( require => {
       assert && assert( Util.triangleAreaSigned( p1, p2, p3 ) > 0,
         'Defined points should be in a counterclockwise order' );
 
-      var m00 = p1.x - p.x;
-      var m01 = p1.y - p.y;
-      var m02 = ( p1.x - p.x ) * ( p1.x - p.x ) + ( p1.y - p.y ) * ( p1.y - p.y );
-      var m10 = p2.x - p.x;
-      var m11 = p2.y - p.y;
-      var m12 = ( p2.x - p.x ) * ( p2.x - p.x ) + ( p2.y - p.y ) * ( p2.y - p.y );
-      var m20 = p3.x - p.x;
-      var m21 = p3.y - p.y;
-      var m22 = ( p3.x - p.x ) * ( p3.x - p.x ) + ( p3.y - p.y ) * ( p3.y - p.y );
+      const m00 = p1.x - p.x;
+      const m01 = p1.y - p.y;
+      const m02 = ( p1.x - p.x ) * ( p1.x - p.x ) + ( p1.y - p.y ) * ( p1.y - p.y );
+      const m10 = p2.x - p.x;
+      const m11 = p2.y - p.y;
+      const m12 = ( p2.x - p.x ) * ( p2.x - p.x ) + ( p2.y - p.y ) * ( p2.y - p.y );
+      const m20 = p3.x - p.x;
+      const m21 = p3.y - p.y;
+      const m22 = ( p3.x - p.x ) * ( p3.x - p.x ) + ( p3.y - p.y ) * ( p3.y - p.y );
 
-      var determinant = m00 * m11 * m22 + m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20 - m01 * m10 * m22 - m00 * m12 * m21;
+      const determinant = m00 * m11 * m22 + m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20 - m01 * m10 * m22 - m00 * m12 * m21;
       return determinant > 0;
     },
 
@@ -308,37 +308,37 @@ define( require => {
       epsilon = epsilon === undefined ? 1e-5 : epsilon;
 
       // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
-      var center = new dot.Vector3( 0, 0, 0 );
+      const center = new dot.Vector3( 0, 0, 0 );
 
-      var rayDir = ray.direction;
-      var pos = ray.position;
-      var centerToRay = pos.minus( center );
+      const rayDir = ray.direction;
+      const pos = ray.position;
+      const centerToRay = pos.minus( center );
 
       // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
-      var tmp = rayDir.dot( centerToRay );
-      var centerToRayDistSq = centerToRay.magnitudeSquared;
-      var det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
+      const tmp = rayDir.dot( centerToRay );
+      const centerToRayDistSq = centerToRay.magnitudeSquared;
+      const det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
       if ( det < epsilon ) {
         // ray misses sphere entirely
         return null;
       }
 
-      var base = rayDir.dot( center ) - rayDir.dot( pos );
-      var sqt = Math.sqrt( det ) / 2;
+      const base = rayDir.dot( center ) - rayDir.dot( pos );
+      const sqt = Math.sqrt( det ) / 2;
 
       // the "first" entry point distance into the sphere. if we are inside the sphere, it is behind us
-      var ta = base - sqt;
+      const ta = base - sqt;
 
       // the "second" entry point distance
-      var tb = base + sqt;
+      const tb = base + sqt;
 
       if ( tb < epsilon ) {
         // sphere is behind ray, so don't return an intersection
         return null;
       }
 
-      var hitPositionB = ray.pointAtDistance( tb );
-      var normalB = hitPositionB.minus( center ).normalized();
+      const hitPositionB = ray.pointAtDistance( tb );
+      const normalB = hitPositionB.minus( center ).normalized();
 
       if ( ta < epsilon ) {
         // we are inside the sphere
@@ -352,8 +352,8 @@ define( require => {
       }
       else {
         // two possible hits
-        var hitPositionA = ray.pointAtDistance( ta );
-        var normalA = hitPositionA.minus( center ).normalized();
+        const hitPositionA = ray.pointAtDistance( ta );
+        const normalA = hitPositionA.minus( center ).normalized();
 
         // close hit, we have out => in
         return {
@@ -402,16 +402,16 @@ define( require => {
     solveQuadraticRootsReal: function( a, b, c ) {
       // Check for a degenerate case where we don't have a quadratic, or if the order of magnitude is such where the
       // linear solution would be expected
-      var epsilon = 1E7;
+      const epsilon = 1E7;
       if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon ) {
         return Util.solveLinearRootsReal( b, c );
       }
 
-      var discriminant = b * b - 4 * a * c;
+      const discriminant = b * b - 4 * a * c;
       if ( discriminant < 0 ) {
         return [];
       }
-      var sqrt = Math.sqrt( discriminant );
+      const sqrt = Math.sqrt( discriminant );
       // TODO: how to handle if discriminant is 0? give unique root or double it?
       // TODO: probably just use Complex for the future
       return [
@@ -441,7 +441,7 @@ define( require => {
       }
 
       //We need to test whether a is several orders of magnitude less than b, c, d
-      var epsilon = 1E7;
+      const epsilon = 1E7;
 
       if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon || Math.abs( d / a ) > epsilon ) {
         return Util.solveQuadraticRootsReal( b, c, d );
@@ -454,29 +454,29 @@ define( require => {
       c /= a;
       d /= a;
 
-      var q = ( 3.0 * c - ( b * b ) ) / 9;
-      var r = ( -( 27 * d ) + b * ( 9 * c - 2 * ( b * b ) ) ) / 54;
-      var discriminant = q * q * q + r * r;
-      var b3 = b / 3;
+      const q = ( 3.0 * c - ( b * b ) ) / 9;
+      const r = ( -( 27 * d ) + b * ( 9 * c - 2 * ( b * b ) ) ) / 54;
+      const discriminant = q * q * q + r * r;
+      const b3 = b / 3;
 
       if ( discriminant > 1e-7 ) {
         // a single real root
-        var dsqrt = Math.sqrt( discriminant );
+        const dsqrt = Math.sqrt( discriminant );
         return [ Util.cubeRoot( r + dsqrt ) + Util.cubeRoot( r - dsqrt ) - b3 ];
       }
 
       // three real roots
       if ( discriminant === 0 ) {
         // contains a double root
-        var rsqrt = Util.cubeRoot( r );
-        var doubleRoot = -b3 - rsqrt;
+        const rsqrt = Util.cubeRoot( r );
+        const doubleRoot = -b3 - rsqrt;
         return [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
       }
       else {
         // all unique
-        var qX = -q * q * q;
+        let qX = -q * q * q;
         qX = Math.acos( r / Math.sqrt( qX ) );
-        var rr = 2 * Math.sqrt( -q );
+        const rr = 2 * Math.sqrt( -q );
         return [
           -b3 + rr * Math.cos( qX / 3 ),
           -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
@@ -544,8 +544,8 @@ define( require => {
      * @returns {string}
      */
     toFixed: function( value, decimalPlaces ) {
-      var multiplier = Math.pow( 10, decimalPlaces );
-      var newValue = Util.roundSymmetric( value * multiplier ) / multiplier;
+      const multiplier = Math.pow( 10, decimalPlaces );
+      const newValue = Util.roundSymmetric( value * multiplier ) / multiplier;
       return newValue.toFixed( decimalPlaces );
     },
 
@@ -611,7 +611,7 @@ define( require => {
       // Point1(a,b), Point2(c,d), Point3(e,f)
       // See http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf
       // @returns {number}
-      var ccw = function( a, b, c, d, e, f ) {
+      const ccw = function( a, b, c, d, e, f ) {
         return ( f - b ) * ( c - a ) - ( d - b ) * ( e - a );
       };
 
@@ -624,7 +624,7 @@ define( require => {
         return null;
       }
 
-      var denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
+      const denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
       // If denominator is 0, the lines are parallel or coincident
       if ( Math.abs( denom ) < 1e-10 ) {
         return null;
@@ -639,8 +639,8 @@ define( require => {
       }
 
       // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-      var intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
-      var intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      const intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
+      const intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
       return new dot.Vector2( intersectionX, intersectionY );
     },
 
@@ -657,15 +657,15 @@ define( require => {
      */
     distToSegmentSquared: function( point, a, b ) {
       // the square of the distance between a and b,
-      var segmentSquaredLength = a.distanceSquared( b );
+      const segmentSquaredLength = a.distanceSquared( b );
 
       // if the segment length is zero, the a and b point are coincident. return the squared distance between a and point
       if ( segmentSquaredLength === 0 ) { return point.distanceSquared( a ); }
 
       // the t value parametrize the projection of the point onto the a b line
-      var t = ( ( point.x - a.x ) * ( b.x - a.x ) + ( point.y - a.y ) * ( b.y - a.y ) ) / segmentSquaredLength;
+      const t = ( ( point.x - a.x ) * ( b.x - a.x ) + ( point.y - a.y ) * ( b.y - a.y ) ) / segmentSquaredLength;
 
-      var distanceSquared;
+      let distanceSquared;
 
       if ( t < 0 ) {
         // if t<0, the projection point is outside the ab line, beyond a
@@ -811,8 +811,8 @@ define( require => {
         return z1 * sigma + mu;
       }
 
-      var u1;
-      var u2;
+      let u1;
+      let u2;
       do {
         u1 = random.nextDouble();
         u2 = random.nextDouble();
@@ -830,8 +830,8 @@ define( require => {
      * @returns {number}
      */
     numberOfDecimalPlaces: function( value ) {
-      var count = 0;
-      var multiplier = 1;
+      let count = 0;
+      let multiplier = 1;
       while ( ( value * multiplier ) % 1 !== 0 ) {
         count++;
         multiplier *= 10;

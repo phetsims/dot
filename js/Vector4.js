@@ -104,10 +104,10 @@ define( require => {
      * @returns {number}
      */
     distanceXYZW: function( x, y, z, w ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
-      var dz = this.z - z;
-      var dw = this.w - w;
+      const dx = this.x - x;
+      const dy = this.y - y;
+      const dz = this.z - z;
+      const dw = this.w - w;
       return Math.sqrt( dx * dx + dy * dy + dz * dz + dw * dw );
     },
 
@@ -133,10 +133,10 @@ define( require => {
      * @returns {number}
      */
     distanceSquaredXYZW: function( x, y, z, w ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
-      var dz = this.z - z;
-      var dw = this.w - w;
+      const dx = this.x - x;
+      const dy = this.y - y;
+      const dz = this.z - z;
+      const dw = this.w - w;
       return dx * dx + dy * dy + dz * dz + dw * dw;
     },
 
@@ -251,7 +251,7 @@ define( require => {
      * @returns {Vector4}
      */
     normalized: function() {
-      var magnitude = this.magnitude;
+      const magnitude = this.magnitude;
       assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude vector' );
       return this.dividedScalar( magnitude );
     },
@@ -585,7 +585,7 @@ define( require => {
      * @returns {Vector4}
      */
     setMagnitude: function( magnitude ) {
-      var scale = magnitude / this.magnitude;
+      const scale = magnitude / this.magnitude;
       return this.multiplyScalar( scale );
     },
 
@@ -761,7 +761,7 @@ define( require => {
      * @returns {Vector4}
      */
     normalize: function() {
-      var mag = this.magnitude;
+      const mag = this.magnitude;
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
@@ -802,7 +802,7 @@ define( require => {
     this.z = z !== undefined ? z : 0;
     this.w = w !== undefined ? w : 1;
   };
-  var Immutable = Vector4.Immutable;
+  const Immutable = Vector4.Immutable;
 
   inherit( Vector4, Immutable );
 

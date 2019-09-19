@@ -11,30 +11,30 @@ define( require => {
 
   const dot = require( 'DOT/dot' );
 
-  var ArrayType = window.Float64Array || Array;
+  const ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
   function LUDecomposition( matrix ) {
-    var i;
-    var j;
-    var k;
+    let i;
+    let j;
+    let k;
 
     this.matrix = matrix;
 
     // TODO: size!
     this.LU = matrix.getArrayCopy();
-    var LU = this.LU;
+    const LU = this.LU;
     this.m = matrix.getRowDimension();
-    var m = this.m;
+    const m = this.m;
     this.n = matrix.getColumnDimension();
-    var n = this.n;
+    const n = this.n;
     this.piv = new Uint32Array( m );
     for ( i = 0; i < m; i++ ) {
       this.piv[ i ] = i;
     }
     this.pivsign = 1;
-    var LUcolj = new ArrayType( m );
+    const LUcolj = new ArrayType( m );
 
     // Outer loop.
 
@@ -49,10 +49,10 @@ define( require => {
 
       for ( i = 0; i < m; i++ ) {
         // Most of the time is spent in the following dot product.
-        var kmax = Math.min( i, j );
-        var s = 0.0;
+        const kmax = Math.min( i, j );
+        let s = 0.0;
         for ( k = 0; k < kmax; k++ ) {
-          var ik = matrix.index( i, k );
+          const ik = matrix.index( i, k );
           s += LU[ ik ] * LUcolj[ k ];
         }
 
@@ -62,7 +62,7 @@ define( require => {
 
       // Find pivot and exchange if necessary.
 
-      var p = j;
+      let p = j;
       for ( i = j + 1; i < m; i++ ) {
         if ( Math.abs( LUcolj[ i ] ) > Math.abs( LUcolj[ p ] ) ) {
           p = i;
@@ -70,9 +70,9 @@ define( require => {
       }
       if ( p !== j ) {
         for ( k = 0; k < n; k++ ) {
-          var pk = matrix.index( p, k );
-          var jk = matrix.index( j, k );
-          var t = LU[ pk ];
+          const pk = matrix.index( p, k );
+          const jk = matrix.index( j, k );
+          const t = LU[ pk ];
           LU[ pk ] = LU[ jk ];
           LU[ jk ] = t;
         }
@@ -98,8 +98,8 @@ define( require => {
     constructor: LUDecomposition,
 
     isNonsingular: function() {
-      for ( var j = 0; j < this.n; j++ ) {
-        var index = this.matrix.index( j, j );
+      for ( let j = 0; j < this.n; j++ ) {
+        const index = this.matrix.index( j, j );
         if ( this.LU[ index ] === 0 ) {
           return false;
         }
@@ -108,9 +108,9 @@ define( require => {
     },
 
     getL: function() {
-      var result = new dot.Matrix( this.m, this.n );
-      for ( var i = 0; i < this.m; i++ ) {
-        for ( var j = 0; j < this.n; j++ ) {
+      const result = new dot.Matrix( this.m, this.n );
+      for ( let i = 0; i < this.m; i++ ) {
+        for ( let j = 0; j < this.n; j++ ) {
           if ( i > j ) {
             result.entries[ result.index( i, j ) ] = this.LU[ this.matrix.index( i, j ) ];
           }
@@ -126,9 +126,9 @@ define( require => {
     },
 
     getU: function() {
-      var result = new dot.Matrix( this.n, this.n );
-      for ( var i = 0; i < this.n; i++ ) {
-        for ( var j = 0; j < this.n; j++ ) {
+      const result = new dot.Matrix( this.n, this.n );
+      for ( let i = 0; i < this.n; i++ ) {
+        for ( let j = 0; j < this.n; j++ ) {
           if ( i <= j ) {
             result.entries[ result.index( i, j ) ] = this.LU[ this.matrix.index( i, j ) ];
           }
@@ -141,16 +141,16 @@ define( require => {
     },
 
     getPivot: function() {
-      var p = new Uint32Array( this.m );
-      for ( var i = 0; i < this.m; i++ ) {
+      const p = new Uint32Array( this.m );
+      for ( let i = 0; i < this.m; i++ ) {
         p[ i ] = this.piv[ i ];
       }
       return p;
     },
 
     getDoublePivot: function() {
-      var vals = new ArrayType( this.m );
-      for ( var i = 0; i < this.m; i++ ) {
+      const vals = new ArrayType( this.m );
+      for ( let i = 0; i < this.m; i++ ) {
         vals[ i ] = this.piv[ i ];
       }
       return vals;
@@ -160,17 +160,17 @@ define( require => {
       if ( this.m !== this.n ) {
         throw new Error( 'Matrix must be square.' );
       }
-      var d = this.pivsign;
-      for ( var j = 0; j < this.n; j++ ) {
+      let d = this.pivsign;
+      for ( let j = 0; j < this.n; j++ ) {
         d *= this.LU[ this.matrix.index( j, j ) ];
       }
       return d;
     },
 
     solve: function( matrix ) {
-      var i;
-      var j;
-      var k;
+      let i;
+      let j;
+      let k;
       if ( matrix.getRowDimension() !== this.m ) {
         throw new Error( 'Matrix row dimensions must agree.' );
       }
@@ -179,8 +179,8 @@ define( require => {
       }
 
       // Copy right hand side with pivoting
-      var nx = matrix.getColumnDimension();
-      var Xmat = matrix.getArrayRowMatrix( this.piv, 0, nx - 1 );
+      const nx = matrix.getColumnDimension();
+      const Xmat = matrix.getArrayRowMatrix( this.piv, 0, nx - 1 );
 
       // Solve L*Y = B(piv,:)
       for ( k = 0; k < this.n; k++ ) {

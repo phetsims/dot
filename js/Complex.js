@@ -167,7 +167,7 @@ define( require => {
      * @returns {Complex}
      */
     dividedBy: function( c ) {
-      var cMag = c.magnitudeSquared;
+      const cMag = c.magnitudeSquared;
       return new Complex(
         ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
         ( this.imaginary * c.real - this.real * c.imaginary ) / cMag
@@ -182,7 +182,7 @@ define( require => {
      * @returns {Complex}
      */
     sqrtOf: function() {
-      var mag = this.magnitude;
+      const mag = this.magnitude;
       return new Complex( Math.sqrt( ( mag + this.real ) / 2 ),
         ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
     },
@@ -363,7 +363,7 @@ define( require => {
      * @returns {Complex}
      */
     divide: function( c ) {
-      var cMag = c.magnitudeSquared;
+      const cMag = c.magnitudeSquared;
       return this.setRealImaginary(
         ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
         ( this.imaginary * c.real - this.real * c.imaginary ) / cMag
@@ -400,7 +400,7 @@ define( require => {
      * @returns {Complex}
      */
     sqrt: function() {
-      var mag = this.magnitude;
+      const mag = this.magnitude;
       return this.setRealImaginary( Math.sqrt( ( mag + this.real ) / 2 ),
         ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
     },

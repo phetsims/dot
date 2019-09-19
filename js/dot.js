@@ -5,7 +5,7 @@ define( require => {
 
   const Namespace = require( 'PHET_CORE/Namespace' );
 
-  var dot = new Namespace( 'dot' );
+  const dot = new Namespace( 'dot' );
 
   dot.register( 'v2', function( x, y ) { return new dot.Vector2( x, y ); } );
   dot.register( 'v3', function( x, y, z ) { return new dot.Vector3( x, y, z ); } );

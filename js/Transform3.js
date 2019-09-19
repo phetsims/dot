@@ -20,7 +20,7 @@ define( require => {
   require( 'DOT/Vector2' );
   require( 'DOT/Ray2' );
 
-  var scratchMatrix = new dot.Matrix3();
+  const scratchMatrix = new dot.Matrix3();
 
   function checkMatrix( matrix ) {
     return ( matrix instanceof dot.Matrix3 ) && matrix.isFinite();
@@ -198,7 +198,7 @@ define( require => {
      * @returns {Transform3}
      */
     copy: function() {
-      var transform = new Transform3( this.matrix );
+      const transform = new Transform3( this.matrix );
 
       transform.inverse = this.inverse;
       transform.matrixTransposed = this.matrixTransposed;
@@ -316,7 +316,7 @@ define( require => {
      * @returns {Vector2}
      */
     transformDelta2: function( v ) {
-      var m = this.getMatrix();
+      const m = this.getMatrix();
       // m . v - m . Vector2.ZERO
       return new dot.Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
     },
@@ -346,7 +346,7 @@ define( require => {
      * @returns {number}
      */
     transformX: function( x ) {
-      var m = this.getMatrix();
+      const m = this.getMatrix();
       assert && assert( !m.m01(), 'Transforming an X value with a rotation/shear is ill-defined' );
       return m.m00() * x + m.m02();
     },
@@ -360,7 +360,7 @@ define( require => {
      * @returns {number}
      */
     transformY: function( y ) {
-      var m = this.getMatrix();
+      const m = this.getMatrix();
       assert && assert( !m.m10(), 'Transforming a Y value with a rotation/shear is ill-defined' );
       return m.m11() * y + m.m12();
     },
@@ -374,7 +374,7 @@ define( require => {
      * @returns {number}
      */
     transformDeltaX: function( x ) {
-      var m = this.getMatrix();
+      const m = this.getMatrix();
       // same as this.transformDelta2( new dot.Vector2( x, 0 ) ).x;
       return m.m00() * x;
     },
@@ -388,7 +388,7 @@ define( require => {
      * @returns {number}
      */
     transformDeltaY: function( y ) {
-      var m = this.getMatrix();
+      const m = this.getMatrix();
       // same as this.transformDelta2( new dot.Vector2( 0, y ) ).y;
       return m.m11() * y;
     },
@@ -462,7 +462,7 @@ define( require => {
      * @returns {Vector2}
      */
     inverseDelta2: function( v ) {
-      var m = this.getInverse();
+      const m = this.getInverse();
       // m . v - m . Vector2.ZERO
       return new dot.Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
     },
@@ -496,7 +496,7 @@ define( require => {
      * @returns {number}
      */
     inverseX: function( x ) {
-      var m = this.getInverse();
+      const m = this.getInverse();
       assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
       return m.m00() * x + m.m02();
     },
@@ -512,7 +512,7 @@ define( require => {
      * @returns {number}
      */
     inverseY: function( y ) {
-      var m = this.getInverse();
+      const m = this.getInverse();
       assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
       return m.m11() * y + m.m12();
     },
@@ -528,7 +528,7 @@ define( require => {
      * @returns {number}
      */
     inverseDeltaX: function( x ) {
-      var m = this.getInverse();
+      const m = this.getInverse();
       assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
       // same as this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
       return m.m00() * x;
@@ -545,7 +545,7 @@ define( require => {
      * @returns {number}
      */
     inverseDeltaY: function( y ) {
-      var m = this.getInverse();
+      const m = this.getInverse();
       assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
       // same as this.inverseDelta2( new dot.Vector2( 0, y ) ).y;
       return m.m11() * y;

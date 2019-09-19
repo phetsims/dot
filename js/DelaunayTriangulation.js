@@ -37,7 +37,7 @@ define( require => {
 
     }, options );
 
-    var i;
+    let i;
 
     // @public {Array.<Vector2>}
     this.points = points;
@@ -66,9 +66,9 @@ define( require => {
     } );
 
     for ( i = 0; i < this.constraints.length; i++ ) {
-      var constraint = this.constraints[ i ];
-      var firstIndex = constraint[ 0 ];
-      var secondIndex = constraint[ 1 ];
+      const constraint = this.constraints[ i ];
+      const firstIndex = constraint[ 0 ];
+      const secondIndex = constraint[ 1 ];
       assert && assert( typeof firstIndex === 'number' && isFinite( firstIndex ) && firstIndex % 1 === 0 && firstIndex >= 0 && firstIndex < points.length );
       assert && assert( typeof secondIndex === 'number' && isFinite( secondIndex ) && secondIndex % 1 === 0 && secondIndex >= 0 && secondIndex < points.length );
       assert && assert( firstIndex !== secondIndex );
@@ -79,10 +79,10 @@ define( require => {
     this.vertices.sort( DelaunayTriangulation.vertexComparison );
 
     for ( i = 0; i < this.vertices.length; i++ ) {
-      var vertex = this.vertices[ i ];
+      const vertex = this.vertices[ i ];
       vertex.sortedIndex = i;
-      for ( var j = vertex.constrainedVertices.length - 1; j >= 0; j-- ) {
-        var otherVertex = vertex.constrainedVertices[ j ];
+      for ( let j = vertex.constrainedVertices.length - 1; j >= 0; j-- ) {
+        const otherVertex = vertex.constrainedVertices[ j ];
 
         // If the "other" vertex is later in the sweep-line order, it should have the reference to the earlier vertex,
         // not the other way around.
@@ -99,12 +99,12 @@ define( require => {
     // @private {Array.<Vertex>} - Our initialization will handle our first vertex
     this.remainingVertices = this.vertices.slice( 1 );
 
-    var bounds = Bounds2.NOTHING.copy();
+    const bounds = Bounds2.NOTHING.copy();
     for ( i = points.length - 1; i >= 0; i-- ) {
       bounds.addPoint( points[ i ] );
     }
 
-    var alpha = 0.4;
+    const alpha = 0.4;
     // @private {Vertex} - Fake index -1
     this.artificialMinVertex = new Vertex( new Vector2( bounds.minX - bounds.width * alpha, bounds.minY - bounds.height * alpha ), -1 );
     // @private {Vertex} - Fake index -2
@@ -135,16 +135,16 @@ define( require => {
      */
     step: function() {
       // TODO: reverse the array prior to this?
-      var vertex = this.remainingVertices.shift();
+      const vertex = this.remainingVertices.shift();
 
-      var x = vertex.point.x;
+      const x = vertex.point.x;
 
-      var frontEdge = this.firstFrontEdge;
+      let frontEdge = this.firstFrontEdge;
       while ( frontEdge ) {
         // TODO: epsilon needed here?
         if ( x > frontEdge.endVertex.point.x ) {
-          var edge1 = new Edge( frontEdge.startVertex, vertex );
-          var edge2 = new Edge( vertex, frontEdge.endVertex );
+          const edge1 = new Edge( frontEdge.startVertex, vertex );
+          const edge2 = new Edge( vertex, frontEdge.endVertex );
           edge1.connectAfter( edge2 );
           this.edges.push( edge1 );
           this.edges.push( edge2 );
@@ -157,17 +157,17 @@ define( require => {
           break;
         }
         else if ( x === frontEdge.endVertex.point.x ) {
-          var leftOldEdge = frontEdge.nextEdge;
-          var rightOldEdge = frontEdge;
+          const leftOldEdge = frontEdge.nextEdge;
+          const rightOldEdge = frontEdge;
           assert && assert( leftOldEdge !== null );
 
-          var middleOldVertex = frontEdge.endVertex;
-          var leftVertex = leftOldEdge.endVertex;
-          var rightVertex = rightOldEdge.startVertex;
+          const middleOldVertex = frontEdge.endVertex;
+          const leftVertex = leftOldEdge.endVertex;
+          const rightVertex = rightOldEdge.startVertex;
 
-          var leftEdge = new Edge( vertex, leftVertex );
-          var rightEdge = new Edge( rightVertex, vertex );
-          var middleEdge = new Edge( middleOldVertex, vertex );
+          const leftEdge = new Edge( vertex, leftVertex );
+          const rightEdge = new Edge( rightVertex, vertex );
+          const middleEdge = new Edge( middleOldVertex, vertex );
           rightEdge.connectAfter( leftEdge );
           this.edges.push( leftEdge );
           this.edges.push( rightEdge );
@@ -215,7 +215,7 @@ define( require => {
       assert && assert( secondSideVertex === secondEdge.startVertex || secondSideVertex === secondEdge.endVertex,
         'secondSideVertex should be in secondEdge' );
 
-      var newEdge = new Edge( firstSideVertex, secondSideVertex );
+      const newEdge = new Edge( firstSideVertex, secondSideVertex );
       this.edges.push( newEdge );
       this.triangles.push( new Triangle( secondSideVertex, middleVertex, firstSideVertex,
                                          firstEdge, newEdge, secondEdge ) );
@@ -242,8 +242,8 @@ define( require => {
      * @param {Edge} newLeftEdge
      */
     reconnectFrontEdges: function( oldRightEdge, oldLeftEdge, newRightEdge, newLeftEdge ) {
-      var previousEdge = oldRightEdge.previousEdge;
-      var nextEdge = oldLeftEdge.nextEdge;
+      const previousEdge = oldRightEdge.previousEdge;
+      const nextEdge = oldLeftEdge.nextEdge;
       if ( previousEdge ) {
         previousEdge.disconnectAfter();
         previousEdge.connectAfter( newRightEdge );
@@ -267,13 +267,13 @@ define( require => {
     addHalfPiHeuristic: function( rightFrontEdge, leftFrontEdge ) {
       assert && assert( rightFrontEdge.endVertex === leftFrontEdge.startVertex );
 
-      var middleVertex = rightFrontEdge.endVertex;
+      const middleVertex = rightFrontEdge.endVertex;
 
       while ( rightFrontEdge.previousEdge &&
               Util.triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 &&
               ( middleVertex.point.minus( rightFrontEdge.startVertex.point ) ).angleBetween( rightFrontEdge.previousEdge.startVertex.point.minus( rightFrontEdge.startVertex.point ) ) < Math.PI / 2 ) {
-        var previousEdge = rightFrontEdge.previousEdge;
-        var newRightEdge = new Edge( previousEdge.startVertex, middleVertex );
+        const previousEdge = rightFrontEdge.previousEdge;
+        const newRightEdge = new Edge( previousEdge.startVertex, middleVertex );
         this.edges.push( newRightEdge );
         this.triangles.push( new Triangle( middleVertex, rightFrontEdge.startVertex, previousEdge.startVertex,
                                            previousEdge, newRightEdge, rightFrontEdge ) );
@@ -287,8 +287,8 @@ define( require => {
       while ( leftFrontEdge.nextEdge &&
               Util.triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 &&
               ( middleVertex.point.minus( leftFrontEdge.endVertex.point ) ).angleBetween( leftFrontEdge.nextEdge.endVertex.point.minus( leftFrontEdge.endVertex.point ) ) < Math.PI / 2 ) {
-        var nextEdge = leftFrontEdge.nextEdge;
-        var newLeftEdge = new Edge( middleVertex, nextEdge.endVertex );
+        const nextEdge = leftFrontEdge.nextEdge;
+        const newLeftEdge = new Edge( middleVertex, nextEdge.endVertex );
         this.edges.push( newLeftEdge );
         this.triangles.push( new Triangle( middleVertex, leftFrontEdge.nextEdge.endVertex, leftFrontEdge.endVertex,
                                            nextEdge, leftFrontEdge, newLeftEdge ) );
@@ -316,30 +316,30 @@ define( require => {
       assert && assert( vertex === rightFrontEdge.endVertex );
       assert && assert( vertex === leftFrontEdge.startVertex );
 
-      for ( var i = 0; i < vertex.constrainedVertices.length; i++ ) {
-        var bottomVertex = vertex.constrainedVertices[ i ];
+      for ( let i = 0; i < vertex.constrainedVertices.length; i++ ) {
+        const bottomVertex = vertex.constrainedVertices[ i ];
 
         // Check if it's one of our front edge vertices (if so, bail out, since the edge already exists)
         if ( bottomVertex === rightFrontEdge.startVertex || bottomVertex === leftFrontEdge.endVertex ) {
           break;
         }
 
-        var leftEdges = [];
-        var rightEdges = [];
-        var currentTriangle = null;
-        var currentEdge = null;
-        var trianglesToRemove = [];
-        var edgesToRemove = [];
+        const leftEdges = [];
+        const rightEdges = [];
+        let currentTriangle = null;
+        let currentEdge = null;
+        const trianglesToRemove = [];
+        const edgesToRemove = [];
 
-        var outsideRight = DelaunayTriangulation.vertexProduct( vertex, rightFrontEdge.startVertex, bottomVertex ) > 0;
-        var outsideLeft = DelaunayTriangulation.vertexProduct( vertex, leftFrontEdge.endVertex, bottomVertex ) < 0;
+        let outsideRight = DelaunayTriangulation.vertexProduct( vertex, rightFrontEdge.startVertex, bottomVertex ) > 0;
+        let outsideLeft = DelaunayTriangulation.vertexProduct( vertex, leftFrontEdge.endVertex, bottomVertex ) < 0;
 
         // If we start inside, we need to identify which triangle we're inside of.
         if ( !outsideRight && !outsideLeft ) {
           assert && assert( rightFrontEdge.triangles.length === 1 );
           assert && assert( leftFrontEdge.triangles.length === 1 );
 
-          var lastVertex = rightFrontEdge.startVertex;
+          let lastVertex = rightFrontEdge.startVertex;
           var nextVertex;
           currentTriangle = rightFrontEdge.triangles[ 0 ];
           // TODO: Triangle operations to make this more readable
@@ -373,7 +373,7 @@ define( require => {
           }
           else {
             if ( currentEdge.triangles.length > 1 ) {
-              var nextTriangle = currentEdge.getOtherTriangle( currentTriangle );
+              const nextTriangle = currentEdge.getOtherTriangle( currentTriangle );
               if ( nextTriangle.hasVertex( bottomVertex ) ) {
 
                 // TODO: do things!
@@ -423,7 +423,7 @@ define( require => {
         }
 
         for ( var j = 0; j < trianglesToRemove.length; j++ ) {
-          var triangleToRemove = trianglesToRemove[ j ];
+          const triangleToRemove = trianglesToRemove[ j ];
           arrayRemove( this.triangles, triangleToRemove );
           triangleToRemove.remove();
         }
@@ -432,7 +432,7 @@ define( require => {
           arrayRemove( this.edges, edgesToRemove[ j ] );
         }
 
-        var constraintEdge = new Edge( bottomVertex, vertex );
+        const constraintEdge = new Edge( bottomVertex, vertex );
         constraintEdge.isConstrained = true;
         this.edges.push( constraintEdge );
         leftEdges.push( constraintEdge );
@@ -456,49 +456,49 @@ define( require => {
     triangulatePolygon: function( edges ) {
       // TODO: Something more efficient than ear clipping method below
       while ( edges.length > 3 ) {
-        for ( var k = 0; k < edges.length; k++ ) {
-          var kx = k < edges.length - 1 ? k + 1 : 0;
+        for ( let k = 0; k < edges.length; k++ ) {
+          const kx = k < edges.length - 1 ? k + 1 : 0;
           assert && assert( edges[ k ].getSharedVertex( edges[ kx ] ) );
         }
 
         // Check if each triple of vertices is an ear (and if so, remove it)
-        for ( var i = 0; i < edges.length; i++ ) {
+        for ( let i = 0; i < edges.length; i++ ) {
           // Next index
-          var ix = i < edges.length - 1 ? i + 1 : 0;
+          const ix = i < edges.length - 1 ? i + 1 : 0;
 
           // Information about our potential ear
-          var edge = edges[ i ];
-          var nextEdge = edges[ ix ];
-          var sharedVertex = edge.getSharedVertex( nextEdge );
-          var startVertex = edge.getOtherVertex( sharedVertex );
-          var endVertex = nextEdge.getOtherVertex( sharedVertex );
+          const edge = edges[ i ];
+          const nextEdge = edges[ ix ];
+          const sharedVertex = edge.getSharedVertex( nextEdge );
+          const startVertex = edge.getOtherVertex( sharedVertex );
+          const endVertex = nextEdge.getOtherVertex( sharedVertex );
 
           if ( Util.triangleAreaSigned( startVertex.point, sharedVertex.point,  endVertex.point ) <= 0 ) {
             continue;
           }
 
           // Variables for computing barycentric coordinates
-          var endDelta = endVertex.point.minus( sharedVertex.point );
-          var startDelta = startVertex.point.minus( sharedVertex.point );
-          var endMagnitudeSquared = endDelta.dot( endDelta );
-          var startEndProduct = endDelta.dot( startDelta );
-          var startMagnitudeSquared = startDelta.dot( startDelta );
-          var x = endMagnitudeSquared * startMagnitudeSquared - startEndProduct * startEndProduct;
+          const endDelta = endVertex.point.minus( sharedVertex.point );
+          const startDelta = startVertex.point.minus( sharedVertex.point );
+          const endMagnitudeSquared = endDelta.dot( endDelta );
+          const startEndProduct = endDelta.dot( startDelta );
+          const startMagnitudeSquared = startDelta.dot( startDelta );
+          const x = endMagnitudeSquared * startMagnitudeSquared - startEndProduct * startEndProduct;
 
           // See if there are other vertices in our triangle (it wouldn't be an ear if there is another in it)
-          var lastVertex = edges[ 0 ].getSharedVertex( edges[ edges.length - 1 ] );
-          var hasInteriorVertex = false;
-          for ( var j = 0; j < edges.length; j++ ) {
-            var vertex = edges[ j ].getOtherVertex( lastVertex );
+          let lastVertex = edges[ 0 ].getSharedVertex( edges[ edges.length - 1 ] );
+          let hasInteriorVertex = false;
+          for ( let j = 0; j < edges.length; j++ ) {
+            const vertex = edges[ j ].getOtherVertex( lastVertex );
 
             if ( vertex !== sharedVertex && vertex !== startVertex && vertex !== endVertex ) {
-              var pointDelta = vertex.point.minus( sharedVertex.point );
-              var pointEndProduct = endDelta.dot( pointDelta );
-              var pointStartProduct = startDelta.dot( pointDelta );
+              const pointDelta = vertex.point.minus( sharedVertex.point );
+              const pointEndProduct = endDelta.dot( pointDelta );
+              const pointStartProduct = startDelta.dot( pointDelta );
 
               // Compute barycentric coordinates
-              var u = ( startMagnitudeSquared * pointEndProduct - startEndProduct * pointStartProduct ) / x;
-              var v = ( endMagnitudeSquared * pointStartProduct - startEndProduct * pointEndProduct ) / x;
+              const u = ( startMagnitudeSquared * pointEndProduct - startEndProduct * pointStartProduct ) / x;
+              const v = ( endMagnitudeSquared * pointStartProduct - startEndProduct * pointEndProduct ) / x;
 
               // Test for whether the point is in our triangle
               if ( u >= -1e-10 && v >= -1e-10 && u + v < 1 + 1e-10 ) {
@@ -512,7 +512,7 @@ define( require => {
 
           // If there is no interior vertex, then we reached an ear.
           if ( !hasInteriorVertex ) {
-            var newEdge = new Edge( startVertex, endVertex );
+            const newEdge = new Edge( startVertex, endVertex );
             this.edges.push( newEdge );
             this.triangles.push( new Triangle( startVertex, sharedVertex, endVertex,
                                                nextEdge, newEdge, edge ) );
@@ -546,14 +546,14 @@ define( require => {
      */
     finalize: function() {
       // Accumulate front edges, excluding the first and last.
-      var frontEdges = [];
-      var frontEdge = this.firstFrontEdge.nextEdge;
+      const frontEdges = [];
+      let frontEdge = this.firstFrontEdge.nextEdge;
       while ( frontEdge && frontEdge.nextEdge ) {
         frontEdges.push( frontEdge );
         frontEdge = frontEdge.nextEdge;
       }
-      var firstFrontEdge = this.firstFrontEdge;
-      var lastFrontEdge = frontEdge;
+      const firstFrontEdge = this.firstFrontEdge;
+      const lastFrontEdge = frontEdge;
 
       assert && assert( this.firstFrontEdge.triangles.length === 1 );
       assert && assert( lastFrontEdge.triangles.length === 1 );
@@ -576,15 +576,15 @@ define( require => {
       this.firstFrontEdge = null;
 
       // Accumulate back edges and items to get rid of
-      var backEdges = [];
-      var artificialEdges = [ firstFrontEdge ];
-      var currentSplitEdge = firstFrontEdge;
+      const backEdges = [];
+      const artificialEdges = [ firstFrontEdge ];
+      let currentSplitEdge = firstFrontEdge;
       while ( currentSplitEdge !== lastFrontEdge ) {
-        var nextTriangle = currentSplitEdge.triangles[ 0 ];
+        const nextTriangle = currentSplitEdge.triangles[ 0 ];
         nextTriangle.remove();
         arrayRemove( this.triangles, nextTriangle );
 
-        var edge = nextTriangle.getNonArtificialEdge();
+        const edge = nextTriangle.getNonArtificialEdge();
         if ( edge ) {
           backEdges.push( edge );
           var sharedVertex = edge.getSharedVertex( currentSplitEdge );
@@ -616,8 +616,8 @@ define( require => {
         secondEdge = backEdges[ i ];
 
         sharedVertex = firstEdge.getSharedVertex( secondEdge );
-        var firstVertex = firstEdge.getOtherVertex( sharedVertex );
-        var secondVertex = secondEdge.getOtherVertex( sharedVertex );
+        const firstVertex = firstEdge.getOtherVertex( sharedVertex );
+        const secondVertex = secondEdge.getOtherVertex( sharedVertex );
         if ( Util.triangleAreaSigned( secondVertex.point, sharedVertex.point, firstVertex.point ) > 1e-10 ) {
           newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstVertex, sharedVertex, secondVertex );
           backEdges.splice( i, 2, newEdge );
@@ -652,11 +652,11 @@ define( require => {
         return;
       }
 
-      var triangle1 = edge.triangles[ 0 ];
-      var triangle2 = edge.triangles[ 1 ];
+      const triangle1 = edge.triangles[ 0 ];
+      const triangle2 = edge.triangles[ 1 ];
 
-      var farVertex1 = triangle1.getVertexOppositeFromEdge( edge );
-      var farVertex2 = triangle2.getVertexOppositeFromEdge( edge );
+      const farVertex1 = triangle1.getVertexOppositeFromEdge( edge );
+      const farVertex2 = triangle2.getVertexOppositeFromEdge( edge );
 
       if ( Util.pointInCircleFromPoints( triangle1.aVertex.point, triangle1.bVertex.point, triangle1.cVertex.point, farVertex2.point ) ||
            Util.pointInCircleFromPoints( triangle2.aVertex.point, triangle2.bVertex.point, triangle2.cVertex.point, farVertex1.point ) ) {
@@ -667,13 +667,13 @@ define( require => {
         arrayRemove( this.triangles, triangle2 );
         arrayRemove( this.edges, edge );
 
-        var newEdge = new Edge( farVertex1, farVertex2 );
+        const newEdge = new Edge( farVertex1, farVertex2 );
         this.edges.push( newEdge );
 
-        var triangle1Edge1 = triangle2.getEdgeOppositeFromVertex( triangle2.getVertexBefore( farVertex2 ) );
-        var triangle1Edge2 = triangle1.getEdgeOppositeFromVertex( triangle1.getVertexAfter( farVertex1 ) );
-        var triangle2Edge1 = triangle1.getEdgeOppositeFromVertex( triangle1.getVertexBefore( farVertex1 ) );
-        var triangle2Edge2 = triangle2.getEdgeOppositeFromVertex( triangle2.getVertexAfter( farVertex2 ) );
+        const triangle1Edge1 = triangle2.getEdgeOppositeFromVertex( triangle2.getVertexBefore( farVertex2 ) );
+        const triangle1Edge2 = triangle1.getEdgeOppositeFromVertex( triangle1.getVertexAfter( farVertex1 ) );
+        const triangle2Edge1 = triangle1.getEdgeOppositeFromVertex( triangle1.getVertexBefore( farVertex1 ) );
+        const triangle2Edge2 = triangle2.getEdgeOppositeFromVertex( triangle2.getVertexAfter( farVertex2 ) );
 
         // Construct the new triangles with the correct orientations
         this.triangles.push( new Triangle( farVertex1, farVertex2, triangle1.getVertexBefore( farVertex1 ),
@@ -734,8 +734,8 @@ define( require => {
      * @returns {number}
      */
     vertexProduct: function( sharedVertex, aVertex, bVertex ) {
-      var aDiff = aVertex.point.minus( sharedVertex.point );
-      var bDiff = bVertex.point.minus( sharedVertex.point );
+      const aDiff = aVertex.point.minus( sharedVertex.point );
+      const bDiff = bVertex.point.minus( sharedVertex.point );
       return aDiff.crossScalar( bDiff );
     }
   } );
@@ -874,9 +874,9 @@ define( require => {
     getSharedTriangle: function( otherEdge ) {
       assert && assert( otherEdge instanceof Edge );
 
-      for ( var i = 0; i < this.triangles.length; i++ ) {
-        var triangle = this.triangles[ i ];
-        for ( var j = 0; j < otherEdge.triangles.length; j++ ) {
+      for ( let i = 0; i < this.triangles.length; i++ ) {
+        const triangle = this.triangles[ i ];
+        for ( let j = 0; j < otherEdge.triangles.length; j++ ) {
           if ( otherEdge.triangles[ j ] === triangle ) {
             return triangle;
           }

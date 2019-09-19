@@ -91,8 +91,8 @@ define( require => {
      * @returns {number}
      */
     distanceXY: function( x, y ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
+      const dx = this.x - x;
+      const dy = this.y - y;
       return Math.sqrt( dx * dx + dy * dy );
     },
 
@@ -104,8 +104,8 @@ define( require => {
      * @returns {number}
      */
     distanceSquared: function( point ) {
-      var dx = this.x - point.x;
-      var dy = this.y - point.y;
+      const dx = this.x - point.x;
+      const dy = this.y - point.y;
       return dx * dx + dy * dy;
     },
 
@@ -118,8 +118,8 @@ define( require => {
      * @returns {number}
      */
     distanceSquaredXY: function( x, y ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
+      const dx = this.x - x;
+      const dy = this.y - y;
       return dx * dx + dy * dy;
     },
 
@@ -173,8 +173,8 @@ define( require => {
      * @returns {number}
      */
     angleBetween: function( v ) {
-      var thisMagnitude = this.magnitude;
-      var vMagnitude = v.magnitude;
+      const thisMagnitude = this.magnitude;
+      const vMagnitude = v.magnitude;
       return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
     },
 
@@ -262,7 +262,7 @@ define( require => {
      * @returns {Vector2}
      */
     normalized: function() {
-      var mag = this.magnitude;
+      const mag = this.magnitude;
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
@@ -481,8 +481,8 @@ define( require => {
      * @returns {Vector2}
      */
     rotated: function( angle ) {
-      var newAngle = this.angle + angle;
-      var mag = this.magnitude;
+      const newAngle = this.angle + angle;
+      const mag = this.magnitude;
       return new Vector2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
 
@@ -496,10 +496,10 @@ define( require => {
      * @returns {Vector2} this for chaining
      */
     rotateAboutXY: function( x, y, angle ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
-      var cos = Math.cos( angle );
-      var sin = Math.sin( angle );
+      const dx = this.x - x;
+      const dy = this.y - y;
+      const cos = Math.cos( angle );
+      const sin = Math.sin( angle );
       this.x = x + dx * cos - dy * sin;
       this.y = y + dx * sin + dy * cos;
       return this; // for chaining
@@ -654,7 +654,7 @@ define( require => {
      * @returns {Vector2}
      */
     setMagnitude: function( magnitude ) {
-      var scale = magnitude / this.magnitude;
+      const scale = magnitude / this.magnitude;
       return this.multiplyScalar( scale );
     },
 
@@ -826,7 +826,7 @@ define( require => {
      * @returns {Vector2}
      */
     normalize: function() {
-      var mag = this.magnitude;
+      const mag = this.magnitude;
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
@@ -860,8 +860,8 @@ define( require => {
      * @returns {Vector2}
      */
     rotate: function( angle ) {
-      var newAngle = this.angle + angle;
-      var mag = this.magnitude;
+      const newAngle = this.angle + angle;
+      const mag = this.magnitude;
       return this.setXY( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
     },
 
@@ -920,8 +920,8 @@ define( require => {
      * @returns {number} the angle between the vectors
      */
     getAngleBetweenVectors: function( startVector, endVector ) {
-      var dx = endVector.x - startVector.x;
-      var dy = endVector.y - startVector.y;
+      const dx = endVector.x - startVector.x;
+      const dy = endVector.y - startVector.y;
       return Math.atan2( dy, dx );
     },
 
@@ -932,8 +932,8 @@ define( require => {
      * @returns {number} the angle between the vectors
      */
     getDistanceBetweenVectors: function( startVector, endVector ) {
-      var dx = endVector.x - startVector.x;
-      var dy = endVector.y - startVector.y;
+      const dx = endVector.x - startVector.x;
+      const dy = endVector.y - startVector.y;
       return Math.sqrt( dx * dx + dy * dy );
     }
   } );
@@ -952,7 +952,7 @@ define( require => {
   Vector2.Immutable = function ImmutableVector2( x, y ) {
     Vector2.call( this, x, y );
   };
-  var Immutable = Vector2.Immutable;
+  const Immutable = Vector2.Immutable;
 
   inherit( Vector2, Immutable );
 

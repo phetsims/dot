@@ -22,7 +22,7 @@ define( require => {
   const Vector2 = require( 'DOT/Vector2' );
 
   // Temporary instances to be used in the transform method.
-  var scratchVector2 = new dot.Vector2( 0, 0 );
+  const scratchVector2 = new dot.Vector2( 0, 0 );
 
   /**
    * Creates a 2-dimensional bounds (bounding box).
@@ -327,8 +327,8 @@ define( require => {
         return location;
       }
       else {
-        var xConstrained = Math.max( Math.min( location.x, this.maxX ), this.x );
-        var yConstrained = Math.max( Math.min( location.y, this.maxY ), this.y );
+        const xConstrained = Math.max( Math.min( location.x, this.maxX ), this.x );
+        const yConstrained = Math.max( Math.min( location.y, this.maxY ), this.y );
         return new Vector2( xConstrained, yConstrained );
       }
     },
@@ -376,10 +376,10 @@ define( require => {
      * @returns {boolean}
      */
     intersectsBounds: function( bounds ) {
-      var minX = Math.max( this.minX, bounds.minX );
-      var minY = Math.max( this.minY, bounds.minY );
-      var maxX = Math.min( this.maxX, bounds.maxX );
-      var maxY = Math.min( this.maxY, bounds.maxY );
+      const minX = Math.max( this.minX, bounds.minX );
+      const minY = Math.max( this.minY, bounds.minY );
+      const maxX = Math.min( this.maxX, bounds.maxX );
+      const maxY = Math.min( this.maxY, bounds.maxY );
       return ( maxX - minX ) >= 0 && ( maxY - minY >= 0 );
     },
 
@@ -391,9 +391,9 @@ define( require => {
      * @returns {number}
      */
     minimumDistanceToPointSquared: function( point ) {
-      var closeX = point.x < this.minX ? this.minX : ( point.x > this.maxX ? this.maxX : null );
-      var closeY = point.y < this.minY ? this.minY : ( point.y > this.maxY ? this.maxY : null );
-      var d;
+      const closeX = point.x < this.minX ? this.minX : ( point.x > this.maxX ? this.maxX : null );
+      const closeY = point.y < this.minY ? this.minY : ( point.y > this.maxY ? this.maxY : null );
+      let d;
       if ( closeX === null && closeY === null ) {
         // inside, or on the boundary
         return 0;
@@ -410,8 +410,8 @@ define( require => {
       }
       else {
         // corner case
-        var dx = closeX - point.x;
-        var dy = closeY - point.y;
+        const dx = closeX - point.x;
+        const dy = closeY - point.y;
         return dx * dx + dy * dy;
       }
     },
@@ -424,8 +424,8 @@ define( require => {
      * @returns {number}
      */
     maximumDistanceToPointSquared: function( point ) {
-      var x = point.x > this.getCenterX() ? this.minX : this.maxX;
-      var y = point.y > this.getCenterY() ? this.minY : this.maxY;
+      let x = point.x > this.getCenterX() ? this.minX : this.maxX;
+      let y = point.y > this.getCenterY() ? this.minY : this.maxY;
       x -= point.x;
       y -= point.y;
       return x * x + y * y;
@@ -463,8 +463,8 @@ define( require => {
      */
     equalsEpsilon: function( other, epsilon ) {
       epsilon = epsilon !== undefined ? epsilon : 0;
-      var thisFinite = this.isFinite();
-      var otherFinite = other.isFinite();
+      const thisFinite = this.isFinite();
+      const otherFinite = other.isFinite();
       if ( thisFinite && otherFinite ) {
         // both are finite, so we can use Math.abs() - it would fail with non-finite values like Infinity
         return Math.abs( this.minX - other.minX ) < epsilon &&
@@ -904,7 +904,7 @@ define( require => {
      *                         amount of each.
      */
     blend: function( bounds, ratio ) {
-      var t = 1 - ratio;
+      const t = 1 - ratio;
       return new Bounds2(
         t * this.minX + ratio * bounds.minX,
         t * this.minY + ratio * bounds.minY,
@@ -1182,10 +1182,10 @@ define( require => {
         return this;
       }
 
-      var minX = this.minX;
-      var minY = this.minY;
-      var maxX = this.maxX;
-      var maxY = this.maxY;
+      const minX = this.minX;
+      const minY = this.minY;
+      const maxX = this.maxX;
+      const maxY = this.maxY;
       this.set( dot.Bounds2.NOTHING );
 
       // using mutable vector so we don't create excessive instances of Vector2 during this
@@ -1415,7 +1415,7 @@ define( require => {
      */
     point: function( x, y ) {
       if ( x instanceof dot.Vector2 ) {
-        var p = x;
+        const p = x;
         return new Bounds2( p.x, p.y, p.x, p.y );
       }
       else {

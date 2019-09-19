@@ -389,8 +389,8 @@ define( require => {
      */
     equalsEpsilon: function( other, epsilon ) {
       epsilon = epsilon !== undefined ? epsilon : 0;
-      var thisFinite = this.isFinite();
-      var otherFinite = other.isFinite();
+      const thisFinite = this.isFinite();
+      const otherFinite = other.isFinite();
       if ( thisFinite && otherFinite ) {
         // both are finite, so we can use Math.abs() - it would fail with non-finite values like Infinity
         return Math.abs( this.minX - other.minX ) < epsilon &&
@@ -1141,16 +1141,16 @@ define( require => {
         return this;
       }
 
-      var minX = Number.POSITIVE_INFINITY;
-      var minY = Number.POSITIVE_INFINITY;
-      var minZ = Number.POSITIVE_INFINITY;
-      var maxX = Number.NEGATIVE_INFINITY;
-      var maxY = Number.NEGATIVE_INFINITY;
-      var maxZ = Number.NEGATIVE_INFINITY;
+      let minX = Number.POSITIVE_INFINITY;
+      let minY = Number.POSITIVE_INFINITY;
+      let minZ = Number.POSITIVE_INFINITY;
+      let maxX = Number.NEGATIVE_INFINITY;
+      let maxY = Number.NEGATIVE_INFINITY;
+      let maxZ = Number.NEGATIVE_INFINITY;
 
       // using mutable vector so we don't create excessive instances of Vector2 during this
       // make sure all 4 corners are inside this transformed bounding box
-      var vector = new dot.Vector3( 0, 0, 0 );
+      const vector = new dot.Vector3( 0, 0, 0 );
 
       function withIt( vector ) {
         minX = Math.min( minX, vector.x );

@@ -22,7 +22,7 @@ define( require => {
   require( 'DOT/Vector3' );
   require( 'DOT/Ray3' );
 
-  var scratchMatrix = new dot.Matrix4();
+  const scratchMatrix = new dot.Matrix4();
 
   /**
    * check if the matrix is Finite and is of type Matrix4
@@ -187,7 +187,7 @@ define( require => {
      * @returns {Transform4}
      */
     copy: function() {
-      var transform = new Transform4( this.matrix );
+      const transform = new Transform4( this.matrix );
 
       transform.inverse = this.inverse;
       transform.matrixTransposed = this.matrixTransposed;

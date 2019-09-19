@@ -26,7 +26,7 @@ define( require => {
 
   const dot = require( 'DOT/dot' );
 
-  var ArrayType = window.Float64Array || Array;
+  const ArrayType = window.Float64Array || Array;
 
   // require( 'DOT/Matrix' ); // commented out so Require.js doesn't complain about the circular dependency
 
@@ -36,12 +36,12 @@ define( require => {
    * @constructor
    */
   function EigenvalueDecomposition( matrix ) {
-    var i;
-    var j;
+    let i;
+    let j;
 
-    var A = matrix.entries;
+    const A = matrix.entries;
     this.n = matrix.getColumnDimension(); // @private  Row and column dimension (square matrix).
-    var n = this.n;
+    const n = this.n;
     this.V = new ArrayType( n * n ); // @private Array for internal storage of eigenvectors.
 
     // Arrays for internal storage of eigenvalues.
@@ -125,14 +125,14 @@ define( require => {
      * @returns {Matrix} - a n * n matrix
      */
     getD: function() {
-      var n = this.n;
-      var d = this.d;
-      var e = this.e;
+      const n = this.n;
+      const d = this.d;
+      const e = this.e;
 
-      var X = new dot.Matrix( n, n );
-      var D = X.entries;
-      for ( var i = 0; i < n; i++ ) {
-        for ( var j = 0; j < n; j++ ) {
+      const X = new dot.Matrix( n, n );
+      const D = X.entries;
+      for ( let i = 0; i < n; i++ ) {
+        for ( let j = 0; j < n; j++ ) {
           D[ i * this.n + j ] = 0.0;
         }
         D[ i * this.n + i ] = d[ i ];
@@ -151,16 +151,16 @@ define( require => {
      * @private
      */
     tred2: function() {
-      var n = this.n;
-      var V = this.V;
-      var d = this.d;
-      var e = this.e;
-      var i;
-      var j;
-      var k;
-      var f;
-      var g;
-      var h;
+      const n = this.n;
+      const V = this.V;
+      const d = this.d;
+      const e = this.e;
+      let i;
+      let j;
+      let k;
+      let f;
+      let g;
+      let h;
 
       //  This is derived from the Algol procedures tred2 by
       //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -177,7 +177,7 @@ define( require => {
 
         // Scale to avoid under/overflow.
 
-        var scale = 0.0;
+        let scale = 0.0;
         h = 0.0;
         for ( k = 0; k < i; k++ ) {
           scale = scale + Math.abs( d[ k ] );
@@ -227,7 +227,7 @@ define( require => {
             e[ j ] /= h;
             f += e[ j ] * d[ j ];
           }
-          var hh = f / (h + h);
+          const hh = f / (h + h);
           for ( j = 0; j < i; j++ ) {
             e[ j ] -= hh * d[ j ];
           }
@@ -281,17 +281,17 @@ define( require => {
      * @private
      */
     tql2: function() {
-      var n = this.n;
-      var V = this.V;
-      var d = this.d;
-      var e = this.e;
-      var i;
-      var j;
-      var k;
-      var l;
-      var g;
-      var p;
-      var iter;
+      const n = this.n;
+      const V = this.V;
+      const d = this.d;
+      const e = this.e;
+      let i;
+      let j;
+      let k;
+      let l;
+      let g;
+      let p;
+      let iter;
 
       //  This is derived from the Algol procedures tql2, by
       //  Bowdler, Martin, Reinsch, and Wilkinson, Handbook for
@@ -303,15 +303,15 @@ define( require => {
       }
       e[ n - 1 ] = 0.0;
 
-      var f = 0.0;
-      var tst1 = 0.0;
-      var eps = Math.pow( 2.0, -52.0 );
+      let f = 0.0;
+      let tst1 = 0.0;
+      const eps = Math.pow( 2.0, -52.0 );
       for ( l = 0; l < n; l++ ) {
 
         // Find small subdiagonal element
 
         tst1 = Math.max( tst1, Math.abs( d[ l ] ) + Math.abs( e[ l ] ) );
-        var m = l;
+        let m = l;
         while ( m < n ) {
           if ( Math.abs( e[ m ] ) <= eps * tst1 ) {
             break;
@@ -331,14 +331,14 @@ define( require => {
 
             g = d[ l ];
             p = (d[ l + 1 ] - g) / (2.0 * e[ l ]);
-            var r = dot.Matrix.hypot( p, 1.0 );
+            let r = dot.Matrix.hypot( p, 1.0 );
             if ( p < 0 ) {
               r = -r;
             }
             d[ l ] = e[ l ] / (p + r);
             d[ l + 1 ] = e[ l ] * (p + r);
-            var dl1 = d[ l + 1 ];
-            var h = g - d[ l ];
+            const dl1 = d[ l + 1 ];
+            let h = g - d[ l ];
             for ( i = l + 2; i < n; i++ ) {
               d[ i ] -= h;
             }
@@ -347,12 +347,12 @@ define( require => {
             // Implicit QL transformation.
 
             p = d[ m ];
-            var c = 1.0;
-            var c2 = c;
-            var c3 = c;
-            var el1 = e[ l + 1 ];
-            var s = 0.0;
-            var s2 = 0.0;
+            let c = 1.0;
+            let c2 = c;
+            let c3 = c;
+            const el1 = e[ l + 1 ];
+            let s = 0.0;
+            let s2 = 0.0;
             for ( i = m - 1; i >= l; i-- ) {
               c3 = c2;
               c2 = c;
@@ -414,29 +414,29 @@ define( require => {
      *  @private
      */
     orthes: function() {
-      var n = this.n;
-      var V = this.V;
-      var H = this.H;
-      var ort = this.ort;
-      var i;
-      var j;
-      var m;
-      var f;
-      var g;
+      const n = this.n;
+      const V = this.V;
+      const H = this.H;
+      const ort = this.ort;
+      let i;
+      let j;
+      let m;
+      let f;
+      let g;
 
       //  This is derived from the Algol procedures orthes and ortran,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
       //  Vol.ii-Linear Algebra, and the corresponding
       //  Fortran subroutines in EISPACK.
 
-      var low = 0;
-      var high = n - 1;
+      const low = 0;
+      const high = n - 1;
 
       for ( m = low + 1; m <= high - 1; m++ ) {
 
         // Scale column.
 
-        var scale = 0.0;
+        let scale = 0.0;
         for ( i = m; i <= high; i++ ) {
           scale = scale + Math.abs( H[ i * n + (m - 1) ] );
         }
@@ -444,7 +444,7 @@ define( require => {
 
           // Compute Householder transformation.
 
-          var h = 0.0;
+          let h = 0.0;
           for ( i = high; i >= m; i-- ) {
             ort[ i ] = H[ i * n + (m - 1) ] / scale;
             h += ort[ i ] * ort[ i ];
@@ -515,8 +515,8 @@ define( require => {
 
     // Complex scalar division.
     cdiv: function( xr, xi, yr, yi ) {
-      var r;
-      var d;
+      let r;
+      let d;
       if ( Math.abs( yr ) > Math.abs( yi ) ) {
         r = yi / yr;
         d = yr + r * yi;
@@ -541,17 +541,17 @@ define( require => {
      * @private
      */
     hqr2: function() {
-      var n;
-      var V = this.V;
-      var d = this.d;
-      var e = this.e;
-      var H = this.H;
-      var i;
-      var j;
-      var k;
-      var l;
-      var m;
-      var iter;
+      let n;
+      const V = this.V;
+      const d = this.d;
+      const e = this.e;
+      const H = this.H;
+      let i;
+      let j;
+      let k;
+      let l;
+      let m;
+      let iter;
 
       //  This is derived from the Algol procedure hqr2,
       //  by Martin and Wilkinson, Handbook for Auto. Comp.,
@@ -560,25 +560,25 @@ define( require => {
 
       // Initialize
 
-      var nn = this.n;
+      const nn = this.n;
       n = nn - 1;
-      var low = 0;
-      var high = nn - 1;
-      var eps = Math.pow( 2.0, -52.0 );
-      var exshift = 0.0;
-      var p = 0;
-      var q = 0;
-      var r = 0;
-      var s = 0;
-      var z = 0;
-      var t;
-      var w;
-      var x;
-      var y;
+      const low = 0;
+      const high = nn - 1;
+      const eps = Math.pow( 2.0, -52.0 );
+      let exshift = 0.0;
+      let p = 0;
+      let q = 0;
+      let r = 0;
+      let s = 0;
+      let z = 0;
+      let t;
+      let w;
+      let x;
+      let y;
 
       // Store roots isolated by balanc and compute matrix norm
 
-      var norm = 0.0;
+      let norm = 0.0;
       for ( i = 0; i < nn; i++ ) {
         if ( i < low || i > high ) {
           d[ i ] = H[ i * n + i ];
@@ -773,7 +773,7 @@ define( require => {
           // Double QR step involving rows l:n and columns m:n
 
           for ( k = m; k <= n - 1; k++ ) {
-            var notlast = (k !== n - 1);
+            const notlast = (k !== n - 1);
             if ( k !== m ) {
               p = H[ k * n + k - 1 ];
               q = H[ (k + 1) * n + k - 1 ];

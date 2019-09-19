@@ -17,7 +17,7 @@ define( require => {
 
   QUnit.module( 'Bounds2' );
 
-  var epsilon = 0.00000001;
+  const epsilon = 0.00000001;
 
   function approximateBoundsEquals( assert, a, b, msg ) {
     assert.ok( Math.abs( a.minX - b.minX ) < epsilon, msg + ' minX: expected: ' + b.minX + ', result: ' + a.minX );
@@ -31,7 +31,7 @@ define( require => {
   } );
 
   QUnit.test( 'Basic', function( assert ) {
-    var bounds = new Bounds2( 1, 2, 3, 4 );
+    const bounds = new Bounds2( 1, 2, 3, 4 );
     assert.ok( bounds.minX === 1, 'minX' );
     assert.ok( bounds.minY === 2, 'minY' );
     assert.ok( bounds.maxX === 3, 'maxX' );
@@ -45,7 +45,7 @@ define( require => {
   } );
 
   QUnit.test( 'Coordinates', function( assert ) {
-    var bounds = new Bounds2( 1, 2, 3, 4 );
+    const bounds = new Bounds2( 1, 2, 3, 4 );
     assert.ok( !bounds.isEmpty(), 'isEmpty' );
 
     assert.ok( !bounds.containsCoordinates( 0, 0 ), 'coordinates #1' );
@@ -88,7 +88,7 @@ define( require => {
     approximateBoundsEquals( assert, C().roundedOut(), C().roundOut(), 'roundedOut / roundOut' );
     approximateBoundsEquals( assert, C().roundedIn(), C().roundIn(), 'roundedIn / roundIn' );
 
-    var matrix = Matrix3.rotation2( Math.PI / 4 ).timesMatrix( Matrix3.translation( 11, -13 ) ).timesMatrix( Matrix3.scale( 2, 3.5 ) );
+    const matrix = Matrix3.rotation2( Math.PI / 4 ).timesMatrix( Matrix3.translation( 11, -13 ) ).timesMatrix( Matrix3.scale( 2, 3.5 ) );
     approximateBoundsEquals( assert, A().transformed( matrix ), A().transform( matrix ), 'transformed / transform' );
 
     approximateBoundsEquals( assert, A().dilated( 1.5 ), A().dilate( 1.5 ), 'dilated / dilate' );

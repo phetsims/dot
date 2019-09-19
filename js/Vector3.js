@@ -96,9 +96,9 @@ define( require => {
      * @returns {number}
      */
     distanceXYZ: function( x, y, z ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
-      var dz = this.z - z;
+      const dx = this.x - x;
+      const dy = this.y - y;
+      const dz = this.z - z;
       return Math.sqrt( dx * dx + dy * dy + dz * dz );
     },
 
@@ -110,9 +110,9 @@ define( require => {
      * @returns {number}
      */
     distanceSquared: function( point ) {
-      var dx = this.x - point.x;
-      var dy = this.y - point.y;
-      var dz = this.z - point.z;
+      const dx = this.x - point.x;
+      const dy = this.y - point.y;
+      const dz = this.z - point.z;
       return dx * dx + dy * dy + dz * dz;
     },
 
@@ -126,9 +126,9 @@ define( require => {
      * @returns {number}
      */
     distanceSquaredXYZ: function( x, y, z ) {
-      var dx = this.x - x;
-      var dy = this.y - y;
-      var dz = this.z - z;
+      const dx = this.x - x;
+      const dy = this.y - y;
+      const dz = this.z - z;
       return dx * dx + dy * dy + dz * dz;
     },
 
@@ -257,7 +257,7 @@ define( require => {
      * @returns {Vector3}
      */
     normalized: function() {
-      var mag = this.magnitude;
+      const mag = this.magnitude;
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
@@ -589,7 +589,7 @@ define( require => {
      * @returns {Vector3}
      */
     setMagnitude: function( magnitude ) {
-      var scale = magnitude / this.magnitude;
+      const scale = magnitude / this.magnitude;
       return this.multiplyScalar( scale );
     },
 
@@ -763,7 +763,7 @@ define( require => {
      * @returns {Vector3}
      */
     normalize: function() {
-      var mag = this.magnitude;
+      const mag = this.magnitude;
       if ( mag === 0 ) {
         throw new Error( 'Cannot normalize a zero-magnitude vector' );
       }
@@ -818,7 +818,7 @@ define( require => {
     this.y = y !== undefined ? y : 0;
     this.z = z !== undefined ? z : 0;
   };
-  var Immutable = Vector3.Immutable;
+  const Immutable = Vector3.Immutable;
 
   inherit( Vector3, Immutable );
 

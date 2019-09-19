@@ -19,16 +19,16 @@ define( require => {
   }
 
   function approxEqualArray( assert, arr, barr, msg ) {
-    for ( var i = 0; i < arr.length; i++ ) {
+    for ( let i = 0; i < arr.length; i++ ) {
       approxEqual( assert, arr[ i ], barr[ i ], msg + ': index ' + i );
     }
   }
 
   /* eslint-disable no-undef */
   QUnit.test( '3x3 mults', function( assert ) {
-    var a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
-    var b = new MatrixOps3.Array( [ 4, 3, 1, -7, 2, -1, -1, 0, -2 ] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}
-    var c = new MatrixOps3.Array( 9 );
+    const a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
+    const b = new MatrixOps3.Array( [ 4, 3, 1, -7, 2, -1, -1, 0, -2 ] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}
+    const c = new MatrixOps3.Array( 9 );
 
     MatrixOps3.mult3( a, b, c );
     approxEqualArray( assert, c, [ -17, 7, -15, 0, 19, -9, 27, -13, -4 ], 'mult3' );
@@ -42,13 +42,13 @@ define( require => {
   } );
 
   QUnit.test( 'optimized Givens rotation equivalence', function( assert ) {
-    var a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] );
-    var normal = new MatrixOps3.Array( 9 );
-    var accel = new MatrixOps3.Array( 9 );
-    var givens = new MatrixOps3.Array( 9 );
+    const a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] );
+    const normal = new MatrixOps3.Array( 9 );
+    const accel = new MatrixOps3.Array( 9 );
+    const givens = new MatrixOps3.Array( 9 );
 
-    var cos = Math.cos( Math.PI / 6 );
-    var sin = Math.sin( Math.PI / 6 );
+    const cos = Math.cos( Math.PI / 6 );
+    const sin = Math.sin( Math.PI / 6 );
 
     MatrixOps3.set3( a, normal );
     MatrixOps3.set3( a, accel );
@@ -93,14 +93,14 @@ define( require => {
   } );
 
   QUnit.test( 'SVD', function( assert ) {
-    var a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] );
-    var u = new MatrixOps3.Array( 9 );
-    var sigma = new MatrixOps3.Array( 9 );
-    var v = new MatrixOps3.Array( 9 );
+    const a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] );
+    const u = new MatrixOps3.Array( 9 );
+    const sigma = new MatrixOps3.Array( 9 );
+    const v = new MatrixOps3.Array( 9 );
 
     MatrixOps3.svd3( a, 20, u, sigma, v );
 
-    var c = new MatrixOps3.Array( 9 );
+    const c = new MatrixOps3.Array( 9 );
 
     // c = U * Sigma * V^T
     MatrixOps3.mult3( u, sigma, c );

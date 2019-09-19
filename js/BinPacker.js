@@ -60,11 +60,11 @@ define( require => {
      */
     allocate: function( width, height ) {
       // find a leaf bin that has available room (or null)
-      var bin = this.rootBin.findAvailableBin( width, height );
+      const bin = this.rootBin.findAvailableBin( width, height );
 
       if ( bin ) {
         // split it into a sized sub-bin for our purpose that we will use, and other bins for future allocations
-        var sizedBin = bin.split( width, height );
+        const sizedBin = bin.split( width, height );
 
         // mark our bin as used
         sizedBin.use();
@@ -91,9 +91,9 @@ define( require => {
      * @returns {string}
      */
     toString: function() {
-      var result = '';
+      let result = '';
 
-      var padding = '';
+      let padding = '';
 
       function binTree( bin ) {
         result += padding + bin.toString() + '\n';
@@ -155,8 +155,8 @@ define( require => {
       }
       // If we have been split, check our children
       else if ( this.isSplit ) {
-        for ( var i = 0; i < this.children.length; i++ ) {
-          var result = this.children[ i ].findAvailableBin( width, height );
+        for ( let i = 0; i < this.children.length; i++ ) {
+          const result = this.children[ i ].findAvailableBin( width, height );
           if ( result ) {
             return result;
           }
@@ -193,8 +193,8 @@ define( require => {
       this.isSplit = true;
 
       // locations of the split
-      var splitX = this.bounds.minX + width;
-      var splitY = this.bounds.minY + height;
+      const splitX = this.bounds.minX + width;
+      const splitY = this.bounds.minY + height;
 
       /*
        * How an area is split (for now). In the future, splitting more after determining what we need to fit next would
@@ -212,11 +212,11 @@ define( require => {
        *   *                                  *
        *   ************************************
        */
-      var mainBounds = new Bounds2( this.bounds.minX, this.bounds.minY, splitX, splitY );
-      var rightBounds = new Bounds2( splitX, this.bounds.minY, this.bounds.maxX, splitY );
-      var bottomBounds = new Bounds2( this.bounds.minX, splitY, this.bounds.maxX, this.bounds.maxY );
+      const mainBounds = new Bounds2( this.bounds.minX, this.bounds.minY, splitX, splitY );
+      const rightBounds = new Bounds2( splitX, this.bounds.minY, this.bounds.maxX, splitY );
+      const bottomBounds = new Bounds2( this.bounds.minX, splitY, this.bounds.maxX, this.bounds.maxY );
 
-      var mainBin = new dot.BinPacker.Bin( mainBounds, this );
+      const mainBin = new dot.BinPacker.Bin( mainBounds, this );
       this.children.push( mainBin );
 
       // only add right/bottom if they take up area
@@ -264,8 +264,8 @@ define( require => {
 
       // Bail out if a single child isn't able to be collapsed. If it is not split or used, it won't have any children
       // or needs.
-      for ( var i = 0; i < this.children.length; i++ ) {
-        var child = this.children[ i ];
+      for ( let i = 0; i < this.children.length; i++ ) {
+        const child = this.children[ i ];
 
         if ( child.isSplit || child.isUsed ) {
           return;

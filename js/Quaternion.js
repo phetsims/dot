@@ -176,7 +176,7 @@ define( require => {
      * @returns {Quaternion}
      */
     normalized: function() {
-      var magnitude = this.magnitude;
+      const magnitude = this.magnitude;
       assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude quaternion' );
       return this.timesScalar( 1 / magnitude );
     },
@@ -201,18 +201,18 @@ define( require => {
     toRotationMatrix: function() {
       // see http://en.wikipedia.org/wiki/Rotation_matrix#Quaternion
 
-      var norm = this.magnitudeSquared;
-      var flip = ( norm === 1 ) ? 2 : ( norm > 0 ) ? 2 / norm : 0;
+      const norm = this.magnitudeSquared;
+      const flip = ( norm === 1 ) ? 2 : ( norm > 0 ) ? 2 / norm : 0;
 
-      var xx = this.x * this.x * flip;
-      var xy = this.x * this.y * flip;
-      var xz = this.x * this.z * flip;
-      var xw = this.w * this.x * flip;
-      var yy = this.y * this.y * flip;
-      var yz = this.y * this.z * flip;
-      var yw = this.w * this.y * flip;
-      var zz = this.z * this.z * flip;
-      var zw = this.w * this.z * flip;
+      const xx = this.x * this.x * flip;
+      const xy = this.x * this.y * flip;
+      const xz = this.x * this.z * flip;
+      const xw = this.w * this.x * flip;
+      const yy = this.y * this.y * flip;
+      const yz = this.y * this.z * flip;
+      const yw = this.w * this.y * flip;
+      const zz = this.z * this.z * flip;
+      const zw = this.w * this.z * flip;
 
       return dot.Matrix3.dirtyFromPool().columnMajor(
         1 - ( yy + zz ),
@@ -237,17 +237,17 @@ define( require => {
    * @returns {Quaternion}
    */
   Quaternion.fromEulerAngles = function( yaw, roll, pitch ) {
-    var sinPitch = Math.sin( pitch * 0.5 );
-    var cosPitch = Math.cos( pitch * 0.5 );
-    var sinRoll = Math.sin( roll * 0.5 );
-    var cosRoll = Math.cos( roll * 0.5 );
-    var sinYaw = Math.sin( yaw * 0.5 );
-    var cosYaw = Math.cos( yaw * 0.5 );
+    const sinPitch = Math.sin( pitch * 0.5 );
+    const cosPitch = Math.cos( pitch * 0.5 );
+    const sinRoll = Math.sin( roll * 0.5 );
+    const cosRoll = Math.cos( roll * 0.5 );
+    const sinYaw = Math.sin( yaw * 0.5 );
+    const cosYaw = Math.cos( yaw * 0.5 );
 
-    var a = cosRoll * cosPitch;
-    var b = sinRoll * sinPitch;
-    var c = cosRoll * sinPitch;
-    var d = sinRoll * cosPitch;
+    const a = cosRoll * cosPitch;
+    const b = sinRoll * sinPitch;
+    const c = cosRoll * sinPitch;
+    const d = sinRoll * cosPitch;
 
     return new Quaternion(
       a * sinYaw + b * cosYaw,
@@ -266,19 +266,19 @@ define( require => {
    * @returns {Quaternion}
    */
   Quaternion.fromRotationMatrix = function( matrix ) {
-    var v00 = matrix.m00();
-    var v01 = matrix.m01();
-    var v02 = matrix.m02();
-    var v10 = matrix.m10();
-    var v11 = matrix.m11();
-    var v12 = matrix.m12();
-    var v20 = matrix.m20();
-    var v21 = matrix.m21();
-    var v22 = matrix.m22();
+    const v00 = matrix.m00();
+    const v01 = matrix.m01();
+    const v02 = matrix.m02();
+    const v10 = matrix.m10();
+    const v11 = matrix.m11();
+    const v12 = matrix.m12();
+    const v20 = matrix.m20();
+    const v21 = matrix.m21();
+    const v22 = matrix.m22();
 
     // from graphics gems code
-    var trace = v00 + v11 + v22;
-    var sqt;
+    const trace = v00 + v11 + v22;
+    let sqt;
 
     // we protect the division by s by ensuring that s>=1
     if ( trace >= 0 ) {
@@ -346,7 +346,7 @@ define( require => {
       return a;
     }
 
-    var dot = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+    let dot = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 
     if ( dot < 0 ) {
       b = b.negated();
@@ -354,13 +354,13 @@ define( require => {
     }
 
     // how much of each quaternion should be contributed
-    var ratioA = 1 - t;
-    var ratioB = t;
+    let ratioA = 1 - t;
+    let ratioB = t;
 
     // tweak them if necessary
     if ( ( 1 - dot ) > 0.1 ) {
-      var theta = Math.acos( dot );
-      var invSinTheta = ( 1 / Math.sin( theta ) );
+      const theta = Math.acos( dot );
+      const invSinTheta = ( 1 / Math.sin( theta ) );
 
       ratioA = ( Math.sin( ( 1 - t ) * theta ) * invSinTheta );
       ratioB = ( Math.sin( ( t * theta ) ) * invSinTheta );

@@ -23,7 +23,7 @@ define( require => {
   }
 
   function runHarmonic( a, b, c, initialValue, initialDerivative, assert ) {
-    var harmonic = new DampedHarmonic( a, b, c, initialValue, initialDerivative );
+    const harmonic = new DampedHarmonic( a, b, c, initialValue, initialDerivative );
 
     approxEquals( assert, harmonic.getValue( 0 ), initialValue, 'Initial value' );
     approxEquals( assert, harmonic.getDerivative( 0 ), initialDerivative, 'Initial derivative' );

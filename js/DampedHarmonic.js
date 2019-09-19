@@ -96,7 +96,7 @@ define( require => {
         return ( this.c1 + this.c2 * t ) * Math.exp( -this.angularFrequency * t );
       }
       else if ( this.solutionType === DampedHarmonic.UNDER_DAMPED ) {
-        var theta = this.frequency * t;
+        const theta = this.frequency * t;
         return Math.exp( -( this.dampingConstant / 2 ) * t ) * ( this.c1 * Math.cos( theta ) + this.c2 * Math.sin( theta ) );
       }
       else if ( this.solutionType === DampedHarmonic.OVER_DAMPED ) {
@@ -119,11 +119,11 @@ define( require => {
         return Math.exp( -this.angularFrequency * t ) * ( this.c2 - this.angularFrequency * ( this.c1 + this.c2 * t ) );
       }
       else if ( this.solutionType === DampedHarmonic.UNDER_DAMPED ) {
-        var theta = this.frequency * t;
-        var cos = Math.cos( theta );
-        var sin = Math.sin( theta );
-        var term1 = this.frequency * ( this.c2 * cos - this.c1 * sin );
-        var term2 = 0.5 * this.dampingConstant * ( this.c1 * cos + this.c2 * sin );
+        const theta = this.frequency * t;
+        const cos = Math.cos( theta );
+        const sin = Math.sin( theta );
+        const term1 = this.frequency * ( this.c2 * cos - this.c1 * sin );
+        const term2 = 0.5 * this.dampingConstant * ( this.c1 * cos + this.c2 * sin );
         return Math.exp( -0.5 * this.dampingConstant * t ) * ( term1 - term2 );
       }
       else if ( this.solutionType === DampedHarmonic.OVER_DAMPED ) {

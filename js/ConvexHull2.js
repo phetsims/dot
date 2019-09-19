@@ -50,7 +50,7 @@ define( require => {
     return p2.minus( p1 ).crossScalar( p3.minus( p1 ) );
   }
 
-  var ConvexHull2 = {
+  const ConvexHull2 = {
     // TODO testing: all collinear, multiple ways of having same angle, etc.
 
     /**
@@ -69,8 +69,8 @@ define( require => {
       }
 
       // find the point 'p' with the lowest y value
-      var minY = Number.POSITIVE_INFINITY;
-      var p = null;
+      let minY = Number.POSITIVE_INFINITY;
+      let p = null;
       _.each( points, function( point ) {
         if ( point.y <= minY ) {
           // if two points have the same y value, take the one with the lowest x
@@ -95,7 +95,7 @@ define( require => {
       points.splice( _.indexOf( points, p ), 1 );
 
       // our result array
-      var result = [ p ];
+      const result = [ p ];
 
       _.each( points, function( point ) {
         // ignore points equal to our starting point
@@ -105,7 +105,7 @@ define( require => {
           if ( result.length < 2 ) {
             return false;
           }
-          var cross = ccw( result[ result.length - 2 ], result[ result.length - 1 ], point );
+          const cross = ccw( result[ result.length - 2 ], result[ result.length - 1 ], point );
           return includeCollinear ? ( cross < 0 ) : ( cross <= 0 );
         }
 

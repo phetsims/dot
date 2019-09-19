@@ -17,7 +17,7 @@ define( require => {
   require( 'DOT/Vector3' );
   require( 'DOT/Vector4' );
 
-  var Float32Array = window.Float32Array || Array;
+  const Float32Array = window.Float32Array || Array;
 
   function Matrix4( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
 
@@ -44,7 +44,7 @@ define( require => {
     // TODO: possibly add rotations
   };
 
-  var Types = Matrix4.Types;
+  const Types = Matrix4.Types;
 
   Matrix4.identity = function() {
     return new Matrix4(
@@ -81,9 +81,9 @@ define( require => {
 
   // axis is a normalized Vector3, angle in radians.
   Matrix4.rotationAxisAngle = function( axis, angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
-    var C = 1 - c;
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
+    const C = 1 - c;
 
     return new Matrix4(
       axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s, 0,
@@ -96,8 +96,8 @@ define( require => {
   // TODO: add in rotation from quaternion, and from quat + translation
 
   Matrix4.rotationX = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
 
     return new Matrix4(
       1, 0, 0, 0,
@@ -108,8 +108,8 @@ define( require => {
   };
 
   Matrix4.rotationY = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
 
     return new Matrix4(
       c, 0, s, 0,
@@ -120,8 +120,8 @@ define( require => {
   };
 
   Matrix4.rotationZ = function( angle ) {
-    var c = Math.cos( angle );
-    var s = Math.sin( angle );
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
 
     return new Matrix4(
       c, -s, 0, 0,
@@ -133,7 +133,7 @@ define( require => {
 
   // aspect === width / height
   Matrix4.gluPerspective = function( fovYRadians, aspect, zNear, zFar ) {
-    var cotangent = Math.cos( fovYRadians ) / Math.sin( fovYRadians );
+    const cotangent = Math.cos( fovYRadians ) / Math.sin( fovYRadians );
 
     return new Matrix4(
       cotangent / aspect, 0, 0, 0,
@@ -227,18 +227,18 @@ define( require => {
     // returns a vector that is equivalent to ( T(1,0,0).magnitude, T(0,1,0).magnitude, T(0,0,1).magnitude )
     // where T is a relative transform
     getScaleVector: function() {
-      var m0003 = this.m00() + this.m03();
-      var m1013 = this.m10() + this.m13();
-      var m2023 = this.m20() + this.m23();
-      var m3033 = this.m30() + this.m33();
-      var m0103 = this.m01() + this.m03();
-      var m1113 = this.m11() + this.m13();
-      var m2123 = this.m21() + this.m23();
-      var m3133 = this.m31() + this.m33();
-      var m0203 = this.m02() + this.m03();
-      var m1213 = this.m12() + this.m13();
-      var m2223 = this.m22() + this.m23();
-      var m3233 = this.m32() + this.m33();
+      const m0003 = this.m00() + this.m03();
+      const m1013 = this.m10() + this.m13();
+      const m2023 = this.m20() + this.m23();
+      const m3033 = this.m30() + this.m33();
+      const m0103 = this.m01() + this.m03();
+      const m1113 = this.m11() + this.m13();
+      const m2123 = this.m21() + this.m23();
+      const m3133 = this.m31() + this.m33();
+      const m0203 = this.m02() + this.m03();
+      const m1213 = this.m12() + this.m13();
+      const m2223 = this.m22() + this.m23();
+      const m3233 = this.m32() + this.m33();
       return new dot.Vector3(
         Math.sqrt( m0003 * m0003 + m1013 * m1013 + m2023 * m2023 + m3033 * m3033 ),
         Math.sqrt( m0103 * m0103 + m1113 * m1113 + m2123 * m2123 + m3133 * m3133 ),
@@ -465,10 +465,10 @@ define( require => {
     },
 
     timesVector4: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z + this.m03() * v.w;
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z + this.m13() * v.w;
-      var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z + this.m23() * v.w;
-      var w = this.m30() * v.x + this.m31() * v.y + this.m32() * v.z + this.m33() * v.w;
+      const x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z + this.m03() * v.w;
+      const y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z + this.m13() * v.w;
+      const z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z + this.m23() * v.w;
+      const w = this.m30() * v.x + this.m31() * v.y + this.m32() * v.z + this.m33() * v.w;
       return new dot.Vector4( x, y, z, w );
     },
 
@@ -477,10 +477,10 @@ define( require => {
     },
 
     timesTransposeVector4: function( v ) {
-      var x = this.m00() * v.x + this.m10() * v.y + this.m20() * v.z + this.m30() * v.w;
-      var y = this.m01() * v.x + this.m11() * v.y + this.m21() * v.z + this.m31() * v.w;
-      var z = this.m02() * v.x + this.m12() * v.y + this.m22() * v.z + this.m32() * v.w;
-      var w = this.m03() * v.x + this.m13() * v.y + this.m23() * v.z + this.m33() * v.w;
+      const x = this.m00() * v.x + this.m10() * v.y + this.m20() * v.z + this.m30() * v.w;
+      const y = this.m01() * v.x + this.m11() * v.y + this.m21() * v.z + this.m31() * v.w;
+      const z = this.m02() * v.x + this.m12() * v.y + this.m22() * v.z + this.m32() * v.w;
+      const w = this.m03() * v.x + this.m13() * v.y + this.m23() * v.z + this.m33() * v.w;
       return new dot.Vector4( x, y, z, w );
     },
 
@@ -489,9 +489,9 @@ define( require => {
     },
 
     timesRelativeVector3: function( v ) {
-      var x = this.m00() * v.x + this.m10() * v.y + this.m20() * v.z;
-      var y = this.m01() * v.y + this.m11() * v.y + this.m21() * v.z;
-      var z = this.m02() * v.z + this.m12() * v.y + this.m22() * v.z;
+      const x = this.m00() * v.x + this.m10() * v.y + this.m20() * v.z;
+      const y = this.m01() * v.y + this.m11() * v.y + this.m21() * v.z;
+      const z = this.m02() * v.z + this.m12() * v.y + this.m22() * v.z;
       return new dot.Vector3( x, y, z );
     },
 

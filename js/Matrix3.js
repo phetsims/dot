@@ -185,7 +185,7 @@ define( require => {
     },
 
     toSVGMatrix: function() {
-      var result = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGMatrix();
+      const result = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGMatrix();
 
       // top two rows
       result.a = this.m00();
@@ -236,7 +236,7 @@ define( require => {
 
     // returns a parameter object suitable for use with jQuery's .css()
     getCSSTransformStyles: function() {
-      var transformCSS = this.getCSSTransform();
+      const transformCSS = this.getCSSTransform();
 
       // notes on triggering hardware acceleration: http://creativejs.com/2011/12/day-2-gpu-accelerate-your-dom-elements/
       return {
@@ -315,7 +315,7 @@ define( require => {
     },
 
     inverted: function() {
-      var det;
+      let det;
 
       switch( this.type ) {
         case Types.IDENTITY:
@@ -426,28 +426,28 @@ define( require => {
      *----------------------------------------------------------------------------*/
 
     timesVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02();
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12();
+      const x = this.m00() * v.x + this.m01() * v.y + this.m02();
+      const y = this.m10() * v.x + this.m11() * v.y + this.m12();
       return new dot.Vector2( x, y );
     },
 
     timesVector3: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
-      var y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
-      var z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
+      const x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
+      const y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
+      const z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
       return new dot.Vector3( x, y, z );
     },
 
     timesTransposeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m10() * v.y;
-      var y = this.m01() * v.x + this.m11() * v.y;
+      const x = this.m00() * v.x + this.m10() * v.y;
+      const y = this.m01() * v.x + this.m11() * v.y;
       return new dot.Vector2( x, y );
     },
 
     // TODO: this operation seems to not work for transformDelta2, should be vetted
     timesRelativeVector2: function( v ) {
-      var x = this.m00() * v.x + this.m01() * v.y;
-      var y = this.m10() * v.y + this.m11() * v.y;
+      const x = this.m00() * v.x + this.m01() * v.y;
+      const y = this.m10() * v.y + this.m11() * v.y;
       return new dot.Vector2( x, y );
     },
 
@@ -570,7 +570,7 @@ define( require => {
     },
 
     invert: function() {
-      var det;
+      let det;
 
       switch( this.type ) {
         case Types.IDENTITY:
@@ -733,9 +733,9 @@ define( require => {
 
     // axis is a normalized Vector3, angle in radians.
     setToRotationAxisAngle: function( axis, angle ) {
-      var c = Math.cos( angle );
-      var s = Math.sin( angle );
-      var C = 1 - c;
+      const c = Math.cos( angle );
+      const s = Math.sin( angle );
+      const C = 1 - c;
 
       return this.rowMajor(
         axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s,
@@ -745,8 +745,8 @@ define( require => {
     },
 
     setToRotationX: function( angle ) {
-      var c = Math.cos( angle );
-      var s = Math.sin( angle );
+      const c = Math.cos( angle );
+      const s = Math.sin( angle );
 
       return this.rowMajor(
         1, 0, 0,
@@ -756,8 +756,8 @@ define( require => {
     },
 
     setToRotationY: function( angle ) {
-      var c = Math.cos( angle );
-      var s = Math.sin( angle );
+      const c = Math.cos( angle );
+      const s = Math.sin( angle );
 
       return this.rowMajor(
         c, 0, s,
@@ -767,8 +767,8 @@ define( require => {
     },
 
     setToRotationZ: function( angle ) {
-      var c = Math.cos( angle );
-      var s = Math.sin( angle );
+      const c = Math.cos( angle );
+      const s = Math.sin( angle );
 
       return this.rowMajor(
         c, -s, 0,
@@ -778,8 +778,8 @@ define( require => {
     },
 
     setToTranslationRotation: function( x, y, angle ) {
-      var c = Math.cos( angle );
-      var s = Math.sin( angle );
+      const c = Math.cos( angle );
+      const s = Math.sin( angle );
 
       return this.rowMajor(
         c, -s, x,
@@ -803,26 +803,26 @@ define( require => {
     // a rotation matrix that rotates A to B (Vector3 instances), by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
     setRotationAToB: function( a, b ) {
       // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
-      var start = a;
-      var end = b;
+      const start = a;
+      const end = b;
 
-      var epsilon = 0.0001;
+      const epsilon = 0.0001;
 
-      var e;
-      var h;
-      var f;
+      let e;
+      let h;
+      let f;
 
-      var v = start.cross( end );
+      let v = start.cross( end );
       e = start.dot( end );
       f = ( e < 0 ) ? -e : e;
 
       // if "from" and "to" vectors are nearly parallel
       if ( f > 1.0 - epsilon ) {
-        var c1;
-        var c2;
-        var c3;
+        let c1;
+        let c2;
+        let c3;
 
-        var x = new dot.Vector3(
+        let x = new dot.Vector3(
           ( start.x > 0.0 ) ? start.x : -start.x,
           ( start.y > 0.0 ) ? start.y : -start.y,
           ( start.z > 0.0 ) ? start.z : -start.z
@@ -845,7 +845,7 @@ define( require => {
           }
         }
 
-        var u = x.minus( start );
+        const u = x.minus( start );
         v = x.minus( end );
 
         c1 = 2.0 / u.dot( u );
@@ -866,11 +866,11 @@ define( require => {
       }
       else {
         // the most common case, unless "start"="end", or "start"=-"end"
-        var hvx;
-        var hvz;
-        var hvxy;
-        var hvxz;
-        var hvyz;
+        let hvx;
+        let hvz;
+        let hvxy;
+        let hvxz;
+        let hvyz;
         h = 1.0 / ( 1.0 + e );
         hvx = h * v.x;
         hvz = h * v.z;
@@ -990,7 +990,7 @@ define( require => {
 
   //Shortcut for translation times a matrix (without allocating a translation matrix), see scenery#119
   Matrix3.translationTimesMatrix = function( x, y, m ) {
-    var type;
+    let type;
     if ( m.type === Types.IDENTITY || m.type === Types.TRANSLATION_2D ) {
       return Matrix3.createFromPool(
         1, 0, m.m02() + x,

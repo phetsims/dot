@@ -58,7 +58,7 @@ define( require => {
    * @returns {Plane3|null}
    */
   Plane3.fromTriangle = function( a, b, c ) {
-    var normal = ( c.minus( a ) ).cross( b.minus( a ) );
+    const normal = ( c.minus( a ) ).cross( b.minus( a ) );
     if ( normal.magnitude === 0 ) {
       return null;
     }
