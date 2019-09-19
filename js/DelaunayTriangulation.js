@@ -12,16 +12,16 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var arrayRemove = require( 'PHET_CORE/arrayRemove' );
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var dot = require( 'DOT/dot' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Util = require( 'DOT/Util' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const arrayRemove = require( 'PHET_CORE/arrayRemove' );
+  const Bounds2 = require( 'DOT/Bounds2' );
+  const dot = require( 'DOT/dot' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Util = require( 'DOT/Util' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   /**
    * @public

@@ -6,10 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
+  const dot = require( 'DOT/dot' );
 
   /**
    * Constructs a 3D ray using the supplied origin position and unit length direction vector

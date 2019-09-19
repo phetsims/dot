@@ -6,11 +6,11 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var MatrixOps3 = require( 'DOT/MatrixOps3' );
+  const MatrixOps3 = require( 'DOT/MatrixOps3' );
 
   QUnit.module( 'MatrixOps3' );
 

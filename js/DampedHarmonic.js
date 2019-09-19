@@ -8,11 +8,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const dot = require( 'DOT/dot' );
+  const inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * For solving ax'' + bx' + cx = 0 with initial conditions x(0) and x'(0).

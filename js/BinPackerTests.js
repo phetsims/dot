@@ -5,12 +5,12 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var BinPacker = require( 'DOT/BinPacker' );
-  var Bounds2 = require( 'DOT/Bounds2' );
+  const BinPacker = require( 'DOT/BinPacker' );
+  const Bounds2 = require( 'DOT/Bounds2' );
 
   QUnit.module( 'BinPacker' );
 

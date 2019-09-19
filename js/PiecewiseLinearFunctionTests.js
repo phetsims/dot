@@ -5,11 +5,11 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var PiecewiseLinearFunction = require( 'DOT/PiecewiseLinearFunction' );
+  const PiecewiseLinearFunction = require( 'DOT/PiecewiseLinearFunction' );
 
   QUnit.module( 'PiecewiseLinearFunction' );
 

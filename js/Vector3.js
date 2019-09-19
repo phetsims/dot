@@ -5,13 +5,13 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
+  const dot = require( 'DOT/dot' );
 
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Poolable = require( 'PHET_CORE/Poolable' );
 
   require( 'DOT/Util' );
   require( 'DOT/Vector2' );

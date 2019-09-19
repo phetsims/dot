@@ -13,13 +13,13 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Poolable = require( 'PHET_CORE/Poolable' );
-  var Vector2 = require( 'DOT/Vector2' );
+  const dot = require( 'DOT/dot' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Poolable = require( 'PHET_CORE/Poolable' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   // Temporary instances to be used in the transform method.
   var scratchVector2 = new dot.Vector2( 0, 0 );

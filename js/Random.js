@@ -9,13 +9,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Mohamed Safi
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var dot = require( 'DOT/dot' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Util = require( 'DOT/Util' );
+  const dot = require( 'DOT/dot' );
+  const inherit = require( 'PHET_CORE/inherit' );
+  const Util = require( 'DOT/Util' );
 
   /**
    * Construct a Random instance.

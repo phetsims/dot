@@ -7,10 +7,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
+  const dot = require( 'DOT/dot' );
 
   /*
    * Matrices are stored as flat typed arrays with row-major indices. For example, for a 3x3:

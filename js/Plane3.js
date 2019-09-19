@@ -7,11 +7,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
-  var Vector3 = require( 'DOT/Vector3' );
+  const dot = require( 'DOT/dot' );
+  const Vector3 = require( 'DOT/Vector3' );
 
   /**
    *

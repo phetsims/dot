@@ -6,11 +6,11 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var LinearFunction = require( 'DOT/LinearFunction' );
+  const LinearFunction = require( 'DOT/LinearFunction' );
 
   QUnit.module( 'LinearFunction' );
 

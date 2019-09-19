@@ -6,14 +6,14 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
+  const dot = require( 'DOT/dot' );
 
   var ArrayType = window.Float64Array || Array;
 
-  var isArray = require( 'PHET_CORE/isArray' );
+  const isArray = require( 'PHET_CORE/isArray' );
 
   require( 'DOT/SingularValueDecomposition' );
   require( 'DOT/LUDecomposition' );

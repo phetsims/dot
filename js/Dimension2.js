@@ -6,11 +6,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const dot = require( 'DOT/dot' );
+  const inherit = require( 'PHET_CORE/inherit' );
   require( 'DOT/Bounds2' );
 
   /**

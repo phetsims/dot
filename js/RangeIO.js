@@ -5,14 +5,14 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var dot = require( 'DOT/dot' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var Range = require( 'DOT/Range' );
-  var validate = require( 'AXON/validate' );
+  const dot = require( 'DOT/dot' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  const Range = require( 'DOT/Range' );
+  const validate = require( 'AXON/validate' );
 
   class RangeIO extends ObjectIO {
 

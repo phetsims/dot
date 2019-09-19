@@ -8,12 +8,12 @@
  * @author Matt Pennington
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
+  const dot = require( 'DOT/dot' );
   require( 'DOT/Util' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const inherit = require( 'PHET_CORE/inherit' );
 
   /**
    * Creates a complex number, that has both a real and imaginary part.

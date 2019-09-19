@@ -6,11 +6,11 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Complex = require( 'DOT/Complex' );
+  const Complex = require( 'DOT/Complex' );
 
   QUnit.module( 'Complex' );
 

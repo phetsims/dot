@@ -7,10 +7,10 @@
  * @author Andrew Adare
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
+  const dot = require( 'DOT/dot' );
 
   /**
    * @param {number} min - the minimum value of the range

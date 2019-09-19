@@ -6,11 +6,11 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var Vector2 = require( 'DOT/Vector2' );
+  const Vector2 = require( 'DOT/Vector2' );
 
   QUnit.module( 'Vector2' );
 

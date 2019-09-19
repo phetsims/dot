@@ -9,12 +9,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
-  var dot = require( 'DOT/dot' );
-  var Events = require( 'AXON/Events' );
-  var inherit = require( 'PHET_CORE/inherit' );
+  const dot = require( 'DOT/dot' );
+  const Events = require( 'AXON/Events' );
+  const inherit = require( 'PHET_CORE/inherit' );
 
   require( 'DOT/Matrix3' );
   require( 'DOT/Vector2' );

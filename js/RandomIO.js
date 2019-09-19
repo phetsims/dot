@@ -6,13 +6,13 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var dot = require( 'DOT/dot' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var Random = require( 'DOT/Random' );
+  const dot = require( 'DOT/dot' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  const Random = require( 'DOT/Random' );
 
   class RandomIO extends ObjectIO {}
 

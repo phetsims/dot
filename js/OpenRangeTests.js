@@ -6,12 +6,12 @@
  * @author Michael Barlow (PhET Interactive Simulations)
  */
 
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var OpenRange = require( 'DOT/OpenRange' );
-  var Range = require( 'DOT/Range' );
+  const OpenRange = require( 'DOT/OpenRange' );
+  const Range = require( 'DOT/Range' );
 
   var minHalfOpenOptions = { openMax: false };
   var maxHalfOpenOptions = { openMin: false };

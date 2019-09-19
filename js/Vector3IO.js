@@ -6,14 +6,14 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
-  var dot = require( 'DOT/dot' );
-  var ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  var Vector3 = require( 'DOT/Vector3' );
-  var validate = require( 'AXON/validate' );
+  const dot = require( 'DOT/dot' );
+  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
+  const Vector3 = require( 'DOT/Vector3' );
+  const validate = require( 'AXON/validate' );
 
   class Vector3IO extends ObjectIO {
 

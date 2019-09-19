@@ -1,16 +1,16 @@
 // Copyright 2013-2016, University of Colorado Boulder
 
-var esprima = require( 'esprima' );
-var jsBeautify = require( 'js-beautify' ); // eslint-disable-line require-statement-match
-var extractDocumentation = require( '../chipper/js/common/extractDocumentation' );
-var documentationToHTML = require( '../chipper/js/common/documentationToHTML' );
-var fs = require( 'fs' );
+const esprima = require( 'esprima' );
+const jsBeautify = require( 'js-beautify' ); // eslint-disable-line require-statement-match
+const extractDocumentation = require( '../chipper/js/common/extractDocumentation' );
+const documentationToHTML = require( '../chipper/js/common/documentationToHTML' );
+const fs = require( 'fs' );
 
 // constants
 var beautify_html = jsBeautify.html;
 
 // use chipper's gruntfile
-var Gruntfile = require( '../chipper/js/grunt/Gruntfile.js' ); // eslint-disable-line
+const Gruntfile = require( '../chipper/js/grunt/Gruntfile.js' ); // eslint-disable-line
 
 // Add repo-specific grunt tasks
 module.exports = function( grunt ) {
