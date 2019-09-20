@@ -808,20 +808,12 @@ define( require => {
 
       const epsilon = 0.0001;
 
-      let e;
-      let h;
-      let f;
-
       let v = start.cross( end );
-      e = start.dot( end );
-      f = ( e < 0 ) ? -e : e;
+      const e = start.dot( end );
+      const f = ( e < 0 ) ? -e : e;
 
       // if "from" and "to" vectors are nearly parallel
       if ( f > 1.0 - epsilon ) {
-        let c1;
-        let c2;
-        let c3;
-
         let x = new dot.Vector3(
           ( start.x > 0.0 ) ? start.x : -start.x,
           ( start.y > 0.0 ) ? start.y : -start.y,
@@ -848,9 +840,9 @@ define( require => {
         const u = x.minus( start );
         v = x.minus( end );
 
-        c1 = 2.0 / u.dot( u );
-        c2 = 2.0 / v.dot( v );
-        c3 = c1 * c2 * u.dot( v );
+        const c1 = 2.0 / u.dot( u );
+        const c2 = 2.0 / v.dot( v );
+        const c3 = c1 * c2 * u.dot( v );
 
         return this.rowMajor(
           -c1 * u.x * u.x - c2 * v.x * v.x + c3 * v.x * u.x + 1,
@@ -866,17 +858,12 @@ define( require => {
       }
       else {
         // the most common case, unless "start"="end", or "start"=-"end"
-        let hvx;
-        let hvz;
-        let hvxy;
-        let hvxz;
-        let hvyz;
-        h = 1.0 / ( 1.0 + e );
-        hvx = h * v.x;
-        hvz = h * v.z;
-        hvxy = hvx * v.y;
-        hvxz = hvx * v.z;
-        hvyz = hvz * v.y;
+        const h = 1.0 / ( 1.0 + e );
+        const hvx = h * v.x;
+        const hvz = h * v.z;
+        const hvxy = hvx * v.y;
+        const hvxz = hvx * v.z;
+        const hvyz = hvz * v.y;
 
         return this.rowMajor(
           e + hvx * v.x, hvxy - v.z, hvxz + v.y,
