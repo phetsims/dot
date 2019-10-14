@@ -375,7 +375,12 @@ define( require => {
      * @returns {boolean} - Whether the two bounds are equal
      */
     equals: function( other ) {
-      return this.minX === other.minX && this.minY === other.minY && this.minZ === other.minZ && this.maxX === other.maxX && this.maxY === other.maxY && this.maxZ === other.maxZ;
+      return this.minX === other.minX &&
+             this.minY === other.minY &&
+             this.minZ === other.minZ &&
+             this.maxX === other.maxX &&
+             this.maxY === other.maxY &&
+             this.maxZ === other.maxZ;
     },
 
     /**
