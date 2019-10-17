@@ -10,6 +10,7 @@ define( require => {
 
   // modules
   const dot = require( 'DOT/dot' );
+  const merge = require( 'PHET_CORE/merge' );
   const Property = require( 'AXON/Property' );
   const PropertyIO = require( 'AXON/PropertyIO' );
   const Vector2 = require( 'DOT/Vector2' );
@@ -30,7 +31,7 @@ define( require => {
       }
 
       // Fill in superclass options that are controlled by Vector2Property.
-      options = _.extend( {
+      options = merge( {
         valueType: Vector2,
         phetioType: PropertyIO( Vector2IO )
       }, options );

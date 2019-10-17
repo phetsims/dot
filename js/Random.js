@@ -15,6 +15,7 @@ define( require => {
   // modules
   const dot = require( 'DOT/dot' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Util = require( 'DOT/Util' );
 
   /**
@@ -27,7 +28,7 @@ define( require => {
    * @constructor
    */
   function Random( options ) {
-    options = _.extend( {
+    options = merge( {
 
       // {number|null} seed for the random number generator.  When seed is null, Math.random() is used.
       seed: null,

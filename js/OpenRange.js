@@ -10,6 +10,7 @@ define( require => {
 
   const dot = require( 'DOT/dot' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Range = require( 'DOT/Range' );
 
   /**
@@ -20,7 +21,7 @@ define( require => {
    */
   function OpenRange( min, max, options ) {
 
-    options = _.extend( {
+    options = merge( {
       openMin: true,
       openMax: true
     }, options );

@@ -20,6 +20,7 @@ define( require => {
   const Bounds2 = require( 'DOT/Bounds2' );
   const dot = require( 'DOT/dot' );
   const inherit = require( 'PHET_CORE/inherit' );
+  const merge = require( 'PHET_CORE/merge' );
   const Util = require( 'DOT/Util' );
   const Vector2 = require( 'DOT/Vector2' );
 
@@ -33,7 +34,7 @@ define( require => {
    * @param {Object} [options]
    */
   function DelaunayTriangulation( points, constraints, options ) {
-    options = _.extend( {
+    options = merge( {
 
     }, options );
 
