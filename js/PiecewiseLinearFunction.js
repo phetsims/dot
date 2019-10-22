@@ -74,7 +74,5 @@ define( require => {
     }
   }
 
-  dot.register( 'PiecewiseLinearFunction', PiecewiseLinearFunction );
-
-  return PiecewiseLinearFunction;
+  return dot.register( 'PiecewiseLinearFunction', PiecewiseLinearFunction );
 } );
