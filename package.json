@@ -15,7 +15,6 @@
     "generatedUnitTests": true,
     "requirejsNamespace": "DOT",
     "buildStandalone": true,
-    "isJSOnly": true,
     "requiresLodash": true,
     "assignGlobals": {
       "dot": "DOT/main",
