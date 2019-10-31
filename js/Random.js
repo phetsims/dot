@@ -1,5 +1,4 @@
 // Copyright 2015-2019, University of Colorado Boulder
-/* eslint-disable bad-sim-text */ // Needs randomness, since this is the source of joist's randomness.
 
 /**
  * Random number generator with an optional seed.
@@ -138,7 +137,7 @@ define( require => {
      * @returns {number} - the random number
      */
     nextDouble: function() {
-      return this.seed === null ? Math.random() : this.seedrandom();
+      return this.seed === null ? Math.random() : this.seedrandom(); // eslint-disable-line bad-sim-text
     },
 
     /**

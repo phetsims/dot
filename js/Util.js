@@ -1,5 +1,4 @@
 // Copyright 2013-2019, University of Colorado Boulder
-/* eslint-disable bad-sim-text */ // Needs Math.round to implement the symmetric rounding
 
 /**
  * Utility functions for Dot, placed into the dot.X namespace.
@@ -528,7 +527,7 @@ define( require => {
      * @returns {number}
      */
     roundSymmetric: function( value ) {
-      return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) );
+      return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) ); // eslint-disable-line bad-sim-text
     },
 
     /**

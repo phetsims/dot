@@ -1,5 +1,4 @@
 // Copyright 2013-2019, University of Colorado Boulder
-/* eslint-disable bad-sim-text */ // Needs randomness, and can't use joist's randomness source
 
 /**
  * Construction of 2D convex hulls from a list of points.
