@@ -188,6 +188,22 @@ define( require => {
     },
 
     /**
+     * Returns the power of this complex number by a real number.
+     * @public
+     *
+     * @param {number} realPower
+     * @returns {Complex}
+     */
+    powerByReal: function( realPower ) {
+      const magTimes = Math.pow( this.magnitude, realPower );
+      const angle = realPower * this.phase();
+      return new Complex(
+        magTimes * Math.cos( angle ),
+        magTimes * Math.sin( angle )
+      );
+    },
+
+    /**
      * Sine.
      * Immutable form of sin.
      * @public
