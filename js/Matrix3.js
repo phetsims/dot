@@ -1004,5 +1004,21 @@ define( require => {
     }
   };
 
+  // serialize to an Object that can be handled by PhET-iO
+  Matrix3.toStateObject = function( matrix3 ) {
+    return {
+      entries: matrix3.entries,
+      type: matrix3.type
+    };
+  };
+
+  // Convert back from a serialized Object to a Matrix3
+  Matrix3.fromStateObject = function( stateObject ) {
+    const matrix = Matrix3.identity();
+    matrix.entries = stateObject.entries;
+    matrix.type = stateObject.type;
+    return matrix;
+  };
+
   return Matrix3;
 } );
