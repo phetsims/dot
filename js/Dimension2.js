@@ -89,7 +89,7 @@ define( require => {
      * This is the immutable form of the function set(), if a dimension is provided. This will return a new dimension,
      * and will not modify this dimension.
      *
-     * @param {Dimension2} [dimension] - If not provided, creates a new Vector2 with filled in values. Otherwise, fills
+     * @param {Dimension2} [dimension] - If not provided, creates a new Dimension2 with filled in values. Otherwise, fills
      *                                   in the values of the provided dimension so that it equals this dimension.
      * @returns {Dimension2}
      */
