@@ -8,7 +8,6 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-
 define( require => {
   'use strict';
 
@@ -21,10 +20,6 @@ define( require => {
   require( 'DOT/Ray2' );
 
   const scratchMatrix = new dot.Matrix3();
-
-  function checkMatrix( matrix ) {
-    return ( matrix instanceof dot.Matrix3 ) && matrix.isFinite();
-  }
 
   /**
    * Creates a transform based around an initial matrix.
@@ -48,7 +43,6 @@ define( require => {
     // @private {Matrix3} - The inverse of the transposed primary matrix, computed lazily
     this.inverseTransposed = dot.Matrix3.IDENTITY.copy();
 
-
     // @private {boolean} - Whether this.inverse has been computed based on the latest primary matrix
     this.inverseValid = true;
 
@@ -66,19 +60,18 @@ define( require => {
   dot.register( 'Transform3', Transform3 );
 
   inherit( Events, Transform3, {
+
     /*---------------------------------------------------------------------------*
      * mutators
      *---------------------------------------------------------------------------*/
 
     /**
-     * Sets the value of the primary matrix directly from a Matrix3. Does not change the Matrix3 instance of this
-     * Transform3.
+     * Sets the value of the primary matrix directly from a Matrix3. Does not change the Matrix3 instance.
      * @public
      *
      * @param {Matrix3} matrix
      */
     setMatrix: function( matrix ) {
-      assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
 
       // copy the matrix over to our matrix
       this.matrix.set( matrix );
@@ -88,20 +81,32 @@ define( require => {
     },
 
     /**
+     * Validates the matrix or matrix arguments, overrideable by subclasses to refine the validation.
+     * @param {Matrix} matrix
+     * @returns {boolean}
+     * @protected
+     */
+    validateMatrix: function( matrix ) {
+      assert && assert( matrix instanceof dot.Matrix3, 'matrix was incorrect type' );
+      assert && assert( matrix.isFinite(), 'matrix must be finite' );
+    },
+
+    /**
      * This should be called after our internal matrix is changed. It marks the other dependent matrices as invalid,
      * and sends out notifications of the change.
      * @private
      */
     invalidate: function() {
+
       // sanity check
-      assert && assert( this.matrix.isFinite() );
+      assert && this.validateMatrix( this.matrix );
 
       // dependent matrices now invalid
       this.inverseValid = false;
       this.transposeValid = false;
       this.inverseTransposeValid = false;
 
-      this.trigger0( 'change' );
+      this.trigger0( 'change' ); // TODO: Should this use Emitter instead?
     },
 
     /**
@@ -111,7 +116,7 @@ define( require => {
      * @param {Matrix3} matrix
      */
     prepend: function( matrix ) {
-      assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
+      assert && this.validateMatrix( matrix );
 
       // In the absence of a prepend-multiply function in Matrix3, copy over to a scratch matrix instead
       // TODO: implement a prepend-multiply directly in Matrix3 for a performance increase
@@ -149,7 +154,7 @@ define( require => {
      * @param {Matrix3} matrix
      */
     append: function( matrix ) {
-      assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
+      assert && this.validateMatrix( matrix );
 
       this.matrix.multiplyMatrix( matrix );
 
