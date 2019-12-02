@@ -103,6 +103,14 @@ define( require => {
     },
 
     /**
+     * Flip the width and height and return in a new Dimension2
+     * @returns {Dimension2}
+     */
+    flip: function() {
+      return new Dimension2( this.height, this.width );
+    },
+
+    /**
      * Creates a Bounds2 from this dimension based on passing in the minimum (top-left) corner as (x,y).
      * @public
      *
