@@ -107,7 +107,7 @@ define( require => {
      * @returns {Dimension2}
      * @public
      */
-    flip: function() {
+    flipped: function() {
       return new Dimension2( this.height, this.width );
     },
 
