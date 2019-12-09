@@ -198,7 +198,7 @@ define( require => {
     /**
      * Given a value, normalize it to this Range's length, returning a value between 0 and 1 for values contained in
      * the Range.
-     * @param {number} value
+     * @param {number} value - if not contained in range, then value will no be between 0 and 1.
      * @returns {number}
      */
     getNormalizedValue: function( value ) {
