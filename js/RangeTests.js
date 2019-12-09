@@ -55,4 +55,30 @@ define( require => {
     assert.ok( range.equals( new Range( 5, 5 ) ), 'setMinMax() succeeds when min <= max' );
     window.assert && assert.throws( () => { range.setMinMax( 10, 1 ); }, 'setMinMax() fails when min > max' );
   } );
+
+  QUnit.test( 'getNormalizedValue', assert => {
+    const testSameRange = value => {
+      assert.ok( value === new Range( 0, 1 ).getNormalizedValue( value ),
+        `normalized value in range from 0 to 1 is the same as value: ${value}|` );
+    };
+    testSameRange( 0 );
+    testSameRange( 1 );
+    testSameRange( .5 );
+    testSameRange( .2 );
+    testSameRange( .2432124 );
+
+    const rangeNoLength = new Range( 1, 1 );
+    window.assert && assert.throws( () => {
+      rangeNoLength.getNormalizedValue( 1 );
+    }, 'no length' );
+    window.assert && assert.throws( () => {
+      rangeNoLength.getNormalizedValue( 2 );
+    }, 'outside range no length' );
+
+    const range = new Range( 2, 10 );
+    assert.ok( 0 === range.getNormalizedValue( 2 ), 'min' );
+    assert.ok( 1 === range.getNormalizedValue( 10 ), 'max' );
+    assert.ok( .5 === range.getNormalizedValue( 6 ), 'half' );
+    assert.ok( 0.19290000000000002 === range.getNormalizedValue( 3.5432 ), 'random weird number' );
+  } );
 } );

@@ -196,6 +196,18 @@ define( require => {
     },
 
     /**
+     * Given a value, normalize it to this Range's length, returning a value between 0 and 1 for values contained in
+     * the Range.
+     * @param {number} value
+     * @returns {number}
+     */
+    getNormalizedValue: function( value ) {
+      assert && assert( typeof value === 'number' );
+      assert && assert( this.getLength() !== 0, 'cannot get normalized value without a range length' );
+      return ( value - this.min ) / this.getLength();
+    },
+
+    /**
      * In https://github.com/phetsims/dot/issues/57, defaultValue was moved to RangeWithValue.
      * This ES5 getter catches programming errors where defaultValue is still used with Range.
      */
