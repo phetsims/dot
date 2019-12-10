@@ -197,7 +197,7 @@ define( require => {
 
     /**
      * Given a value, normalize it to this Range's length, returning a value between 0 and 1 for values contained in
-     * the Range. If the value is not contained in range, then the return value will not be between 0 and 1.
+     * the Range. If the value is not contained in Range, then the return value will not be between 0 and 1.
      * @param {number} value
      * @returns {number}
      */
