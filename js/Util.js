@@ -744,6 +744,35 @@ define( require => {
     },
 
     /**
+     * Returns the centroid of the simple planar polygon using Green's Theorem P=-y/2, Q=x/2 (similar to how kite
+     * computes areas). See also https://en.wikipedia.org/wiki/Shoelace_formula.
+     * @public
+     *
+     * @param {Array.<Vector2>} vertices
+     * @returns {Vector2}
+     */
+    centroidOfPolygon: function( vertices ) {
+      const centroid = new dot.Vector2( 0, 0 );
+
+      let area = 0;
+      vertices.forEach( ( v0, i ) => {
+        const v1 = vertices[ ( i + 1 ) % vertices.length ];
+        const doubleShoelace = v0.x * v1.y - v1.x * v0.y;
+
+        area += doubleShoelace / 2;
+
+        // Compute the centroid of the flat intersection with https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
+        centroid.addXY(
+          ( v0.x + v1.x ) * doubleShoelace,
+          ( v0.y + v1.y ) * doubleShoelace
+        );
+      } );
+      centroid.divideScalar( 6 * area );
+
+      return centroid;
+    },
+
+    /**
      * Polyfill for Math.sign from MDN, see
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
      * @public
