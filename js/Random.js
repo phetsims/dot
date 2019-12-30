@@ -15,7 +15,7 @@ define( require => {
   const dot = require( 'DOT/dot' );
   const inherit = require( 'PHET_CORE/inherit' );
   const merge = require( 'PHET_CORE/merge' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   /**
    * Construct a Random instance.
@@ -91,8 +91,8 @@ define( require => {
     nextIntBetween: function( min, max ) {
 
       assert && assert( arguments.length === 2, 'nextIntBetween must have exactly 2 arguments' );
-      assert && assert( Util.isInteger( min ), 'min must be an integer: ' + min );
-      assert && assert( Util.isInteger( max ), 'max must be an integer: ' + max );
+      assert && assert( Utils.isInteger( min ), 'min must be an integer: ' + min );
+      assert && assert( Utils.isInteger( max ), 'max must be an integer: ' + max );
 
       const range = max - min;
       return this.nextInt( range + 1 ) + min;
@@ -160,7 +160,7 @@ define( require => {
      * @returns {number}
      */
     nextGaussian: function() {
-      return Util.boxMullerTransform( 0, 1, this );
+      return Utils.boxMullerTransform( 0, 1, this );
     }
   } );
 

@@ -21,7 +21,7 @@ define( require => {
   let z0;
   let z1;
 
-  var Util = {
+  var Utils = {
     /**
      * Returns the original value if it is inclusively within the [max,min] range. If it's below the range, min is
      * returned, and if it's above the range, max is returned.
@@ -84,7 +84,7 @@ define( require => {
      * @returns {number}
      */
     moduloBetweenUp: function( value, min, max ) {
-      return -Util.moduloBetweenDown( -value, -max, -min );
+      return -Utils.moduloBetweenDown( -value, -max, -min );
     },
 
     /**
@@ -115,7 +115,7 @@ define( require => {
      * @returns {Array.<number>}
      */
     rangeExclusive: function( a, b ) {
-      return Util.rangeInclusive( a + 1, b - 1 );
+      return Utils.rangeInclusive( a + 1, b - 1 );
     },
 
     /**
@@ -167,7 +167,7 @@ define( require => {
      * @returns {number}
      */
     gcd: function( a, b ) {
-      return Math.abs( b === 0 ? a : this.gcd( b, Util.mod( a, b ) ) );
+      return Math.abs( b === 0 ? a : this.gcd( b, Utils.mod( a, b ) ) );
     },
 
     /**
@@ -179,7 +179,7 @@ define( require => {
      * @returns {number} lcm, an integer
      */
     lcm: function( a, b ) {
-      return Util.roundSymmetric( Math.abs( a * b ) / Util.gcd( a, b ) );
+      return Utils.roundSymmetric( Math.abs( a * b ) / Utils.gcd( a, b ) );
     },
 
     /**
@@ -246,7 +246,7 @@ define( require => {
       const p12x = new dot.Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
       const p23x = new dot.Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
 
-      return Util.lineLineIntersection( p12, p12x, p23, p23x );
+      return Utils.lineLineIntersection( p12, p12x, p23, p23x );
     },
 
     /**
@@ -265,7 +265,7 @@ define( require => {
      * @returns {boolean}
      */
     pointInCircleFromPoints: function( p1, p2, p3, p ) {
-      assert && assert( Util.triangleAreaSigned( p1, p2, p3 ) > 0,
+      assert && assert( Utils.triangleAreaSigned( p1, p2, p3 ) > 0,
         'Defined points should be in a counterclockwise order' );
 
       const m00 = p1.x - p.x;
@@ -403,7 +403,7 @@ define( require => {
       // linear solution would be expected
       const epsilon = 1E7;
       if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon ) {
-        return Util.solveLinearRootsReal( b, c );
+        return Utils.solveLinearRootsReal( b, c );
       }
 
       const discriminant = b * b - 4 * a * c;
@@ -436,17 +436,17 @@ define( require => {
 
       // Check for a degenerate case where we don't have a cubic
       if ( a === 0 ) {
-        return Util.solveQuadraticRootsReal( b, c, d );
+        return Utils.solveQuadraticRootsReal( b, c, d );
       }
 
       //We need to test whether a is several orders of magnitude less than b, c, d
       const epsilon = 1E7;
 
       if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon || Math.abs( d / a ) > epsilon ) {
-        return Util.solveQuadraticRootsReal( b, c, d );
+        return Utils.solveQuadraticRootsReal( b, c, d );
       }
       if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
-        return [ 0 ].concat( Util.solveQuadraticRootsReal( a, b, c ) );
+        return [ 0 ].concat( Utils.solveQuadraticRootsReal( a, b, c ) );
       }
 
       b /= a;
@@ -461,13 +461,13 @@ define( require => {
       if ( discriminant > 1e-7 ) {
         // a single real root
         const dsqrt = Math.sqrt( discriminant );
-        return [ Util.cubeRoot( r + dsqrt ) + Util.cubeRoot( r - dsqrt ) - b3 ];
+        return [ Utils.cubeRoot( r + dsqrt ) + Utils.cubeRoot( r - dsqrt ) - b3 ];
       }
 
       // three real roots
       if ( discriminant === 0 ) {
         // contains a double root
-        const rsqrt = Util.cubeRoot( r );
+        const rsqrt = Utils.cubeRoot( r );
         const doubleRoot = -b3 - rsqrt;
         return [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
       }
@@ -536,7 +536,7 @@ define( require => {
      *
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
-     * Rounding is symmetric for positive and negative values, see Util.roundSymmetric.
+     * Rounding is symmetric for positive and negative values, see Utils.roundSymmetric.
      *
      * @param {number} value
      * @param {number} decimalPlaces
@@ -544,7 +544,7 @@ define( require => {
      */
     toFixed: function( value, decimalPlaces ) {
       const multiplier = Math.pow( 10, decimalPlaces );
-      const newValue = Util.roundSymmetric( value * multiplier ) / multiplier;
+      const newValue = Utils.roundSymmetric( value * multiplier ) / multiplier;
       return newValue.toFixed( decimalPlaces );
     },
 
@@ -554,14 +554,14 @@ define( require => {
      *
      * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
      * because the spec doesn't specify whether to round or floor.
-     * Rounding is symmetric for positive and negative values, see Util.roundSymmetric.
+     * Rounding is symmetric for positive and negative values, see Utils.roundSymmetric.
      *
      * @param {number} value
      * @param {number} decimalPlaces
      * @returns {number}
      */
     toFixedNumber: function( value, decimalPlaces ) {
-      return parseFloat( Util.toFixed( value, decimalPlaces ) );
+      return parseFloat( Utils.toFixed( value, decimalPlaces ) );
     },
 
     /**
@@ -710,7 +710,7 @@ define( require => {
       if ( epsilon === undefined ) {
         epsilon = 0;
       }
-      return Util.triangleArea( a, b, c ) <= epsilon;
+      return Utils.triangleArea( a, b, c ) <= epsilon;
     },
 
     /**
@@ -723,7 +723,7 @@ define( require => {
      * @returns {number}
      */
     triangleArea: function( a, b, c ) {
-      return Math.abs( Util.triangleAreaSigned( a, b, c ) );
+      return Math.abs( Utils.triangleAreaSigned( a, b, c ) );
     },
 
     /**
@@ -879,28 +879,28 @@ define( require => {
      * @returns {number}
      */
     roundToInterval: function( value, interval ) {
-      return Util.toFixedNumber( Util.roundSymmetric( value / interval ) * interval,
-        Util.numberOfDecimalPlaces( interval ) );
+      return Utils.toFixedNumber( Utils.roundSymmetric( value / interval ) * interval,
+        Utils.numberOfDecimalPlaces( interval ) );
     }
   };
-  dot.register( 'Util', Util );
+  dot.register( 'Utils', Utils );
 
   // make these available in the main namespace directly (for now)
-  dot.clamp = Util.clamp;
-  dot.moduloBetweenDown = Util.moduloBetweenDown;
-  dot.moduloBetweenUp = Util.moduloBetweenUp;
-  dot.rangeInclusive = Util.rangeInclusive;
-  dot.rangeExclusive = Util.rangeExclusive;
-  dot.toRadians = Util.toRadians;
-  dot.toDegrees = Util.toDegrees;
-  dot.lineLineIntersection = Util.lineLineIntersection;
-  dot.lineSegmentIntersection = Util.lineSegmentIntersection;
-  dot.sphereRayIntersection = Util.sphereRayIntersection;
-  dot.solveQuadraticRootsReal = Util.solveQuadraticRootsReal;
-  dot.solveCubicRootsReal = Util.solveCubicRootsReal;
-  dot.cubeRoot = Util.cubeRoot;
-  dot.linear = Util.linear;
-  dot.boxMullerTransform = Util.boxMullerTransform;
+  dot.clamp = Utils.clamp;
+  dot.moduloBetweenDown = Utils.moduloBetweenDown;
+  dot.moduloBetweenUp = Utils.moduloBetweenUp;
+  dot.rangeInclusive = Utils.rangeInclusive;
+  dot.rangeExclusive = Utils.rangeExclusive;
+  dot.toRadians = Utils.toRadians;
+  dot.toDegrees = Utils.toDegrees;
+  dot.lineLineIntersection = Utils.lineLineIntersection;
+  dot.lineSegmentIntersection = Utils.lineSegmentIntersection;
+  dot.sphereRayIntersection = Utils.sphereRayIntersection;
+  dot.solveQuadraticRootsReal = Utils.solveQuadraticRootsReal;
+  dot.solveCubicRootsReal = Utils.solveCubicRootsReal;
+  dot.cubeRoot = Utils.cubeRoot;
+  dot.linear = Utils.linear;
+  dot.boxMullerTransform = Utils.boxMullerTransform;
 
-  return Util;
+  return Utils;
 } );

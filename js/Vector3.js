@@ -13,7 +13,7 @@ define( require => {
   const inherit = require( 'PHET_CORE/inherit' );
   const Poolable = require( 'PHET_CORE/Poolable' );
 
-  require( 'DOT/Util' );
+  require( 'DOT/Utils' );
   require( 'DOT/Vector2' );
   require( 'DOT/Vector4' );
 
@@ -267,7 +267,7 @@ define( require => {
     },
 
     /**
-     * Returns a copy of this vector with each component rounded by Util.roundSymmetric.
+     * Returns a copy of this vector with each component rounded by Utils.roundSymmetric.
      * @public
      *
      * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
@@ -773,7 +773,7 @@ define( require => {
     },
 
     /**
-     * Rounds each component of this vector with Util.roundSymmetric.
+     * Rounds each component of this vector with Utils.roundSymmetric.
      * @public
      *
      * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
@@ -782,9 +782,9 @@ define( require => {
      * @returns {Vector3}
      */
     roundSymmetric: function() {
-      return this.setXYZ( dot.Util.roundSymmetric( this.x ),
-        dot.Util.roundSymmetric( this.y ),
-        dot.Util.roundSymmetric( this.z ) );
+      return this.setXYZ( dot.Utils.roundSymmetric( this.x ),
+        dot.Utils.roundSymmetric( this.y ),
+        dot.Utils.roundSymmetric( this.z ) );
     }
   }, {
     /**

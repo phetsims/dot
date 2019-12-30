@@ -30,7 +30,7 @@ define( [
   'DOT/Sphere3',
   'DOT/Transform3',
   'DOT/Transform4',
-  'DOT/Util',
+  'DOT/Utils',
   'DOT/Vector2',
   'DOT/Vector3',
   'DOT/Vector4'

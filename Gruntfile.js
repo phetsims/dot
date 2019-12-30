@@ -48,7 +48,7 @@ module.exports = function( grunt ) {
       Sphere3: 'sphere3',
       Transform3: 'transform3',
       Transform4: 'transform4',
-      Util: 'util',
+      Utils: 'util',
       Vector2: 'vector2',
       Vector3: 'vector3',
       Vector4: 'vector4'
@@ -82,7 +82,7 @@ module.exports = function( grunt ) {
     docFile( 'js/Dimension2.js', 'Dimension2', [ 'Dimension2' ] );
     docFile( 'js/Transform3.js', 'Transform3', [ 'Transform3' ] );
     docFile( 'js/Transform4.js', 'Transform4', [ 'Transform4' ] );
-    docFile( 'js/Util.js', 'Util', [ 'Util' ] );
+    docFile( 'js/Utils.js', 'Utils', [ 'Utils' ] );
     docFile( 'js/Vector2.js', 'Vector2', [ 'Vector2' ] );
     docFile( 'js/Vector3.js', 'Vector3', [ 'Vector3' ] );
     docFile( 'js/Vector4.js', 'Vector4', [ 'Vector4' ] );

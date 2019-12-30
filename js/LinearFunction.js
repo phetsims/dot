@@ -18,7 +18,7 @@ define( require => {
   const dot = require( 'DOT/dot' );
 
   // modules
-  require( 'DOT/Util' );
+  require( 'DOT/Utils' );
 
   /**
    * @param {number} a1
@@ -48,11 +48,11 @@ define( require => {
      * @returns {number}
      */
     const map = function( a1, a2, b1, b2, a3, clamp ) {
-      let b3 = dot.Util.linear( a1, a2, b1, b2, a3 );
+      let b3 = dot.Utils.linear( a1, a2, b1, b2, a3 );
       if ( clamp ) {
         const max = Math.max( b1, b2 );
         const min = Math.min( b1, b2 );
-        b3 = dot.Util.clamp( b3, min, max );
+        b3 = dot.Utils.clamp( b3, min, max );
       }
       return b3;
     };

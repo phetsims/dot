@@ -111,7 +111,7 @@
 
         function drawCircle( context, triangle, vertices ) {
           context.beginPath();
-          var center = dot.Util.circleCenterFromPoints( triangle.aVertex.point, triangle.bVertex.point, triangle.cVertex.point );
+          var center = dot.Utils.circleCenterFromPoints( triangle.aVertex.point, triangle.bVertex.point, triangle.cVertex.point );
           var radius = ( triangle.aVertex.point.distance( center ) + triangle.bVertex.point.distance( center ) + triangle.cVertex.point.distance( center ) ) / 3;
           var ok = true;
           for ( var i = 0; i < vertices.length; i++ ) {

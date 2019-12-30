@@ -16,7 +16,7 @@ define( require => {
   const Poolable = require( 'PHET_CORE/Poolable' );
   require( 'DOT/Vector3' );
   require( 'DOT/Matrix3' );
-  require( 'DOT/Util' );
+  require( 'DOT/Utils' );
 
   /**
    * Quaternion defines hypercomplex numbers of the form {x, y, z, w}

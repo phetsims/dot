@@ -21,7 +21,7 @@ define( require => {
   const dot = require( 'DOT/dot' );
   const inherit = require( 'PHET_CORE/inherit' );
   const merge = require( 'PHET_CORE/merge' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
   const Vector2 = require( 'DOT/Vector2' );
 
   /**
@@ -271,7 +271,7 @@ define( require => {
       const middleVertex = rightFrontEdge.endVertex;
 
       while ( rightFrontEdge.previousEdge &&
-              Util.triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 &&
+              Utils.triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 &&
               ( middleVertex.point.minus( rightFrontEdge.startVertex.point ) ).angleBetween( rightFrontEdge.previousEdge.startVertex.point.minus( rightFrontEdge.startVertex.point ) ) < Math.PI / 2 ) {
         const previousEdge = rightFrontEdge.previousEdge;
         const newRightEdge = new Edge( previousEdge.startVertex, middleVertex );
@@ -286,7 +286,7 @@ define( require => {
         rightFrontEdge = newRightEdge;
       }
       while ( leftFrontEdge.nextEdge &&
-              Util.triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 &&
+              Utils.triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 &&
               ( middleVertex.point.minus( leftFrontEdge.endVertex.point ) ).angleBetween( leftFrontEdge.nextEdge.endVertex.point.minus( leftFrontEdge.endVertex.point ) ) < Math.PI / 2 ) {
         const nextEdge = leftFrontEdge.nextEdge;
         const newLeftEdge = new Edge( middleVertex, nextEdge.endVertex );
@@ -474,7 +474,7 @@ define( require => {
           const startVertex = edge.getOtherVertex( sharedVertex );
           const endVertex = nextEdge.getOtherVertex( sharedVertex );
 
-          if ( Util.triangleAreaSigned( startVertex.point, sharedVertex.point,  endVertex.point ) <= 0 ) {
+          if ( Utils.triangleAreaSigned( startVertex.point, sharedVertex.point,  endVertex.point ) <= 0 ) {
             continue;
           }
 
@@ -563,7 +563,7 @@ define( require => {
       for ( var i = 0; i < frontEdges.length - 1; i++ ) {
         var firstEdge = frontEdges[ i ];
         var secondEdge = frontEdges[ i + 1 ];
-        if ( Util.triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
+        if ( Utils.triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
           var newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstEdge.startVertex, firstEdge.endVertex, secondEdge.endVertex );
           frontEdges.splice( i, 2, newEdge );
           // start scanning from behind where we were previously (if possible)
@@ -619,7 +619,7 @@ define( require => {
         sharedVertex = firstEdge.getSharedVertex( secondEdge );
         const firstVertex = firstEdge.getOtherVertex( sharedVertex );
         const secondVertex = secondEdge.getOtherVertex( sharedVertex );
-        if ( Util.triangleAreaSigned( secondVertex.point, sharedVertex.point, firstVertex.point ) > 1e-10 ) {
+        if ( Utils.triangleAreaSigned( secondVertex.point, sharedVertex.point, firstVertex.point ) > 1e-10 ) {
           newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstVertex, sharedVertex, secondVertex );
           backEdges.splice( i, 2, newEdge );
           // start scanning from behind where we were previously (if possible)
@@ -659,8 +659,8 @@ define( require => {
       const farVertex1 = triangle1.getVertexOppositeFromEdge( edge );
       const farVertex2 = triangle2.getVertexOppositeFromEdge( edge );
 
-      if ( Util.pointInCircleFromPoints( triangle1.aVertex.point, triangle1.bVertex.point, triangle1.cVertex.point, farVertex2.point ) ||
-           Util.pointInCircleFromPoints( triangle2.aVertex.point, triangle2.bVertex.point, triangle2.cVertex.point, farVertex1.point ) ) {
+      if ( Utils.pointInCircleFromPoints( triangle1.aVertex.point, triangle1.bVertex.point, triangle1.cVertex.point, farVertex2.point ) ||
+           Utils.pointInCircleFromPoints( triangle2.aVertex.point, triangle2.bVertex.point, triangle2.cVertex.point, farVertex1.point ) ) {
         // TODO: better helper functions for adding/removing triangles (takes care of the edge stuff)
         triangle1.remove();
         triangle2.remove();
@@ -952,7 +952,7 @@ define( require => {
      * @returns {boolean}
      */
     intersectsConstrainedEdge: function( vertex, bottomVertex ) {
-      return Util.lineSegmentIntersection( vertex.point.x, vertex.point.y, bottomVertex.point.x, bottomVertex.point.y,
+      return Utils.lineSegmentIntersection( vertex.point.x, vertex.point.y, bottomVertex.point.x, bottomVertex.point.y,
                                            this.startVertex.point.x, this.startVertex.point.y,
                                            this.endVertex.point.x, this.endVertex.point.y );
     }
@@ -992,7 +992,7 @@ define( require => {
     assert && assert( cVertex === aEdge.startVertex || cVertex === aEdge.endVertex, 'cVertex should be in aEdge' );
     assert && assert( cVertex === bEdge.startVertex || cVertex === bEdge.endVertex, 'cVertex should be in bEdge' );
 
-    assert && assert( Util.triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
+    assert && assert( Utils.triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
       'Should be counterclockwise' );
 
     // @public {Vertex}

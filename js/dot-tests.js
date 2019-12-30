@@ -20,7 +20,7 @@ define( require => {
   require( 'DOT/RangeTests' );
   require( 'DOT/RangeWithValueTests' );
   require( 'DOT/StatsTests' );
-  require( 'DOT/UtilTests' );
+  require( 'DOT/UtilsTests' );
   require( 'DOT/Transform3Tests' );
   require( 'DOT/LinearFunctionTests' );
   require( 'DOT/Vector2Tests' );

@@ -12,7 +12,7 @@ define( require => {
   const dot = require( 'DOT/dot' );
 
   const isArray = require( 'PHET_CORE/isArray' );
-  require( 'DOT/Util' ); // for rangeInclusive
+  require( 'DOT/Utils' ); // for rangeInclusive
 
   // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
   function Permutation( indices ) {

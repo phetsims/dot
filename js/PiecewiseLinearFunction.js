@@ -9,10 +9,10 @@ define( require => {
   'use strict';
 
   const dot = require( 'DOT/dot' );
-  const Util = require( 'DOT/Util' );
+  const Utils = require( 'DOT/Utils' );
 
   // modules
-  require( 'DOT/Util' );
+  require( 'DOT/Utils' );
 
   class PiecewiseLinearFunction {
 
@@ -70,7 +70,7 @@ define( require => {
       const anchor1Y = array[ lowerIndex + 1 ];
       const anchor2X = array[ upperIndex ];
       const anchor2Y = array[ upperIndex + 1 ];
-      return Util.linear( anchor1X, anchor2X, anchor1Y, anchor2Y, x );
+      return Utils.linear( anchor1X, anchor2X, anchor1Y, anchor2Y, x );
     }
   }
 
