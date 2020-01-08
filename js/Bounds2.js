@@ -3,7 +3,7 @@
 /**
  * A 2D rectangle-shaped bounded area (bounding box).
  *
- * There are a number of convenience functions to get locations and points on the Bounds. Currently we do not
+ * There are a number of convenience functions to get positions and points on the Bounds. Currently we do not
  * store these with the Bounds2 instance, since we want to lower the memory footprint.
  *
  * minX, minY, maxX, and maxY are actually stored. We don't do x,y,width,height because this can't properly express
@@ -80,7 +80,7 @@ define( require => {
     get height() { return this.getHeight(); },
 
     /*
-     * Convenience locations
+     * Convenience positions
      * upper is in terms of the visual layout in Scenery and other programs, so the minY is the "upper", and minY is the "lower"
      *
      *             minX (x)     centerX        maxX
@@ -315,20 +315,20 @@ define( require => {
     },
 
     /**
-     * If the location is inside the bounds, the location will be returned. Otherwise, this will return a new location
-     * on the edge of the bounds that is the closest to the provided location.
+     * If the position is inside the bounds, the position will be returned. Otherwise, this will return a new position
+     * on the edge of the bounds that is the closest to the provided position.
      * @public
      *
-     * @param {Vector2} location
+     * @param {Vector2} position
      * @returns {Vector2}
      */
-    closestPointTo: function( location ) {
-      if ( this.containsCoordinates( location.x, location.y ) ) {
-        return location;
+    closestPointTo: function( position ) {
+      if ( this.containsCoordinates( position.x, position.y ) ) {
+        return position;
       }
       else {
-        const xConstrained = Math.max( Math.min( location.x, this.maxX ), this.x );
-        const yConstrained = Math.max( Math.min( location.y, this.maxY ), this.y );
+        const xConstrained = Math.max( Math.min( position.x, this.maxX ), this.x );
+        const yConstrained = Math.max( Math.min( position.y, this.maxY ), this.y );
         return new Vector2( xConstrained, yConstrained );
       }
     },
