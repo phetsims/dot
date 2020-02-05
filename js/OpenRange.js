@@ -16,7 +16,7 @@ define( require => {
   /**
    * @param {number} min - the minimum value of the range
    * @param {number} max - the maximum value of the range
-   * @param {Object} options
+   * @param {Object} [options]
    * @constructor
    */
   function OpenRange( min, max, options ) {
