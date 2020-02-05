@@ -497,7 +497,7 @@ define( require => {
     },
 
     /**
-     * Converts this to a 4-dimensional vector, with the z-component equal to 1 (useful for homogeneous coordinates).
+     * Converts this to a 4-dimensional vector, with the w-component equal to 1 (useful for homogeneous coordinates).
      * @public
      *
      * @returns {Vector4}
