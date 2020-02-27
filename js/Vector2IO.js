@@ -6,41 +6,38 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const dot = require( 'DOT/dot' );
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const Vector2 = require( 'DOT/Vector2' );
-  const validate = require( 'AXON/validate' );
+import validate from '../../axon/js/validate.js';
+import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import dot from './dot.js';
+import Vector2 from './Vector2.js';
 
-  class Vector2IO extends ObjectIO {
+class Vector2IO extends ObjectIO {
 
-    /**
-     * Encodes a Vector2 instance to a state.
-     * @param {Vector2} vector2
-     * @returns {Object}
-     */
-    static toStateObject( vector2 ) {
-      validate( vector2, this.validator );
-      return vector2.toStateObject();
-    }
-
-    /**
-     * Decodes a state into a Vector2.
-     * @param {Object} stateObject
-     * @returns {Vector2}
-     */
-    static fromStateObject( stateObject ) {
-      return Vector2.fromStateObject( stateObject );
-    }
+  /**
+   * Encodes a Vector2 instance to a state.
+   * @param {Vector2} vector2
+   * @returns {Object}
+   */
+  static toStateObject( vector2 ) {
+    validate( vector2, this.validator );
+    return vector2.toStateObject();
   }
 
-  Vector2IO.documentation = 'A numerical object with x and y properties, like {x:3,y:4}';
-  Vector2IO.validator = { valueType: Vector2 };
-  Vector2IO.typeName = 'Vector2IO';
-  ObjectIO.validateSubtype( Vector2IO );
+  /**
+   * Decodes a state into a Vector2.
+   * @param {Object} stateObject
+   * @returns {Vector2}
+   */
+  static fromStateObject( stateObject ) {
+    return Vector2.fromStateObject( stateObject );
+  }
+}
 
-  return dot.register( 'Vector2IO', Vector2IO );
-} );
+Vector2IO.documentation = 'A numerical object with x and y properties, like {x:3,y:4}';
+Vector2IO.validator = { valueType: Vector2 };
+Vector2IO.typeName = 'Vector2IO';
+ObjectIO.validateSubtype( Vector2IO );
+
+dot.register( 'Vector2IO', Vector2IO );
+export default Vector2IO;

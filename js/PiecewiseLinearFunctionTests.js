@@ -5,23 +5,19 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const PiecewiseLinearFunction = require( 'DOT/PiecewiseLinearFunction' );
+import PiecewiseLinearFunction from './PiecewiseLinearFunction.js';
 
-  QUnit.module( 'PiecewiseLinearFunction' );
+QUnit.module( 'PiecewiseLinearFunction' );
 
-  function approximateEquals( assert, a, b, msg ) {
-    assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
-  }
+function approximateEquals( assert, a, b, msg ) {
+  assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
+}
 
-  QUnit.test( 'PiecewiseLinearFunction', function( assert ) {
-    approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 0, 0, 1, 1 ], 0 ), 0 );
-    approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 0, 0, 1, 1 ], 0.5 ), 0.5 );
-    approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 0, 0, 1, 2 ], 0.5 ), 1 );
-    approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 1, -1, -1, 1 ], 0 ), 0 );
-    approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 100, 100, 1, -1, -1, 1 ], 0 ), 0 );
-  } );
+QUnit.test( 'PiecewiseLinearFunction', function( assert ) {
+  approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 0, 0, 1, 1 ], 0 ), 0 );
+  approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 0, 0, 1, 1 ], 0.5 ), 0.5 );
+  approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 0, 0, 1, 2 ], 0.5 ), 1 );
+  approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 1, -1, -1, 1 ], 0 ), 0 );
+  approximateEquals( assert, PiecewiseLinearFunction.evaluate( [ 100, 100, 1, -1, -1, 1 ], 0 ), 0 );
 } );

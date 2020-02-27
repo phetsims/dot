@@ -5,41 +5,38 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const dot = require( 'DOT/dot' );
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const Range = require( 'DOT/Range' );
-  const validate = require( 'AXON/validate' );
+import validate from '../../axon/js/validate.js';
+import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import dot from './dot.js';
+import Range from './Range.js';
 
-  class RangeIO extends ObjectIO {
+class RangeIO extends ObjectIO {
 
-    /**
-     * Encodes a Range instance to a state.
-     * @param {Range} range
-     * @returns {Object}
-     */
-    static toStateObject( range ) {
-      validate( range, this.validator );
-      return { min: range.min, max: range.max };
-    }
-
-    /**
-     * Decodes a state into a Range.
-     * @param {Object} stateObject
-     * @returns {Range}
-     */
-    static fromStateObject( stateObject ) {
-      return new Range( stateObject.min, stateObject.max );
-    }
+  /**
+   * Encodes a Range instance to a state.
+   * @param {Range} range
+   * @returns {Object}
+   */
+  static toStateObject( range ) {
+    validate( range, this.validator );
+    return { min: range.min, max: range.max };
   }
 
-  RangeIO.documentation = 'A range with "min" and a "max" members.';
-  RangeIO.validator = { valueType: Range };
-  RangeIO.typeName = 'RangeIO';
-  ObjectIO.validateSubtype( RangeIO );
+  /**
+   * Decodes a state into a Range.
+   * @param {Object} stateObject
+   * @returns {Range}
+   */
+  static fromStateObject( stateObject ) {
+    return new Range( stateObject.min, stateObject.max );
+  }
+}
 
-  return dot.register( 'RangeIO', RangeIO );
-} );
+RangeIO.documentation = 'A range with "min" and a "max" members.';
+RangeIO.validator = { valueType: Range };
+RangeIO.typeName = 'RangeIO';
+ObjectIO.validateSubtype( RangeIO );
+
+dot.register( 'RangeIO', RangeIO );
+export default RangeIO;

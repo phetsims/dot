@@ -1,3 +1,4 @@
+
 // Copyright 2016-2019, University of Colorado Boulder
 
 /**
@@ -25,6 +26,6 @@ require.config( {
     REPOSITORY: '..'
   },
 
-  // optional cache bust to make browser refresh load all included scripts, can be disabled with ?cacheBust=false
+// optional cache bust to make browser refresh load all included scripts, can be disabled with ?cacheBust=false
   urlArgs: 'bust=' + ( new Date() ).getTime()
 } );

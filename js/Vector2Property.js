@@ -5,40 +5,37 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const dot = require( 'DOT/dot' );
-  const merge = require( 'PHET_CORE/merge' );
-  const Property = require( 'AXON/Property' );
-  const PropertyIO = require( 'AXON/PropertyIO' );
-  const Vector2 = require( 'DOT/Vector2' );
-  const Vector2IO = require( 'DOT/Vector2IO' );
+import Property from '../../axon/js/Property.js';
+import PropertyIO from '../../axon/js/PropertyIO.js';
+import merge from '../../phet-core/js/merge.js';
+import dot from './dot.js';
+import Vector2 from './Vector2.js';
+import Vector2IO from './Vector2IO.js';
 
-  class Vector2Property extends Property {
+class Vector2Property extends Property {
 
-    /**
-     * @param {Vector2} initialValue
-     * @param {Object} [options]
-     */
-    constructor( initialValue, options ) {
+  /**
+   * @param {Vector2} initialValue
+   * @param {Object} [options]
+   */
+  constructor( initialValue, options ) {
 
-      // client cannot specify superclass options that are controlled by Vector2Property
-      if ( options ) {
-        assert && assert( !options.hasOwnProperty( 'valueType' ), 'Vector2Property sets valueType' );
-        assert && assert( !options.hasOwnProperty( 'phetioType' ), 'Vector2Property sets phetioType' );
-      }
-
-      // Fill in superclass options that are controlled by Vector2Property.
-      options = merge( {
-        valueType: Vector2,
-        phetioType: PropertyIO( Vector2IO )
-      }, options );
-
-      super( initialValue, options );
+    // client cannot specify superclass options that are controlled by Vector2Property
+    if ( options ) {
+      assert && assert( !options.hasOwnProperty( 'valueType' ), 'Vector2Property sets valueType' );
+      assert && assert( !options.hasOwnProperty( 'phetioType' ), 'Vector2Property sets phetioType' );
     }
-  }
 
-  return dot.register( 'Vector2Property', Vector2Property );
-} );
+    // Fill in superclass options that are controlled by Vector2Property.
+    options = merge( {
+      valueType: Vector2,
+      phetioType: PropertyIO( Vector2IO )
+    }, options );
+
+    super( initialValue, options );
+  }
+}
+
+dot.register( 'Vector2Property', Vector2Property );
+export default Vector2Property;

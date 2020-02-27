@@ -7,65 +7,61 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-define( require => {
-  'use strict';
+import dot from './dot.js';
+import Vector3 from './Vector3.js';
 
-  const dot = require( 'DOT/dot' );
-  const Vector3 = require( 'DOT/Vector3' );
+/**
+ *
+ * @param {Vector3} normal - A normal vector (perpendicular) to the plane
+ * @param {number} distance - The signed distance to the plane from the origin, so that normal.times( distance )
+ *                            will be a point on the plane.
+ * @constructor
+ */
+function Plane3( normal, distance ) {
+  this.normal = normal; // @public (read-only)
+  this.distance = distance; // @public (read-only)
 
-  /**
-   *
-   * @param {Vector3} normal - A normal vector (perpendicular) to the plane
-   * @param {number} distance - The signed distance to the plane from the origin, so that normal.times( distance )
-   *                            will be a point on the plane.
-   * @constructor
-   */
-  function Plane3( normal, distance ) {
-    this.normal = normal; // @public (read-only)
-    this.distance = distance; // @public (read-only)
+  assert && assert( Math.abs( normal.magnitude - 1 ) < 0.01, 'the normal vector must be a unit vector' );
+}
 
-    assert && assert( Math.abs( normal.magnitude - 1 ) < 0.01, 'the normal vector must be a unit vector' );
-  }
+dot.register( 'Plane3', Plane3 );
 
-  dot.register( 'Plane3', Plane3 );
-
-  Plane3.prototype = {
-    constructor: Plane3,
-
-    /**
-     * Returns the intersection point of a ray with this plane.
-     * @public
-     * @param {Ray3} ray
-     * @returns {Vector3}
-     */
-    intersectWithRay: function( ray ) {
-      return ray.pointAtDistance( ray.distanceToPlane( this ) );
-    }
-  };
-
-  Plane3.XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
-  Plane3.XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
-  Plane3.YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );
+Plane3.prototype = {
+  constructor: Plane3,
 
   /**
-   * Returns a new plane that passes through three points $(\vec{a},\vec{b},\vec{c})$
-   * The normal of the plane points along $\vec{c-a} \times \vec{b-a}$
-   * Passing three collinear points will return null
+   * Returns the intersection point of a ray with this plane.
    * @public
-   * @param {Vector3} a - first point
-   * @param {Vector3} b - second point
-   * @param {Vector3} c - third point
-   * @returns {Plane3|null}
+   * @param {Ray3} ray
+   * @returns {Vector3}
    */
-  Plane3.fromTriangle = function( a, b, c ) {
-    const normal = ( c.minus( a ) ).cross( b.minus( a ) );
-    if ( normal.magnitude === 0 ) {
-      return null;
-    }
-    normal.normalize();
+  intersectWithRay: function( ray ) {
+    return ray.pointAtDistance( ray.distanceToPlane( this ) );
+  }
+};
 
-    return new Plane3( normal, normal.dot( a ) );
-  };
+Plane3.XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
+Plane3.XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
+Plane3.YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );
 
-  return Plane3;
-} );
+/**
+ * Returns a new plane that passes through three points $(\vec{a},\vec{b},\vec{c})$
+ * The normal of the plane points along $\vec{c-a} \times \vec{b-a}$
+ * Passing three collinear points will return null
+ * @public
+ * @param {Vector3} a - first point
+ * @param {Vector3} b - second point
+ * @param {Vector3} c - third point
+ * @returns {Plane3|null}
+ */
+Plane3.fromTriangle = function( a, b, c ) {
+  const normal = ( c.minus( a ) ).cross( b.minus( a ) );
+  if ( normal.magnitude === 0 ) {
+    return null;
+  }
+  normal.normalize();
+
+  return new Plane3( normal, normal.dot( a ) );
+};
+
+export default Plane3;

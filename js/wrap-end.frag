@@ -1,1 +1,3 @@
- window.dot = require( 'main' ); window.axon = require( 'AXON/main' ); window.phetCore = require( 'PHET_CORE/main' ); }());
+import dot from './axon/js/main' ); window.phetCore = require( '/phet-core/js/main.js';
+
+window.dot = dot;

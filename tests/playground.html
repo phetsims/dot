@@ -16,156 +16,155 @@
   <script src="../../tandem/js/PhetioIDUtils.js"></script>
   <script src="../../sherpa/lib/lodash-4.17.4.js"></script>
 
-  <script data-main="../js/dot-config.js" src="../../sherpa/lib/require-2.3.6.js"></script>
 
 </head>
 <body>
-<script>
+<script type="module">
   window.assertions.enableAssert();
   window.assertions.enableAssertSlow();
 
-  require( [ 'dot-config' ], function() {
-    require( [ 'main', 'PHET_CORE/main' ], function( dot, phetCore ) {
-      window.dot = dot;
-      window.phetCore = phetCore;
+  import dot from '../js/main.js';
+  import phetCore from '../../phet-core/js/main.js';
 
-      console.log( 'loaded' );
+  window.dot = dot;
+  window.phetCore = phetCore;
 
-      window.triTest = function() {
-        setTimeout(function(){
-          // window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 4, 11 ), dot.v2( 15, 13 ), dot.v2( 11, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ), dot.v2( 1, 4 ), dot.v2( -8, 3 ), dot.v2( -13, -5 ), dot.v2( -15, 0 ) ];
-          // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 4 ), dot.v2( 6, 4.1 ) ];
-          // window.points = [ dot.v2( 0, 0 ), dot.v2( 5, 5 ), dot.v2( -5, 5 ), dot.v2( 0, 10 ) ];
-          // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, -10 ), dot.v2( -10, -10 ) ];
-          // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 10 ), dot.v2( 10, 0 ), dot.v2( 0, 10 ) ];
-          // window.points = []; for ( var i = 0; i < 100; i++ ) { points.push( dot.v2( Math.random(), Math.random() ) ); }
-          window.points = []; for ( var i = 0; i < 10; i++ ) { for ( var j = 0; j < 10; j++ ) { points.push( dot.v2( i, j ) ); } }
-          window.constraints = [ [ 10, 45 ], [ 46, 51 ] ];
-          // window.constraints = [ [ 10, 45 ] ];
-          window.triangulation = new dot.DelaunayTriangulation( points, constraints );
-          triDebug( triangulation );
-          while ( triangulation.remainingVertices.length ) {
-            triangulation.step();
-            triDebug( triangulation );
-          }
-          triangulation.finalize();
-          triDebug( triangulation );
-        });
-      };
+  console.log( 'loaded' );
 
-      window.triDebug = function( triangulation ) {
-        var bounds = dot.Bounds2.NOTHING.copy();
-        for ( var i = 0; i < triangulation.vertices.length; i++ ) {
-          bounds.addPoint( triangulation.vertices[ i ].point );
-        }
-        bounds.addPoint( triangulation.artificialMinVertex.point );
-        bounds.addPoint( triangulation.artificialMaxVertex.point );
-
-        var debugSize = 512;
-        var pad = 20;
-        var scale = ( debugSize - pad * 2 ) / Math.max( bounds.width, bounds.height );
-
-        function transformContext( context ) {
-          context.translate( pad, pad );
-          context.scale( scale, -scale );
-          context.translate( -bounds.minX, -bounds.minY - bounds.height );
-        }
-
-        function draw( callback ) {
-          var canvas = document.createElement( 'canvas' );
-          canvas.width = debugSize;
-          canvas.height = debugSize;
-          canvas.style.border = '1px solid black';
-          var context = canvas.getContext( '2d' );
-          transformContext( context );
-          callback( context );
-          document.body.appendChild( canvas );
-        }
-
-        function drawVertex( context, vertex, color ) {
-          context.beginPath();
-          context.arc( vertex.point.x, vertex.point.y, 3 / scale, 0, Math.PI * 2, false );
-          context.closePath();
-          context.fillStyle = color;
-          context.fill();
-        }
-
-        function drawEdge( context, edge, color ) {
-          context.beginPath();
-          context.moveTo( edge.startVertex.point.x, edge.startVertex.point.y );
-          context.lineTo( edge.endVertex.point.x, edge.endVertex.point.y );
-          context.strokeStyle = color;
-          context.lineWidth = 1 / scale;
-          context.stroke();
-        }
-
-        function drawTriangle( context, triangle ) {
-          context.beginPath();
-          context.moveTo( triangle.aVertex.point.x, triangle.aVertex.point.y );
-          context.lineTo( triangle.bVertex.point.x, triangle.bVertex.point.y );
-          context.lineTo( triangle.cVertex.point.x, triangle.cVertex.point.y );
-          context.closePath();
-          context.fillStyle = 'rgba(0,0,0,0.1)';
-          context.fill();
-        }
-
-        function drawCircle( context, triangle, vertices ) {
-          context.beginPath();
-          var center = dot.Utils.circleCenterFromPoints( triangle.aVertex.point, triangle.bVertex.point, triangle.cVertex.point );
-          var radius = ( triangle.aVertex.point.distance( center ) + triangle.bVertex.point.distance( center ) + triangle.cVertex.point.distance( center ) ) / 3;
-          var ok = true;
-          for ( var i = 0; i < vertices.length; i++ ) {
-            var vertex = vertices[ i ];
-            if ( vertex !== triangle.aVertex && vertex !== triangle.bVertex && vertex !== triangle.cVertex && vertex.point.distance( center ) < radius ) {
-              ok = false;
-              break;
-            }
-          }
-          context.arc( center.x, center.y, radius, 0, Math.PI * 2, false );
-          context.closePath();
-          context.strokeStyle = ok ? 'rgba(0,255,0,0.2)' : 'rgba(255,0,0,0.2)';
-          context.stroke();
-        }
-
-        draw( function( context ) {
-          triangulation.vertices.forEach( function( vertex ) {
-            drawVertex( context, vertex, 'rgba(0,0,0,0.4)' );
-          } );
-          drawVertex( context, triangulation.artificialMinVertex, 'rgba(128,0,0,0.4)' );
-          drawVertex( context, triangulation.artificialMaxVertex, 'rgba(128,0,0,0.4)' );
-
-          triangulation.edges.forEach( function( edge ) {
-            drawEdge( context, edge, 'rgba(0,0,0,0.4)' );
-          } );
-
-          // var frontEdge = triangulation.firstFrontEdge;
-          // while ( frontEdge ) {
-          //   drawEdge( context, frontEdge, 'rgba(0,0,255,0.6)')
-          //   frontEdge = frontEdge.nextEdge;
-          // }
-
-          triangulation.triangles.forEach( function( triangle ) {
-            drawTriangle( context, triangle );
-          } );
-          triangulation.triangles.forEach( function( triangle ) {
-            drawCircle( context, triangle, triangulation.vertices );
-          } );
-
-          if ( triangulation.convexHull.length ) {
-            var hull = triangulation.convexHull;
-            context.beginPath();
-            context.moveTo( hull[ 0 ].point.x, hull[ 0 ].point.y );
-            for ( var i = 1; i < hull.length; i++ ) {
-              context.lineTo( hull[ i ].point.x, hull[ i ].point.y );
-            }
-            context.closePath();
-            context.strokeStyle = 'rgb(255,0,0)';
-            context.stroke();
-          }
-        } );
-      };
+  window.triTest = function() {
+    setTimeout( function() {
+      // window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 4, 11 ), dot.v2( 15, 13 ), dot.v2( 11, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ), dot.v2( 1, 4 ), dot.v2( -8, 3 ), dot.v2( -13, -5 ), dot.v2( -15, 0 ) ];
+      // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 4 ), dot.v2( 6, 4.1 ) ];
+      // window.points = [ dot.v2( 0, 0 ), dot.v2( 5, 5 ), dot.v2( -5, 5 ), dot.v2( 0, 10 ) ];
+      // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, -10 ), dot.v2( -10, -10 ) ];
+      // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 10 ), dot.v2( 10, 0 ), dot.v2( 0, 10 ) ];
+      // window.points = []; for ( var i = 0; i < 100; i++ ) { points.push( dot.v2( Math.random(), Math.random() ) ); }
+      window.points = [];
+      for ( var i = 0; i < 10; i++ ) { for ( var j = 0; j < 10; j++ ) { points.push( dot.v2( i, j ) ); } }
+      window.constraints = [ [ 10, 45 ], [ 46, 51 ] ];
+      // window.constraints = [ [ 10, 45 ] ];
+      window.triangulation = new dot.DelaunayTriangulation( points, constraints );
+      triDebug( triangulation );
+      while ( triangulation.remainingVertices.length ) {
+        triangulation.step();
+        triDebug( triangulation );
+      }
+      triangulation.finalize();
+      triDebug( triangulation );
     } );
-  } );
+  };
+
+  window.triDebug = function( triangulation ) {
+    var bounds = dot.Bounds2.NOTHING.copy();
+    for ( var i = 0; i < triangulation.vertices.length; i++ ) {
+      bounds.addPoint( triangulation.vertices[ i ].point );
+    }
+    bounds.addPoint( triangulation.artificialMinVertex.point );
+    bounds.addPoint( triangulation.artificialMaxVertex.point );
+
+    var debugSize = 512;
+    var pad = 20;
+    var scale = ( debugSize - pad * 2 ) / Math.max( bounds.width, bounds.height );
+
+    function transformContext( context ) {
+      context.translate( pad, pad );
+      context.scale( scale, -scale );
+      context.translate( -bounds.minX, -bounds.minY - bounds.height );
+    }
+
+    function draw( callback ) {
+      var canvas = document.createElement( 'canvas' );
+      canvas.width = debugSize;
+      canvas.height = debugSize;
+      canvas.style.border = '1px solid black';
+      var context = canvas.getContext( '2d' );
+      transformContext( context );
+      callback( context );
+      document.body.appendChild( canvas );
+    }
+
+    function drawVertex( context, vertex, color ) {
+      context.beginPath();
+      context.arc( vertex.point.x, vertex.point.y, 3 / scale, 0, Math.PI * 2, false );
+      context.closePath();
+      context.fillStyle = color;
+      context.fill();
+    }
+
+    function drawEdge( context, edge, color ) {
+      context.beginPath();
+      context.moveTo( edge.startVertex.point.x, edge.startVertex.point.y );
+      context.lineTo( edge.endVertex.point.x, edge.endVertex.point.y );
+      context.strokeStyle = color;
+      context.lineWidth = 1 / scale;
+      context.stroke();
+    }
+
+    function drawTriangle( context, triangle ) {
+      context.beginPath();
+      context.moveTo( triangle.aVertex.point.x, triangle.aVertex.point.y );
+      context.lineTo( triangle.bVertex.point.x, triangle.bVertex.point.y );
+      context.lineTo( triangle.cVertex.point.x, triangle.cVertex.point.y );
+      context.closePath();
+      context.fillStyle = 'rgba(0,0,0,0.1)';
+      context.fill();
+    }
+
+    function drawCircle( context, triangle, vertices ) {
+      context.beginPath();
+      var center = dot.Utils.circleCenterFromPoints( triangle.aVertex.point, triangle.bVertex.point, triangle.cVertex.point );
+      var radius = ( triangle.aVertex.point.distance( center ) + triangle.bVertex.point.distance( center ) + triangle.cVertex.point.distance( center ) ) / 3;
+      var ok = true;
+      for ( var i = 0; i < vertices.length; i++ ) {
+        var vertex = vertices[ i ];
+        if ( vertex !== triangle.aVertex && vertex !== triangle.bVertex && vertex !== triangle.cVertex && vertex.point.distance( center ) < radius ) {
+          ok = false;
+          break;
+        }
+      }
+      context.arc( center.x, center.y, radius, 0, Math.PI * 2, false );
+      context.closePath();
+      context.strokeStyle = ok ? 'rgba(0,255,0,0.2)' : 'rgba(255,0,0,0.2)';
+      context.stroke();
+    }
+
+    draw( function( context ) {
+      triangulation.vertices.forEach( function( vertex ) {
+        drawVertex( context, vertex, 'rgba(0,0,0,0.4)' );
+      } );
+      drawVertex( context, triangulation.artificialMinVertex, 'rgba(128,0,0,0.4)' );
+      drawVertex( context, triangulation.artificialMaxVertex, 'rgba(128,0,0,0.4)' );
+
+      triangulation.edges.forEach( function( edge ) {
+        drawEdge( context, edge, 'rgba(0,0,0,0.4)' );
+      } );
+
+      // var frontEdge = triangulation.firstFrontEdge;
+      // while ( frontEdge ) {
+      //   drawEdge( context, frontEdge, 'rgba(0,0,255,0.6)')
+      //   frontEdge = frontEdge.nextEdge;
+      // }
+
+      triangulation.triangles.forEach( function( triangle ) {
+        drawTriangle( context, triangle );
+      } );
+      triangulation.triangles.forEach( function( triangle ) {
+        drawCircle( context, triangle, triangulation.vertices );
+      } );
+
+      if ( triangulation.convexHull.length ) {
+        var hull = triangulation.convexHull;
+        context.beginPath();
+        context.moveTo( hull[ 0 ].point.x, hull[ 0 ].point.y );
+        for ( var i = 1; i < hull.length; i++ ) {
+          context.lineTo( hull[ i ].point.x, hull[ i ].point.y );
+        }
+        context.closePath();
+        context.strokeStyle = 'rgb(255,0,0)';
+        context.stroke();
+      }
+    } );
+  };
 </script>
 </body>
 </html>

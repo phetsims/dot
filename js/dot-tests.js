@@ -5,27 +5,23 @@
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  require( 'DOT/BinPackerTests' );
-  require( 'DOT/Bounds2Tests' );
-  require( 'DOT/ComplexTests' );
-  require( 'DOT/DampedHarmonicTests' );
-  require( 'DOT/Matrix3Tests' );
-  require( 'DOT/MatrixOps3Tests' );
-  require( 'DOT/OpenRangeTests' );
-  require( 'DOT/PiecewiseLinearFunctionTests' );
-  require( 'DOT/RangeTests' );
-  require( 'DOT/RangeWithValueTests' );
-  require( 'DOT/StatsTests' );
-  require( 'DOT/UtilsTests' );
-  require( 'DOT/Transform3Tests' );
-  require( 'DOT/LinearFunctionTests' );
-  require( 'DOT/Vector2Tests' );
-  require( 'DOT/Vector2PropertyTests' );
+import './BinPackerTests.js';
+import './Bounds2Tests.js';
+import './ComplexTests.js';
+import './DampedHarmonicTests.js';
+import './LinearFunctionTests.js';
+import './Matrix3Tests.js';
+import './MatrixOps3Tests.js';
+import './OpenRangeTests.js';
+import './PiecewiseLinearFunctionTests.js';
+import './RangeTests.js';
+import './RangeWithValueTests.js';
+import './StatsTests.js';
+import './Transform3Tests.js';
+import './UtilsTests.js';
+import './Vector2PropertyTests.js';
+import './Vector2Tests.js';
 
-  // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
-  QUnit.start();
-} );
+// Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
+QUnit.start();

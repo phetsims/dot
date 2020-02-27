@@ -6,20 +6,17 @@
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Andrew Adare (PhET Interactive Simulations)
  */
-define( require => {
-  'use strict';
 
-  // modules
-  const dot = require( 'DOT/dot' );
-  const ObjectIO = require( 'TANDEM/types/ObjectIO' );
-  const Random = require( 'DOT/Random' );
+import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import dot from './dot.js';
+import Random from './Random.js';
 
-  class RandomIO extends ObjectIO {}
+class RandomIO extends ObjectIO {}
 
-  RandomIO.documentation = 'Generates pseudorandom values';
-  RandomIO.validator = { valueType: Random };
-  RandomIO.typeName = 'RandomIO';
-  ObjectIO.validateSubtype( RandomIO );
+RandomIO.documentation = 'Generates pseudorandom values';
+RandomIO.validator = { valueType: Random };
+RandomIO.typeName = 'RandomIO';
+ObjectIO.validateSubtype( RandomIO );
 
-  return dot.register( 'RandomIO', RandomIO );
-} );
+dot.register( 'RandomIO', RandomIO );
+export default RandomIO;
