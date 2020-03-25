@@ -18,6 +18,7 @@ class Vector2IO extends ObjectIO {
    * Encodes a Vector2 instance to a state.
    * @param {Vector2} vector2
    * @returns {Object}
+   * @public
    */
   static toStateObject( vector2 ) {
     validate( vector2, this.validator );
@@ -28,6 +29,7 @@ class Vector2IO extends ObjectIO {
    * Decodes a state into a Vector2.
    * @param {Object} stateObject
    * @returns {Vector2}
+   * @public
    */
   static fromStateObject( stateObject ) {
     return Vector2.fromStateObject( stateObject );

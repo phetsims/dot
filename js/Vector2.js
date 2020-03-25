@@ -875,17 +875,21 @@ inherit( Object, Vector2, {
 
   /**
    * Returns a duck-typed object meant for use with tandem/phet-io serialization.
+   * @public
    *
-   * @returns {Object}
+   * @returns {{x:number, y:number}}
    */
   toStateObject: function() {
     return { x: this.x, y: this.y };
   }
-}, { // static functions on Vector2 itself
+}, {
+  // static methods
+
   /**
    * Returns a Vector2 with the specified magnitude $r$ and angle $\theta$ (in radians), with the formula:
    * $$ f( r, \theta ) = \begin{bmatrix} r\cos\theta \\ r\sin\theta \end{bmatrix} $$
    * @public
+   * @static
    *
    * @param {number} magnitude
    * @param {number} angle
@@ -896,11 +900,11 @@ inherit( Object, Vector2, {
   },
 
   /**
-   * Constructs a Vector2 from a duck-typed { x: {number}, y: {number} } object, meant for use with
-   * tandem/phet-io deserialization.
+   * Constructs a Vector2 from a duck-typed object, for use with tandem/phet-io deserialization.
    * @public
+   * @static
    *
-   * @param {Object} stateObject - Like { x: {number}, y: {number} }
+   * @param {{x:number, y:number}} stateObject
    * @returns {Vector2}
    */
   fromStateObject: function( stateObject ) {
@@ -909,6 +913,8 @@ inherit( Object, Vector2, {
 
   /**
    * Allocation-free implementation that gets the angle between two vectors
+   * @public
+   * @static
    *
    * @param {Vector2} startVector
    * @param {Vector2} endVector
@@ -922,6 +928,9 @@ inherit( Object, Vector2, {
 
   /**
    * Allocation-free way to get the distance between vectors.
+   * @public
+   * @static
+   *
    * @param {Vector2} startVector
    * @param {Vector2} endVector
    * @returns {number} the angle between the vectors
