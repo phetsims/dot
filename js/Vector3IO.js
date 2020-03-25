@@ -32,7 +32,7 @@ class Vector3IO extends ObjectIO {
    * @public
    */
   static fromStateObject( stateObject ) {
-    return Vector3.fromStateObject( stateObject.x, stateObject.y, stateObject.z );
+    return Vector3.fromStateObject( stateObject );
   }
 }
 
