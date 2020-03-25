@@ -18,19 +18,21 @@ class Vector3IO extends ObjectIO {
    * Encodes a Vector3 instance to a state.
    * @param {Vector3} vector3
    * @returns {Object}
+   * @public
    */
   static toStateObject( vector3 ) {
     validate( vector3, this.validator );
-    return { x: vector3.x, y: vector3.y, z: vector3.z };
+    return vector3.toStateObject();
   }
 
   /**
    * Decodes a state into a Vector3.
    * @param {Object} stateObject
    * @returns {Vector3}
+   * @public
    */
   static fromStateObject( stateObject ) {
-    return new Vector3( stateObject.x, stateObject.y, stateObject.z );
+    return Vector3.fromStateObject( stateObject.x, stateObject.y, stateObject.z );
   }
 }
 

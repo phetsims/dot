@@ -781,11 +781,24 @@ inherit( Object, Vector3, {
     return this.setXYZ( dot.Utils.roundSymmetric( this.x ),
       dot.Utils.roundSymmetric( this.y ),
       dot.Utils.roundSymmetric( this.z ) );
+  },
+
+  /**
+   * Returns a duck-typed object meant for use with tandem/phet-io serialization.
+   * @public
+   *
+   * @returns {{x:number, y:number, z:number}}
+   */
+  toStateObject: function() {
+    return { x: this.x, y: this.y, z: this.z };
   }
 }, {
+  // static methods
+
   /**
    * Spherical linear interpolation between two unit vectors.
    * @public
+   * @static
    *
    * @param {Vector3} start - Start unit vector
    * @param {Vector3} end - End unit vector
@@ -795,6 +808,18 @@ inherit( Object, Vector3, {
   slerp: function( start, end, ratio ) {
     // NOTE: we can't create a require() loop here
     return dot.Quaternion.slerp( new dot.Quaternion(), dot.Quaternion.getRotationQuaternion( start, end ), ratio ).timesVector3( start );
+  },
+
+  /**
+   * Constructs a Vector3 from a duck-typed object, for use with tandem/phet-io deserialization.
+   * @public
+   * @static
+   *
+   * @param {{x:number, y:number, z:number}} stateObject
+   * @returns {Vector3}
+   */
+  fromStateObject: function( stateObject ) {
+    return new Vector3( stateObject.x, stateObject.y, stateObject.z);
   }
 } );
 
