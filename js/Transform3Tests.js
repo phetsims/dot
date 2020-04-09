@@ -107,7 +107,7 @@ QUnit.test( 'Transform event firing', function( assert ) {
 
   let count = 0;
 
-  t.on( 'change', function( assert ) { count += 1; } );
+  t.changeEmitter.addListener( function( assert ) { count += 1; } );
   assert.equal( count, 0 );
   t.setMatrix( Matrix3.rotation2( Math.PI / 2 ) );
   assert.equal( count, 1 );

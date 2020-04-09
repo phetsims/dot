@@ -11,7 +11,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Events from '../../axon/js/Events.js';
+import TinyEmitter from '../../axon/js/TinyEmitter.js';
 import inherit from '../../phet-core/js/inherit.js';
 import dot from './dot.js';
 import './Matrix4.js';
@@ -38,7 +38,6 @@ function checkMatrix( matrix ) {
  * @constructor
  */
 function Transform4( matrix ) {
-  Events.call( this );
 
   // @private {Matrix4} - The primary matrix used for the transform
   this.matrix = dot.Matrix4.IDENTITY.copy();
@@ -62,6 +61,9 @@ function Transform4( matrix ) {
   // @private {boolean} - Whether this.inverseTransposed has been computed based on the latest primary matrix
   this.inverseTransposeValid = true;
 
+  // @public {TinyEmitter}
+  this.changeEmitter = new TinyEmitter();
+
   if ( matrix ) {
     this.setMatrix( matrix );
   }
@@ -69,7 +71,7 @@ function Transform4( matrix ) {
 
 dot.register( 'Transform4', Transform4 );
 
-inherit( Events, Transform4, {
+inherit( Object, Transform4, {
   /*---------------------------------------------------------------------------*
    * mutators
    *---------------------------------------------------------------------------*/
@@ -105,7 +107,7 @@ inherit( Events, Transform4, {
     this.transposeValid = false;
     this.inverseTransposeValid = false;
 
-    this.trigger0( 'change' );
+    this.changeEmitter.emit();
   },
 
   /**

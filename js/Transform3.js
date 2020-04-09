@@ -9,7 +9,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Events from '../../axon/js/Events.js';
+import TinyEmitter from '../../axon/js/TinyEmitter.js';
 import inherit from '../../phet-core/js/inherit.js';
 import dot from './dot.js';
 import './Matrix3.js';
@@ -26,8 +26,6 @@ const scratchMatrix = new dot.Matrix3();
  * @param {Matrix3} matrix
  */
 function Transform3( matrix ) {
-  Events.call( this );
-
   // @private {Matrix3} - The primary matrix used for the transform
   this.matrix = dot.Matrix3.IDENTITY.copy();
 
@@ -49,6 +47,9 @@ function Transform3( matrix ) {
   // @private {boolean} - Whether this.inverseTransposed has been computed based on the latest primary matrix
   this.inverseTransposeValid = true;
 
+  // @public {TinyEmitter}
+  this.changeEmitter = new TinyEmitter();
+
   if ( matrix ) {
     this.setMatrix( matrix );
   }
@@ -56,7 +57,7 @@ function Transform3( matrix ) {
 
 dot.register( 'Transform3', Transform3 );
 
-inherit( Events, Transform3, {
+inherit( Object, Transform3, {
 
   /*---------------------------------------------------------------------------*
    * mutators
@@ -103,7 +104,7 @@ inherit( Events, Transform3, {
     this.transposeValid = false;
     this.inverseTransposeValid = false;
 
-    this.trigger0( 'change' ); // TODO: Should this use Emitter instead?
+    this.changeEmitter.emit();
   },
 
   /**
