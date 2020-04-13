@@ -14,11 +14,11 @@
 import TinyEmitter from '../../axon/js/TinyEmitter.js';
 import inherit from '../../phet-core/js/inherit.js';
 import dot from './dot.js';
-import './Matrix4.js';
-import './Ray3.js';
-import './Vector3.js';
+import Matrix4 from './Matrix4.js';
+import Ray3 from './Ray3.js';
+import Vector3 from './Vector3.js';
 
-const scratchMatrix = new dot.Matrix4();
+const scratchMatrix = new Matrix4();
 
 /**
  * check if the matrix is Finite and is of type Matrix4
@@ -27,7 +27,7 @@ const scratchMatrix = new dot.Matrix4();
  * @returns {boolean}
  */
 function checkMatrix( matrix ) {
-  return ( matrix instanceof dot.Matrix4 ) && matrix.isFinite();
+  return ( matrix instanceof Matrix4 ) && matrix.isFinite();
 }
 
 /**
@@ -40,16 +40,16 @@ function checkMatrix( matrix ) {
 function Transform4( matrix ) {
 
   // @private {Matrix4} - The primary matrix used for the transform
-  this.matrix = dot.Matrix4.IDENTITY.copy();
+  this.matrix = Matrix4.IDENTITY.copy();
 
   // @private {Matrix4} - The inverse of the primary matrix, computed lazily
-  this.inverse = dot.Matrix4.IDENTITY.copy();
+  this.inverse = Matrix4.IDENTITY.copy();
 
   // @private {Matrix4} - The transpose of the primary matrix, computed lazily
-  this.matrixTransposed = dot.Matrix4.IDENTITY.copy();
+  this.matrixTransposed = Matrix4.IDENTITY.copy();
 
   // @private {Matrix4} - The inverse of the transposed primary matrix, computed lazily
-  this.inverseTransposed = dot.Matrix4.IDENTITY.copy();
+  this.inverseTransposed = Matrix4.IDENTITY.copy();
 
 
   // @private {boolean} - Whether this.inverse has been computed based on the latest primary matrix
@@ -262,7 +262,7 @@ inherit( Object, Transform4, {
    * @returns {boolean}
    */
   isIdentity: function() {
-    return this.matrix.type === dot.Matrix4.Types.IDENTITY;
+    return this.matrix.type === Matrix4.Types.IDENTITY;
   },
 
   /**
@@ -324,7 +324,7 @@ inherit( Object, Transform4, {
    * @returns {number}
    */
   transformDeltaX: function( x ) {
-    return this.transformDelta3( new dot.Vector3( x, 0, 0 ) ).x;
+    return this.transformDelta3( new Vector3( x, 0, 0 ) ).x;
   },
 
   /**
@@ -336,7 +336,7 @@ inherit( Object, Transform4, {
    * @returns {number}
    */
   transformDeltaY: function( y ) {
-    return this.transformDelta3( new dot.Vector3( 0, y, 0 ) ).y;
+    return this.transformDelta3( new Vector3( 0, y, 0 ) ).y;
   },
 
   /**
@@ -348,7 +348,7 @@ inherit( Object, Transform4, {
    * @returns {number}
    */
   transformDeltaZ: function( z ) {
-    return this.transformDelta3( new dot.Vector3( 0, 0, z ) ).z;
+    return this.transformDelta3( new Vector3( 0, 0, z ) ).z;
   },
 
   /**
@@ -359,7 +359,7 @@ inherit( Object, Transform4, {
    * @returns {Ray3}
    */
   transformRay: function( ray ) {
-    return new dot.Ray3(
+    return new Ray3(
       this.transformPosition3( ray.position ),
       this.transformPosition3( ray.position.plus( ray.direction ) ).minus( this.transformPosition3( ray.position ) ) );
   },
@@ -394,7 +394,7 @@ inherit( Object, Transform4, {
    */
   inverseDelta3: function( v ) {
     // inverse actually has the translation rolled into the other coefficients, so we have to make this longer
-    return this.inversePosition3( v ).minus( this.inversePosition3( dot.Vector3.ZERO ) );
+    return this.inversePosition3( v ).minus( this.inversePosition3( Vector3.ZERO ) );
   },
 
   /**
@@ -422,7 +422,7 @@ inherit( Object, Transform4, {
    * @returns {number}
    */
   inverseDeltaX: function( x ) {
-    return this.inverseDelta3( new dot.Vector3( x, 0, 0 ) ).x;
+    return this.inverseDelta3( new Vector3( x, 0, 0 ) ).x;
   },
 
   /**
@@ -436,7 +436,7 @@ inherit( Object, Transform4, {
    * @returns {number}
    */
   inverseDeltaY: function( y ) {
-    return this.inverseDelta3( new dot.Vector3( 0, y, 0 ) ).y;
+    return this.inverseDelta3( new Vector3( 0, y, 0 ) ).y;
   },
 
   /**
@@ -450,7 +450,7 @@ inherit( Object, Transform4, {
    * @returns {number}
    */
   inverseDeltaZ: function( z ) {
-    return this.inverseDelta3( new dot.Vector3( 0, 0, z ) ).z;
+    return this.inverseDelta3( new Vector3( 0, 0, z ) ).z;
   },
 
   /**
@@ -463,7 +463,7 @@ inherit( Object, Transform4, {
    * @returns {Ray3}
    */
   inverseRay: function( ray ) {
-    return new dot.Ray3(
+    return new Ray3(
       this.inversePosition3( ray.position ),
       this.inversePosition3( ray.position.plus( ray.direction ) ).minus( this.inversePosition3( ray.position ) )
     );

@@ -12,11 +12,11 @@
 import TinyEmitter from '../../axon/js/TinyEmitter.js';
 import inherit from '../../phet-core/js/inherit.js';
 import dot from './dot.js';
-import './Matrix3.js';
-import './Ray2.js';
-import './Vector2.js';
+import Matrix3 from './Matrix3.js';
+import Ray2 from './Ray2.js';
+import Vector2 from './Vector2.js';
 
-const scratchMatrix = new dot.Matrix3();
+const scratchMatrix = new Matrix3();
 
 /**
  * Creates a transform based around an initial matrix.
@@ -27,16 +27,16 @@ const scratchMatrix = new dot.Matrix3();
  */
 function Transform3( matrix ) {
   // @private {Matrix3} - The primary matrix used for the transform
-  this.matrix = dot.Matrix3.IDENTITY.copy();
+  this.matrix = Matrix3.IDENTITY.copy();
 
   // @private {Matrix3} - The inverse of the primary matrix, computed lazily
-  this.inverse = dot.Matrix3.IDENTITY.copy();
+  this.inverse = Matrix3.IDENTITY.copy();
 
   // @private {Matrix3} - The transpose of the primary matrix, computed lazily
-  this.matrixTransposed = dot.Matrix3.IDENTITY.copy();
+  this.matrixTransposed = Matrix3.IDENTITY.copy();
 
   // @private {Matrix3} - The inverse of the transposed primary matrix, computed lazily
-  this.inverseTransposed = dot.Matrix3.IDENTITY.copy();
+  this.inverseTransposed = Matrix3.IDENTITY.copy();
 
   // @private {boolean} - Whether this.inverse has been computed based on the latest primary matrix
   this.inverseValid = true;
@@ -85,7 +85,7 @@ inherit( Object, Transform3, {
    * @protected
    */
   validateMatrix: function( matrix ) {
-    assert && assert( matrix instanceof dot.Matrix3, 'matrix was incorrect type' );
+    assert && assert( matrix instanceof Matrix3, 'matrix was incorrect type' );
     assert && assert( matrix.isFinite(), 'matrix must be finite' );
   },
 
@@ -278,7 +278,7 @@ inherit( Object, Transform3, {
    * @returns {boolean}
    */
   isIdentity: function() {
-    return this.matrix.type === dot.Matrix3.Types.IDENTITY;
+    return this.matrix.type === Matrix3.Types.IDENTITY;
   },
 
   /**
@@ -321,7 +321,7 @@ inherit( Object, Transform3, {
   transformDelta2: function( v ) {
     const m = this.getMatrix();
     // m . v - m . Vector2.ZERO
-    return new dot.Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
+    return new Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
   },
 
   /**
@@ -378,7 +378,7 @@ inherit( Object, Transform3, {
    */
   transformDeltaX: function( x ) {
     const m = this.getMatrix();
-    // same as this.transformDelta2( new dot.Vector2( x, 0 ) ).x;
+    // same as this.transformDelta2( new Vector2( x, 0 ) ).x;
     return m.m00() * x;
   },
 
@@ -392,7 +392,7 @@ inherit( Object, Transform3, {
    */
   transformDeltaY: function( y ) {
     const m = this.getMatrix();
-    // same as this.transformDelta2( new dot.Vector2( 0, y ) ).y;
+    // same as this.transformDelta2( new Vector2( 0, y ) ).y;
     return m.m11() * y;
   },
 
@@ -430,7 +430,7 @@ inherit( Object, Transform3, {
    * @returns {Ray2}
    */
   transformRay2: function( ray ) {
-    return new dot.Ray2( this.transformPosition2( ray.position ), this.transformDelta2( ray.direction ).normalized() );
+    return new Ray2( this.transformPosition2( ray.position ), this.transformDelta2( ray.direction ).normalized() );
   },
 
   /*---------------------------------------------------------------------------*
@@ -467,7 +467,7 @@ inherit( Object, Transform3, {
   inverseDelta2: function( v ) {
     const m = this.getInverse();
     // m . v - m . Vector2.ZERO
-    return new dot.Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
+    return new Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
   },
 
   /**
@@ -533,7 +533,7 @@ inherit( Object, Transform3, {
   inverseDeltaX: function( x ) {
     const m = this.getInverse();
     assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
-    // same as this.inverseDelta2( new dot.Vector2( x, 0 ) ).x;
+    // same as this.inverseDelta2( new Vector2( x, 0 ) ).x;
     return m.m00() * x;
   },
 
@@ -550,7 +550,7 @@ inherit( Object, Transform3, {
   inverseDeltaY: function( y ) {
     const m = this.getInverse();
     assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
-    // same as this.inverseDelta2( new dot.Vector2( 0, y ) ).y;
+    // same as this.inverseDelta2( new Vector2( 0, y ) ).y;
     return m.m11() * y;
   },
 
@@ -592,7 +592,7 @@ inherit( Object, Transform3, {
    * @returns {Ray2}
    */
   inverseRay2: function( ray ) {
-    return new dot.Ray2( this.inversePosition2( ray.position ), this.inverseDelta2( ray.direction ).normalized() );
+    return new Ray2( this.inversePosition2( ray.position ), this.inverseDelta2( ray.direction ).normalized() );
   }
 } );
 

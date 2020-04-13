@@ -7,7 +7,7 @@
  */
 
 import dot from './dot.js';
-import './Matrix.js';
+import Matrix from './Matrix.js';
 
 const ArrayType = window.Float64Array || Array;
 
@@ -34,7 +34,7 @@ dot.QRDecomposition = function QRDecomposition( matrix ) {
     // Compute 2-norm of k-th column without under/overflow.
     let nrm = 0;
     for ( i = k; i < m; i++ ) {
-      nrm = dot.Matrix.hypot( nrm, QR[ this.matrix.index( i, k ) ] );
+      nrm = Matrix.hypot( nrm, QR[ this.matrix.index( i, k ) ] );
     }
 
     if ( nrm !== 0.0 ) {
@@ -77,7 +77,7 @@ QRDecomposition.prototype = {
   },
 
   getH: function() {
-    const result = new dot.Matrix( this.m, this.n );
+    const result = new Matrix( this.m, this.n );
     for ( let i = 0; i < this.m; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
         if ( i >= j ) {
@@ -92,7 +92,7 @@ QRDecomposition.prototype = {
   },
 
   getR: function() {
-    const result = new dot.Matrix( this.n, this.n );
+    const result = new Matrix( this.n, this.n );
     for ( let i = 0; i < this.n; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
         if ( i < j ) {
@@ -113,7 +113,7 @@ QRDecomposition.prototype = {
     let i;
     let j;
     let k;
-    const result = new dot.Matrix( this.m, this.n );
+    const result = new Matrix( this.m, this.n );
     for ( k = this.n - 1; k >= 0; k-- ) {
       for ( i = 0; i < this.m; i++ ) {
         result.entries[ result.index( i, k ) ] = 0.0;
@@ -176,7 +176,7 @@ QRDecomposition.prototype = {
         }
       }
     }
-    return new dot.Matrix( this.n, nx, X, true ).getMatrix( 0, this.n - 1, 0, nx - 1 );
+    return new Matrix( this.n, nx, X, true ).getMatrix( 0, this.n - 1, 0, nx - 1 );
   }
 };
 

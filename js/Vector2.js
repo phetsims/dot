@@ -9,8 +9,8 @@
 import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import dot from './dot.js';
-import './Utils.js';
-import './Vector3.js';
+import Utils from './Utils.js';
+import Vector3 from './Vector3.js';
 
 /**
  * Creates a 2-dimensional vector with the specified X and Y values.
@@ -577,7 +577,7 @@ inherit( Object, Vector2, {
    * @returns {Vector3}
    */
   toVector3: function() {
-    return new dot.Vector3( this.x, this.y, 0 );
+    return new Vector3( this.x, this.y, 0 );
   },
 
   /*---------------------------------------------------------------------------*
@@ -840,8 +840,7 @@ inherit( Object, Vector2, {
    * @returns {Vector2}
    */
   roundSymmetric: function() {
-    return this.setXY( dot.Utils.roundSymmetric( this.x ),
-      dot.Utils.roundSymmetric( this.y ) );
+    return this.setXY( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ) );
   },
 
   /**

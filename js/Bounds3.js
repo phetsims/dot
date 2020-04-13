@@ -16,7 +16,7 @@
 import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import dot from './dot.js';
-import './Vector3.js';
+import Vector3 from './Vector3.js';
 
 /**
  * Creates a 3-dimensional bounds (bounding box).
@@ -263,7 +263,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {Vector3}
    */
-  getCenter: function() { return new dot.Vector3( this.getCenterX(), this.getCenterY(), this.getCenterZ() ); },
+  getCenter: function() { return new Vector3( this.getCenterX(), this.getCenterY(), this.getCenterZ() ); },
   get center() { return this.getCenter(); },
 
   /**
@@ -1151,7 +1151,7 @@ inherit( Object, Bounds3, {
 
     // using mutable vector so we don't create excessive instances of Vector2 during this
     // make sure all 4 corners are inside this transformed bounding box
-    const vector = new dot.Vector3( 0, 0, 0 );
+    const vector = new Vector3( 0, 0, 0 );
 
     function withIt( vector ) {
       minX = Math.min( minX, vector.x );

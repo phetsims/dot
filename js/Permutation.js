@@ -8,7 +8,7 @@
 
 import isArray from '../../phet-core/js/isArray.js';
 import dot from './dot.js';
-import './Utils.js'; // for rangeInclusive
+import './Utils.js';
 
 // Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
 function Permutation( indices ) {

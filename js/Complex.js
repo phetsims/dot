@@ -10,7 +10,7 @@
 
 import inherit from '../../phet-core/js/inherit.js';
 import dot from './dot.js';
-import './Utils.js';
+import Utils from './Utils.js';
 
 /**
  * Creates a complex number, that has both a real and imaginary part.
@@ -209,8 +209,8 @@ inherit( Object, Complex, {
    */
   sinOf: function() {
     return new Complex(
-      Math.sin( this.real ) * dot.Utils.cosh( this.imaginary ),
-      Math.cos( this.real ) * dot.Utils.sinh( this.imaginary )
+      Math.sin( this.real ) * Utils.cosh( this.imaginary ),
+      Math.cos( this.real ) * Utils.sinh( this.imaginary )
     );
   },
 
@@ -223,8 +223,8 @@ inherit( Object, Complex, {
    */
   cosOf: function() {
     return new Complex(
-      Math.cos( this.real ) * dot.Utils.cosh( this.imaginary ),
-      -Math.sin( this.real ) * dot.Utils.sinh( this.imaginary )
+      Math.cos( this.real ) * Utils.cosh( this.imaginary ),
+      -Math.sin( this.real ) * Utils.sinh( this.imaginary )
     );
   },
 
@@ -427,8 +427,8 @@ inherit( Object, Complex, {
    */
   sin: function() {
     return this.setRealImaginary(
-      Math.sin( this.real ) * dot.Utils.cosh( this.imaginary ),
-      Math.cos( this.real ) * dot.Utils.sinh( this.imaginary )
+      Math.sin( this.real ) * Utils.cosh( this.imaginary ),
+      Math.cos( this.real ) * Utils.sinh( this.imaginary )
     );
   },
 
@@ -441,8 +441,8 @@ inherit( Object, Complex, {
    */
   cos: function() {
     return this.setRealImaginary(
-      Math.cos( this.real ) * dot.Utils.cosh( this.imaginary ),
-      -Math.sin( this.real ) * dot.Utils.sinh( this.imaginary )
+      Math.cos( this.real ) * Utils.cosh( this.imaginary ),
+      -Math.sin( this.real ) * Utils.sinh( this.imaginary )
     );
   },
 

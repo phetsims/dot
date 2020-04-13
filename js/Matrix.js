@@ -9,12 +9,12 @@
 import isArray from '../../phet-core/js/isArray.js';
 import dot from './dot.js';
 import './EigenvalueDecomposition.js';
-import './LUDecomposition.js';
-import './QRDecomposition.js';
-import './SingularValueDecomposition.js';
-import './Vector2.js';
-import './Vector3.js';
-import './Vector4.js';
+import LUDecomposition from './LUDecomposition.js';
+import QRDecomposition from './QRDecomposition.js';
+import SingularValueDecomposition from './SingularValueDecomposition.js';
+import Vector2 from './Vector2.js';
+import Vector3 from './Vector3.js';
+import Vector4 from './Vector4.js';
 
 const ArrayType = window.Float64Array || Array;
 
@@ -181,7 +181,7 @@ Matrix.prototype = {
   },
 
   norm2: function() {
-    return ( new dot.SingularValueDecomposition( this ).norm2() );
+    return ( new SingularValueDecomposition( this ).norm2() );
   },
 
   normInf: function() {
@@ -403,8 +403,8 @@ Matrix.prototype = {
   },
 
   solve: function( matrix ) {
-    return ( this.m === this.n ? ( new dot.LUDecomposition( this ) ).solve( matrix ) :
-             ( new dot.QRDecomposition( this ) ).solve( matrix ) );
+    return ( this.m === this.n ? ( new LUDecomposition( this ) ).solve( matrix ) :
+             ( new QRDecomposition( this ) ).solve( matrix ) );
   },
 
   solveTranspose: function( matrix ) {
@@ -416,15 +416,15 @@ Matrix.prototype = {
   },
 
   det: function() {
-    return new dot.LUDecomposition( this ).det();
+    return new LUDecomposition( this ).det();
   },
 
   rank: function() {
-    return new dot.SingularValueDecomposition( this ).rank();
+    return new SingularValueDecomposition( this ).rank();
   },
 
   cond: function() {
-    return new dot.SingularValueDecomposition( this ).cond();
+    return new SingularValueDecomposition( this ).cond();
   },
 
   trace: function() {
@@ -456,19 +456,19 @@ Matrix.prototype = {
   // returns a vector that is contained in the specified column
   extractVector2: function( column ) {
     assert && assert( this.m === 2 ); // rows should match vector dimension
-    return new dot.Vector2( this.get( 0, column ), this.get( 1, column ) );
+    return new Vector2( this.get( 0, column ), this.get( 1, column ) );
   },
 
   // returns a vector that is contained in the specified column
   extractVector3: function( column ) {
     assert && assert( this.m === 3 ); // rows should match vector dimension
-    return new dot.Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
+    return new Vector3( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ) );
   },
 
   // returns a vector that is contained in the specified column
   extractVector4: function( column ) {
     assert && assert( this.m === 4 ); // rows should match vector dimension
-    return new dot.Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
+    return new Vector4( this.get( 0, column ), this.get( 1, column ), this.get( 2, column ), this.get( 3, column ) );
   },
 
   // Sets the current matrix to the values of the listed column vectors (Vector3).

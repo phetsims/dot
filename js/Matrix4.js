@@ -10,8 +10,8 @@
  */
 
 import dot from './dot.js';
-import './Vector3.js';
-import './Vector4.js';
+import Vector3 from './Vector3.js';
+import Vector4 from './Vector4.js';
 
 const Float32Array = window.Float32Array || Array;
 
@@ -216,7 +216,7 @@ Matrix4.prototype = {
 
   // the 3D translation, assuming multiplication with a homogeneous vector
   getTranslation: function() {
-    return new dot.Vector3( this.m03(), this.m13(), this.m23() );
+    return new Vector3( this.m03(), this.m13(), this.m23() );
   },
   get translation() { return this.getTranslation(); },
 
@@ -235,7 +235,7 @@ Matrix4.prototype = {
     const m1213 = this.m12() + this.m13();
     const m2223 = this.m22() + this.m23();
     const m3233 = this.m32() + this.m33();
-    return new dot.Vector3(
+    return new Vector3(
       Math.sqrt( m0003 * m0003 + m1013 * m1013 + m2023 * m2023 + m3033 * m3033 ),
       Math.sqrt( m0103 * m0103 + m1113 * m1113 + m2123 * m2123 + m3133 * m3133 ),
       Math.sqrt( m0203 * m0203 + m1213 * m1213 + m2223 * m2223 + m3233 * m3233 ) );
@@ -465,7 +465,7 @@ Matrix4.prototype = {
     const y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z + this.m13() * v.w;
     const z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z + this.m23() * v.w;
     const w = this.m30() * v.x + this.m31() * v.y + this.m32() * v.z + this.m33() * v.w;
-    return new dot.Vector4( x, y, z, w );
+    return new Vector4( x, y, z, w );
   },
 
   timesVector3: function( v ) {
@@ -477,7 +477,7 @@ Matrix4.prototype = {
     const y = this.m01() * v.x + this.m11() * v.y + this.m21() * v.z + this.m31() * v.w;
     const z = this.m02() * v.x + this.m12() * v.y + this.m22() * v.z + this.m32() * v.w;
     const w = this.m03() * v.x + this.m13() * v.y + this.m23() * v.z + this.m33() * v.w;
-    return new dot.Vector4( x, y, z, w );
+    return new Vector4( x, y, z, w );
   },
 
   timesTransposeVector3: function( v ) {
@@ -488,7 +488,7 @@ Matrix4.prototype = {
     const x = this.m00() * v.x + this.m10() * v.y + this.m20() * v.z;
     const y = this.m01() * v.y + this.m11() * v.y + this.m21() * v.z;
     const z = this.m02() * v.z + this.m12() * v.y + this.m22() * v.z;
-    return new dot.Vector3( x, y, z );
+    return new Vector3( x, y, z );
   },
 
   getDeterminant: function() {

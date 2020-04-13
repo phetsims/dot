@@ -22,7 +22,7 @@
  */
 
 import dot from './dot.js';
-import './Matrix.js';
+import Matrix from './Matrix.js';
 
 const ArrayType = window.Float64Array || Array;
 
@@ -126,7 +126,7 @@ EigenvalueDecomposition.prototype = {
     const d = this.d;
     const e = this.e;
 
-    const X = new dot.Matrix( n, n );
+    const X = new Matrix( n, n );
     const D = X.entries;
     for ( let i = 0; i < n; i++ ) {
       for ( let j = 0; j < n; j++ ) {
@@ -328,7 +328,7 @@ EigenvalueDecomposition.prototype = {
 
           g = d[ l ];
           p = ( d[ l + 1 ] - g ) / ( 2.0 * e[ l ] );
-          let r = dot.Matrix.hypot( p, 1.0 );
+          let r = Matrix.hypot( p, 1.0 );
           if ( p < 0 ) {
             r = -r;
           }
@@ -356,7 +356,7 @@ EigenvalueDecomposition.prototype = {
             s2 = s;
             g = c * e[ i ];
             h = c * p;
-            r = dot.Matrix.hypot( p, e[ i ] );
+            r = Matrix.hypot( p, e[ i ] );
             e[ i + 1 ] = s * r;
             s = e[ i ] / r;
             c = p / r;

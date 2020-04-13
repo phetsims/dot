@@ -7,7 +7,7 @@
  */
 
 import dot from './dot.js';
-import './Vector2.js';
+import Vector2 from './Vector2.js';
 
 // constants
 const EPSILON = Number.MIN_VALUE;
@@ -217,7 +217,7 @@ var Utils = {
     const a = p1.x * p2.y - p1.y * p2.x;
     const b = p3.x * p4.y - p3.y * p4.x;
 
-    return new dot.Vector2(
+    return new Vector2(
       ( a * x34 - x12 * b ) / denom,
       ( a * y34 - y12 * b ) / denom
     );
@@ -236,12 +236,12 @@ var Utils = {
     // TODO: Can we make scratch vectors here, avoiding the circular reference?
 
     // midpoints between p1-p2 and p2-p3
-    const p12 = new dot.Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
-    const p23 = new dot.Vector2( ( p2.x + p3.x ) / 2, ( p2.y + p3.y ) / 2 );
+    const p12 = new Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
+    const p23 = new Vector2( ( p2.x + p3.x ) / 2, ( p2.y + p3.y ) / 2 );
 
     // perpendicular points from the minpoints
-    const p12x = new dot.Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
-    const p23x = new dot.Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
+    const p12x = new Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
+    const p23x = new Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
 
     return Utils.lineLineIntersection( p12, p12x, p23, p23x );
   },
@@ -628,16 +628,16 @@ var Utils = {
 
     // Check if there is an exact endpoint overlap (and then return an exact answer).
     if ( ( x1 === x3 && y1 === y3 ) || ( x1 === x4 && y1 === y4 ) ) {
-      return new dot.Vector2( x1, y1 );
+      return new Vector2( x1, y1 );
     }
     else if ( ( x2 === x3 && y2 === y3 ) || ( x2 === x4 && y2 === y4 ) ) {
-      return new dot.Vector2( x2, y2 );
+      return new Vector2( x2, y2 );
     }
 
     // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
     const intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
     const intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
-    return new dot.Vector2( intersectionX, intersectionY );
+    return new Vector2( intersectionX, intersectionY );
   },
 
 
@@ -673,7 +673,7 @@ var Utils = {
     }
     else {
       // if 0<t<1, the projection point lies along the line joining a and b.
-      distanceSquared = point.distanceSquared( new dot.Vector2( a.x + t * ( b.x - a.x ), a.y + t * ( b.y - a.y ) ) );
+      distanceSquared = point.distanceSquared( new Vector2( a.x + t * ( b.x - a.x ), a.y + t * ( b.y - a.y ) ) );
     }
 
     return distanceSquared;
@@ -749,7 +749,7 @@ var Utils = {
    * @returns {Vector2}
    */
   centroidOfPolygon: function( vertices ) {
-    const centroid = new dot.Vector2( 0, 0 );
+    const centroid = new Vector2( 0, 0 );
 
     let area = 0;
     vertices.forEach( ( v0, i ) => {

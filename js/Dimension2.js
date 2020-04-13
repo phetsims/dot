@@ -7,7 +7,7 @@
  */
 
 import inherit from '../../phet-core/js/inherit.js';
-import './Bounds2.js';
+import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 
 /**
@@ -119,7 +119,7 @@ inherit( Object, Dimension2, {
   toBounds: function( x, y ) {
     x = x !== undefined ? x : 0;
     y = y !== undefined ? y : 0;
-    return new dot.Bounds2( x, y, this.width + x, this.height + y );
+    return new Bounds2( x, y, this.width + x, this.height + y );
   },
 
   /**

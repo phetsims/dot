@@ -8,9 +8,9 @@
 
 import Poolable from '../../phet-core/js/Poolable.js';
 import dot from './dot.js';
-import './Matrix4.js';
-import './Vector2.js';
-import './Vector3.js';
+import Matrix4 from './Matrix4.js';
+import Vector2 from './Vector2.js';
+import Vector3 from './Vector3.js';
 
 // Create an identity matrix
 function Matrix3( argumentsShouldNotExist ) {
@@ -140,13 +140,13 @@ Matrix3.prototype = {
 
   // the 2D translation, assuming multiplication with a homogeneous vector
   getTranslation: function() {
-    return new dot.Vector2( this.m02(), this.m12() );
+    return new Vector2( this.m02(), this.m12() );
   },
   get translation() { return this.getTranslation(); },
 
   // returns a vector that is equivalent to ( T(1,0).magnitude(), T(0,1).magnitude() ) where T is a relative transform
   getScaleVector: function() {
-    return new dot.Vector2(
+    return new Vector2(
       Math.sqrt( this.m00() * this.m00() + this.m10() * this.m10() ),
       Math.sqrt( this.m01() * this.m01() + this.m11() * this.m11() ) );
   },
@@ -159,7 +159,7 @@ Matrix3.prototype = {
   get rotation() { return this.getRotation(); },
 
   toMatrix4: function() {
-    return new dot.Matrix4(
+    return new Matrix4(
       this.m00(), this.m01(), this.m02(), 0,
       this.m10(), this.m11(), this.m12(), 0,
       this.m20(), this.m21(), this.m22(), 0,
@@ -167,7 +167,7 @@ Matrix3.prototype = {
   },
 
   toAffineMatrix4: function() {
-    return new dot.Matrix4(
+    return new Matrix4(
       this.m00(), this.m01(), 0, this.m02(),
       this.m10(), this.m11(), 0, this.m12(),
       0, 0, 1, 0,
@@ -424,27 +424,27 @@ Matrix3.prototype = {
   timesVector2: function( v ) {
     const x = this.m00() * v.x + this.m01() * v.y + this.m02();
     const y = this.m10() * v.x + this.m11() * v.y + this.m12();
-    return new dot.Vector2( x, y );
+    return new Vector2( x, y );
   },
 
   timesVector3: function( v ) {
     const x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
     const y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
     const z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
-    return new dot.Vector3( x, y, z );
+    return new Vector3( x, y, z );
   },
 
   timesTransposeVector2: function( v ) {
     const x = this.m00() * v.x + this.m10() * v.y;
     const y = this.m01() * v.x + this.m11() * v.y;
-    return new dot.Vector2( x, y );
+    return new Vector2( x, y );
   },
 
   // TODO: this operation seems to not work for transformDelta2, should be vetted
   timesRelativeVector2: function( v ) {
     const x = this.m00() * v.x + this.m01() * v.y;
     const y = this.m10() * v.y + this.m11() * v.y;
-    return new dot.Vector2( x, y );
+    return new Vector2( x, y );
   },
 
   /*---------------------------------------------------------------------------*
@@ -810,7 +810,7 @@ Matrix3.prototype = {
 
     // if "from" and "to" vectors are nearly parallel
     if ( f > 1.0 - epsilon ) {
-      let x = new dot.Vector3(
+      let x = new Vector3(
         ( start.x > 0.0 ) ? start.x : -start.x,
         ( start.y > 0.0 ) ? start.y : -start.y,
         ( start.z > 0.0 ) ? start.z : -start.z
@@ -818,18 +818,18 @@ Matrix3.prototype = {
 
       if ( x.x < x.y ) {
         if ( x.x < x.z ) {
-          x = dot.Vector3.X_UNIT;
+          x = Vector3.X_UNIT;
         }
         else {
-          x = dot.Vector3.Z_UNIT;
+          x = Vector3.Z_UNIT;
         }
       }
       else {
         if ( x.y < x.z ) {
-          x = dot.Vector3.Y_UNIT;
+          x = Vector3.Y_UNIT;
         }
         else {
-          x = dot.Vector3.Z_UNIT;
+          x = Vector3.Z_UNIT;
         }
       }
 

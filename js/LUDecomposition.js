@@ -7,7 +7,7 @@
  */
 
 import dot from './dot.js';
-import './Matrix.js';
+import Matrix from './Matrix.js';
 
 const ArrayType = window.Float64Array || Array;
 
@@ -105,7 +105,7 @@ LUDecomposition.prototype = {
   },
 
   getL: function() {
-    const result = new dot.Matrix( this.m, this.n );
+    const result = new Matrix( this.m, this.n );
     for ( let i = 0; i < this.m; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
         if ( i > j ) {
@@ -123,7 +123,7 @@ LUDecomposition.prototype = {
   },
 
   getU: function() {
-    const result = new dot.Matrix( this.n, this.n );
+    const result = new Matrix( this.n, this.n );
     for ( let i = 0; i < this.n; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
         if ( i <= j ) {

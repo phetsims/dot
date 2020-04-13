@@ -10,9 +10,9 @@
 
 import Poolable from '../../phet-core/js/Poolable.js';
 import dot from './dot.js';
-import './Matrix3.js';
+import Matrix3 from './Matrix3.js';
 import './Utils.js';
-import './Vector3.js';
+import Vector3 from './Vector3.js';
 
 /**
  * Quaternion defines hypercomplex numbers of the form {x, y, z, w}
@@ -128,11 +128,11 @@ Quaternion.prototype = {
    */
   timesVector3: function( v ) {
     if ( v.magnitude === 0 ) {
-      return new dot.Vector3( 0, 0, 0 );
+      return new Vector3( 0, 0, 0 );
     }
 
     // TODO: optimization?
-    return new dot.Vector3(
+    return new Vector3(
       this.w * this.w * v.x + 2 * this.y * this.w * v.z - 2 * this.z * this.w * v.y + this.x * this.x * v.x + 2 * this.y * this.x * v.y + 2 * this.z * this.x * v.z - this.z * this.z * v.x - this.y * this.y * v.x,
       2 * this.x * this.y * v.x + this.y * this.y * v.y + 2 * this.z * this.y * v.z + 2 * this.w * this.z * v.x - this.z * this.z * v.y + this.w * this.w * v.y - 2 * this.x * this.w * v.z - this.x * this.x * v.y,
       2 * this.x * this.z * v.x + 2 * this.y * this.z * v.y + this.z * this.z * v.z - 2 * this.w * this.y * v.x - this.y * this.y * v.z + 2 * this.w * this.x * v.y - this.x * this.x * v.z + this.w * this.w * v.z
@@ -210,7 +210,7 @@ Quaternion.prototype = {
     const zz = this.z * this.z * flip;
     const zw = this.w * this.z * flip;
 
-    return dot.Matrix3.dirtyFromPool().columnMajor(
+    return Matrix3.dirtyFromPool().columnMajor(
       1 - ( yy + zz ),
       ( xy + zw ),
       ( xz - yw ),
@@ -325,7 +325,7 @@ Quaternion.fromRotationMatrix = function( matrix ) {
  * @returns {Quaternion} A quaternion s.t. Q * A = B
  */
 Quaternion.getRotationQuaternion = function( a, b ) {
-  return Quaternion.fromRotationMatrix( dot.Matrix3.rotateAToB( a, b ) );
+  return Quaternion.fromRotationMatrix( Matrix3.rotateAToB( a, b ) );
 };
 
 /**

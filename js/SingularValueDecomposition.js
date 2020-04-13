@@ -7,7 +7,7 @@
  */
 
 import dot from './dot.js';
-import './Matrix.js';
+import Matrix from './Matrix.js';
 
 const ArrayType = window.Float64Array || Array;
 
@@ -56,7 +56,7 @@ function SingularValueDecomposition( matrix ) {
   let cs;
   let sn;
 
-  const hypot = dot.Matrix.hypot;
+  const hypot = Matrix.hypot;
 
   // Reduce A to bidiagonal form, storing the diagonal elements
   // in s and the super-diagonal elements in e.
@@ -476,11 +476,11 @@ SingularValueDecomposition.prototype = {
   constructor: SingularValueDecomposition,
 
   getU: function() {
-    return new dot.Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is ArrayType
+    return new Matrix( this.m, Math.min( this.m + 1, this.n ), this.U, true ); // the "fast" flag added, since U is ArrayType
   },
 
   getV: function() {
-    return new dot.Matrix( this.n, this.n, this.V, true );
+    return new Matrix( this.n, this.n, this.V, true );
   },
 
   getSingularValues: function() {
@@ -488,7 +488,7 @@ SingularValueDecomposition.prototype = {
   },
 
   getS: function() {
-    const result = new dot.Matrix( this.n, this.n );
+    const result = new Matrix( this.n, this.n );
     for ( let i = 0; i < this.n; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
         result.entries[ result.index( i, j ) ] = 0.0;
@@ -532,7 +532,7 @@ SingularValueDecomposition.prototype = {
  */
 SingularValueDecomposition.pseudoinverse = function( matrix ) {
   const svd = new SingularValueDecomposition( matrix );
-  const sigmaPseudoinverse = dot.Matrix.diagonalMatrix( svd.getSingularValues().map( function( value ) {
+  const sigmaPseudoinverse = Matrix.diagonalMatrix( svd.getSingularValues().map( function( value ) {
     if ( Math.abs( value ) < 1e-300 ) {
       return 0;
     }

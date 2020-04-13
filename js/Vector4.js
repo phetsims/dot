@@ -9,8 +9,8 @@
 import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import dot from './dot.js';
-import './Utils.js';
-import './Vector3.js';
+import Utils from './Utils.js';
+import Vector3 from './Vector3.js';
 
 /**
  * Creates a 4-dimensional vector with the specified X, Y, Z and W values.
@@ -479,7 +479,7 @@ inherit( Object, Vector4, {
    * @returns {Vector3}
    */
   toVector3: function() {
-    return new dot.Vector3( this.x, this.y, this.z );
+    return new Vector3( this.x, this.y, this.z );
   },
 
   /*---------------------------------------------------------------------------*
@@ -772,10 +772,7 @@ inherit( Object, Vector4, {
    * @returns {Vector4}
    */
   roundSymmetric: function() {
-    return this.setXYZW( dot.Utils.roundSymmetric( this.x ),
-      dot.Utils.roundSymmetric( this.y ),
-      dot.Utils.roundSymmetric( this.z ),
-      dot.Utils.roundSymmetric( this.w ) );
+    return this.setXYZW( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ), Utils.roundSymmetric( this.w ) );
   }
 } );
 
