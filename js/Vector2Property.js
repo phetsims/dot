@@ -8,10 +8,14 @@
 
 import Property from '../../axon/js/Property.js';
 import PropertyIO from '../../axon/js/PropertyIO.js';
+import validate from '../../axon/js/validate.js';
 import merge from '../../phet-core/js/merge.js';
+import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 import Vector2 from './Vector2.js';
 import Vector2IO from './Vector2IO.js';
+
+const BOUNDS_VALIDATOR = { isValidValue: value => ( value instanceof Bounds2 || value === null ) };
 
 class Vector2Property extends Property {
 
@@ -30,10 +34,22 @@ class Vector2Property extends Property {
     // Fill in superclass options that are controlled by Vector2Property.
     options = merge( {
       valueType: Vector2,
+
+      // {Bounds2|null} - Confine the valid area of acceptable Vector2 values to within a Bounds2.
+      validBounds: null,
+
+      // phet-io
       phetioType: PropertyIO( Vector2IO )
     }, options );
 
     super( initialValue, options );
+
+    // @public (read-only) {Bounds2|null}
+    this.validBounds = options.validBounds;
+
+    validate( this.validBounds, BOUNDS_VALIDATOR );
+
+    assert && this.validBounds && this.link( newValue => assert( this.validBounds.containsPoint( newValue ) ) );
   }
 }
 
