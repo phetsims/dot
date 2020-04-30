@@ -30,7 +30,7 @@ function RangeWithValue( min, max, defaultValue ) {
 
 dot.register( 'RangeWithValue', RangeWithValue );
 
-export default inherit( Range, RangeWithValue, {
+inherit( Range, RangeWithValue, {
 
   /**
    * Getter for defaultValue
@@ -102,3 +102,5 @@ export default inherit( Range, RangeWithValue, {
            Range.prototype.equals.call( this, object );
   }
 } );
+
+export default RangeWithValue;

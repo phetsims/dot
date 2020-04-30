@@ -38,7 +38,7 @@ function RunningAverage( windowSize ) {
 
 dot.register( 'RunningAverage', RunningAverage );
 
-export default inherit( Object, RunningAverage, {
+inherit( Object, RunningAverage, {
 
   /**
    * Clear the running average.
@@ -102,3 +102,5 @@ export default inherit( Object, RunningAverage, {
     return this.getRunningAverage();
   }
 } );
+
+export default RunningAverage;

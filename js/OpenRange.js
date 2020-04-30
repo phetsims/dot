@@ -39,7 +39,7 @@ function OpenRange( min, max, options ) {
 
 dot.register( 'OpenRange', OpenRange );
 
-export default inherit( Range, OpenRange, {
+inherit( Range, OpenRange, {
 
   /**
    * OpenRange override for setMin.
@@ -141,3 +141,5 @@ export default inherit( Range, OpenRange, {
            this.openMax === other.openMax;
   }
 } );
+
+export default OpenRange;
