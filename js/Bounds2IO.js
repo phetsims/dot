@@ -19,6 +19,7 @@ class Bounds2IO extends ObjectIO {
    * @param {Bounds2} bounds2
    * @returns {Object}
    * @override
+   * @public
    */
   static toStateObject( bounds2 ) {
     validate( bounds2, this.validator );
@@ -36,6 +37,7 @@ class Bounds2IO extends ObjectIO {
    * @param {Object} stateObject
    * @returns {Bounds2}
    * @override
+   * @public
    */
   static fromStateObject( stateObject ) {
     return new Bounds2(

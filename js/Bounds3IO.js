@@ -20,6 +20,7 @@ class Bounds3IO extends ObjectIO {
    * @param {Bounds3} bounds3
    * @returns {Object}
    * @override
+   * @public
    */
   static toStateObject( bounds3 ) {
     validate( bounds3, this.validator );
@@ -39,6 +40,7 @@ class Bounds3IO extends ObjectIO {
    * @param {Object} stateObject
    * @returns {Bounds3}
    * @override
+   * @public
    */
   static fromStateObject( stateObject ) {
     return new Bounds3(

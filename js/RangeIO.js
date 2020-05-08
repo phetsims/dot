@@ -17,6 +17,8 @@ class RangeIO extends ObjectIO {
    * Encodes a Range instance to a state.
    * @param {Range} range
    * @returns {Object}
+   * @override
+   * @public
    */
   static toStateObject( range ) {
     validate( range, this.validator );
@@ -27,6 +29,8 @@ class RangeIO extends ObjectIO {
    * Decodes a state into a Range.
    * @param {Object} stateObject
    * @returns {Range}
+   * @override
+   * @public
    */
   static fromStateObject( stateObject ) {
     return new Range( stateObject.min, stateObject.max );

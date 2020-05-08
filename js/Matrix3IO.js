@@ -17,6 +17,8 @@ class Matrix3IO extends ObjectIO {
    * Encodes a Matrix3 instance to a state.
    * @param {Matrix3} matrix3
    * @returns {Object}
+   * @override
+   * @public
    */
   static toStateObject( matrix3 ) {
     validate( matrix3, this.validator );
@@ -27,6 +29,8 @@ class Matrix3IO extends ObjectIO {
    * Decodes a state into a Matrix3.
    * @param {Object} stateObject
    * @returns {Matrix3}
+   * @override
+   * @public
    */
   static fromStateObject( stateObject ) {
     return Matrix3.fromStateObject( stateObject );

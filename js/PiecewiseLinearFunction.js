@@ -22,6 +22,7 @@ class PiecewiseLinearFunction {
     this.array = array;
   }
 
+  // @public
   evaluate( x ) {
     return PiecewiseLinearFunction.evaluate( this.array, x );
   }
@@ -31,6 +32,7 @@ class PiecewiseLinearFunction {
    * @param {number[]} array - in the form x0,y0, x1,y1, x2,y2, etc.  Points do not have to be ordered from low to high x
    *                         - points cannot have a different y value for the same x value (not checked)
    * @param {number} x
+   * @public
    */
   static evaluate( array, x ) {
 
