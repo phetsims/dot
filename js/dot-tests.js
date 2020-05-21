@@ -22,6 +22,7 @@ import './Transform3Tests.js';
 import './UtilsTests.js';
 import './Vector2PropertyTests.js';
 import './Vector2Tests.js';
+import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
 
 // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
-QUnit.start();
+qunitStart();
