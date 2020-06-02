@@ -750,6 +750,21 @@ inherit( Object, Vector3, {
   },
 
   /**
+   * Sets our value to the Euclidean 3-dimensional cross-product of this vector by the passed-in vector.
+   * @public
+   *
+   * @param {Vector3} v
+   * @returns {Vector3}
+   */
+  setCross( v ) {
+    return this.setXYZ(
+      this.y * v.z - this.z * v.y,
+      this.z * v.x - this.x * v.z,
+      this.x * v.y - this.y * v.x
+    );
+  },
+
+  /**
    * Normalizes this vector (rescales to where the magnitude is 1), changing this vector.
    * @public
    *
