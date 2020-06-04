@@ -530,6 +530,33 @@ Matrix4.prototype = {
     this.rowMajor = function() {
       throw new Error( 'Cannot modify immutable matrix' );
     };
+  },
+
+  /**
+   * Copies the entries of this matrix over to an arbitrary array (typed or normal).
+   * @public
+   *
+   * @param {Array|Float32Array|Float64Array} array
+   * @returns {Array|Float32Array|Float64Array} - Returned for chaining
+   */
+  copyToArray: function( array ) {
+    array[ 0 ] = this.m00();
+    array[ 1 ] = this.m10();
+    array[ 2 ] = this.m20();
+    array[ 3 ] = this.m30();
+    array[ 4 ] = this.m01();
+    array[ 5 ] = this.m11();
+    array[ 6 ] = this.m21();
+    array[ 7 ] = this.m31();
+    array[ 8 ] = this.m02();
+    array[ 9 ] = this.m12();
+    array[ 10 ] = this.m22();
+    array[ 11 ] = this.m32();
+    array[ 12 ] = this.m03();
+    array[ 13 ] = this.m13();
+    array[ 14 ] = this.m23();
+    array[ 15 ] = this.m33();
+    return array;
   }
 };
 
