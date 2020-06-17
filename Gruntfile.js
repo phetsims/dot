@@ -1,5 +1,7 @@
 // Copyright 2013-2016, University of Colorado Boulder
 
+/* eslint-env node */
+
 const esprima = require( 'esprima' );
 const jsBeautify = require( 'js-beautify' ); // eslint-disable-line require-statement-match
 const extractDocumentation = require( '../chipper/js/common/extractDocumentation' );
