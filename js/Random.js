@@ -12,6 +12,7 @@
 import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import dot from './dot.js';
+import Range from './Range.js';
 import Utils from './Utils.js';
 
 /**
@@ -158,6 +159,25 @@ inherit( Object, Random, {
    */
   nextGaussian: function() {
     return Utils.boxMullerTransform( 0, 1, this );
+  },
+
+  /**
+   * Gets the next random double in a Range.
+   * For min < max, the return value is [min,max), between min (inclusive) and max (exclusive).
+   * For min === max, the return value is min.
+   * @param {Range} range
+   * @returns {number}
+   * @public
+   */
+  nextInRange( range ) {
+    assert && assert( range instanceof Range, 'invalid range' );
+    if ( range.min < range.max ) {
+      return phet.joist.random.nextDoubleBetween( range.min, range.max );
+    }
+    else {
+      // because random.nextDoubleBetween requires min < max
+      return range.min;
+    }
   }
 } );
 
