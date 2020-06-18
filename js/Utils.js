@@ -562,15 +562,14 @@ var Utils = {
   },
 
   /**
-   * Returns whether the input is a number that is an integer (no fractional part).
+   * Determines whether a value is an integer.
    * @public
    *
-   * @param {number} n
+   * @param {*} value
    * @returns {boolean}
    */
-  isInteger: function( n ) {
-    assert && assert( typeof n === 'number', 'isInteger requires its argument to be a number: ' + n );
-    return n % 1 === 0;
+  isInteger: function( value ) {
+    return ( typeof value === 'number' ) && ( value % 1 === 0 );
   },
 
   /**
