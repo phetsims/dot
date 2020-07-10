@@ -769,6 +769,8 @@ var Utils = {
   },
 
   /**
+   * @deprecated - use Math.sign, see https://github.com/phetsims/tasks/issues/1037.
+   *
    * Polyfill for Math.sign from MDN, see
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/sign
    * @public
