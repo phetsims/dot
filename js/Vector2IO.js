@@ -21,7 +21,7 @@ class Vector2IO extends ObjectIO {
    * @public
    */
   static toStateObject( vector2 ) {
-    validate( vector2, this.validator );
+    validate( vector2, Vector2IO.validator );
     return vector2.toStateObject();
   }
 
