@@ -2,6 +2,7 @@
 
 /**
  * Random number generator with an optional seed.
+ * It uses seedrandom.js, a monkey patch for Math, see https://github.com/davidbau/seedrandom.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Aaron Davis (PhET Interactive Simulations)
@@ -41,6 +42,12 @@ function Random( options ) {
     assert && assert( false, 'cannot specify seed and staticSeed, use one or the other' );
   }
 
+  // @private {number|null} initialized via setSeed below
+  this.seed = null;
+
+  // @private {function:number|null} initialized via setSeed below
+  this.seedrandom = null;
+
   const seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
   this.setSeed( seed );
 }
@@ -49,13 +56,24 @@ inherit( Object, Random, {
 
   /**
    * Sets the seed of the random number generator. Setting it to null reverts the random generator to Math.random()
+   * @public
    * @param {number|null} seed
    */
   setSeed: function( seed ) {
     this.seed = seed;
 
     // If seed is provided, create a local random number generator without altering Math.random.
-    this.seedrandom = this.seed !== null ? new Math.seedrandom( this.seed + '' ) : null;
+    // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
+    this.seedrandom = ( this.seed !== null ) ? new Math.seedrandom( this.seed + '' ) : null;
+  },
+
+  /**
+   * Gets the seed.
+   * @public
+   * @returns {number|null}
+   */
+  getSeed() {
+    return this.seed;
   },
 
   /**
@@ -81,7 +99,7 @@ inherit( Object, Random, {
 
   /**
    * Randomly select a random integer between min and max (inclusive).
-   *
+    *@public
    * @param {number} min - must be an integer
    * @param {number} max - must be an integer
    * @returns {number} an integer between min and max, inclusive
@@ -98,6 +116,7 @@ inherit( Object, Random, {
 
   /**
    * Randomly select one element from the given array.
+   * @public
    * @param {Object[]} array - the array from which one element will be selected, must have at least one element
    * @returns {Object} - the selected element from the array
    */
@@ -110,7 +129,7 @@ inherit( Object, Random, {
   /**
    * Creates an array of shuffled values, using a version of the Fisher-Yates shuffle.  Adapted from lodash-2.4.1 by
    * Sam Reid on Aug 16, 2016, See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
-   *
+   * @public
    * @param {Array} array - the array which will be shuffled
    * @returns {Array} a new array with all the same elements in the passed-in array, in randomized order.
    */
@@ -140,6 +159,7 @@ inherit( Object, Random, {
 
   /**
    * Randomly selects a double in the range [min,max).
+   * @public
    * @param {number} min
    * @param {number} max
    * @returns {number}
@@ -165,9 +185,9 @@ inherit( Object, Random, {
    * Gets the next random double in a Range.
    * For min < max, the return value is [min,max), between min (inclusive) and max (exclusive).
    * For min === max, the return value is min.
+   * @public
    * @param {Range} range
    * @returns {number}
-   * @public
    */
   nextDoubleInRange( range ) {
     assert && assert( range instanceof Range, 'invalid range' );
