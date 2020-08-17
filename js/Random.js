@@ -192,7 +192,7 @@ inherit( Object, Random, {
   nextDoubleInRange( range ) {
     assert && assert( range instanceof Range, 'invalid range' );
     if ( range.min < range.max ) {
-      return phet.joist.random.nextDoubleBetween( range.min, range.max );
+      return this.nextDoubleBetween( range.min, range.max );
     }
     else {
       // because random.nextDoubleBetween requires min < max
