@@ -40,25 +40,11 @@ class Random {
     }
 
     // @private {number|null} initialized via setSeed below
-    this.seed = null;
-
-    // @private {function:number|null} initialized via setSeed below
-    this.seedrandom = null;
-
-    const seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
-    this.setSeed( seed );
-  }
-
-  /**
-   * Sets the seed of the random number generator. Setting it to null reverts the random generator to Math.random()
-   * @public
-   * @param {number|null} seed
-   */
-  setSeed( seed ) {
-    this.seed = seed;
+    this.seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
 
     // If seed is provided, create a local random number generator without altering Math.random.
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
+    // @private {function:number|null} initialized via setSeed below
     this.seedrandom = ( this.seed !== null ) ? new Math.seedrandom( this.seed + '' ) : null;
   }
 
