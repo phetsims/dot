@@ -98,7 +98,7 @@ class Random {
 
   /**
    * Randomly select a random integer between min and max (inclusive).
-   *@public
+   * @public
    * @param {number} min - must be an integer
    * @param {number} max - must be an integer
    * @returns {number} an integer between min and max, inclusive
@@ -138,7 +138,7 @@ class Random {
     let index = -1;
     const result = new Array( array.length );
 
-    _.forEach( array, function( value ) {
+    _.forEach( array, value => {
       const rand = self.nextIntBetween( 0, ++index );
       result[ index ] = result[ rand ];
       result[ rand ] = value;
