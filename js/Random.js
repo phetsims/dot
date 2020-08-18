@@ -13,6 +13,7 @@
  * @author Mohamed Safi
  */
 
+import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import merge from '../../phet-core/js/merge.js';
 import dot from './dot.js';
 import Range from './Range.js';
@@ -24,6 +25,10 @@ class Random {
    * @param {Object} [options]
    */
   constructor( options ) {
+
+    // If staticSeed and seed are both specified, there will be an assertion error.
+    assert && assertMutuallyExclusiveOptions( options, [ 'staticSeed' ], [ 'seed' ] );
+
     options = merge( {
 
       // {number|null} seed for the random number generator.  When seed is null, Math.random() is used.
@@ -33,11 +38,6 @@ class Random {
       // in initialize-globals.js and can be overridden by PhET-iO for reproducible playback (see PhetioEngineIO.setRandomSeed).
       staticSeed: false
     }, options );
-
-    // If staticSeed and seed are both specified, there will be an assertion error.
-    if ( options.seed !== null && options.staticSeed ) {
-      assert && assert( false, 'cannot specify seed and staticSeed, use one or the other' );
-    }
 
     // @private {number|null} initialized via setSeed below
     this.seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
