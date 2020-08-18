@@ -33,7 +33,7 @@ class Random {
       seed: null,
 
       // {boolean} if true, use the seed specified statically in `phet.chipper.randomSeed`.  This value is declared
-      // in initialize-globals.js and can be overriden by PhET-iO for reproducible playback (see PhetioEngineIO.setRandomSeed).
+      // in initialize-globals.js and can be overridden by PhET-iO for reproducible playback (see PhetioEngineIO.setRandomSeed).
       staticSeed: false
 
     }, options );
