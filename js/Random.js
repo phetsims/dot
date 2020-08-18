@@ -1,8 +1,11 @@
 // Copyright 2015-2020, University of Colorado Boulder
 
 /**
- * Random number generator with an optional seed.
- * It uses seedrandom.js, a monkey patch for Math, see https://github.com/davidbau/seedrandom.
+ * Random number generator with an optional seed.  It uses seedrandom.js, a monkey patch for Math, see
+ * https://github.com/davidbau/seedrandom.
+ *
+ * If you are developing a PhET Simulation, you should probably use the global `phet.joist.random` because it
+ * provides built-in support for phet-io seeding and a check that it isn't used before the seed has been set.
  *
  * @author John Blanco (PhET Interactive Simulations)
  * @author Aaron Davis (PhET Interactive Simulations)
@@ -18,13 +21,7 @@ import Utils from './Utils.js';
 class Random {
 
   /**
-   * Construct a Random instance.
-   *
-   * If you are developing a PhET Simulation, you should probably use the global `phet.joist.random` because it
-   * provides built-in support for phet-io seeding and a check that it isn't used before the seed has been set.
-   *
    * @param {Object} [options]
-   * @constructor
    */
   constructor( options ) {
     options = merge( {
@@ -35,7 +32,6 @@ class Random {
       // {boolean} if true, use the seed specified statically in `phet.chipper.randomSeed`.  This value is declared
       // in initialize-globals.js and can be overridden by PhET-iO for reproducible playback (see PhetioEngineIO.setRandomSeed).
       staticSeed: false
-
     }, options );
 
     // If staticSeed and seed are both specified, there will be an assertion error.
