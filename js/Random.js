@@ -46,6 +46,19 @@ class Random {
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
     // @private {function:number|null} initialized via setSeed below
     this.seedrandom = ( this.seed !== null ) ? new Math.seedrandom( this.seed + '' ) : null;
+
+    // @public (read-only) - the number of times `nextDouble` is called
+    this.numberOfCalls = 0;
+
+    Random.allRandomInstances.add( this );
+  }
+
+  /**
+   * Clears out this instance from all of the Random instances.
+   * @public
+   */
+  dispose() {
+    Random.allRandomInstances.delete( this );
   }
 
   /**
@@ -135,6 +148,7 @@ class Random {
    * @returns {number} - the random number
    */
   nextDouble() {
+    this.numberOfCalls++;
     return this.seed === null ? Math.random() : this.seedrandom(); // eslint-disable-line bad-sim-text
   }
 
@@ -181,6 +195,8 @@ class Random {
     }
   }
 }
+
+Random.allRandomInstances = new Set();
 
 dot.register( 'Random', Random );
 
