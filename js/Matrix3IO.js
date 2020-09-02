@@ -1,7 +1,7 @@
 // Copyright 2019-2020, University of Colorado Boulder
 
 /**
- * IO type for Matrix3
+ * IO Type for Matrix3
  *
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */

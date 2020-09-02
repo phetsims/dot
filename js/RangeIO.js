@@ -1,7 +1,7 @@
 // Copyright 2017-2020, University of Colorado Boulder
 
 /**
- * IO type for Range.
+ * IO Type for Range.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
