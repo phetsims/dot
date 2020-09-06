@@ -39,7 +39,7 @@ class Vector2IO extends ObjectIO {
 Vector2IO.documentation = 'A numerical object with x and y properties, like {x:3,y:4}';
 Vector2IO.validator = { valueType: Vector2 };
 Vector2IO.typeName = 'Vector2IO';
-ObjectIO.validateSubtype( Vector2IO );
+ObjectIO.validateIOType( Vector2IO );
 
 dot.register( 'Vector2IO', Vector2IO );
 export default Vector2IO;

@@ -16,7 +16,7 @@ class RandomIO extends ObjectIO {}
 RandomIO.documentation = 'Generates pseudorandom values';
 RandomIO.validator = { valueType: Random };
 RandomIO.typeName = 'RandomIO';
-ObjectIO.validateSubtype( RandomIO );
+ObjectIO.validateIOType( RandomIO );
 
 dot.register( 'RandomIO', RandomIO );
 export default RandomIO;

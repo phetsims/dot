@@ -40,7 +40,7 @@ class RangeIO extends ObjectIO {
 RangeIO.documentation = 'A range with "min" and a "max" members.';
 RangeIO.validator = { valueType: Range };
 RangeIO.typeName = 'RangeIO';
-ObjectIO.validateSubtype( RangeIO );
+ObjectIO.validateIOType( RangeIO );
 
 dot.register( 'RangeIO', RangeIO );
 export default RangeIO;

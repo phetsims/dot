@@ -40,7 +40,7 @@ class Matrix3IO extends ObjectIO {
 Matrix3IO.documentation = 'A 3x3 matrix often used for holding transform data.';
 Matrix3IO.validator = { valueType: Matrix3 };
 Matrix3IO.typeName = 'Matrix3IO';
-ObjectIO.validateSubtype( Matrix3IO );
+ObjectIO.validateIOType( Matrix3IO );
 
 dot.register( 'Matrix3IO', Matrix3IO );
 export default Matrix3IO;

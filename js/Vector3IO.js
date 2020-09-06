@@ -39,7 +39,7 @@ class Vector3IO extends ObjectIO {
 Vector3IO.documentation = 'Basic 3-dimensional vector, represented as (x,y,z)';
 Vector3IO.validator = { valueType: Vector3 };
 Vector3IO.typeName = 'Vector3IO';
-ObjectIO.validateSubtype( Vector3IO );
+ObjectIO.validateIOType( Vector3IO );
 
 dot.register( 'Vector3IO', Vector3IO );
 export default Vector3IO;

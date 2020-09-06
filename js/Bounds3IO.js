@@ -53,7 +53,7 @@ class Bounds3IO extends ObjectIO {
 Bounds3IO.documentation = 'a 3-dimensional bounds (bounding box)';
 Bounds3IO.validator = { valueType: Bounds3 };
 Bounds3IO.typeName = 'Bounds3IO';
-ObjectIO.validateSubtype( Bounds3IO );
+ObjectIO.validateIOType( Bounds3IO );
 
 dot.register( 'Bounds3IO', Bounds3IO );
 export default Bounds3IO;

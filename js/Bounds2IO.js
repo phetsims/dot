@@ -50,7 +50,7 @@ class Bounds2IO extends ObjectIO {
 Bounds2IO.documentation = 'a 2-dimensional bounds rectangle';
 Bounds2IO.validator = { valueType: Bounds2 };
 Bounds2IO.typeName = 'Bounds2IO';
-ObjectIO.validateSubtype( Bounds2IO );
+ObjectIO.validateIOType( Bounds2IO );
 
 dot.register( 'Bounds2IO', Bounds2IO );
 export default Bounds2IO;
