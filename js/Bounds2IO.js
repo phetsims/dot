@@ -14,36 +14,8 @@ import dot from './dot.js';
 const Bounds2IO = new IOType( 'Bounds2IO', {
   valueType: Bounds2,
   documentation: 'a 2-dimensional bounds rectangle',
-  /**
-   * Encodes a Bounds2 instance to a state.
-   * @param {Bounds2} bounds2
-   * @returns {Object}
-   * @override
-   * @public
-   */
-  toStateObject( bounds2 ) {
-    return {
-      minX: bounds2.minX,
-      minY: bounds2.minY,
-
-      maxX: bounds2.maxX,
-      maxY: bounds2.maxY
-    };
-  },
-
-  /**
-   * Decodes a state into a Bounds2.
-   * @param {Object} stateObject
-   * @returns {Bounds2}
-   * @override
-   * @public
-   */
-  fromStateObject( stateObject ) {
-    return new Bounds2(
-      stateObject.minX, stateObject.minY,
-      stateObject.maxX, stateObject.maxY
-    );
-  }
+  toStateObject: bounds2 => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
+  fromStateObject: stateObject => new Bounds2( stateObject.minX, stateObject.minY, stateObject.maxX, stateObject.maxY )
 } );
 
 dot.register( 'Bounds2IO', Bounds2IO );

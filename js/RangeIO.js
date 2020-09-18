@@ -13,12 +13,8 @@ import Range from './Range.js';
 const RangeIO = new IOType( 'RangeIO', {
   valueType: Range,
   documentation: 'A range with "min" and a "max" members.',
-  toStateObject( range ) {
-    return { min: range.min, max: range.max };
-  },
-  fromStateObject( stateObject ) {
-    return new Range( stateObject.min, stateObject.max );
-  }
+  toStateObject: range => ( { min: range.min, max: range.max } ),
+  fromStateObject: stateObject => new Range( stateObject.min, stateObject.max )
 } );
 
 dot.register( 'RangeIO', RangeIO );

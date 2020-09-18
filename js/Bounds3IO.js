@@ -14,23 +14,14 @@ import dot from './dot.js';
 const Bounds3IO = new IOType( 'Bounds3IO', {
   valueType: Bounds3,
   documentation: 'a 3-dimensional bounds (bounding box)',
-  toStateObject( bounds3 ) {
-    return {
-      minX: bounds3.minX,
-      minY: bounds3.minY,
-      minZ: bounds3.minZ,
-
-      maxX: bounds3.maxX,
-      maxY: bounds3.maxY,
-      maxZ: bounds3.maxZ
-    };
-  },
-  fromStateObject( stateObject ) {
-    return new Bounds3(
-      stateObject.minX, stateObject.minY, stateObject.minZ,
-      stateObject.maxX, stateObject.maxY, stateObject.maxZ
-    );
-  }
+  toStateObject: bounds3 => ( {
+    minX: bounds3.minX, minY: bounds3.minY, minZ: bounds3.minZ,
+    maxX: bounds3.maxX, maxY: bounds3.maxY, maxZ: bounds3.maxZ
+  } ),
+  fromStateObject: stateObject => new Bounds3(
+    stateObject.minX, stateObject.minY, stateObject.minZ,
+    stateObject.maxX, stateObject.maxY, stateObject.maxZ
+  )
 } );
 
 dot.register( 'Bounds3IO', Bounds3IO );

@@ -14,7 +14,7 @@ import Vector2 from './Vector2.js';
 const Vector2IO = new IOType( 'Vector2IO', {
   valueType: Vector2,
   documentation: 'A numerical object with x and y properties, like {x:3,y:4}',
-  toStateObject: coreObject => coreObject.toStateObject(),
+  toStateObject: vector2 => vector2.toStateObject(),
   fromStateObject: Vector2.fromStateObject
 } );
 
