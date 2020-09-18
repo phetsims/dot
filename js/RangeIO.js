@@ -6,41 +6,20 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import validate from '../../axon/js/validate.js';
-import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Range from './Range.js';
 
-class RangeIO extends ObjectIO {
-
-  /**
-   * Encodes a Range instance to a state.
-   * @param {Range} range
-   * @returns {Object}
-   * @override
-   * @public
-   */
-  static toStateObject( range ) {
-    validate( range, this.validator );
+const RangeIO = new IOType( 'RangeIO', {
+  valueType: Range,
+  documentation: 'A range with "min" and a "max" members.',
+  toStateObject( range ) {
     return { min: range.min, max: range.max };
-  }
-
-  /**
-   * Decodes a state into a Range.
-   * @param {Object} stateObject
-   * @returns {Range}
-   * @override
-   * @public
-   */
-  static fromStateObject( stateObject ) {
+  },
+  fromStateObject( stateObject ) {
     return new Range( stateObject.min, stateObject.max );
   }
-}
-
-RangeIO.documentation = 'A range with "min" and a "max" members.';
-RangeIO.validator = { valueType: Range };
-RangeIO.typeName = 'RangeIO';
-ObjectIO.validateIOType( RangeIO );
+} );
 
 dot.register( 'RangeIO', RangeIO );
 export default RangeIO;

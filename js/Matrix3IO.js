@@ -6,41 +6,16 @@
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import validate from '../../axon/js/validate.js';
-import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
 
-class Matrix3IO extends ObjectIO {
-
-  /**
-   * Encodes a Matrix3 instance to a state.
-   * @param {Matrix3} matrix3
-   * @returns {Object}
-   * @override
-   * @public
-   */
-  static toStateObject( matrix3 ) {
-    validate( matrix3, this.validator );
-    return Matrix3.toStateObject( matrix3 );
-  }
-
-  /**
-   * Decodes a state into a Matrix3.
-   * @param {Object} stateObject
-   * @returns {Matrix3}
-   * @override
-   * @public
-   */
-  static fromStateObject( stateObject ) {
-    return Matrix3.fromStateObject( stateObject );
-  }
-}
-
-Matrix3IO.documentation = 'A 3x3 matrix often used for holding transform data.';
-Matrix3IO.validator = { valueType: Matrix3 };
-Matrix3IO.typeName = 'Matrix3IO';
-ObjectIO.validateIOType( Matrix3IO );
+const Matrix3IO = new IOType( 'Matrix3IO', {
+  valueType: Matrix3,
+  documentation: 'A 3x3 matrix often used for holding transform data.',
+  toStateObject: matrix3 => Matrix3.toStateObject( matrix3 ),
+  fromStateObject: Matrix3.fromStateObject
+} );
 
 dot.register( 'Matrix3IO', Matrix3IO );
 export default Matrix3IO;

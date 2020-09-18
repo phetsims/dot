@@ -7,16 +7,14 @@
  * @author Andrew Adare (PhET Interactive Simulations)
  */
 
-import ObjectIO from '../../tandem/js/types/ObjectIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Random from './Random.js';
 
-class RandomIO extends ObjectIO {}
-
-RandomIO.documentation = 'Generates pseudorandom values';
-RandomIO.validator = { valueType: Random };
-RandomIO.typeName = 'RandomIO';
-ObjectIO.validateIOType( RandomIO );
+const RandomIO = new IOType( 'RandomIO', {
+  valueType: Random,
+  documentation: 'Generates pseudorandom values'
+} );
 
 dot.register( 'RandomIO', RandomIO );
 export default RandomIO;
