@@ -8,6 +8,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 
 /**
@@ -213,5 +214,12 @@ Range.prototype = {
     throw new Error( 'defaultValue is undefined, did you mean to use RangeWithValue?' );
   }
 };
+
+Range.RangeIO = new IOType( 'RangeIO', {
+  valueType: Range,
+  documentation: 'A range with "min" and a "max" members.',
+  toStateObject: range => ( { min: range.min, max: range.max } ),
+  fromStateObject: stateObject => new Range( stateObject.min, stateObject.max )
+} );
 
 export default Range;
