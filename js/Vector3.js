@@ -8,6 +8,7 @@
 
 import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
@@ -874,5 +875,12 @@ Vector3.ZERO = assert ? new Immutable( 0, 0, 0 ) : new Vector3( 0, 0, 0 );
 Vector3.X_UNIT = assert ? new Immutable( 1, 0, 0 ) : new Vector3( 1, 0, 0 );
 Vector3.Y_UNIT = assert ? new Immutable( 0, 1, 0 ) : new Vector3( 0, 1, 0 );
 Vector3.Z_UNIT = assert ? new Immutable( 0, 0, 1 ) : new Vector3( 0, 0, 1 );
+
+Vector3.Vector3IO = new IOType( 'Vector3IO', {
+  valueType: Vector3,
+  documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
+  toStateObject: vector3 => vector3.toStateObject(),
+  fromStateObject: Vector3.fromStateObject
+} );
 
 export default Vector3;
