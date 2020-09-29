@@ -7,7 +7,6 @@
  */
 
 import Property from '../../axon/js/Property.js';
-import PropertyIO from '../../axon/js/PropertyIO.js';
 import validate from '../../axon/js/validate.js';
 import merge from '../../phet-core/js/merge.js';
 import Bounds2 from './Bounds2.js';
@@ -39,7 +38,7 @@ class Vector2Property extends Property {
       validBounds: null,
 
       // phet-io
-      phetioType: PropertyIO( Vector2IO )
+      phetioType: Property.PropertyIO( Vector2IO )
     }, options );
 
     super( initialValue, options );
