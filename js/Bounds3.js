@@ -15,6 +15,7 @@
 
 import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Vector3 from './Vector3.js';
 
@@ -1403,7 +1404,7 @@ Poolable.mixInto( Bounds3, {
 } );
 
 /**
- * A contant Bounds3 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".
+ * A constant Bounds3 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".
  * @public
  *
  * This allows us to take the union (union/includeBounds) of this and any other Bounds3 to get the other bounds back,
@@ -1429,5 +1430,18 @@ Bounds3.NOTHING = new Bounds3( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINIT
  * @constant {Bounds3} EVERYTHING
  */
 Bounds3.EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
+
+Bounds3.Bounds3IO = new IOType( 'Bounds3IO', {
+  valueType: Bounds3,
+  documentation: 'a 3-dimensional bounds (bounding box)',
+  toStateObject: bounds3 => ( {
+    minX: bounds3.minX, minY: bounds3.minY, minZ: bounds3.minZ,
+    maxX: bounds3.maxX, maxY: bounds3.maxY, maxZ: bounds3.maxZ
+  } ),
+  fromStateObject: stateObject => new Bounds3(
+    stateObject.minX, stateObject.minY, stateObject.minZ,
+    stateObject.maxX, stateObject.maxY, stateObject.maxZ
+  )
+} );
 
 export default Bounds3;
