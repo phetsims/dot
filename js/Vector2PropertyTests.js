@@ -8,7 +8,6 @@
 
 import Bounds2 from './Bounds2.js';
 import Vector2 from './Vector2.js';
-import Vector2IO from './Vector2IO.js';
 import Vector2Property from './Vector2Property.js';
 
 QUnit.module( 'Vector2Property' );
@@ -61,7 +60,7 @@ QUnit.test( 'Vector2Property', assert => {
     vectorProperty = new Vector2Property( Vector2.ZERO, { valueType: Vector2 } );
   }, 'Vector2Property sets valueType' );
   window.assert && assert.throws( () => {
-    vectorProperty = new Vector2Property( Vector2.ZERO, { phetioType: Vector2IO } );
+    vectorProperty = new Vector2Property( Vector2.ZERO, { phetioType: Vector2.Vector2IO } );
   }, 'Vector2Property sets phetioType' );
 
   assert.ok( true, 'so we have at least 1 test in this set' );

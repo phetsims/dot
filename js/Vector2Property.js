@@ -12,7 +12,6 @@ import merge from '../../phet-core/js/merge.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 import Vector2 from './Vector2.js';
-import Vector2IO from './Vector2IO.js';
 
 const BOUNDS_VALIDATOR = { isValidValue: value => ( value instanceof Bounds2 || value === null ) };
 
@@ -38,7 +37,7 @@ class Vector2Property extends Property {
       validBounds: null,
 
       // phet-io
-      phetioType: Property.PropertyIO( Vector2IO )
+      phetioType: Property.PropertyIO( Vector2.Vector2IO )
     }, options );
 
     super( initialValue, options );

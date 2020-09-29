@@ -8,6 +8,7 @@
 
 import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
@@ -994,5 +995,12 @@ Vector2.X_UNIT = assert ? new Immutable( 1, 0 ) : new Vector2( 1, 0 );
  * @constant {Vector2} Y_UNIT
  */
 Vector2.Y_UNIT = assert ? new Immutable( 0, 1 ) : new Vector2( 0, 1 );
+
+Vector2.Vector2IO = new IOType( 'Vector2IO', {
+  valueType: Vector2,
+  documentation: 'A numerical object with x and y properties, like {x:3,y:4}',
+  toStateObject: vector2 => vector2.toStateObject(),
+  fromStateObject: Vector2.fromStateObject
+} );
 
 export default Vector2;
