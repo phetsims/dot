@@ -7,6 +7,7 @@
  */
 
 import Poolable from '../../phet-core/js/Poolable.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Matrix4 from './Matrix4.js';
 import Vector2 from './Vector2.js';
@@ -1015,5 +1016,12 @@ Matrix3.fromStateObject = function( stateObject ) {
   matrix.type = stateObject.type;
   return matrix;
 };
+
+Matrix3.Matrix3IO = new IOType( 'Matrix3IO', {
+  valueType: Matrix3,
+  documentation: 'A 3x3 matrix often used for holding transform data.',
+  toStateObject: matrix3 => Matrix3.toStateObject( matrix3 ),
+  fromStateObject: Matrix3.fromStateObject
+} );
 
 export default Matrix3;
