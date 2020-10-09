@@ -13,47 +13,40 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import dot from './dot.js';
 import Vector2 from './Vector2.js';
+import dot from './dot.js';
 
 // Temporary instances to be used in the transform method.
 const scratchVector2 = new dot.Vector2( 0, 0 );
 
-/**
- * Creates a 2-dimensional bounds (bounding box).
- * @constructor
- * @public
- *
- * @param {number} minX - The initial minimum X coordinate of the bounds.
- * @param {number} minY - The initial minimum Y coordinate of the bounds.
- * @param {number} maxX - The initial maximum X coordinate of the bounds.
- * @param {number} maxY - The initial maximum Y coordinate of the bounds.
- */
-function Bounds2( minX, minY, maxX, maxY ) {
-  assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
+class Bounds2 {
+  /**
+   * Creates a 2-dimensional bounds (bounding box).
+   * @public
+   *
+   * @param {number} minX - The initial minimum X coordinate of the bounds.
+   * @param {number} minY - The initial minimum Y coordinate of the bounds.
+   * @param {number} maxX - The initial maximum X coordinate of the bounds.
+   * @param {number} maxY - The initial maximum Y coordinate of the bounds.
+   */
+  constructor( minX, minY, maxX, maxY ) {
+    assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
 
-  // @public {number} - The minimum X coordinate of the bounds.
-  this.minX = minX;
+    // @public {number} - The minimum X coordinate of the bounds.
+    this.minX = minX;
 
-  // @public {number} - The minimum Y coordinate of the bounds.
-  this.minY = minY;
+    // @public {number} - The minimum Y coordinate of the bounds.
+    this.minY = minY;
 
-  // @public {number} - The maximum X coordinate of the bounds.
-  this.maxX = maxX;
+    // @public {number} - The maximum X coordinate of the bounds.
+    this.maxX = maxX;
 
-  // @public {number} - The maximum Y coordinate of the bounds.
-  this.maxY = maxY;
-}
+    // @public {number} - The maximum Y coordinate of the bounds.
+    this.maxY = maxY;
+  }
 
-dot.register( 'Bounds2', Bounds2 );
-
-inherit( Object, Bounds2, {
-  // @public (read-only) - Helps to identify the dimension of the bounds
-  isBounds: true,
-  dimension: 2,
 
   /*---------------------------------------------------------------------------*
    * Properties
@@ -65,8 +58,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getWidth: function() { return this.maxX - this.minX; },
-  get width() { return this.getWidth(); },
+  getWidth() { return this.maxX - this.minX; }
+  get width() { return this.getWidth(); }
 
   /**
    * The height of the bounds, defined as maxY - minY.
@@ -74,8 +67,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getHeight: function() { return this.maxY - this.minY; },
-  get height() { return this.getHeight(); },
+  getHeight() { return this.maxY - this.minY; }
+  get height() { return this.getHeight(); }
 
   /*
    * Convenience positions
@@ -94,8 +87,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getX: function() { return this.minX; },
-  get x() { return this.getX(); },
+  getX() { return this.minX; }
+  get x() { return this.getX(); }
 
   /**
    * Alias for minY, when thinking of the bounds as an (x,y,width,height) rectangle.
@@ -103,8 +96,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getY: function() { return this.minY; },
-  get y() { return this.getY(); },
+  getY() { return this.minY; }
+  get y() { return this.getY(); }
 
   /**
    * Alias for minX, supporting the explicit getter function style.
@@ -112,7 +105,7 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getMinX: function() { return this.minX; },
+  getMinX() { return this.minX; }
 
   /**
    * Alias for minY, supporting the explicit getter function style.
@@ -120,7 +113,7 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getMinY: function() { return this.minY; },
+  getMinY() { return this.minY; }
 
   /**
    * Alias for maxX, supporting the explicit getter function style.
@@ -128,7 +121,7 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getMaxX: function() { return this.maxX; },
+  getMaxX() { return this.maxX; }
 
   /**
    * Alias for maxY, supporting the explicit getter function style.
@@ -136,7 +129,7 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getMaxY: function() { return this.maxY; },
+  getMaxY() { return this.maxY; }
 
   /**
    * Alias for minX, when thinking in the UI-layout manner.
@@ -144,8 +137,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getLeft: function() { return this.minX; },
-  get left() { return this.minX; },
+  getLeft() { return this.minX; }
+  get left() { return this.minX; }
 
   /**
    * Alias for minY, when thinking in the UI-layout manner.
@@ -153,8 +146,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getTop: function() { return this.minY; },
-  get top() { return this.minY; },
+  getTop() { return this.minY; }
+  get top() { return this.minY; }
 
   /**
    * Alias for maxX, when thinking in the UI-layout manner.
@@ -162,8 +155,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getRight: function() { return this.maxX; },
-  get right() { return this.maxX; },
+  getRight() { return this.maxX; }
+  get right() { return this.maxX; }
 
   /**
    * Alias for maxY, when thinking in the UI-layout manner.
@@ -171,8 +164,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getBottom: function() { return this.maxY; },
-  get bottom() { return this.maxY; },
+  getBottom() { return this.maxY; }
+  get bottom() { return this.maxY; }
 
   /**
    * The horizontal (X-coordinate) center of the bounds, averaging the minX and maxX.
@@ -180,8 +173,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
-  get centerX() { return this.getCenterX(); },
+  getCenterX() { return ( this.maxX + this.minX ) / 2; }
+  get centerX() { return this.getCenterX(); }
 
   /**
    * The vertical (Y-coordinate) center of the bounds, averaging the minY and maxY.
@@ -189,8 +182,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {number}
    */
-  getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
-  get centerY() { return this.getCenterY(); },
+  getCenterY() { return ( this.maxY + this.minY ) / 2; }
+  get centerY() { return this.getCenterY(); }
 
   /**
    * The point (minX, minY), in the UI-coordinate upper-left.
@@ -198,8 +191,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getLeftTop: function() { return new dot.Vector2( this.minX, this.minY ); },
-  get leftTop() { return this.getLeftTop(); },
+  getLeftTop() { return new dot.Vector2( this.minX, this.minY ); }
+  get leftTop() { return this.getLeftTop(); }
 
   /**
    * The point (centerX, minY), in the UI-coordinate upper-center.
@@ -207,8 +200,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getCenterTop: function() { return new dot.Vector2( this.getCenterX(), this.minY ); },
-  get centerTop() { return this.getCenterTop(); },
+  getCenterTop() { return new dot.Vector2( this.getCenterX(), this.minY ); }
+  get centerTop() { return this.getCenterTop(); }
 
   /**
    * The point (right, minY), in the UI-coordinate upper-right.
@@ -216,8 +209,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getRightTop: function() { return new dot.Vector2( this.maxX, this.minY ); },
-  get rightTop() { return this.getRightTop(); },
+  getRightTop() { return new dot.Vector2( this.maxX, this.minY ); }
+  get rightTop() { return this.getRightTop(); }
 
   /**
    * The point (left, centerY), in the UI-coordinate center-left.
@@ -225,8 +218,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getLeftCenter: function() { return new dot.Vector2( this.minX, this.getCenterY() ); },
-  get leftCenter() { return this.getLeftCenter(); },
+  getLeftCenter() { return new dot.Vector2( this.minX, this.getCenterY() ); }
+  get leftCenter() { return this.getLeftCenter(); }
 
   /**
    * The point (centerX, centerY), in the center of the bounds.
@@ -234,8 +227,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getCenter: function() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); },
-  get center() { return this.getCenter(); },
+  getCenter() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); }
+  get center() { return this.getCenter(); }
 
   /**
    * The point (maxX, centerY), in the UI-coordinate center-right
@@ -243,8 +236,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getRightCenter: function() { return new dot.Vector2( this.maxX, this.getCenterY() ); },
-  get rightCenter() { return this.getRightCenter(); },
+  getRightCenter() { return new dot.Vector2( this.maxX, this.getCenterY() ); }
+  get rightCenter() { return this.getRightCenter(); }
 
   /**
    * The point (minX, maxY), in the UI-coordinate lower-left
@@ -252,8 +245,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getLeftBottom: function() { return new dot.Vector2( this.minX, this.maxY ); },
-  get leftBottom() { return this.getLeftBottom(); },
+  getLeftBottom() { return new dot.Vector2( this.minX, this.maxY ); }
+  get leftBottom() { return this.getLeftBottom(); }
 
   /**
    * The point (centerX, maxY), in the UI-coordinate lower-center
@@ -261,8 +254,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getCenterBottom: function() { return new dot.Vector2( this.getCenterX(), this.maxY ); },
-  get centerBottom() { return this.getCenterBottom(); },
+  getCenterBottom() { return new dot.Vector2( this.getCenterX(), this.maxY ); }
+  get centerBottom() { return this.getCenterBottom(); }
 
   /**
    * The point (maxX, maxY), in the UI-coordinate lower-right
@@ -270,8 +263,8 @@ inherit( Object, Bounds2, {
    *
    * @returns {Vector2}
    */
-  getRightBottom: function() { return new dot.Vector2( this.maxX, this.maxY ); },
-  get rightBottom() { return this.getRightBottom(); },
+  getRightBottom() { return new dot.Vector2( this.maxX, this.maxY ); }
+  get rightBottom() { return this.getRightBottom(); }
 
   /**
    * Whether we have negative width or height. Bounds2.NOTHING is a prime example of an empty Bounds2.
@@ -280,7 +273,7 @@ inherit( Object, Bounds2, {
    *
    * @returns {boolean}
    */
-  isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0; },
+  isEmpty() { return this.getWidth() < 0 || this.getHeight() < 0; }
 
   /**
    * Whether our minimums and maximums are all finite numbers. This will exclude Bounds2.NOTHING and Bounds2.EVERYTHING.
@@ -288,9 +281,9 @@ inherit( Object, Bounds2, {
    *
    * @returns {boolean}
    */
-  isFinite: function() {
+  isFinite() {
     return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.maxX ) && isFinite( this.maxY );
-  },
+  }
 
   /**
    * Whether this bounds has a non-zero area (non-zero positive width and height).
@@ -298,9 +291,9 @@ inherit( Object, Bounds2, {
    *
    * @returns {boolean}
    */
-  hasNonzeroArea: function() {
+  hasNonzeroArea() {
     return this.getWidth() > 0 && this.getHeight() > 0;
-  },
+  }
 
   /**
    * Whether this bounds has a finite and non-negative width and height.
@@ -308,9 +301,9 @@ inherit( Object, Bounds2, {
    *
    * @returns {boolean}
    */
-  isValid: function() {
+  isValid() {
     return !this.isEmpty() && this.isFinite();
-  },
+  }
 
   /**
    * If the position is inside the bounds, the position will be returned. Otherwise, this will return a new position
@@ -320,7 +313,7 @@ inherit( Object, Bounds2, {
    * @param {Vector2} position
    * @returns {Vector2}
    */
-  closestPointTo: function( position ) {
+  closestPointTo( position ) {
     if ( this.containsCoordinates( position.x, position.y ) ) {
       return position;
     }
@@ -329,7 +322,7 @@ inherit( Object, Bounds2, {
       const yConstrained = Math.max( Math.min( position.y, this.maxY ), this.y );
       return new Vector2( xConstrained, yConstrained );
     }
-  },
+  }
 
   /**
    * Whether the coordinates are contained inside the bounding box, or are on the boundary.
@@ -339,9 +332,9 @@ inherit( Object, Bounds2, {
    * @param {number} y - Y coordinate of the point to check
    * @returns {boolean}
    */
-  containsCoordinates: function( x, y ) {
+  containsCoordinates( x, y ) {
     return this.minX <= x && x <= this.maxX && this.minY <= y && y <= this.maxY;
-  },
+  }
 
   /**
    * Whether the point is contained inside the bounding box, or is on the boundary.
@@ -350,9 +343,9 @@ inherit( Object, Bounds2, {
    * @param {Vector2} point
    * @returns {boolean}
    */
-  containsPoint: function( point ) {
+  containsPoint( point ) {
     return this.containsCoordinates( point.x, point.y );
-  },
+  }
 
   /**
    * Whether this bounding box completely contains the bounding box passed as a parameter. The boundary of a box is
@@ -362,9 +355,9 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} bounds
    * @returns {boolean}
    */
-  containsBounds: function( bounds ) {
+  containsBounds( bounds ) {
     return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY;
-  },
+  }
 
   /**
    * Whether this and another bounding box have any points of intersection (including touching boundaries).
@@ -373,13 +366,13 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} bounds
    * @returns {boolean}
    */
-  intersectsBounds: function( bounds ) {
+  intersectsBounds( bounds ) {
     const minX = Math.max( this.minX, bounds.minX );
     const minY = Math.max( this.minY, bounds.minY );
     const maxX = Math.min( this.maxX, bounds.maxX );
     const maxY = Math.min( this.maxY, bounds.maxY );
     return ( maxX - minX ) >= 0 && ( maxY - minY >= 0 );
-  },
+  }
 
   /**
    * The squared distance from the input point to the point closest to it inside the bounding box.
@@ -388,7 +381,7 @@ inherit( Object, Bounds2, {
    * @param {Vector2} point
    * @returns {number}
    */
-  minimumDistanceToPointSquared: function( point ) {
+  minimumDistanceToPointSquared( point ) {
     const closeX = point.x < this.minX ? this.minX : ( point.x > this.maxX ? this.maxX : null );
     const closeY = point.y < this.minY ? this.minY : ( point.y > this.maxY ? this.maxY : null );
     let d;
@@ -412,7 +405,7 @@ inherit( Object, Bounds2, {
       const dy = closeY - point.y;
       return dx * dx + dy * dy;
     }
-  },
+  }
 
   /**
    * The squared distance from the input point to the point furthest from it inside the bounding box.
@@ -421,13 +414,13 @@ inherit( Object, Bounds2, {
    * @param {Vector2} point
    * @returns {number}
    */
-  maximumDistanceToPointSquared: function( point ) {
+  maximumDistanceToPointSquared( point ) {
     let x = point.x > this.getCenterX() ? this.minX : this.maxX;
     let y = point.y > this.getCenterY() ? this.minY : this.maxY;
     x -= point.x;
     y -= point.y;
     return x * x + y * y;
-  },
+  }
 
   /**
    * Debugging string for the bounds.
@@ -435,9 +428,9 @@ inherit( Object, Bounds2, {
    *
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
-  },
+  }
 
   /**
    * Exact equality comparison between this bounds and another bounds.
@@ -446,9 +439,9 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} other
    * @returns {boolean} - Whether the two bounds are equal
    */
-  equals: function( other ) {
+  equals( other ) {
     return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
-  },
+  }
 
   /**
    * Approximate equality comparison between this bounds and another bounds.
@@ -459,7 +452,7 @@ inherit( Object, Bounds2, {
    * @returns {boolean} - Whether difference between the two bounds has no min/max with an absolute value greater
    *                      than epsilon.
    */
-  equalsEpsilon: function( other, epsilon ) {
+  equalsEpsilon( other, epsilon ) {
     epsilon = epsilon !== undefined ? epsilon : 0;
     const thisFinite = this.isFinite();
     const otherFinite = other.isFinite();
@@ -483,7 +476,7 @@ inherit( Object, Bounds2, {
              ( isFinite( this.maxX + other.maxX ) ? ( Math.abs( this.maxX - other.maxX ) < epsilon ) : ( this.maxX === other.maxX ) ) &&
              ( isFinite( this.maxY + other.maxY ) ? ( Math.abs( this.maxY - other.maxY ) < epsilon ) : ( this.maxY === other.maxY ) );
     }
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Immutable operations
@@ -500,14 +493,14 @@ inherit( Object, Bounds2, {
    *                             values of the provided bounds so that it equals this bounds.
    * @returns {Bounds2}
    */
-  copy: function( bounds ) {
+  copy( bounds ) {
     if ( bounds ) {
       return bounds.set( this );
     }
     else {
       return new Bounds2( this.minX, this.minY, this.maxX, this.maxY );
     }
-  },
+  }
 
   /**
    * The smallest bounds that contains both this bounds and the input bounds, returned as a copy.
@@ -519,14 +512,14 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} bounds
    * @returns {Bounds2}
    */
-  union: function( bounds ) {
+  union( bounds ) {
     return new Bounds2(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
       Math.max( this.maxX, bounds.maxX ),
       Math.max( this.maxY, bounds.maxY )
     );
-  },
+  }
 
   /**
    * The smallest bounds that is contained by both this bounds and the input bounds, returned as a copy.
@@ -538,14 +531,14 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} bounds
    * @returns {Bounds2}
    */
-  intersection: function( bounds ) {
+  intersection( bounds ) {
     return new Bounds2(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
       Math.min( this.maxX, bounds.maxX ),
       Math.min( this.maxY, bounds.maxY )
     );
-  },
+  }
   // TODO: difference should be well-defined, but more logic is needed to compute
 
   /**
@@ -559,14 +552,14 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  withCoordinates: function( x, y ) {
+  withCoordinates( x, y ) {
     return new Bounds2(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
       Math.max( this.maxX, x ),
       Math.max( this.maxY, y )
     );
-  },
+  }
 
   /**
    * The smallest bounds that contains this bounds and the input point, returned as a copy.
@@ -578,9 +571,9 @@ inherit( Object, Bounds2, {
    * @param {Vector2} point
    * @returns {Bounds2}
    */
-  withPoint: function( point ) {
+  withPoint( point ) {
     return this.withCoordinates( point.x, point.y );
-  },
+  }
 
   /**
    * Returns the smallest bounds that contains both this bounds and the x value provided.
@@ -592,9 +585,9 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  withX: function( x ) {
+  withX( x ) {
     return this.copy().addX( x );
-  },
+  }
 
   /**
    * Returns the smallest bounds that contains both this bounds and the y value provided.
@@ -606,9 +599,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  withY: function( y ) {
+  withY( y ) {
     return this.copy().addY( y );
-  },
+  }
 
   /**
    * A copy of this bounds, with minX replaced with the input.
@@ -620,9 +613,9 @@ inherit( Object, Bounds2, {
    * @param {number} minX
    * @returns {Bounds2}
    */
-  withMinX: function( minX ) {
+  withMinX( minX ) {
     return new Bounds2( minX, this.minY, this.maxX, this.maxY );
-  },
+  }
 
   /**
    * A copy of this bounds, with minY replaced with the input.
@@ -634,9 +627,9 @@ inherit( Object, Bounds2, {
    * @param {number} minY
    * @returns {Bounds2}
    */
-  withMinY: function( minY ) {
+  withMinY( minY ) {
     return new Bounds2( this.minX, minY, this.maxX, this.maxY );
-  },
+  }
 
   /**
    * A copy of this bounds, with maxX replaced with the input.
@@ -648,9 +641,9 @@ inherit( Object, Bounds2, {
    * @param {number} maxX
    * @returns {Bounds2}
    */
-  withMaxX: function( maxX ) {
+  withMaxX( maxX ) {
     return new Bounds2( this.minX, this.minY, maxX, this.maxY );
-  },
+  }
 
   /**
    * A copy of this bounds, with maxY replaced with the input.
@@ -662,9 +655,9 @@ inherit( Object, Bounds2, {
    * @param {number} maxY
    * @returns {Bounds2}
    */
-  withMaxY: function( maxY ) {
+  withMaxY( maxY ) {
     return new Bounds2( this.minX, this.minY, this.maxX, maxY );
-  },
+  }
 
   /**
    * A copy of this bounds, with the minimum values rounded down to the nearest integer, and the maximum values
@@ -677,14 +670,14 @@ inherit( Object, Bounds2, {
    *
    * @returns {Bounds2}
    */
-  roundedOut: function() {
+  roundedOut() {
     return new Bounds2(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
       Math.ceil( this.maxX ),
       Math.ceil( this.maxY )
     );
-  },
+  }
 
   /**
    * A copy of this bounds, with the minimum values rounded up to the nearest integer, and the maximum values
@@ -697,14 +690,14 @@ inherit( Object, Bounds2, {
    *
    * @returns {Bounds2}
    */
-  roundedIn: function() {
+  roundedIn() {
     return new Bounds2(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
       Math.floor( this.maxX ),
       Math.floor( this.maxY )
     );
-  },
+  }
 
   /**
    * A bounding box (still axis-aligned) that contains the transformed shape of this bounds, applying the matrix as
@@ -721,9 +714,9 @@ inherit( Object, Bounds2, {
    * @param {Matrix3} matrix
    * @returns {Bounds2}
    */
-  transformed: function( matrix ) {
+  transformed( matrix ) {
     return this.copy().transform( matrix );
-  },
+  }
 
   /**
    * A bounding box that is expanded on all sides by the specified amount.)
@@ -735,9 +728,9 @@ inherit( Object, Bounds2, {
    * @param {number} d
    * @returns {Bounds2}
    */
-  dilated: function( d ) {
+  dilated( d ) {
     return new Bounds2( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
-  },
+  }
 
   /**
    * A bounding box that is expanded horizontally (on the left and right) by the specified amount.
@@ -749,9 +742,9 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  dilatedX: function( x ) {
+  dilatedX( x ) {
     return new Bounds2( this.minX - x, this.minY, this.maxX + x, this.maxY );
-  },
+  }
 
   /**
    * A bounding box that is expanded vertically (on the top and bottom) by the specified amount.
@@ -763,9 +756,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  dilatedY: function( y ) {
+  dilatedY( y ) {
     return new Bounds2( this.minX, this.minY - y, this.maxX, this.maxY + y );
-  },
+  }
 
   /**
    * A bounding box that is expanded on all sides, with different amounts of expansion horizontally and vertically.
@@ -779,9 +772,9 @@ inherit( Object, Bounds2, {
    * @param {number} y - Amount to dilate vertically (for each side)
    * @returns {Bounds2}
    */
-  dilatedXY: function( x, y ) {
+  dilatedXY( x, y ) {
     return new Bounds2( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
-  },
+  }
 
   /**
    * A bounding box that is contracted on all sides by the specified amount.
@@ -793,7 +786,7 @@ inherit( Object, Bounds2, {
    * @param {number} amount
    * @returns {Bounds2}
    */
-  eroded: function( amount ) { return this.dilated( -amount ); },
+  eroded( amount ) { return this.dilated( -amount ); }
 
   /**
    * A bounding box that is contracted horizontally (on the left and right) by the specified amount.
@@ -805,7 +798,7 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  erodedX: function( x ) { return this.dilatedX( -x ); },
+  erodedX( x ) { return this.dilatedX( -x ); }
 
   /**
    * A bounding box that is contracted vertically (on the top and bottom) by the specified amount.
@@ -817,7 +810,7 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  erodedY: function( y ) { return this.dilatedY( -y ); },
+  erodedY( y ) { return this.dilatedY( -y ); }
 
   /**
    * A bounding box that is contracted on all sides, with different amounts of contraction horizontally and vertically.
@@ -830,7 +823,7 @@ inherit( Object, Bounds2, {
    * @param {number} y - Amount to erode vertically (for each side)
    * @returns {Bounds2}
    */
-  erodedXY: function( x, y ) { return this.dilatedXY( -x, -y ); },
+  erodedXY( x, y ) { return this.dilatedXY( -x, -y ); }
 
   /**
    * A bounding box that is expanded by a specific amount on all sides (or if some offsets are negative, will contract
@@ -846,9 +839,9 @@ inherit( Object, Bounds2, {
    * @param {number} bottom - Amount to expand to the bottom (adds to maxY)
    * @returns {Bounds2}
    */
-  withOffsets: function( left, top, right, bottom ) {
+  withOffsets( left, top, right, bottom ) {
     return new Bounds2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
-  },
+  }
 
   /**
    * Our bounds, translated horizontally by x, returned as a copy.
@@ -860,9 +853,9 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  shiftedX: function( x ) {
+  shiftedX( x ) {
     return new Bounds2( this.minX + x, this.minY, this.maxX + x, this.maxY );
-  },
+  }
 
   /**
    * Our bounds, translated vertically by y, returned as a copy.
@@ -874,9 +867,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  shiftedY: function( y ) {
+  shiftedY( y ) {
     return new Bounds2( this.minX, this.minY + y, this.maxX, this.maxY + y );
-  },
+  }
 
   /**
    * Our bounds, translated by (x,y), returned as a copy.
@@ -889,9 +882,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  shifted: function( x, y ) {
+  shifted( x, y ) {
     return new Bounds2( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
-  },
+  }
 
   /**
    * Returns an interpolated value of this bounds and the argument.
@@ -901,7 +894,7 @@ inherit( Object, Bounds2, {
    * @param {number} ratio - 0 will result in a copy of `this`, 1 will result in bounds, and in-between controls the
    *                         amount of each.
    */
-  blend: function( bounds, ratio ) {
+  blend( bounds, ratio ) {
     const t = 1 - ratio;
     return new Bounds2(
       t * this.minX + ratio * bounds.minX,
@@ -909,7 +902,7 @@ inherit( Object, Bounds2, {
       t * this.maxX + ratio * bounds.maxX,
       t * this.maxY + ratio * bounds.maxY
     );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Mutable operations
@@ -928,13 +921,13 @@ inherit( Object, Bounds2, {
    * @param {number} maxY
    * @returns {Bounds2}
    */
-  setMinMax: function( minX, minY, maxX, maxY ) {
+  setMinMax( minX, minY, maxX, maxY ) {
     this.minX = minX;
     this.minY = minY;
     this.maxX = maxX;
     this.maxY = maxY;
     return this;
-  },
+  }
 
   /**
    * Sets the value of minX.
@@ -946,10 +939,10 @@ inherit( Object, Bounds2, {
    * @param {number} minX
    * @returns {Bounds2}
    */
-  setMinX: function( minX ) {
+  setMinX( minX ) {
     this.minX = minX;
     return this;
-  },
+  }
 
   /**
    * Sets the value of minY.
@@ -961,10 +954,10 @@ inherit( Object, Bounds2, {
    * @param {number} minY
    * @returns {Bounds2}
    */
-  setMinY: function( minY ) {
+  setMinY( minY ) {
     this.minY = minY;
     return this;
-  },
+  }
 
   /**
    * Sets the value of maxX.
@@ -976,10 +969,10 @@ inherit( Object, Bounds2, {
    * @param {number} maxX
    * @returns {Bounds2}
    */
-  setMaxX: function( maxX ) {
+  setMaxX( maxX ) {
     this.maxX = maxX;
     return this;
-  },
+  }
 
   /**
    * Sets the value of maxY.
@@ -991,10 +984,10 @@ inherit( Object, Bounds2, {
    * @param {number} maxY
    * @returns {Bounds2}
    */
-  setMaxY: function( maxY ) {
+  setMaxY( maxY ) {
     this.maxY = maxY;
     return this;
-  },
+  }
 
   /**
    * Sets the values of this bounds to be equal to the input bounds.
@@ -1006,9 +999,9 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} bounds
    * @returns {Bounds2}
    */
-  set: function( bounds ) {
+  set( bounds ) {
     return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
-  },
+  }
 
   /**
    * Modifies this bounds so that it contains both its original bounds and the input bounds.
@@ -1020,14 +1013,14 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} bounds
    * @returns {Bounds2}
    */
-  includeBounds: function( bounds ) {
+  includeBounds( bounds ) {
     return this.setMinMax(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
       Math.max( this.maxX, bounds.maxX ),
       Math.max( this.maxY, bounds.maxY )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it is the largest bounds contained both in its original bounds and in the input bounds.
@@ -1039,14 +1032,14 @@ inherit( Object, Bounds2, {
    * @param {Bounds2} bounds
    * @returns {Bounds2}
    */
-  constrainBounds: function( bounds ) {
+  constrainBounds( bounds ) {
     return this.setMinMax(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
       Math.min( this.maxX, bounds.maxX ),
       Math.min( this.maxY, bounds.maxY )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it contains both its original bounds and the input point (x,y).
@@ -1059,14 +1052,14 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  addCoordinates: function( x, y ) {
+  addCoordinates( x, y ) {
     return this.setMinMax(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
       Math.max( this.maxX, x ),
       Math.max( this.maxY, y )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it contains both its original bounds and the input point.
@@ -1078,9 +1071,9 @@ inherit( Object, Bounds2, {
    * @param {Vector2} point
    * @returns {Bounds2}
    */
-  addPoint: function( point ) {
+  addPoint( point ) {
     return this.addCoordinates( point.x, point.y );
-  },
+  }
 
   /**
    * Modifies this bounds so that it is guaranteed to include the given x value (if it didn't already). If the x value
@@ -1093,11 +1086,11 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  addX: function( x ) {
+  addX( x ) {
     this.minX = Math.min( x, this.minX );
     this.maxX = Math.max( x, this.maxX );
     return this;
-  },
+  }
 
   /**
    * Modifies this bounds so that it is guaranteed to include the given y value (if it didn't already). If the y value
@@ -1110,11 +1103,11 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  addY: function( y ) {
+  addY( y ) {
     this.minY = Math.min( y, this.minY );
     this.maxY = Math.max( y, this.maxY );
     return this;
-  },
+  }
 
   /**
    * Modifies this bounds so that its boundaries are integer-aligned, rounding the minimum boundaries down and the
@@ -1126,14 +1119,14 @@ inherit( Object, Bounds2, {
    *
    * @returns {Bounds2}
    */
-  roundOut: function() {
+  roundOut() {
     return this.setMinMax(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
       Math.ceil( this.maxX ),
       Math.ceil( this.maxY )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that its boundaries are integer-aligned, rounding the minimum boundaries up and the
@@ -1145,14 +1138,14 @@ inherit( Object, Bounds2, {
    *
    * @returns {Bounds2}
    */
-  roundIn: function() {
+  roundIn() {
     return this.setMinMax(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
       Math.floor( this.maxX ),
       Math.floor( this.maxY )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it would fully contain a transformed version if its previous value, applying the
@@ -1169,7 +1162,7 @@ inherit( Object, Bounds2, {
    * @param {Matrix3} matrix
    * @returns {Bounds2}
    */
-  transform: function( matrix ) {
+  transform( matrix ) {
     // if we contain no area, no change is needed
     if ( this.isEmpty() ) {
       return this;
@@ -1194,7 +1187,7 @@ inherit( Object, Bounds2, {
     this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( maxX, minY ) ) );
     this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( maxX, maxY ) ) );
     return this;
-  },
+  }
 
   /**
    * Expands this bounds on all sides by the specified amount.
@@ -1206,9 +1199,9 @@ inherit( Object, Bounds2, {
    * @param {number} d
    * @returns {Bounds2}
    */
-  dilate: function( d ) {
+  dilate( d ) {
     return this.setMinMax( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
-  },
+  }
 
   /**
    * Expands this bounds horizontally (left and right) by the specified amount.
@@ -1220,9 +1213,9 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  dilateX: function( x ) {
+  dilateX( x ) {
     return this.setMinMax( this.minX - x, this.minY, this.maxX + x, this.maxY );
-  },
+  }
 
   /**
    * Expands this bounds vertically (top and bottom) by the specified amount.
@@ -1234,9 +1227,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  dilateY: function( y ) {
+  dilateY( y ) {
     return this.setMinMax( this.minX, this.minY - y, this.maxX, this.maxY + y );
-  },
+  }
 
   /**
    * Expands this bounds independently in the horizontal and vertical directions. Will be equal to calling
@@ -1250,9 +1243,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  dilateXY: function( x, y ) {
+  dilateXY( x, y ) {
     return this.setMinMax( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
-  },
+  }
 
   /**
    * Contracts this bounds on all sides by the specified amount.
@@ -1264,7 +1257,7 @@ inherit( Object, Bounds2, {
    * @param {number} d
    * @returns {Bounds2}
    */
-  erode: function( d ) { return this.dilate( -d ); },
+  erode( d ) { return this.dilate( -d ); }
 
   /**
    * Contracts this bounds horizontally (left and right) by the specified amount.
@@ -1276,7 +1269,7 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  erodeX: function( x ) { return this.dilateX( -x ); },
+  erodeX( x ) { return this.dilateX( -x ); }
 
   /**
    * Contracts this bounds vertically (top and bottom) by the specified amount.
@@ -1288,7 +1281,7 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  erodeY: function( y ) { return this.dilateY( -y ); },
+  erodeY( y ) { return this.dilateY( -y ); }
 
   /**
    * Contracts this bounds independently in the horizontal and vertical directions. Will be equal to calling
@@ -1302,7 +1295,7 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  erodeXY: function( x, y ) { return this.dilateXY( -x, -y ); },
+  erodeXY( x, y ) { return this.dilateXY( -x, -y ); }
 
   /**
    * Expands this bounds independently for each side (or if some offsets are negative, will contract those sides).
@@ -1317,9 +1310,9 @@ inherit( Object, Bounds2, {
    * @param {number} bottom - Amount to expand to the bottom (adds to maxY)
    * @returns {Bounds2}
    */
-  offset: function( left, top, right, bottom ) {
+  offset( left, top, right, bottom ) {
     return new Bounds2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
-  },
+  }
 
   /**
    * Translates our bounds horizontally by x.
@@ -1331,9 +1324,9 @@ inherit( Object, Bounds2, {
    * @param {number} x
    * @returns {Bounds2}
    */
-  shiftX: function( x ) {
+  shiftX( x ) {
     return this.setMinMax( this.minX + x, this.minY, this.maxX + x, this.maxY );
-  },
+  }
 
   /**
    * Translates our bounds vertically by y.
@@ -1345,9 +1338,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  shiftY: function( y ) {
+  shiftY( y ) {
     return this.setMinMax( this.minX, this.minY + y, this.maxX, this.maxY + y );
-  },
+  }
 
   /**
    * Translates our bounds by (x,y).
@@ -1360,9 +1353,9 @@ inherit( Object, Bounds2, {
    * @param {number} y
    * @returns {Bounds2}
    */
-  shift: function( x, y ) {
+  shift( x, y ) {
     return this.setMinMax( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
-  },
+  }
 
   /**
    * Find a point in the bounds closest to the specified point.
@@ -1373,7 +1366,7 @@ inherit( Object, Bounds2, {
    * @param {Vector2} [result] - Vector2 that can store the return value to avoid allocations.
    * @returns {Vector2}
    */
-  getClosestPoint: function( x, y, result ) {
+  getClosestPoint( x, y, result ) {
     if ( result ) {
       result.setXY( x, y );
     }
@@ -1386,7 +1379,6 @@ inherit( Object, Bounds2, {
     if ( result.y > this.maxY ) { result.y = this.maxY; }
     return result;
   }
-}, {
   /**
    * Returns a new Bounds2 object, with the familiar rectangle construction with x, y, width, and height.
    * @public
@@ -1397,9 +1389,9 @@ inherit( Object, Bounds2, {
    * @param {number} height - The height (maxY - minY) of the bounds.
    * @returns {Bounds2}
    */
-  rect: function( x, y, width, height ) {
+  static rect( x, y, width, height ) {
     return new Bounds2( x, y, x + width, y + height );
-  },
+  }
 
   /**
    * Returns a new Bounds2 object that only contains the specified point (x,y). Useful for being dilated to form a
@@ -1411,7 +1403,7 @@ inherit( Object, Bounds2, {
    * @param [number] y
    * @returns {Bounds2}
    */
-  point: function( x, y ) {
+  static point( x, y ) {
     if ( x instanceof dot.Vector2 ) {
       const p = x;
       return new Bounds2( p.x, p.y, p.x, p.y );
@@ -1420,7 +1412,13 @@ inherit( Object, Bounds2, {
       return new Bounds2( x, y, x, y );
     }
   }
-} );
+}
+
+// @public (read-only) - Helps to identify the dimension of the bounds
+Bounds2.prototype.isBounds = true;
+Bounds2.prototype.dimension = 2;
+
+dot.register( 'Bounds2', Bounds2 );
 
 /**
  * A contant Bounds2 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".

@@ -6,38 +6,31 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
+import dot from './dot.js';
 
-/**
- * Creates a 2-dimensional vector with the specified X and Y values.
- * @constructor
- * @public
- *
- * @param {number} x - X coordinate
- * @param {number} y - Y coordinate
- */
-function Vector2( x, y ) {
-  assert && assert( typeof x === 'number', 'x needs to be a number' );
-  assert && assert( typeof y === 'number', 'y needs to be a number' );
+class Vector2 {
+  /**
+   * Creates a 2-dimensional vector with the specified X and Y values.
+   * @public
+   *
+   * @param {number} x - X coordinate
+   * @param {number} y - Y coordinate
+   */
+  constructor( x, y ) {
+    assert && assert( typeof x === 'number', 'x needs to be a number' );
+    assert && assert( typeof y === 'number', 'y needs to be a number' );
 
-  // @public {number} - The X coordinate of the vector.
-  this.x = x;
+    // @public {number} - The X coordinate of the vector.
+    this.x = x;
 
-  // @public {number} - The Y coordinate of the vector.
-  this.y = y;
-}
+    // @public {number} - The Y coordinate of the vector.
+    this.y = y;
+  }
 
-dot.register( 'Vector2', Vector2 );
-
-inherit( Object, Vector2, {
-  // @public (read-only) - Helps to identify the dimension of the vector
-  isVector2: true,
-  dimension: 2,
 
   /**
    * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2}$.
@@ -45,13 +38,13 @@ inherit( Object, Vector2, {
    *
    * @returns {number}
    */
-  getMagnitude: function() {
+  getMagnitude() {
     return Math.sqrt( this.magnitudeSquared );
-  },
+  }
 
   get magnitude() {
     return this.getMagnitude();
-  },
+  }
 
   /**
    * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2$.
@@ -59,13 +52,13 @@ inherit( Object, Vector2, {
    *
    * @returns {number}
    */
-  getMagnitudeSquared: function() {
+  getMagnitudeSquared() {
     return this.x * this.x + this.y * this.y;
-  },
+  }
 
   get magnitudeSquared() {
     return this.getMagnitudeSquared();
-  },
+  }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point.
@@ -74,9 +67,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} point
    * @returns {number}
    */
-  distance: function( point ) {
+  distance( point ) {
     return Math.sqrt( this.distanceSquared( point ) );
-  },
+  }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point (x,y).
@@ -86,11 +79,11 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {number}
    */
-  distanceXY: function( x, y ) {
+  distanceXY( x, y ) {
     const dx = this.x - x;
     const dy = this.y - y;
     return Math.sqrt( dx * dx + dy * dy );
-  },
+  }
 
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point.
@@ -99,11 +92,11 @@ inherit( Object, Vector2, {
    * @param {Vector2} point
    * @returns {number}
    */
-  distanceSquared: function( point ) {
+  distanceSquared( point ) {
     const dx = this.x - point.x;
     const dy = this.y - point.y;
     return dx * dx + dy * dy;
-  },
+  }
 
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point with coordinates (x,y).
@@ -113,11 +106,11 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {number}
    */
-  distanceSquaredXY: function( x, y ) {
+  distanceSquaredXY( x, y ) {
     const dx = this.x - x;
     const dy = this.y - y;
     return dx * dx + dy * dy;
-  },
+  }
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector v.
@@ -126,9 +119,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {number}
    */
-  dot: function( v ) {
+  dot( v ) {
     return this.x * v.x + this.y * v.y;
-  },
+  }
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector (x,y).
@@ -138,9 +131,9 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {number}
    */
-  dotXY: function( x, y ) {
+  dotXY( x, y ) {
     return this.x * x + this.y * y;
-  },
+  }
 
   /**
    * The angle $\theta$ of this vector, such that this vector is equal to
@@ -150,13 +143,13 @@ inherit( Object, Vector2, {
    *
    * @returns {number}
    */
-  getAngle: function() {
+  getAngle() {
     return Math.atan2( this.y, this.x );
-  },
+  }
 
   get angle() {
     return this.getAngle();
-  },
+  }
 
   /**
    * The angle between this vector and another vector, in the range $\theta\in[0, \pi]$.
@@ -168,11 +161,11 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {number}
    */
-  angleBetween: function( v ) {
+  angleBetween( v ) {
     const thisMagnitude = this.magnitude;
     const vMagnitude = v.magnitude;
     return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
-  },
+  }
 
   /**
    * Exact equality comparison between this vector and another vector.
@@ -181,9 +174,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} other
    * @returns {boolean} - Whether the two vectors have equal components
    */
-  equals: function( other ) {
+  equals( other ) {
     return this.x === other.x && this.y === other.y;
-  },
+  }
 
   /**
    * Approximate equality comparison between this vector and another vector.
@@ -194,12 +187,12 @@ inherit( Object, Vector2, {
    * @returns {boolean} - Whether difference between the two vectors has no component with an absolute value greater
    *                      than epsilon.
    */
-  equalsEpsilon: function( other, epsilon ) {
+  equalsEpsilon( other, epsilon ) {
     if ( !epsilon ) {
       epsilon = 0;
     }
     return Math.max( Math.abs( this.x - other.x ), Math.abs( this.y - other.y ) ) <= epsilon;
-  },
+  }
 
   /**
    * Whether all of the components are numbers (not NaN) that are not infinity or -infinity.
@@ -207,9 +200,9 @@ inherit( Object, Vector2, {
    *
    * @returns {boolean}
    */
-  isFinite: function() {
+  isFinite() {
     return isFinite( this.x ) && isFinite( this.y );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Immutables
@@ -226,14 +219,14 @@ inherit( Object, Vector2, {
    *                             values of the provided vector so that it equals this vector.
    * @returns {Vector2}
    */
-  copy: function( vector ) {
+  copy( vector ) {
     if ( vector ) {
       return vector.set( this );
     }
     else {
       return new Vector2( this.x, this.y );
     }
-  },
+  }
 
   /**
    * The scalar value of the z-component of the equivalent 3-dimensional cross product:
@@ -243,9 +236,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {number}
    */
-  crossScalar: function( v ) {
+  crossScalar( v ) {
     return this.x * v.y - this.y * v.x;
-  },
+  }
 
   /**
    * Normalized (re-scaled) copy of this vector such that its magnitude is 1. If its initial magnitude is zero, an
@@ -257,7 +250,7 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector2}
    */
-  normalized: function() {
+  normalized() {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -265,7 +258,7 @@ inherit( Object, Vector2, {
     else {
       return new Vector2( this.x / mag, this.y / mag );
     }
-  },
+  }
 
   /**
    * Returns a copy of this vector with each component rounded by Utils.roundSymmetric.
@@ -276,9 +269,9 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector2}
    */
-  roundedSymmetric: function() {
+  roundedSymmetric() {
     return this.copy().roundSymmetric();
-  },
+  }
 
   /**
    * Re-scaled copy of this vector such that it has the desired magnitude. If its initial magnitude is zero, an error
@@ -291,9 +284,9 @@ inherit( Object, Vector2, {
    * @param {number} magnitude
    * @returns {Vector2}
    */
-  withMagnitude: function( magnitude ) {
+  withMagnitude( magnitude ) {
     return this.copy().setMagnitude( magnitude );
-  },
+  }
 
   /**
    * Copy of this vector, scaled by the desired scalar value.
@@ -305,9 +298,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  timesScalar: function( scalar ) {
+  timesScalar( scalar ) {
     return new Vector2( this.x * scalar, this.y * scalar );
-  },
+  }
 
   /**
    * Same as timesScalar.
@@ -319,11 +312,11 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  times: function( scalar ) {
+  times( scalar ) {
     // make sure it's not a vector!
     assert && assert( scalar.dimension === undefined );
     return this.timesScalar( scalar );
-  },
+  }
 
   /**
    * Copy of this vector, multiplied component-wise by the passed-in vector v.
@@ -335,9 +328,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  componentTimes: function( v ) {
+  componentTimes( v ) {
     return new Vector2( this.x * v.x, this.y * v.y );
-  },
+  }
 
   /**
    * Addition of this vector and another vector, returning a copy.
@@ -349,9 +342,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  plus: function( v ) {
+  plus( v ) {
     return new Vector2( this.x + v.x, this.y + v.y );
-  },
+  }
 
   /**
    * Addition of this vector and another vector (x,y), returning a copy.
@@ -364,9 +357,9 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {Vector2}
    */
-  plusXY: function( x, y ) {
+  plusXY( x, y ) {
     return new Vector2( this.x + x, this.y + y );
-  },
+  }
 
   /**
    * Addition of this vector with a scalar (adds the scalar to every component), returning a copy.
@@ -378,9 +371,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  plusScalar: function( scalar ) {
+  plusScalar( scalar ) {
     return new Vector2( this.x + scalar, this.y + scalar );
-  },
+  }
 
   /**
    * Subtraction of this vector by another vector v, returning a copy.
@@ -392,9 +385,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  minus: function( v ) {
+  minus( v ) {
     return new Vector2( this.x - v.x, this.y - v.y );
-  },
+  }
 
   /**
    * Subtraction of this vector by another vector (x,y), returning a copy.
@@ -407,9 +400,9 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {Vector2}
    */
-  minusXY: function( x, y ) {
+  minusXY( x, y ) {
     return new Vector2( this.x - x, this.y - y );
-  },
+  }
 
   /**
    * Subtraction of this vector by a scalar (subtracts the scalar from every component), returning a copy.
@@ -421,9 +414,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  minusScalar: function( scalar ) {
+  minusScalar( scalar ) {
     return new Vector2( this.x - scalar, this.y - scalar );
-  },
+  }
 
   /**
    * Division of this vector by a scalar (divides every component by the scalar), returning a copy.
@@ -435,9 +428,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  dividedScalar: function( scalar ) {
+  dividedScalar( scalar ) {
     return new Vector2( this.x / scalar, this.y / scalar );
-  },
+  }
 
   /**
    * Negated copy of this vector (multiplies every component by -1).
@@ -448,9 +441,9 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector2}
    */
-  negated: function() {
+  negated() {
     return new Vector2( -this.x, -this.y );
-  },
+  }
 
   /**
    * Rotated by -pi/2 (perpendicular to this vector), returned as a copy.
@@ -458,13 +451,13 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector2}
    */
-  getPerpendicular: function() {
+  getPerpendicular() {
     return new Vector2( this.y, -this.x );
-  },
+  }
 
   get perpendicular() {
     return this.getPerpendicular();
-  },
+  }
 
   /**
    * Rotated by an arbitrary angle, in radians. Returned as a copy.
@@ -476,11 +469,11 @@ inherit( Object, Vector2, {
    * @param {number} angle - In radians
    * @returns {Vector2}
    */
-  rotated: function( angle ) {
+  rotated( angle ) {
     const newAngle = this.angle + angle;
     const mag = this.magnitude;
     return new Vector2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
-  },
+  }
 
   /**
    * Mutable method that rotates this vector about an x,y point.
@@ -491,7 +484,7 @@ inherit( Object, Vector2, {
    * @param {number} angle - radians to rotate
    * @returns {Vector2} this for chaining
    */
-  rotateAboutXY: function( x, y, angle ) {
+  rotateAboutXY( x, y, angle ) {
     const dx = this.x - x;
     const dy = this.y - y;
     const cos = Math.cos( angle );
@@ -499,7 +492,7 @@ inherit( Object, Vector2, {
     this.x = x + dx * cos - dy * sin;
     this.y = y + dx * sin + dy * cos;
     return this; // for chaining
-  },
+  }
 
   /**
    * Same as rotateAboutXY but with a point argument.
@@ -509,9 +502,9 @@ inherit( Object, Vector2, {
    * @param {number} angle
    * @returns {Vector2} this for chaining
    */
-  rotateAboutPoint: function( point, angle ) {
+  rotateAboutPoint( point, angle ) {
     return this.rotateAboutXY( point.x, point.y, angle );
-  },
+  }
 
   /**
    * Immutable method that returns a new Vector2 that is rotated about the given point.
@@ -522,9 +515,9 @@ inherit( Object, Vector2, {
    * @param {number} angle - radians to rotate
    * @returns {Vector2} the new Vector2
    */
-  rotatedAboutXY: function( x, y, angle ) {
+  rotatedAboutXY( x, y, angle ) {
     return new Vector2( this.x, this.y ).rotateAboutXY( x, y, angle );
-  },
+  }
 
   /**
    * Immutable method that returns a new Vector2 rotated about the given point.
@@ -534,9 +527,9 @@ inherit( Object, Vector2, {
    * @param {number} angle
    * @returns {Vector2} the new Vector2
    */
-  rotatedAboutPoint: function( point, angle ) {
+  rotatedAboutPoint( point, angle ) {
     return this.rotatedAboutXY( point.x, point.y, angle );
-  },
+  }
 
   /**
    * A linear interpolation between this vector (ratio=0) and another vector (ratio=1).
@@ -546,9 +539,9 @@ inherit( Object, Vector2, {
    * @param {number} ratio - Not necessarily constrained in [0, 1]
    * @returns {Vector2}
    */
-  blend: function( vector, ratio ) {
+  blend( vector, ratio ) {
     return new Vector2( this.x + ( vector.x - this.x ) * ratio, this.y + ( vector.y - this.y ) * ratio );
-  },
+  }
 
   /**
    * The average (midpoint) between this vector and another vector.
@@ -557,9 +550,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} vector
    * @returns {Vector2}
    */
-  average: function( vector ) {
+  average( vector ) {
     return this.blend( vector, 0.5 );
-  },
+  }
 
   /**
    * Debugging string for the vector.
@@ -567,9 +560,9 @@ inherit( Object, Vector2, {
    *
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     return 'Vector2(' + this.x + ', ' + this.y + ')';
-  },
+  }
 
   /**
    * Converts this to a 3-dimensional vector, with the z-component equal to 0.
@@ -577,9 +570,9 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector3}
    */
-  toVector3: function() {
+  toVector3() {
     return new Vector3( this.x, this.y, 0 );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Mutables
@@ -594,11 +587,11 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {Vector2}
    */
-  setXY: function( x, y ) {
+  setXY( x, y ) {
     this.x = x;
     this.y = y;
     return this;
-  },
+  }
 
   /**
    * Sets the x-component of this vector, returning this.
@@ -607,10 +600,10 @@ inherit( Object, Vector2, {
    * @param {number} x
    * @returns {Vector2}
    */
-  setX: function( x ) {
+  setX( x ) {
     this.x = x;
     return this;
-  },
+  }
 
   /**
    * Sets the y-component of this vector, returning this.
@@ -619,10 +612,10 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {Vector2}
    */
-  setY: function( y ) {
+  setY( y ) {
     this.y = y;
     return this;
-  },
+  }
 
   /**
    * Sets this vector to be a copy of another vector.
@@ -634,9 +627,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  set: function( v ) {
+  set( v ) {
     return this.setXY( v.x, v.y );
-  },
+  }
 
   /**
    * Sets the magnitude of this vector. If the passed-in magnitude is negative, this flips the vector and sets its
@@ -649,10 +642,10 @@ inherit( Object, Vector2, {
    * @param {number} magnitude
    * @returns {Vector2}
    */
-  setMagnitude: function( magnitude ) {
+  setMagnitude( magnitude ) {
     const scale = magnitude / this.magnitude;
     return this.multiplyScalar( scale );
-  },
+  }
 
   /**
    * Adds another vector to this vector, changing this vector.
@@ -664,9 +657,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  add: function( v ) {
+  add( v ) {
     return this.setXY( this.x + v.x, this.y + v.y );
-  },
+  }
 
   /**
    * Adds another vector (x,y) to this vector, changing this vector.
@@ -679,9 +672,9 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {Vector2}
    */
-  addXY: function( x, y ) {
+  addXY( x, y ) {
     return this.setXY( this.x + x, this.y + y );
-  },
+  }
 
   /**
    * Adds a scalar to this vector (added to every component), changing this vector.
@@ -693,9 +686,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  addScalar: function( scalar ) {
+  addScalar( scalar ) {
     return this.setXY( this.x + scalar, this.y + scalar );
-  },
+  }
 
   /**
    * Subtracts this vector by another vector, changing this vector.
@@ -707,9 +700,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  subtract: function( v ) {
+  subtract( v ) {
     return this.setXY( this.x - v.x, this.y - v.y );
-  },
+  }
 
   /**
    * Subtracts this vector by another vector (x,y), changing this vector.
@@ -722,9 +715,9 @@ inherit( Object, Vector2, {
    * @param {number} y
    * @returns {Vector2}
    */
-  subtractXY: function( x, y ) {
+  subtractXY( x, y ) {
     return this.setXY( this.x - x, this.y - y );
-  },
+  }
 
   /**
    * Subtracts this vector by a scalar (subtracts each component by the scalar), changing this vector.
@@ -736,9 +729,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  subtractScalar: function( scalar ) {
+  subtractScalar( scalar ) {
     return this.setXY( this.x - scalar, this.y - scalar );
-  },
+  }
 
   /**
    * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
@@ -750,9 +743,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  multiplyScalar: function( scalar ) {
+  multiplyScalar( scalar ) {
     return this.setXY( this.x * scalar, this.y * scalar );
-  },
+  }
 
   /**
    * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
@@ -765,11 +758,11 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  multiply: function( scalar ) {
+  multiply( scalar ) {
     // make sure it's not a vector!
     assert && assert( scalar.dimension === undefined );
     return this.multiplyScalar( scalar );
-  },
+  }
 
   /**
    * Multiplies this vector by another vector component-wise, changing this vector.
@@ -781,9 +774,9 @@ inherit( Object, Vector2, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  componentMultiply: function( v ) {
+  componentMultiply( v ) {
     return this.setXY( this.x * v.x, this.y * v.y );
-  },
+  }
 
   /**
    * Divides this vector by a scalar (divides each component by the scalar), changing this vector.
@@ -795,9 +788,9 @@ inherit( Object, Vector2, {
    * @param {number} scalar
    * @returns {Vector2}
    */
-  divideScalar: function( scalar ) {
+  divideScalar( scalar ) {
     return this.setXY( this.x / scalar, this.y / scalar );
-  },
+  }
 
   /**
    * Negates this vector (multiplies each component by -1), changing this vector.
@@ -808,9 +801,9 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector2}
    */
-  negate: function() {
+  negate() {
     return this.setXY( -this.x, -this.y );
-  },
+  }
 
   /**
    * Normalizes this vector (rescales to where the magnitude is 1), changing this vector.
@@ -821,7 +814,7 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector2}
    */
-  normalize: function() {
+  normalize() {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -829,7 +822,7 @@ inherit( Object, Vector2, {
     else {
       return this.divideScalar( mag );
     }
-  },
+  }
 
   /**
    * Rounds each component of this vector with Utils.roundSymmetric.
@@ -840,9 +833,9 @@ inherit( Object, Vector2, {
    *
    * @returns {Vector2}
    */
-  roundSymmetric: function() {
+  roundSymmetric() {
     return this.setXY( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ) );
-  },
+  }
 
   /**
    * Rotates this vector by the angle (in radians), changing this vector.
@@ -854,11 +847,11 @@ inherit( Object, Vector2, {
    * @param {number} angle - In radians
    * @returns {Vector2}
    */
-  rotate: function( angle ) {
+  rotate( angle ) {
     const newAngle = this.angle + angle;
     const mag = this.magnitude;
     return this.setXY( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
-  },
+  }
 
   /**
    * Sets this vector's value to be the x,y values matching the given magnitude and angle (in radians), changing
@@ -869,9 +862,9 @@ inherit( Object, Vector2, {
    * @param {number} angle - In radians
    * @returns {Vector2}
    */
-  setPolar: function( magnitude, angle ) {
+  setPolar( magnitude, angle ) {
     return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
-  },
+  }
 
   /**
    * Returns a duck-typed object meant for use with tandem/phet-io serialization.
@@ -879,10 +872,9 @@ inherit( Object, Vector2, {
    *
    * @returns {{x:number, y:number}}
    */
-  toStateObject: function() {
+  toStateObject() {
     return { x: this.x, y: this.y };
   }
-}, {
   // static methods
 
   /**
@@ -895,9 +887,9 @@ inherit( Object, Vector2, {
    * @param {number} angle
    * @returns {Vector2}
    */
-  createPolar: function( magnitude, angle ) {
+  static createPolar( magnitude, angle ) {
     return new Vector2( 0, 0 ).setPolar( magnitude, angle );
-  },
+  }
 
   /**
    * Constructs a Vector2 from a duck-typed object, for use with tandem/phet-io deserialization.
@@ -907,9 +899,9 @@ inherit( Object, Vector2, {
    * @param {{x:number, y:number}} stateObject
    * @returns {Vector2}
    */
-  fromStateObject: function( stateObject ) {
+  static fromStateObject( stateObject ) {
     return new Vector2( stateObject.x, stateObject.y );
-  },
+  }
 
   /**
    * Allocation-free implementation that gets the angle between two vectors
@@ -920,11 +912,11 @@ inherit( Object, Vector2, {
    * @param {Vector2} endVector
    * @returns {number} the angle between the vectors
    */
-  getAngleBetweenVectors: function( startVector, endVector ) {
+  static getAngleBetweenVectors( startVector, endVector ) {
     const dx = endVector.x - startVector.x;
     const dy = endVector.y - startVector.y;
     return Math.atan2( dy, dx );
-  },
+  }
 
   /**
    * Allocation-free way to get the distance between vectors.
@@ -935,12 +927,18 @@ inherit( Object, Vector2, {
    * @param {Vector2} endVector
    * @returns {number} the angle between the vectors
    */
-  getDistanceBetweenVectors: function( startVector, endVector ) {
+  static getDistanceBetweenVectors( startVector, endVector ) {
     const dx = endVector.x - startVector.x;
     const dy = endVector.y - startVector.y;
     return Math.sqrt( dx * dx + dy * dy );
   }
-} );
+}
+
+// @public (read-only) - Helps to identify the dimension of the vector
+Vector2.prototype.isVector2 = true;
+Vector2.prototype.dimension = 2;
+
+dot.register( 'Vector2', Vector2 );
 
 // Sets up pooling on Vector2
 Poolable.mixInto( Vector2, {
@@ -948,53 +946,43 @@ Poolable.mixInto( Vector2, {
   defaultArguments: [ 0, 0 ]
 } );
 
-/*---------------------------------------------------------------------------*
- * Immutable Vector form
- *---------------------------------------------------------------------------*/
-
-// @private
-Vector2.Immutable = function ImmutableVector2( x, y ) {
-  Vector2.call( this, x, y );
-};
-const Immutable = Vector2.Immutable;
-
-inherit( Vector2, Immutable );
+class ImmutableVector2 extends Vector2 {}
 
 // throw errors whenever a mutable method is called on our immutable vector
-Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
-  Immutable.prototype[ mutableFunctionName ] = function() {
+ImmutableVector2.mutableOverrideHelper = function( mutableFunctionName ) {
+  ImmutableVector2.prototype[ mutableFunctionName ] = function() {
     throw new Error( 'Cannot call mutable method \'' + mutableFunctionName + '\' on immutable Vector2' );
   };
 };
 
 // TODO: better way to handle this list?
-Immutable.mutableOverrideHelper( 'setXY' );
-Immutable.mutableOverrideHelper( 'setX' );
-Immutable.mutableOverrideHelper( 'setY' );
+ImmutableVector2.mutableOverrideHelper( 'setXY' );
+ImmutableVector2.mutableOverrideHelper( 'setX' );
+ImmutableVector2.mutableOverrideHelper( 'setY' );
 
 /**
- * Immutable zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
+ * ImmutableVector2 zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
  * @public
  *
  * @constant {Vector2} ZERO
  */
-Vector2.ZERO = assert ? new Immutable( 0, 0 ) : new Vector2( 0, 0 );
+Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new Vector2( 0, 0 );
 
 /**
- * Immutable vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
+ * ImmutableVector2 vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
  * @public
  *
  * @constant {Vector2} X_UNIT
  */
-Vector2.X_UNIT = assert ? new Immutable( 1, 0 ) : new Vector2( 1, 0 );
+Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
 
 /**
- * Immutable vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
+ * ImmutableVector2 vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
  * @public
  *
  * @constant {Vector2} Y_UNIT
  */
-Vector2.Y_UNIT = assert ? new Immutable( 0, 1 ) : new Vector2( 0, 1 );
+Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
 Vector2.Vector2IO = new IOType( 'Vector2IO', {
   valueType: Vector2,

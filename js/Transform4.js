@@ -12,11 +12,10 @@
  */
 
 import TinyEmitter from '../../axon/js/TinyEmitter.js';
-import inherit from '../../phet-core/js/inherit.js';
-import dot from './dot.js';
 import Matrix4 from './Matrix4.js';
 import Ray3 from './Ray3.js';
 import Vector3 from './Vector3.js';
+import dot from './dot.js';
 
 const scratchMatrix = new Matrix4();
 
@@ -30,48 +29,45 @@ function checkMatrix( matrix ) {
   return ( matrix instanceof Matrix4 ) && matrix.isFinite();
 }
 
-/**
- * Creates a transform based around an initial matrix.
- * @public
- *
- * @param {Matrix4} matrix
- * @constructor
- */
-function Transform4( matrix ) {
+class Transform4 {
+  /**
+   * Creates a transform based around an initial matrix.
+   * @public
+   *
+   * @param {Matrix4} matrix
+   */
+  constructor( matrix ) {
 
-  // @private {Matrix4} - The primary matrix used for the transform
-  this.matrix = Matrix4.IDENTITY.copy();
+    // @private {Matrix4} - The primary matrix used for the transform
+    this.matrix = Matrix4.IDENTITY.copy();
 
-  // @private {Matrix4} - The inverse of the primary matrix, computed lazily
-  this.inverse = Matrix4.IDENTITY.copy();
+    // @private {Matrix4} - The inverse of the primary matrix, computed lazily
+    this.inverse = Matrix4.IDENTITY.copy();
 
-  // @private {Matrix4} - The transpose of the primary matrix, computed lazily
-  this.matrixTransposed = Matrix4.IDENTITY.copy();
+    // @private {Matrix4} - The transpose of the primary matrix, computed lazily
+    this.matrixTransposed = Matrix4.IDENTITY.copy();
 
-  // @private {Matrix4} - The inverse of the transposed primary matrix, computed lazily
-  this.inverseTransposed = Matrix4.IDENTITY.copy();
+    // @private {Matrix4} - The inverse of the transposed primary matrix, computed lazily
+    this.inverseTransposed = Matrix4.IDENTITY.copy();
 
 
-  // @private {boolean} - Whether this.inverse has been computed based on the latest primary matrix
-  this.inverseValid = true;
+    // @private {boolean} - Whether this.inverse has been computed based on the latest primary matrix
+    this.inverseValid = true;
 
-  // @private {boolean} - Whether this.matrixTransposed has been computed based on the latest primary matrix
-  this.transposeValid = true;
+    // @private {boolean} - Whether this.matrixTransposed has been computed based on the latest primary matrix
+    this.transposeValid = true;
 
-  // @private {boolean} - Whether this.inverseTransposed has been computed based on the latest primary matrix
-  this.inverseTransposeValid = true;
+    // @private {boolean} - Whether this.inverseTransposed has been computed based on the latest primary matrix
+    this.inverseTransposeValid = true;
 
-  // @public {TinyEmitter}
-  this.changeEmitter = new TinyEmitter();
+    // @public {TinyEmitter}
+    this.changeEmitter = new TinyEmitter();
 
-  if ( matrix ) {
-    this.setMatrix( matrix );
+    if ( matrix ) {
+      this.setMatrix( matrix );
+    }
   }
-}
 
-dot.register( 'Transform4', Transform4 );
-
-inherit( Object, Transform4, {
   /*---------------------------------------------------------------------------*
    * mutators
    *---------------------------------------------------------------------------*/
@@ -83,7 +79,7 @@ inherit( Object, Transform4, {
    *
    * @param {Matrix4} matrix
    */
-  setMatrix: function( matrix ) {
+  setMatrix( matrix ) {
     assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
 
     // copy the matrix over to our matrix
@@ -91,14 +87,14 @@ inherit( Object, Transform4, {
 
     // set flags and notify
     this.invalidate();
-  },
+  }
 
   /**
    * This should be called after our internal matrix is changed. It marks the other dependent matrices as invalid,
    * and sends out notifications of the change.
    * @private
    */
-  invalidate: function() {
+  invalidate() {
     // sanity check
     assert && assert( this.matrix.isFinite() );
 
@@ -108,7 +104,7 @@ inherit( Object, Transform4, {
     this.inverseTransposeValid = false;
 
     this.changeEmitter.emit();
-  },
+  }
 
   /**
    * Modifies the primary matrix such that: this.matrix = matrix * this.matrix.
@@ -116,7 +112,7 @@ inherit( Object, Transform4, {
    *
    * @param {Matrix4} matrix
    */
-  prepend: function( matrix ) {
+  prepend( matrix ) {
     assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
 
     // In the absence of a prepend-multiply function in Matrix4, copy over to a scratch matrix instead
@@ -127,7 +123,7 @@ inherit( Object, Transform4, {
 
     // set flags and notify
     this.invalidate();
-  },
+  }
 
   /**
    * Modifies the primary matrix such that: this.matrix = this.matrix * matrix
@@ -135,14 +131,14 @@ inherit( Object, Transform4, {
    *
    * @param {Matrix4} matrix
    */
-  append: function( matrix ) {
+  append( matrix ) {
     assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
 
     this.matrix.multiplyMatrix( matrix );
 
     // set flags and notify
     this.invalidate();
-  },
+  }
 
   /**
    * Like prepend(), but prepends the other transform's matrix.
@@ -150,9 +146,9 @@ inherit( Object, Transform4, {
    *
    * @param {Transform4} transform
    */
-  prependTransform: function( transform ) {
+  prependTransform( transform ) {
     this.prepend( transform.matrix );
-  },
+  }
 
   /**
    * Like append(), but appends the other transform's matrix.
@@ -160,9 +156,9 @@ inherit( Object, Transform4, {
    *
    * @param {Transform4} transform
    */
-  appendTransform: function( transform ) {
+  appendTransform( transform ) {
     this.append( transform.matrix );
-  },
+  }
 
   /**
    * Sets the transform of a Canvas context to be equivalent to the 2D affine part of this transform.
@@ -170,9 +166,9 @@ inherit( Object, Transform4, {
    *
    * @param {CanvasRenderingContext2D} context
    */
-  applyToCanvasContext: function( context ) {
+  applyToCanvasContext( context ) {
     context.setTransform( this.matrix.m00(), this.matrix.m10(), this.matrix.m01(), this.matrix.m11(), this.matrix.m03(), this.matrix.m13() );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * getters
@@ -184,7 +180,7 @@ inherit( Object, Transform4, {
    *
    * @returns {Transform4}
    */
-  copy: function() {
+  copy() {
     const transform = new Transform4( this.matrix );
 
     transform.inverse = this.inverse;
@@ -194,7 +190,7 @@ inherit( Object, Transform4, {
     transform.inverseValid = this.inverseValid;
     transform.transposeValid = this.transposeValid;
     transform.inverseTransposeValid = this.inverseTransposeValid;
-  },
+  }
 
   /**
    * Returns the primary matrix of this transform.
@@ -202,9 +198,9 @@ inherit( Object, Transform4, {
    *
    * @returns {Matrix4}
    */
-  getMatrix: function() {
+  getMatrix() {
     return this.matrix;
-  },
+  }
 
   /**
    * Returns the inverse of the primary matrix of this transform.
@@ -212,7 +208,7 @@ inherit( Object, Transform4, {
    *
    * @returns {Matrix4}
    */
-  getInverse: function() {
+  getInverse() {
     if ( !this.inverseValid ) {
       this.inverseValid = true;
 
@@ -220,7 +216,7 @@ inherit( Object, Transform4, {
       this.inverse.invert();
     }
     return this.inverse;
-  },
+  }
 
   /**
    * Returns the transpose of the primary matrix of this transform.
@@ -228,7 +224,7 @@ inherit( Object, Transform4, {
    *
    * @returns {Matrix4}
    */
-  getMatrixTransposed: function() {
+  getMatrixTransposed() {
     if ( !this.transposeValid ) {
       this.transposeValid = true;
 
@@ -236,7 +232,7 @@ inherit( Object, Transform4, {
       this.matrixTransposed.transpose();
     }
     return this.matrixTransposed;
-  },
+  }
 
   /**
    * Returns the inverse of the transpose of matrix of this transform.
@@ -244,7 +240,7 @@ inherit( Object, Transform4, {
    *
    * @returns {Matrix4}
    */
-  getInverseTransposed: function() {
+  getInverseTransposed() {
     if ( !this.inverseTransposeValid ) {
       this.inverseTransposeValid = true;
 
@@ -252,7 +248,7 @@ inherit( Object, Transform4, {
       this.inverseTransposed.transpose();
     }
     return this.inverseTransposed;
-  },
+  }
 
   /**
    * Returns whether our primary matrix is known to be an identity matrix. If false is returned, it doesn't necessarily
@@ -261,9 +257,9 @@ inherit( Object, Transform4, {
    *
    * @returns {boolean}
    */
-  isIdentity: function() {
+  isIdentity() {
     return this.matrix.type === Matrix4.Types.IDENTITY;
-  },
+  }
 
   /**
    * Returns whether any components of our primary matrix are either infinite or NaN.
@@ -271,9 +267,9 @@ inherit( Object, Transform4, {
    *
    * @returns {boolean}
    */
-  isFinite: function() {
+  isFinite() {
     return this.matrix.isFinite();
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * forward transforms (for Vector3 or scalar)
@@ -288,9 +284,9 @@ inherit( Object, Transform4, {
    * @param {Vector3} v
    * @returns {Vector3}
    */
-  transformPosition3: function( v ) {
+  transformPosition3( v ) {
     return this.matrix.timesVector3( v );
-  },
+  }
 
   /**
    * Transforms a 3-dimensional vector like position is irrelevant (translation is not applied).
@@ -299,9 +295,9 @@ inherit( Object, Transform4, {
    * @param {Vector3} v
    * @returns {Vector3}
    */
-  transformDelta3: function( v ) {
+  transformDelta3( v ) {
     return this.matrix.timesRelativeVector3( v );
-  },
+  }
 
   /**
    * Transforms a 3-dimensional vector like it is a normal to a surface (so that the surface is transformed, and the new
@@ -311,9 +307,9 @@ inherit( Object, Transform4, {
    * @param {Vector3} v
    * @returns {Vector3}
    */
-  transformNormal3: function( v ) {
+  transformNormal3( v ) {
     return this.getInverse().timesTransposeVector3( v );
-  },
+  }
 
   /**
    * Returns the x-coordinate difference for two transformed vectors, which add the x-coordinate difference of the input
@@ -323,9 +319,9 @@ inherit( Object, Transform4, {
    * @param {number} x
    * @returns {number}
    */
-  transformDeltaX: function( x ) {
+  transformDeltaX( x ) {
     return this.transformDelta3( new Vector3( x, 0, 0 ) ).x;
-  },
+  }
 
   /**
    * Returns the y-coordinate difference for two transformed vectors, which add the y-coordinate difference of the input
@@ -335,9 +331,9 @@ inherit( Object, Transform4, {
    * @param {number} y
    * @returns {number}
    */
-  transformDeltaY: function( y ) {
+  transformDeltaY( y ) {
     return this.transformDelta3( new Vector3( 0, y, 0 ) ).y;
-  },
+  }
 
   /**
    * Returns the z-coordinate difference for two transformed vectors, which add the z-coordinate difference of the input
@@ -347,9 +343,9 @@ inherit( Object, Transform4, {
    * @param {number} z
    * @returns {number}
    */
-  transformDeltaZ: function( z ) {
+  transformDeltaZ( z ) {
     return this.transformDelta3( new Vector3( 0, 0, z ) ).z;
-  },
+  }
 
   /**
    * Returns a transformed ray.
@@ -358,11 +354,11 @@ inherit( Object, Transform4, {
    * @param {Ray3} ray
    * @returns {Ray3}
    */
-  transformRay: function( ray ) {
+  transformRay( ray ) {
     return new Ray3(
       this.transformPosition3( ray.position ),
       this.transformPosition3( ray.position.plus( ray.direction ) ).minus( this.transformPosition3( ray.position ) ) );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * inverse transforms (for Vector3 or scalar)
@@ -379,9 +375,9 @@ inherit( Object, Transform4, {
    * @param {Vector3} v
    * @returns {Vector3}
    */
-  inversePosition3: function( v ) {
+  inversePosition3( v ) {
     return this.getInverse().timesVector3( v );
-  },
+  }
 
   /**
    * Transforms a 3-dimensional vector by the inverse of our transform like position is irrelevant (translation is not applied).
@@ -392,10 +388,10 @@ inherit( Object, Transform4, {
    * @param {Vector3} v
    * @returns {Vector3}
    */
-  inverseDelta3: function( v ) {
+  inverseDelta3( v ) {
     // inverse actually has the translation rolled into the other coefficients, so we have to make this longer
     return this.inversePosition3( v ).minus( this.inversePosition3( Vector3.ZERO ) );
-  },
+  }
 
   /**
    * Transforms a 3-dimensional vector by the inverse of our transform like it is a normal to a curve (so that the
@@ -407,9 +403,9 @@ inherit( Object, Transform4, {
    * @param {Vector3} v
    * @returns {Vector3}
    */
-  inverseNormal3: function( v ) {
+  inverseNormal3( v ) {
     return this.matrix.timesTransposeVector3( v );
-  },
+  }
 
   /**
    * Returns the x-coordinate difference for two inverse-transformed vectors, which add the x-coordinate difference of the input
@@ -421,9 +417,9 @@ inherit( Object, Transform4, {
    * @param {number} x
    * @returns {number}
    */
-  inverseDeltaX: function( x ) {
+  inverseDeltaX( x ) {
     return this.inverseDelta3( new Vector3( x, 0, 0 ) ).x;
-  },
+  }
 
   /**
    * Returns the y-coordinate difference for two inverse-transformed vectors, which add the y-coordinate difference of the input
@@ -435,9 +431,9 @@ inherit( Object, Transform4, {
    * @param {number} y
    * @returns {number}
    */
-  inverseDeltaY: function( y ) {
+  inverseDeltaY( y ) {
     return this.inverseDelta3( new Vector3( 0, y, 0 ) ).y;
-  },
+  }
 
   /**
    * Returns the z-coordinate difference for two inverse-transformed vectors, which add the z-coordinate difference of the input
@@ -449,9 +445,9 @@ inherit( Object, Transform4, {
    * @param {number} z
    * @returns {number}
    */
-  inverseDeltaZ: function( z ) {
+  inverseDeltaZ( z ) {
     return this.inverseDelta3( new Vector3( 0, 0, z ) ).z;
-  },
+  }
 
   /**
    * Returns an inverse-transformed ray.
@@ -462,12 +458,14 @@ inherit( Object, Transform4, {
    * @param {Ray3} ray
    * @returns {Ray3}
    */
-  inverseRay: function( ray ) {
+  inverseRay( ray ) {
     return new Ray3(
       this.inversePosition3( ray.position ),
       this.inversePosition3( ray.position.plus( ray.direction ) ).minus( this.inversePosition3( ray.position ) )
     );
   }
-} );
+}
+
+dot.register( 'Transform4', Transform4 );
 
 export default Transform4;

@@ -14,122 +14,118 @@
  */
 
 import arrayRemove from '../../phet-core/js/arrayRemove.js';
-import inherit from '../../phet-core/js/inherit.js';
 import merge from '../../phet-core/js/merge.js';
 import Bounds2 from './Bounds2.js';
-import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
+import dot from './dot.js';
 
-/**
- * @public
- * @constructor
- *
- * @param {Array.<Vector2>} points
- * @param {Array.<Array.<number>>} constraints - Pairs of indices into the points that should be treated as
- *                                               constrained edges.
- * @param {Object} [options]
- */
-function DelaunayTriangulation( points, constraints, options ) {
-  options = merge( {}, options );
+class DelaunayTriangulation {
+  /**
+   * @public
+   *
+   * @param {Array.<Vector2>} points
+   * @param {Array.<Array.<number>>} constraints - Pairs of indices into the points that should be treated as
+   *                                               constrained edges.
+   * @param {Object} [options]
+   */
+  constructor( points, constraints, options ) {
+    options = merge( {}, options );
 
-  let i;
+    let i;
 
-  // @public {Array.<Vector2>}
-  this.points = points;
+    // @public {Array.<Vector2>}
+    this.points = points;
 
-  // @public {Array.<Array.<number>>}
-  this.constraints = constraints;
+    // @public {Array.<Array.<number>>}
+    this.constraints = constraints;
 
-  // @public {Array.<Triangle>}
-  this.triangles = [];
+    // @public {Array.<Triangle>}
+    this.triangles = [];
 
-  // @public {Array.<Edge>}
-  this.edges = [];
+    // @public {Array.<Edge>}
+    this.edges = [];
 
-  // @public {Array.<Vertex>}
-  this.convexHull = [];
+    // @public {Array.<Vertex>}
+    this.convexHull = [];
 
-  if ( points.length === 0 ) {
-    return;
-  }
+    if ( points.length === 0 ) {
+      return;
+    }
 
-  // @private {Array.<Vertex>}
-  this.vertices = points.map( function( point, index ) {
-    assert && assert( point instanceof Vector2 && point.isFinite() );
+    // @private {Array.<Vertex>}
+    this.vertices = points.map( function( point, index ) {
+      assert && assert( point instanceof Vector2 && point.isFinite() );
 
-    return new Vertex( point, index );
-  } );
+      return new Vertex( point, index );
+    } );
 
-  for ( i = 0; i < this.constraints.length; i++ ) {
-    const constraint = this.constraints[ i ];
-    const firstIndex = constraint[ 0 ];
-    const secondIndex = constraint[ 1 ];
-    assert && assert( typeof firstIndex === 'number' && isFinite( firstIndex ) && firstIndex % 1 === 0 && firstIndex >= 0 && firstIndex < points.length );
-    assert && assert( typeof secondIndex === 'number' && isFinite( secondIndex ) && secondIndex % 1 === 0 && secondIndex >= 0 && secondIndex < points.length );
-    assert && assert( firstIndex !== secondIndex );
+    for ( i = 0; i < this.constraints.length; i++ ) {
+      const constraint = this.constraints[ i ];
+      const firstIndex = constraint[ 0 ];
+      const secondIndex = constraint[ 1 ];
+      assert && assert( typeof firstIndex === 'number' && isFinite( firstIndex ) && firstIndex % 1 === 0 && firstIndex >= 0 && firstIndex < points.length );
+      assert && assert( typeof secondIndex === 'number' && isFinite( secondIndex ) && secondIndex % 1 === 0 && secondIndex >= 0 && secondIndex < points.length );
+      assert && assert( firstIndex !== secondIndex );
 
-    this.vertices[ firstIndex ].constrainedVertices.push( this.vertices[ secondIndex ] );
-  }
+      this.vertices[ firstIndex ].constrainedVertices.push( this.vertices[ secondIndex ] );
+    }
 
-  this.vertices.sort( DelaunayTriangulation.vertexComparison );
+    this.vertices.sort( DelaunayTriangulation.vertexComparison );
 
-  for ( i = 0; i < this.vertices.length; i++ ) {
-    const vertex = this.vertices[ i ];
-    vertex.sortedIndex = i;
-    for ( let j = vertex.constrainedVertices.length - 1; j >= 0; j-- ) {
-      const otherVertex = vertex.constrainedVertices[ j ];
+    for ( i = 0; i < this.vertices.length; i++ ) {
+      const vertex = this.vertices[ i ];
+      vertex.sortedIndex = i;
+      for ( let j = vertex.constrainedVertices.length - 1; j >= 0; j-- ) {
+        const otherVertex = vertex.constrainedVertices[ j ];
 
-      // If the "other" vertex is later in the sweep-line order, it should have the reference to the earlier vertex,
-      // not the other way around.
-      if ( otherVertex.sortedIndex === -1 ) {
-        otherVertex.constrainedVertices.push( vertex );
-        vertex.constrainedVertices.splice( j, 1 );
+        // If the "other" vertex is later in the sweep-line order, it should have the reference to the earlier vertex,
+        // not the other way around.
+        if ( otherVertex.sortedIndex === -1 ) {
+          otherVertex.constrainedVertices.push( vertex );
+          vertex.constrainedVertices.splice( j, 1 );
+        }
       }
     }
+
+    // @private {Vertex}
+    this.bottomVertex = this.vertices[ 0 ];
+
+    // @private {Array.<Vertex>} - Our initialization will handle our first vertex
+    this.remainingVertices = this.vertices.slice( 1 );
+
+    const bounds = Bounds2.NOTHING.copy();
+    for ( i = points.length - 1; i >= 0; i-- ) {
+      bounds.addPoint( points[ i ] );
+    }
+
+    const alpha = 0.4;
+    // @private {Vertex} - Fake index -1
+    this.artificialMinVertex = new Vertex( new Vector2( bounds.minX - bounds.width * alpha, bounds.minY - bounds.height * alpha ), -1 );
+    // @private {Vertex} - Fake index -2
+    this.artificialMaxVertex = new Vertex( new Vector2( bounds.maxX + bounds.width * alpha, bounds.minY - bounds.height * alpha ), -2 );
+
+    this.edges.push( new Edge( this.artificialMinVertex, this.artificialMaxVertex ) );
+    this.edges.push( new Edge( this.artificialMaxVertex, this.bottomVertex ) );
+    this.edges.push( new Edge( this.bottomVertex, this.artificialMinVertex ) );
+
+    // Set up our first (artificial) triangle.
+    this.triangles.push( new Triangle( this.artificialMinVertex, this.artificialMaxVertex, this.bottomVertex,
+      this.edges[ 1 ], this.edges[ 2 ], this.edges[ 0 ] ) );
+
+    // @private {Edge|null} - The start of our front (the edges at the front of the sweep-line)
+    this.firstFrontEdge = this.edges[ 1 ];
+    this.edges[ 1 ].connectAfter( this.edges[ 2 ] );
+
+    // @private {Edge} - The start of our hull (the edges at the back, making up the convex hull)
+    this.firstHullEdge = this.edges[ 0 ];
   }
 
-  // @private {Vertex}
-  this.bottomVertex = this.vertices[ 0 ];
-
-  // @private {Array.<Vertex>} - Our initialization will handle our first vertex
-  this.remainingVertices = this.vertices.slice( 1 );
-
-  const bounds = Bounds2.NOTHING.copy();
-  for ( i = points.length - 1; i >= 0; i-- ) {
-    bounds.addPoint( points[ i ] );
-  }
-
-  const alpha = 0.4;
-  // @private {Vertex} - Fake index -1
-  this.artificialMinVertex = new Vertex( new Vector2( bounds.minX - bounds.width * alpha, bounds.minY - bounds.height * alpha ), -1 );
-  // @private {Vertex} - Fake index -2
-  this.artificialMaxVertex = new Vertex( new Vector2( bounds.maxX + bounds.width * alpha, bounds.minY - bounds.height * alpha ), -2 );
-
-  this.edges.push( new Edge( this.artificialMinVertex, this.artificialMaxVertex ) );
-  this.edges.push( new Edge( this.artificialMaxVertex, this.bottomVertex ) );
-  this.edges.push( new Edge( this.bottomVertex, this.artificialMinVertex ) );
-
-  // Set up our first (artificial) triangle.
-  this.triangles.push( new Triangle( this.artificialMinVertex, this.artificialMaxVertex, this.bottomVertex,
-    this.edges[ 1 ], this.edges[ 2 ], this.edges[ 0 ] ) );
-
-  // @private {Edge|null} - The start of our front (the edges at the front of the sweep-line)
-  this.firstFrontEdge = this.edges[ 1 ];
-  this.edges[ 1 ].connectAfter( this.edges[ 2 ] );
-
-  // @private {Edge} - The start of our hull (the edges at the back, making up the convex hull)
-  this.firstHullEdge = this.edges[ 0 ];
-}
-
-dot.register( 'DelaunayTriangulation', DelaunayTriangulation );
-
-inherit( Object, DelaunayTriangulation, {
   /**
    * Moves the triangulation forward by a vertex.
    * @private
    */
-  step: function() {
+  step() {
     // TODO: reverse the array prior to this?
     const vertex = this.remainingVertices.shift();
 
@@ -182,7 +178,7 @@ inherit( Object, DelaunayTriangulation, {
       }
       frontEdge = frontEdge.nextEdge;
     }
-  },
+  }
 
   /**
    * Builds a triangle between two vertices.
@@ -195,7 +191,7 @@ inherit( Object, DelaunayTriangulation, {
    * @param {Vertex} secondSideVertex
    * @returns {Edge} - The newly created edge
    */
-  fillBorderTriangle: function( firstEdge, secondEdge, firstSideVertex, middleVertex, secondSideVertex ) {
+  fillBorderTriangle( firstEdge, secondEdge, firstSideVertex, middleVertex, secondSideVertex ) {
     assert && assert( firstEdge instanceof Edge );
     assert && assert( secondEdge instanceof Edge );
     assert && assert( firstSideVertex instanceof Vertex );
@@ -218,7 +214,7 @@ inherit( Object, DelaunayTriangulation, {
     this.legalizeEdge( firstEdge );
     this.legalizeEdge( secondEdge );
     return newEdge;
-  },
+  }
 
   /**
    * Disconnects a section of front edges, and connects a new section.
@@ -237,7 +233,7 @@ inherit( Object, DelaunayTriangulation, {
    * @param {Edge} newRightEdge
    * @param {Edge} newLeftEdge
    */
-  reconnectFrontEdges: function( oldRightEdge, oldLeftEdge, newRightEdge, newLeftEdge ) {
+  reconnectFrontEdges( oldRightEdge, oldLeftEdge, newRightEdge, newLeftEdge ) {
     const previousEdge = oldRightEdge.previousEdge;
     const nextEdge = oldLeftEdge.nextEdge;
     if ( previousEdge ) {
@@ -251,7 +247,7 @@ inherit( Object, DelaunayTriangulation, {
       oldLeftEdge.disconnectAfter();
       newLeftEdge.connectAfter( nextEdge );
     }
-  },
+  }
 
   /**
    * Tries to fill in acute angles with triangles after we add a vertex into the front.
@@ -260,7 +256,7 @@ inherit( Object, DelaunayTriangulation, {
    * @param {Edge} rightFrontEdge
    * @param {Edge} leftFrontEdge
    */
-  addHalfPiHeuristic: function( rightFrontEdge, leftFrontEdge ) {
+  addHalfPiHeuristic( rightFrontEdge, leftFrontEdge ) {
     assert && assert( rightFrontEdge.endVertex === leftFrontEdge.startVertex );
 
     const middleVertex = rightFrontEdge.endVertex;
@@ -294,7 +290,7 @@ inherit( Object, DelaunayTriangulation, {
 
       leftFrontEdge = newLeftEdge;
     }
-  },
+  }
 
   /**
    * Handles any "edge events" that delete intersecting edges, creating the new edge, and filling in (all only if
@@ -305,7 +301,7 @@ inherit( Object, DelaunayTriangulation, {
    * @param {Edge} rightFrontEdge
    * @param {Edge} leftFrontEdge
    */
-  constrainEdges: function( vertex, rightFrontEdge, leftFrontEdge ) {
+  constrainEdges( vertex, rightFrontEdge, leftFrontEdge ) {
     assert && assert( vertex instanceof Vertex );
     assert && assert( rightFrontEdge instanceof Edge );
     assert && assert( leftFrontEdge instanceof Edge );
@@ -441,7 +437,7 @@ inherit( Object, DelaunayTriangulation, {
       this.triangulatePolygon( leftEdges );
       this.triangulatePolygon( rightEdges );
     }
-  },
+  }
 
   /**
    * Creates edges/triangles to triangulate a simple polygon.
@@ -449,7 +445,7 @@ inherit( Object, DelaunayTriangulation, {
    *
    * @param {Array.<Edge>} edges - Should be in counterclockwise order
    */
-  triangulatePolygon: function( edges ) {
+  triangulatePolygon( edges ) {
     // TODO: Something more efficient than ear clipping method below
     while ( edges.length > 3 ) {
       for ( let k = 0; k < edges.length; k++ ) {
@@ -534,13 +530,13 @@ inherit( Object, DelaunayTriangulation, {
       // TODO: remove this!
       window.triDebug && window.triDebug( this );
     }
-  },
+  }
 
   /**
    * Should be called when there are no more remaining vertices left to be processed.
    * @private
    */
-  finalize: function() {
+  finalize() {
     // Accumulate front edges, excluding the first and last.
     const frontEdges = [];
     let frontEdge = this.firstFrontEdge.nextEdge;
@@ -631,7 +627,7 @@ inherit( Object, DelaunayTriangulation, {
     for ( i = backEdges.length - 1; i >= 1; i-- ) {
       this.convexHull.push( backEdges[ i ].getSharedVertex( backEdges[ i - 1 ] ) );
     }
-  },
+  }
 
   /**
    * Checks an edge to see whether its two adjacent triangles satisfy the delaunay condition (the far point of one
@@ -641,7 +637,7 @@ inherit( Object, DelaunayTriangulation, {
    *
    * @param {Edge} edge
    */
-  legalizeEdge: function( edge ) {
+  legalizeEdge( edge ) {
     // Checking each edge to see if it isn't in our triangulation anymore (or can't be illegal because it doesn't
     // have multiple triangles) helps a lot.
     if ( !_.includes( this.edges, edge ) || edge.triangles.length !== 2 || edge.isConstrained ) {
@@ -683,7 +679,6 @@ inherit( Object, DelaunayTriangulation, {
       this.legalizeEdge( triangle2Edge2 );
     }
   }
-}, {
   /**
    * Comparison for sorting points by y, then by x.
    * @private
@@ -695,7 +690,7 @@ inherit( Object, DelaunayTriangulation, {
    * @param {Vertex} b
    * @returns {number}
    */
-  vertexComparison: function( a, b ) {
+  static vertexComparison( a, b ) {
     assert && assert( a instanceof Vertex );
     assert && assert( b instanceof Vertex );
 
@@ -718,7 +713,7 @@ inherit( Object, DelaunayTriangulation, {
       // property?
       return 0;
     }
-  },
+  }
 
   /**
    * Returns the cross product of (aVertex-sharedVertex) and (bVertex-sharedVertex)
@@ -729,80 +724,80 @@ inherit( Object, DelaunayTriangulation, {
    * @param {Vertex} bVertex
    * @returns {number}
    */
-  vertexProduct: function( sharedVertex, aVertex, bVertex ) {
+  static vertexProduct( sharedVertex, aVertex, bVertex ) {
     const aDiff = aVertex.point.minus( sharedVertex.point );
     const bDiff = bVertex.point.minus( sharedVertex.point );
     return aDiff.crossScalar( bDiff );
   }
-} );
-
-/**
- * Vertex (point with an index)
- * @private
- * @constructor
- *
- * @param {Vector2} point
- * @param {number} index - Index of the point in the points array
- */
-function Vertex( point, index ) {
-  assert && assert( point instanceof Vector2 );
-  assert && assert( point.isFinite() );
-  assert && assert( typeof index === 'number' );
-
-  // @public {Vector2}
-  this.point = point;
-
-  // @public {number}
-  this.index = index;
-
-  // @public {number} - Will be set after construction
-  this.sortedIndex = -1;
-
-  // @public {Array.<Vertex>} - Vertices with "lower" y values that have constrained edges with this vertex.
-  this.constrainedVertices = [];
 }
 
-inherit( Object, Vertex, {
+dot.register( 'DelaunayTriangulation', DelaunayTriangulation );
+
+class Vertex {
+  /**
+   * Vertex (point with an index)
+   * @private
+   *
+   * @param {Vector2} point
+   * @param {number} index - Index of the point in the points array
+   */
+  constructor( point, index ) {
+    assert && assert( point instanceof Vector2 );
+    assert && assert( point.isFinite() );
+    assert && assert( typeof index === 'number' );
+
+    // @public {Vector2}
+    this.point = point;
+
+    // @public {number}
+    this.index = index;
+
+    // @public {number} - Will be set after construction
+    this.sortedIndex = -1;
+
+    // @public {Array.<Vertex>} - Vertices with "lower" y values that have constrained edges with this vertex.
+    this.constrainedVertices = [];
+  }
+
   /**
    * Returns whether this is an artificial vertex (index less than zero).
    * @public
    *
    * @returns {boolean}
    */
-  isArtificial: function() {
+  isArtificial() {
     return this.index < 0;
   }
-} );
-
-/**
- * Edge defined by two vertices
- * @private
- * @constructor
- *
- * @param {Vertex} startVertex
- * @param {Vertex} endVertex
- */
-function Edge( startVertex, endVertex ) {
-  assert && assert( startVertex instanceof Vertex );
-  assert && assert( endVertex instanceof Vertex );
-  assert && assert( startVertex !== endVertex, 'Should be different vertices' );
-
-  // @public {Vertex}
-  this.startVertex = startVertex;
-  this.endVertex = endVertex;
-
-  // @public {Array.<Triangle>} - Adjacent triangles to the edge
-  this.triangles = [];
-
-  // @public {Edge|null} - Linked list for the front of the sweep-line (or in the back for the convex hull)
-  this.nextEdge = null;
-  this.previousEdge = null;
-
-  // @public {boolean} - Can be set to note that it was constrained
-  this.isConstrained = false;
 }
 
-inherit( Object, Edge, {
+class Edge {
+  /**
+   * Edge defined by two vertices
+   * @private
+   *
+   * @param {Vertex} startVertex
+   * @param {Vertex} endVertex
+   */
+  constructor( startVertex, endVertex ) {
+    assert && assert( startVertex instanceof Vertex );
+    assert && assert( endVertex instanceof Vertex );
+    assert && assert( startVertex !== endVertex, 'Should be different vertices' );
+
+    // @public {Vertex}
+    this.startVertex = startVertex;
+    this.endVertex = endVertex;
+
+    // @public {Array.<Triangle>} - Adjacent triangles to the edge
+    this.triangles = [];
+
+    // @public {Edge|null} - Linked list for the front of the sweep-line (or in the back for the convex hull)
+    this.nextEdge = null;
+    this.previousEdge = null;
+
+    // @public {boolean} - Can be set to note that it was constrained
+    this.isConstrained = false;
+  }
+
 
   /**
    * Returns whether this is an artificial edge (has an artificial vertex)
@@ -810,9 +805,9 @@ inherit( Object, Edge, {
    *
    * @returns {boolean}
    */
-  isArtificial: function() {
+  isArtificial() {
     return this.startVertex.isArtificial() || this.endVertex.isArtificial();
-  },
+  }
 
   /**
    * Appends the edge to the end of this edge (for our linked list).
@@ -820,19 +815,21 @@ inherit( Object, Edge, {
    *
    * @param {Edge} edge
    */
-  connectAfter: function( edge ) {
+  connectAfter( edge ) {
     assert && assert( edge instanceof Edge );
     assert && assert( this.endVertex === edge.startVertex );
 
     this.nextEdge = edge;
     edge.previousEdge = this;
-  },
+  }
 
-  // TODO: doc
-  disconnectAfter: function() {
+  /**
+   * @public
+   */
+  disconnectAfter() {
     this.nextEdge.previousEdge = null;
     this.nextEdge = null;
-  },
+  }
 
   /**
    * Adds an adjacent triangle.
@@ -840,12 +837,12 @@ inherit( Object, Edge, {
    *
    * @param {Triangle} triangle
    */
-  addTriangle: function( triangle ) {
+  addTriangle( triangle ) {
     assert && assert( triangle instanceof Triangle );
     assert && assert( this.triangles.length <= 1 );
 
     this.triangles.push( triangle );
-  },
+  }
 
   /**
    * Removes an adjacent triangle.
@@ -853,12 +850,12 @@ inherit( Object, Edge, {
    *
    * @param {Triangle} triangle
    */
-  removeTriangle: function( triangle ) {
+  removeTriangle( triangle ) {
     assert && assert( triangle instanceof Triangle );
     assert && assert( _.includes( this.triangles, triangle ) );
 
     arrayRemove( this.triangles, triangle );
-  },
+  }
 
   /**
    * Returns the triangle in common with both edges.
@@ -867,7 +864,7 @@ inherit( Object, Edge, {
    * @param {Edge} otherEdge
    * @returns {Triangle}
    */
-  getSharedTriangle: function( otherEdge ) {
+  getSharedTriangle( otherEdge ) {
     assert && assert( otherEdge instanceof Edge );
 
     for ( let i = 0; i < this.triangles.length; i++ ) {
@@ -879,7 +876,7 @@ inherit( Object, Edge, {
       }
     }
     throw new Error( 'No common triangle' );
-  },
+  }
 
   /**
    * Returns the vertex in common with both edges.
@@ -888,7 +885,7 @@ inherit( Object, Edge, {
    * @param {Edge} otherEdge
    * @returns {Vertex}
    */
-  getSharedVertex: function( otherEdge ) {
+  getSharedVertex( otherEdge ) {
     assert && assert( otherEdge instanceof Edge );
 
     if ( this.startVertex === otherEdge.startVertex || this.startVertex === otherEdge.endVertex ) {
@@ -898,7 +895,7 @@ inherit( Object, Edge, {
       assert && assert( this.endVertex === otherEdge.startVertex || this.endVertex === otherEdge.endVertex );
       return this.endVertex;
     }
-  },
+  }
 
   /**
    * Returns the other vertex of the edge.
@@ -907,7 +904,7 @@ inherit( Object, Edge, {
    * @param {Vertex} vertex
    * @returns {Vertex}
    */
-  getOtherVertex: function( vertex ) {
+  getOtherVertex( vertex ) {
     assert && assert( vertex instanceof Vertex );
     assert && assert( vertex === this.startVertex || vertex === this.endVertex );
 
@@ -917,7 +914,7 @@ inherit( Object, Edge, {
     else {
       return this.startVertex;
     }
-  },
+  }
 
   /**
    * Returns the other triangle associated with this edge (if there are two).
@@ -926,7 +923,7 @@ inherit( Object, Edge, {
    * @param {Triangle} triangle
    * @returns {Triangle}
    */
-  getOtherTriangle: function( triangle ) {
+  getOtherTriangle( triangle ) {
     assert && assert( triangle instanceof Triangle );
     assert && assert( this.triangles.length === 2 );
 
@@ -936,7 +933,7 @@ inherit( Object, Edge, {
     else {
       return this.triangles[ 0 ];
     }
-  },
+  }
 
   /**
    * Returns whether the line segment defined between the vertex and bottomVertex intersect this edge.
@@ -946,66 +943,65 @@ inherit( Object, Edge, {
    * @param {Vertex} bottomVertex
    * @returns {boolean}
    */
-  intersectsConstrainedEdge: function( vertex, bottomVertex ) {
+  intersectsConstrainedEdge( vertex, bottomVertex ) {
     return Utils.lineSegmentIntersection( vertex.point.x, vertex.point.y, bottomVertex.point.x, bottomVertex.point.y,
       this.startVertex.point.x, this.startVertex.point.y,
       this.endVertex.point.x, this.endVertex.point.y );
   }
-} );
-
-/**
- * Triangle defined by three vertices (with edges)
- * @private
- * @constructor
- *
- * @param {Vertex} aVertex
- * @param {Vertex} bVertex
- * @param {Vertex} cVertex
- * @param {Edge} aEdge - Edge opposite the 'a' vertex
- * @param {Edge} bEdge - Edge opposite the 'b' vertex
- * @param {Edge} cEdge - Edge opposite the 'c' vertex
- */
-function Triangle( aVertex, bVertex, cVertex, aEdge, bEdge, cEdge ) {
-  // Type checks
-  assert && assert( aVertex instanceof Vertex );
-  assert && assert( bVertex instanceof Vertex );
-  assert && assert( cVertex instanceof Vertex );
-  assert && assert( aEdge instanceof Edge );
-  assert && assert( bEdge instanceof Edge );
-  assert && assert( cEdge instanceof Edge );
-
-  // Ensure each vertex is NOT in the opposite edge
-  assert && assert( aVertex !== aEdge.startVertex && aVertex !== aEdge.endVertex, 'Should be an opposite edge' );
-  assert && assert( bVertex !== bEdge.startVertex && bVertex !== bEdge.endVertex, 'Should be an opposite edge' );
-  assert && assert( cVertex !== cEdge.startVertex && cVertex !== cEdge.endVertex, 'Should be an opposite edge' );
-
-  // Ensure each vertex IS in its adjacent edges
-  assert && assert( aVertex === bEdge.startVertex || aVertex === bEdge.endVertex, 'aVertex should be in bEdge' );
-  assert && assert( aVertex === cEdge.startVertex || aVertex === cEdge.endVertex, 'aVertex should be in cEdge' );
-  assert && assert( bVertex === aEdge.startVertex || bVertex === aEdge.endVertex, 'bVertex should be in aEdge' );
-  assert && assert( bVertex === cEdge.startVertex || bVertex === cEdge.endVertex, 'bVertex should be in cEdge' );
-  assert && assert( cVertex === aEdge.startVertex || cVertex === aEdge.endVertex, 'cVertex should be in aEdge' );
-  assert && assert( cVertex === bEdge.startVertex || cVertex === bEdge.endVertex, 'cVertex should be in bEdge' );
-
-  assert && assert( Utils.triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
-    'Should be counterclockwise' );
-
-  // @public {Vertex}
-  this.aVertex = aVertex;
-  this.bVertex = bVertex;
-  this.cVertex = cVertex;
-
-  // @public {Edge}
-  this.aEdge = aEdge;
-  this.bEdge = bEdge;
-  this.cEdge = cEdge;
-
-  this.aEdge.addTriangle( this );
-  this.bEdge.addTriangle( this );
-  this.cEdge.addTriangle( this );
 }
 
-inherit( Object, Triangle, {
+class Triangle {
+  /**
+   * Triangle defined by three vertices (with edges)
+   * @private
+   *
+   * @param {Vertex} aVertex
+   * @param {Vertex} bVertex
+   * @param {Vertex} cVertex
+   * @param {Edge} aEdge - Edge opposite the 'a' vertex
+   * @param {Edge} bEdge - Edge opposite the 'b' vertex
+   * @param {Edge} cEdge - Edge opposite the 'c' vertex
+   */
+  constructor( aVertex, bVertex, cVertex, aEdge, bEdge, cEdge ) {
+    // Type checks
+    assert && assert( aVertex instanceof Vertex );
+    assert && assert( bVertex instanceof Vertex );
+    assert && assert( cVertex instanceof Vertex );
+    assert && assert( aEdge instanceof Edge );
+    assert && assert( bEdge instanceof Edge );
+    assert && assert( cEdge instanceof Edge );
+
+    // Ensure each vertex is NOT in the opposite edge
+    assert && assert( aVertex !== aEdge.startVertex && aVertex !== aEdge.endVertex, 'Should be an opposite edge' );
+    assert && assert( bVertex !== bEdge.startVertex && bVertex !== bEdge.endVertex, 'Should be an opposite edge' );
+    assert && assert( cVertex !== cEdge.startVertex && cVertex !== cEdge.endVertex, 'Should be an opposite edge' );
+
+    // Ensure each vertex IS in its adjacent edges
+    assert && assert( aVertex === bEdge.startVertex || aVertex === bEdge.endVertex, 'aVertex should be in bEdge' );
+    assert && assert( aVertex === cEdge.startVertex || aVertex === cEdge.endVertex, 'aVertex should be in cEdge' );
+    assert && assert( bVertex === aEdge.startVertex || bVertex === aEdge.endVertex, 'bVertex should be in aEdge' );
+    assert && assert( bVertex === cEdge.startVertex || bVertex === cEdge.endVertex, 'bVertex should be in cEdge' );
+    assert && assert( cVertex === aEdge.startVertex || cVertex === aEdge.endVertex, 'cVertex should be in aEdge' );
+    assert && assert( cVertex === bEdge.startVertex || cVertex === bEdge.endVertex, 'cVertex should be in bEdge' );
+
+    assert && assert( Utils.triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
+      'Should be counterclockwise' );
+
+    // @public {Vertex}
+    this.aVertex = aVertex;
+    this.bVertex = bVertex;
+    this.cVertex = cVertex;
+
+    // @public {Edge}
+    this.aEdge = aEdge;
+    this.bEdge = bEdge;
+    this.cEdge = cEdge;
+
+    this.aEdge.addTriangle( this );
+    this.bEdge.addTriangle( this );
+    this.cEdge.addTriangle( this );
+  }
+
   /**
    * Returns whether the vertex is one in the triangle.
    * @public
@@ -1013,9 +1009,9 @@ inherit( Object, Triangle, {
    * @param {Vertex} vertex
    * @returns {boolean}
    */
-  hasVertex: function( vertex ) {
+  hasVertex( vertex ) {
     return this.aVertex === vertex || this.bVertex === vertex || this.cVertex === vertex;
-  },
+  }
 
   /**
    * Returns the vertex that is opposite from the given edge.
@@ -1024,7 +1020,7 @@ inherit( Object, Triangle, {
    * @param {Edge} edge
    * @returns {Vertex}
    */
-  getVertexOppositeFromEdge: function( edge ) {
+  getVertexOppositeFromEdge( edge ) {
     assert && assert( edge instanceof Edge );
     assert && assert( edge === this.aEdge || edge === this.bEdge || edge === this.cEdge,
       'Should be an edge that is part of this triangle' );
@@ -1038,7 +1034,7 @@ inherit( Object, Triangle, {
     else {
       return this.cVertex;
     }
-  },
+  }
 
   /**
    * Returns the edge that is opposite from the given vertex.
@@ -1047,7 +1043,7 @@ inherit( Object, Triangle, {
    * @param {Vertex} vertex
    * @returns {Edge}
    */
-  getEdgeOppositeFromVertex: function( vertex ) {
+  getEdgeOppositeFromVertex( vertex ) {
     assert && assert( vertex instanceof Vertex );
     assert && assert( vertex === this.aVertex || vertex === this.bVertex || vertex === this.cVertex,
       'Should be a vertex that is part of this triangle' );
@@ -1061,7 +1057,7 @@ inherit( Object, Triangle, {
     else {
       return this.cEdge;
     }
-  },
+  }
 
   /**
    * Returns the vertex that is just before the given vertex (in counterclockwise order).
@@ -1070,7 +1066,7 @@ inherit( Object, Triangle, {
    * @param {Vertex} vertex
    * @returns {Vertex}
    */
-  getVertexBefore: function( vertex ) {
+  getVertexBefore( vertex ) {
     assert && assert( vertex instanceof Vertex );
     assert && assert( vertex === this.aVertex || vertex === this.bVertex || vertex === this.cVertex );
 
@@ -1083,7 +1079,7 @@ inherit( Object, Triangle, {
     else {
       return this.bVertex;
     }
-  },
+  }
 
   /**
    * Returns the vertex that is just after the given vertex (in counterclockwise order).
@@ -1092,7 +1088,7 @@ inherit( Object, Triangle, {
    * @param {Vertex} vertex
    * @returns {Vertex}
    */
-  getVertexAfter: function( vertex ) {
+  getVertexAfter( vertex ) {
     assert && assert( vertex instanceof Vertex );
     assert && assert( vertex === this.aVertex || vertex === this.bVertex || vertex === this.cVertex );
 
@@ -1105,7 +1101,7 @@ inherit( Object, Triangle, {
     else {
       return this.aVertex;
     }
-  },
+  }
 
   /**
    * Returns the one non-artificial edge in the triangle (assuming it exists).
@@ -1113,7 +1109,7 @@ inherit( Object, Triangle, {
    *
    * @returns {Edge|null}
    */
-  getNonArtificialEdge: function() {
+  getNonArtificialEdge() {
     assert && assert( ( this.aEdge.isArtificial() && this.bEdge.isArtificial() && !this.cEdge.isArtificial() ) ||
                       ( this.aEdge.isArtificial() && !this.bEdge.isArtificial() && this.cEdge.isArtificial() ) ||
                       ( !this.aEdge.isArtificial() && this.bEdge.isArtificial() && this.cEdge.isArtificial() ) ||
@@ -1132,7 +1128,7 @@ inherit( Object, Triangle, {
     else {
       return null;
     }
-  },
+  }
 
   /**
    * Returns the next edge (counterclockwise).
@@ -1141,7 +1137,7 @@ inherit( Object, Triangle, {
    * @param {Edge} edge
    * @returns {Edge}
    */
-  getNextEdge: function( edge ) {
+  getNextEdge( edge ) {
     assert && assert( edge === this.aEdge || edge === this.bEdge || edge === this.cEdge );
 
     if ( this.aEdge === edge ) {
@@ -1153,7 +1149,7 @@ inherit( Object, Triangle, {
     if ( this.cEdge === edge ) {
       return this.aEdge;
     }
-  },
+  }
 
   /**
    * Returns the previous edge (clockwise).
@@ -1162,7 +1158,7 @@ inherit( Object, Triangle, {
    * @param {Edge} edge
    * @returns {Edge}
    */
-  getPreviousEdge: function( edge ) {
+  getPreviousEdge( edge ) {
     assert && assert( edge === this.aEdge || edge === this.bEdge || edge === this.cEdge );
 
     if ( this.aEdge === edge ) {
@@ -1174,7 +1170,7 @@ inherit( Object, Triangle, {
     if ( this.cEdge === edge ) {
       return this.bEdge;
     }
-  },
+  }
 
   /**
    * Returns whether this is an artificial triangle (has an artificial vertex)
@@ -1182,16 +1178,18 @@ inherit( Object, Triangle, {
    *
    * @returns {boolean}
    */
-  isArtificial: function() {
+  isArtificial() {
     return this.aVertex.isArtificial() || this.bVertex.isArtificial() || this.cVertex.isArtificial();
-  },
+  }
 
-  // TODO: doc
-  remove: function() {
+  /**
+   * @public
+   */
+  remove() {
     this.aEdge.removeTriangle( this );
     this.bEdge.removeTriangle( this );
     this.cEdge.removeTriangle( this );
   }
-} );
+}
 
 export default DelaunayTriangulation;

@@ -8,29 +8,24 @@
  * @author Matt Pennington
  */
 
-import inherit from '../../phet-core/js/inherit.js';
-import dot from './dot.js';
 import Utils from './Utils.js';
+import dot from './dot.js';
 
-/**
- * Creates a complex number, that has both a real and imaginary part.
- * @constructor
- * @public
- *
- * @param {number} real - The real part. For a complex number $a+bi$, this should be $a$.
- * @param {number} imaginary - The imaginary part. For a complex number $a+bi$, this should be $b$.
- */
-function Complex( real, imaginary ) {
-  // @public {number} - The real part. For a complex number $a+bi$, this is $a$.
-  this.real = real;
+class Complex {
+  /**
+   * Creates a complex number, that has both a real and imaginary part.
+   * @public
+   *
+   * @param {number} real - The real part. For a complex number $a+bi$, this should be $a$.
+   * @param {number} imaginary - The imaginary part. For a complex number $a+bi$, this should be $b$.
+   */
+  constructor( real, imaginary ) {
+    // @public {number} - The real part. For a complex number $a+bi$, this is $a$.
+    this.real = real;
 
-  // @public {number} - The imaginary part. For a complex number $a+bi$, this is $b$.
-  this.imaginary = imaginary;
-}
-
-dot.register( 'Complex', Complex );
-
-inherit( Object, Complex, {
+    // @public {number} - The imaginary part. For a complex number $a+bi$, this is $b$.
+    this.imaginary = imaginary;
+  }
 
   /**
    * Creates a copy of this complex, or if a complex is passed in, set that complex's values to ours.
@@ -43,14 +38,14 @@ inherit( Object, Complex, {
    *                              in the values of the provided complex so that it equals this complex.
    * @returns {Complex}
    */
-  copy: function( complex ) {
+  copy( complex ) {
     if ( complex ) {
       return complex.set( this );
     }
     else {
       return new Complex( this.real, this.imaginary );
     }
-  },
+  }
 
   /**
    * The phase / argument of the complex number.
@@ -58,9 +53,9 @@ inherit( Object, Complex, {
    *
    * @returns {number}
    */
-  phase: function() {
+  phase() {
     return Math.atan2( this.imaginary, this.real );
-  },
+  }
 
   /**
    * The magnitude (Euclidean/L2 Norm) of this complex number, i.e. $\sqrt{a^2+b^2}$.
@@ -68,12 +63,12 @@ inherit( Object, Complex, {
    *
    * @returns {number}
    */
-  getMagnitude: function() {
+  getMagnitude() {
     return Math.sqrt( this.magnitudeSquared );
-  },
+  }
   get magnitude() {
     return this.getMagnitude();
-  },
+  }
 
   /**
    * The squared magnitude (square of the Euclidean/L2 Norm) of this complex, i.e. $a^2+b^2$.
@@ -81,12 +76,12 @@ inherit( Object, Complex, {
    *
    * @returns {number}
    */
-  getMagnitudeSquared: function() {
+  getMagnitudeSquared() {
     return this.real * this.real + this.imaginary * this.imaginary;
-  },
+  }
   get magnitudeSquared() {
     return this.getMagnitudeSquared();
-  },
+  }
 
   /**
    * Exact equality comparison between this Complex and another Complex.
@@ -95,9 +90,9 @@ inherit( Object, Complex, {
    * @param {Complex} other
    * @returns {boolean} - Whether the two complex numbers have equal components
    */
-  equals: function( other ) {
+  equals( other ) {
     return this.real === other.real && this.imaginary === other.imaginary;
-  },
+  }
 
   /**
    * Approximate equality comparison between this Complex and another Complex.
@@ -108,12 +103,12 @@ inherit( Object, Complex, {
    * @returns {boolean} - Whether difference between the two complex numbers has no component with an absolute value
    *                      greater than epsilon.
    */
-  equalsEpsilon: function( other, epsilon ) {
+  equalsEpsilon( other, epsilon ) {
     if ( !epsilon ) {
       epsilon = 0;
     }
     return Math.max( Math.abs( this.real - other.real ), Math.abs( this.imaginary - other.imaginary ) ) <= epsilon;
-  },
+  }
 
   /**
    * Addition of this Complex and another Complex, returning a copy.
@@ -125,9 +120,9 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  plus: function( c ) {
+  plus( c ) {
     return new Complex( this.real + c.real, this.imaginary + c.imaginary );
-  },
+  }
 
   /**
    * Subtraction of this Complex by another Complex c, returning a copy.
@@ -139,9 +134,9 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  minus: function( c ) {
+  minus( c ) {
     return new Complex( this.real - c.real, this.imaginary - c.imaginary );
-  },
+  }
 
   /**
    * Complex multiplication.
@@ -151,9 +146,9 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  times: function( c ) {
+  times( c ) {
     return new Complex( this.real * c.real - this.imaginary * c.imaginary, this.real * c.imaginary + this.imaginary * c.real );
-  },
+  }
 
   /**
    * Complex division.
@@ -163,13 +158,13 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  dividedBy: function( c ) {
+  dividedBy( c ) {
     const cMag = c.magnitudeSquared;
     return new Complex(
       ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
       ( this.imaginary * c.real - this.real * c.imaginary ) / cMag
     );
-  },
+  }
 
   /**
    * Square root.
@@ -178,11 +173,11 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  sqrtOf: function() {
+  sqrtOf() {
     const mag = this.magnitude;
     return new Complex( Math.sqrt( ( mag + this.real ) / 2 ),
       ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
-  },
+  }
 
   /**
    * Returns the power of this complex number by a real number.
@@ -191,14 +186,14 @@ inherit( Object, Complex, {
    * @param {number} realPower
    * @returns {Complex}
    */
-  powerByReal: function( realPower ) {
+  powerByReal( realPower ) {
     const magTimes = Math.pow( this.magnitude, realPower );
     const angle = realPower * this.phase();
     return new Complex(
       magTimes * Math.cos( angle ),
       magTimes * Math.sin( angle )
     );
-  },
+  }
 
   /**
    * Sine.
@@ -207,12 +202,12 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  sinOf: function() {
+  sinOf() {
     return new Complex(
       Math.sin( this.real ) * Utils.cosh( this.imaginary ),
       Math.cos( this.real ) * Utils.sinh( this.imaginary )
     );
-  },
+  }
 
   /**
    * Cosine.
@@ -221,12 +216,12 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  cosOf: function() {
+  cosOf() {
     return new Complex(
       Math.cos( this.real ) * Utils.cosh( this.imaginary ),
       -Math.sin( this.real ) * Utils.sinh( this.imaginary )
     );
-  },
+  }
 
   /**
    * Returns the square of this complex number and does not modify it.
@@ -235,9 +230,9 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  squared: function() {
+  squared() {
     return this.times( this );
-  },
+  }
 
 
   /**
@@ -247,9 +242,9 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  conjugated: function() {
+  conjugated() {
     return new Complex( this.real, -this.imaginary );
-  },
+  }
 
   /**
    * Takes e to the power of this complex number. $e^{a+bi}=e^a\cos b + i\sin b$.
@@ -258,9 +253,9 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  exponentiated: function() {
+  exponentiated() {
     return Complex.createPolar( Math.exp( this.real ), this.imaginary );
-  },
+  }
 
   /*** Mutable functions ***/
 
@@ -272,11 +267,11 @@ inherit( Object, Complex, {
    * @param {number} imaginary
    * @returns {Complex}
    */
-  setRealImaginary: function( real, imaginary ) {
+  setRealImaginary( real, imaginary ) {
     this.real = real;
     this.imaginary = imaginary;
     return this;
-  },
+  }
 
   /**
    * Sets the real component of this complex, returning this
@@ -285,10 +280,10 @@ inherit( Object, Complex, {
    * @param {number} real
    * @returns {Complex}
    */
-  setReal: function( real ) {
+  setReal( real ) {
     this.real = real;
     return this;
-  },
+  }
 
   /**
    * Sets the imaginary component of this complex, returning this
@@ -297,10 +292,10 @@ inherit( Object, Complex, {
    * @param {number} imaginary
    * @returns {Complex}
    */
-  setImaginary: function( imaginary ) {
+  setImaginary( imaginary ) {
     this.imaginary = imaginary;
     return this;
-  },
+  }
 
   /**
    * Sets the components of this complex to be a copy of the parameter
@@ -312,9 +307,9 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  set: function( c ) {
+  set( c ) {
     return this.setRealImaginary( c.real, c.imaginary );
-  },
+  }
 
   /**
    * Sets this Complex's value to be the a,b values matching the given magnitude and phase (in radians), changing
@@ -325,9 +320,9 @@ inherit( Object, Complex, {
    * @param {number} phase - In radians
    * @returns {Complex}
    */
-  setPolar: function( magnitude, phase ) {
+  setPolar( magnitude, phase ) {
     return this.setRealImaginary( magnitude * Math.cos( phase ), magnitude * Math.sin( phase ) );
-  },
+  }
 
   /**
    * Addition of this Complex and another Complex, returning a copy.
@@ -338,9 +333,9 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  add: function( c ) {
+  add( c ) {
     return this.setRealImaginary( this.real + c.real, this.imaginary + c.imaginary );
-  },
+  }
 
   /**
    * Subtraction of another Complex from this Complex, returning a copy.
@@ -351,9 +346,9 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  subtract: function( c ) {
+  subtract( c ) {
     return this.setRealImaginary( this.real - c.real, this.imaginary - c.imaginary );
-  },
+  }
 
   /**
    * Mutable Complex multiplication.
@@ -362,11 +357,11 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  multiply: function( c ) {
+  multiply( c ) {
     return this.setRealImaginary(
       this.real * c.real - this.imaginary * c.imaginary,
       this.real * c.imaginary + this.imaginary * c.real );
-  },
+  }
 
   /**
    * Mutable Complex division. The immutable form is dividedBy.
@@ -375,13 +370,13 @@ inherit( Object, Complex, {
    * @param {Complex} c
    * @returns {Complex}
    */
-  divide: function( c ) {
+  divide( c ) {
     const cMag = c.magnitudeSquared;
     return this.setRealImaginary(
       ( this.real * c.real + this.imaginary * c.imaginary ) / cMag,
       ( this.imaginary * c.real - this.real * c.imaginary ) / cMag
     );
-  },
+  }
 
   /**
    * Sets this Complex to e to the power of this complex number. $e^{a+bi}=e^a\cos b + i\sin b$.
@@ -390,9 +385,9 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  exponentiate: function() {
+  exponentiate() {
     return this.setPolar( Math.exp( this.real ), this.imaginary );
-  },
+  }
 
   /**
    * Squares this complex number.
@@ -401,9 +396,9 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  square: function() {
+  square() {
     return this.multiply( this );
-  },
+  }
 
   /**
    * Square root.
@@ -412,11 +407,11 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  sqrt: function() {
+  sqrt() {
     const mag = this.magnitude;
     return this.setRealImaginary( Math.sqrt( ( mag + this.real ) / 2 ),
       ( this.imaginary >= 0 ? 1 : -1 ) * Math.sqrt( ( mag - this.real ) / 2 ) );
-  },
+  }
 
   /**
    * Sine.
@@ -425,12 +420,12 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  sin: function() {
+  sin() {
     return this.setRealImaginary(
       Math.sin( this.real ) * Utils.cosh( this.imaginary ),
       Math.cos( this.real ) * Utils.sinh( this.imaginary )
     );
-  },
+  }
 
   /**
    * Cosine.
@@ -439,12 +434,12 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  cos: function() {
+  cos() {
     return this.setRealImaginary(
       Math.cos( this.real ) * Utils.cosh( this.imaginary ),
       -Math.sin( this.real ) * Utils.sinh( this.imaginary )
     );
-  },
+  }
 
 
   /**
@@ -454,9 +449,9 @@ inherit( Object, Complex, {
    *
    * @returns {Complex}
    */
-  conjugate: function() {
+  conjugate() {
     return this.setRealImaginary( this.real, -this.imaginary );
-  },
+  }
 
   /**
    * Debugging string for the complex number (provides real and imaginary parts).
@@ -464,12 +459,9 @@ inherit( Object, Complex, {
    *
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     return 'Complex(' + this.real + ', ' + this.imaginary + ')';
   }
-
-
-}, {
   /**
    * Constructs a complex number from just the real part (assuming the imaginary part is 0).
    * @public
@@ -477,9 +469,9 @@ inherit( Object, Complex, {
    * @param {number} real
    * @returns {Complex}
    */
-  real: function( real ) {
+  static real( real ) {
     return new Complex( real, 0 );
-  },
+  }
 
   /**
    * Constructs a complex number from just the imaginary part (assuming the real part is 0).
@@ -488,9 +480,9 @@ inherit( Object, Complex, {
    * @param {number} imaginary
    * @returns {Complex}
    */
-  imaginary: function( imaginary ) {
+  static imaginary( imaginary ) {
     return new Complex( 0, imaginary );
-  },
+  }
 
   /**
    * Constructs a complex number from the polar form. For a magnitude $r$ and phase $\varphi$, this will be
@@ -501,10 +493,12 @@ inherit( Object, Complex, {
    * @param {number} phase
    * @returns {Complex}
    */
-  createPolar: function( magnitude, phase ) {
+  static createPolar( magnitude, phase ) {
     return new Complex( magnitude * Math.cos( phase ), magnitude * Math.sin( phase ) );
   }
-} );
+}
+
+dot.register( 'Complex', Complex );
 
 /**
  * Immutable constant $0$.

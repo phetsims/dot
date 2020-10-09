@@ -7,24 +7,22 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 
-/**
- * @param {number} x
- * @param {number} y
- * @param {number} width
- * @param {number} height
- * @constructor
- */
-function Rectangle( x, y, width, height ) {
-  assert && assert( height !== undefined, 'Rectangle requires 4 parameters' );
-  Bounds2.call( this, x, y, x + width, y + height );
+class Rectangle extends Bounds2 {
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   */
+  constructor( x, y, width, height ) {
+    assert && assert( height !== undefined, 'Rectangle requires 4 parameters' );
+    super( x, y, x + width, y + height );
+  }
 }
 
 dot.register( 'Rectangle', Rectangle );
-
-inherit( Bounds2, Rectangle );
 
 export default Rectangle;

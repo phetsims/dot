@@ -6,48 +6,41 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
-import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
+import dot from './dot.js';
 
-/**
- * Creates a 4-dimensional vector with the specified X, Y, Z and W values.
- * @constructor
- * @public
- *
- * @param {number} x - X coordinate
- * @param {number} y - Y coordinate
- * @param {number} z - Z coordinate
- * @param {number} w - W coordinate
- */
-function Vector4( x, y, z, w ) {
+class Vector4 {
+  /**
+   * Creates a 4-dimensional vector with the specified X, Y, Z and W values.
+   * @public
+   *
+   * @param {number} x - X coordinate
+   * @param {number} y - Y coordinate
+   * @param {number} z - Z coordinate
+   * @param {number} w - W coordinate
+   */
+  constructor( x, y, z, w ) {
 
-  assert && assert( typeof x === 'number', 'x needs to be a number' );
-  assert && assert( typeof y === 'number', 'y needs to be a number' );
-  assert && assert( typeof z === 'number', 'z needs to be a number' );
-  assert && assert( typeof w === 'number', 'w needs to be a number' );
+    assert && assert( typeof x === 'number', 'x needs to be a number' );
+    assert && assert( typeof y === 'number', 'y needs to be a number' );
+    assert && assert( typeof z === 'number', 'z needs to be a number' );
+    assert && assert( typeof w === 'number', 'w needs to be a number' );
 
-  // @public {number} - The X coordinate of the vector.
-  this.x = x;
+    // @public {number} - The X coordinate of the vector.
+    this.x = x;
 
-  // @public {number} - The Y coordinate of the vector.
-  this.y = y;
+    // @public {number} - The Y coordinate of the vector.
+    this.y = y;
 
-  // @public {number} - The Z coordinate of the vector.
-  this.z = z;
+    // @public {number} - The Z coordinate of the vector.
+    this.z = z;
 
-  // @public {number} - The W coordinate of the vector. Default is 1, for ease with homogeneous coordinates.
-  this.w = w;
-}
+    // @public {number} - The W coordinate of the vector. Default is 1, for ease with homogeneous coordinates.
+    this.w = w;
+  }
 
-dot.register( 'Vector4', Vector4 );
-
-inherit( Object, Vector4, {
-  // @public (read-only) - Helps to identify the dimension of the vector
-  isVector4: true,
-  dimension: 4,
 
   /**
    * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2+z^2+w^2}$.
@@ -55,13 +48,13 @@ inherit( Object, Vector4, {
    *
    * @returns {number}
    */
-  getMagnitude: function() {
+  getMagnitude() {
     return Math.sqrt( this.magnitudeSquared );
-  },
+  }
 
   get magnitude() {
     return this.getMagnitude();
-  },
+  }
 
   /**
    * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2+z^2+w^2$.
@@ -69,12 +62,12 @@ inherit( Object, Vector4, {
    *
    * @returns {number}
    */
-  getMagnitudeSquared: function() {
+  getMagnitudeSquared() {
     return this.dot( this );
-  },
+  }
   get magnitudeSquared() {
     return this.getMagnitudeSquared();
-  },
+  }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point.
@@ -83,9 +76,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} point
    * @returns {number}
    */
-  distance: function( point ) {
+  distance( point ) {
     return this.minus( point ).magnitude;
-  },
+  }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point (x,y,z,w).
@@ -97,13 +90,13 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {number}
    */
-  distanceXYZW: function( x, y, z, w ) {
+  distanceXYZW( x, y, z, w ) {
     const dx = this.x - x;
     const dy = this.y - y;
     const dz = this.z - z;
     const dw = this.w - w;
     return Math.sqrt( dx * dx + dy * dy + dz * dz + dw * dw );
-  },
+  }
 
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point.
@@ -112,9 +105,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} point
    * @returns {number}
    */
-  distanceSquared: function( point ) {
+  distanceSquared( point ) {
     return this.minus( point ).magnitudeSquared;
-  },
+  }
 
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point (x,y,z,w).
@@ -126,13 +119,13 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {number}
    */
-  distanceSquaredXYZW: function( x, y, z, w ) {
+  distanceSquaredXYZW( x, y, z, w ) {
     const dx = this.x - x;
     const dy = this.y - y;
     const dz = this.z - z;
     const dw = this.w - w;
     return dx * dx + dy * dy + dz * dz + dw * dw;
-  },
+  }
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector v.
@@ -141,9 +134,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {number}
    */
-  dot: function( v ) {
+  dot( v ) {
     return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
-  },
+  }
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector (x,y,z,w).
@@ -155,9 +148,9 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {number}
    */
-  dotXYZW: function( x, y, z, w ) {
+  dotXYZW( x, y, z, w ) {
     return this.x * x + this.y * y + this.z * z + this.w * w;
-  },
+  }
 
   /**
    * The angle between this vector and another vector, in the range $\theta\in[0, \pi]$.
@@ -169,9 +162,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {number}
    */
-  angleBetween: function( v ) {
+  angleBetween( v ) {
     return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
-  },
+  }
 
   /**
    * Exact equality comparison between this vector and another vector.
@@ -180,9 +173,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} other
    * @returns {boolean} - Whether the two vectors have equal components
    */
-  equals: function( other ) {
+  equals( other ) {
     return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
-  },
+  }
 
   /**
    * Approximate equality comparison between this vector and another vector.
@@ -193,12 +186,12 @@ inherit( Object, Vector4, {
    * @returns {boolean} - Whether difference between the two vectors has no component with an absolute value greater
    *                      than epsilon.
    */
-  equalsEpsilon: function( other, epsilon ) {
+  equalsEpsilon( other, epsilon ) {
     if ( !epsilon ) {
       epsilon = 0;
     }
     return Math.abs( this.x - other.x ) + Math.abs( this.y - other.y ) + Math.abs( this.z - other.z ) + Math.abs( this.w - other.w ) <= epsilon;
-  },
+  }
 
   /**
    * Whether all of the components are numbers (not NaN) that are not infinity or -infinity.
@@ -206,9 +199,9 @@ inherit( Object, Vector4, {
    *
    * @returns {boolean}
    */
-  isFinite: function() {
+  isFinite() {
     return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z ) && isFinite( this.w );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Immutables
@@ -225,14 +218,14 @@ inherit( Object, Vector4, {
    *                             values of the provided vector so that it equals this vector.
    * @returns {Vector4}
    */
-  copy: function( vector ) {
+  copy( vector ) {
     if ( vector ) {
       return vector.set( this );
     }
     else {
       return new Vector4( this.x, this.y, this.z, this.w );
     }
-  },
+  }
 
   /**
    * Normalized (re-scaled) copy of this vector such that its magnitude is 1. If its initial magnitude is zero, an
@@ -244,11 +237,11 @@ inherit( Object, Vector4, {
    *
    * @returns {Vector4}
    */
-  normalized: function() {
+  normalized() {
     const magnitude = this.magnitude;
     assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude vector' );
     return this.dividedScalar( magnitude );
-  },
+  }
 
   /**
    * Returns a copy of this vector with each component rounded by Utils.roundSymmetric.
@@ -259,9 +252,9 @@ inherit( Object, Vector4, {
    *
    * @returns {Vector2}
    */
-  roundedSymmetric: function() {
+  roundedSymmetric() {
     return this.copy().roundSymmetric();
-  },
+  }
 
   /**
    * Re-scaled copy of this vector such that it has the desired magnitude. If its initial magnitude is zero, an error
@@ -274,9 +267,9 @@ inherit( Object, Vector4, {
    * @param {number} magnitude
    * @returns {Vector4}
    */
-  withMagnitude: function( magnitude ) {
+  withMagnitude( magnitude ) {
     return this.copy().setMagnitude( magnitude );
-  },
+  }
 
   /**
    * Copy of this vector, scaled by the desired scalar value.
@@ -288,9 +281,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  timesScalar: function( scalar ) {
+  timesScalar( scalar ) {
     return new Vector4( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
-  },
+  }
 
   /**
    * Same as timesScalar.
@@ -302,11 +295,11 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  times: function( scalar ) {
+  times( scalar ) {
     // make sure it's not a vector!
     assert && assert( scalar.dimension === undefined );
     return this.timesScalar( scalar );
-  },
+  }
 
   /**
    * Copy of this vector, multiplied component-wise by the passed-in vector v.
@@ -318,9 +311,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {Vector4}
    */
-  componentTimes: function( v ) {
+  componentTimes( v ) {
     return new Vector4( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
-  },
+  }
 
   /**
    * Addition of this vector and another vector, returning a copy.
@@ -332,9 +325,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {Vector4}
    */
-  plus: function( v ) {
+  plus( v ) {
     return new Vector4( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
-  },
+  }
 
   /**
    * Addition of this vector and another vector (x,y,z,w), returning a copy.
@@ -349,9 +342,9 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {Vector4}
    */
-  plusXYZW: function( x, y, z, w ) {
+  plusXYZW( x, y, z, w ) {
     return new Vector4( this.x + x, this.y + y, this.z + z, this.w + w );
-  },
+  }
 
   /**
    * Addition of this vector with a scalar (adds the scalar to every component), returning a copy.
@@ -363,9 +356,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  plusScalar: function( scalar ) {
+  plusScalar( scalar ) {
     return new Vector4( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
-  },
+  }
 
   /**
    * Subtraction of this vector by another vector v, returning a copy.
@@ -377,9 +370,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {Vector4}
    */
-  minus: function( v ) {
+  minus( v ) {
     return new Vector4( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
-  },
+  }
 
   /**
    * Subtraction of this vector by another vector (x,y,z,w), returning a copy.
@@ -394,9 +387,9 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {Vector4}
    */
-  minusXYZW: function( x, y, z, w ) {
+  minusXYZW( x, y, z, w ) {
     return new Vector4( this.x - x, this.y - y, this.z - z, this.w - w );
-  },
+  }
 
   /**
    * Subtraction of this vector by a scalar (subtracts the scalar from every component), returning a copy.
@@ -408,9 +401,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  minusScalar: function( scalar ) {
+  minusScalar( scalar ) {
     return new Vector4( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
-  },
+  }
 
   /**
    * Division of this vector by a scalar (divides every component by the scalar), returning a copy.
@@ -422,9 +415,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  dividedScalar: function( scalar ) {
+  dividedScalar( scalar ) {
     return new Vector4( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
-  },
+  }
 
   /**
    * Negated copy of this vector (multiplies every component by -1).
@@ -435,9 +428,9 @@ inherit( Object, Vector4, {
    *
    * @returns {Vector4}
    */
-  negated: function() {
+  negated() {
     return new Vector4( -this.x, -this.y, -this.z, -this.w );
-  },
+  }
 
   /**
    * A linear interpolation between this vector (ratio=0) and another vector (ratio=1).
@@ -447,9 +440,9 @@ inherit( Object, Vector4, {
    * @param {number} ratio - Not necessarily constrained in [0, 1]
    * @returns {Vector4}
    */
-  blend: function( vector, ratio ) {
+  blend( vector, ratio ) {
     return this.plus( vector.minus( this ).times( ratio ) );
-  },
+  }
 
   /**
    * The average (midpoint) between this vector and another vector.
@@ -458,9 +451,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} vector
    * @returns {Vector4}
    */
-  average: function( vector ) {
+  average( vector ) {
     return this.blend( vector, 0.5 );
-  },
+  }
 
   /**
    * Debugging string for the vector.
@@ -468,9 +461,9 @@ inherit( Object, Vector4, {
    *
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     return 'Vector4(' + this.x + ', ' + this.y + ', ' + this.z + ', ' + this.w + ')';
-  },
+  }
 
   /**
    * Converts this to a 3-dimensional vector, discarding the w-component.
@@ -478,9 +471,9 @@ inherit( Object, Vector4, {
    *
    * @returns {Vector3}
    */
-  toVector3: function() {
+  toVector3() {
     return new Vector3( this.x, this.y, this.z );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Mutables
@@ -497,13 +490,13 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {Vector4}
    */
-  setXYZW: function( x, y, z, w ) {
+  setXYZW( x, y, z, w ) {
     this.x = x;
     this.y = y;
     this.z = z;
     this.w = w;
     return this;
-  },
+  }
 
   /**
    * Sets the x-component of this vector, returning this.
@@ -512,10 +505,10 @@ inherit( Object, Vector4, {
    * @param {number} x
    * @returns {Vector4}
    */
-  setX: function( x ) {
+  setX( x ) {
     this.x = x;
     return this;
-  },
+  }
 
   /**
    * Sets the y-component of this vector, returning this.
@@ -524,10 +517,10 @@ inherit( Object, Vector4, {
    * @param {number} y
    * @returns {Vector4}
    */
-  setY: function( y ) {
+  setY( y ) {
     this.y = y;
     return this;
-  },
+  }
 
   /**
    * Sets the z-component of this vector, returning this.
@@ -536,10 +529,10 @@ inherit( Object, Vector4, {
    * @param {number} z
    * @returns {Vector4}
    */
-  setZ: function( z ) {
+  setZ( z ) {
     this.z = z;
     return this;
-  },
+  }
 
   /**
    * Sets the w-component of this vector, returning this.
@@ -548,10 +541,10 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {Vector4}
    */
-  setW: function( w ) {
+  setW( w ) {
     this.w = w;
     return this;
-  },
+  }
 
   /**
    * Sets this vector to be a copy of another vector.
@@ -563,9 +556,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {Vector4}
    */
-  set: function( v ) {
+  set( v ) {
     return this.setXYZW( v.x, v.y, v.z, v.w );
-  },
+  }
 
   /**
    * Sets the magnitude of this vector. If the passed-in magnitude is negative, this flips the vector and sets its
@@ -578,10 +571,10 @@ inherit( Object, Vector4, {
    * @param {number} magnitude
    * @returns {Vector4}
    */
-  setMagnitude: function( magnitude ) {
+  setMagnitude( magnitude ) {
     const scale = magnitude / this.magnitude;
     return this.multiplyScalar( scale );
-  },
+  }
 
   /**
    * Adds another vector to this vector, changing this vector.
@@ -593,9 +586,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {Vector4}
    */
-  add: function( v ) {
+  add( v ) {
     return this.setXYZW( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
-  },
+  }
 
   /**
    * Adds another vector (x,y,z,w) to this vector, changing this vector.
@@ -610,9 +603,9 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {Vector4}
    */
-  addXYZW: function( x, y, z, w ) {
+  addXYZW( x, y, z, w ) {
     return this.setXYZW( this.x + x, this.y + y, this.z + z, this.w + w );
-  },
+  }
 
   /**
    * Adds a scalar to this vector (added to every component), changing this vector.
@@ -624,9 +617,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  addScalar: function( scalar ) {
+  addScalar( scalar ) {
     return this.setXYZW( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
-  },
+  }
 
   /**
    * Subtracts this vector by another vector, changing this vector.
@@ -638,9 +631,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {Vector4}
    */
-  subtract: function( v ) {
+  subtract( v ) {
     return this.setXYZW( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
-  },
+  }
 
   /**
    * Subtracts this vector by another vector (x,y,z,w), changing this vector.
@@ -655,9 +648,9 @@ inherit( Object, Vector4, {
    * @param {number} w
    * @returns {Vector4}
    */
-  subtractXYZW: function( x, y, z, w ) {
+  subtractXYZW( x, y, z, w ) {
     return this.setXYZW( this.x - x, this.y - y, this.z - z, this.w - w );
-  },
+  }
 
   /**
    * Subtracts this vector by a scalar (subtracts each component by the scalar), changing this vector.
@@ -669,9 +662,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  subtractScalar: function( scalar ) {
+  subtractScalar( scalar ) {
     return this.setXYZW( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
-  },
+  }
 
   /**
    * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
@@ -683,9 +676,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  multiplyScalar: function( scalar ) {
+  multiplyScalar( scalar ) {
     return this.setXYZW( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
-  },
+  }
 
   /**
    * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
@@ -698,11 +691,11 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  multiply: function( scalar ) {
+  multiply( scalar ) {
     // make sure it's not a vector!
     assert && assert( scalar.dimension === undefined );
     return this.multiplyScalar( scalar );
-  },
+  }
 
   /**
    * Multiplies this vector by another vector component-wise, changing this vector.
@@ -714,9 +707,9 @@ inherit( Object, Vector4, {
    * @param {Vector4} v
    * @returns {Vector4}
    */
-  componentMultiply: function( v ) {
+  componentMultiply( v ) {
     return this.setXYZW( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
-  },
+  }
 
   /**
    * Divides this vector by a scalar (divides each component by the scalar), changing this vector.
@@ -728,9 +721,9 @@ inherit( Object, Vector4, {
    * @param {number} scalar
    * @returns {Vector4}
    */
-  divideScalar: function( scalar ) {
+  divideScalar( scalar ) {
     return this.setXYZW( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
-  },
+  }
 
   /**
    * Negates this vector (multiplies each component by -1), changing this vector.
@@ -741,9 +734,9 @@ inherit( Object, Vector4, {
    *
    * @returns {Vector4}
    */
-  negate: function() {
+  negate() {
     return this.setXYZW( -this.x, -this.y, -this.z, -this.w );
-  },
+  }
 
   /**
    * Normalizes this vector (rescales to where the magnitude is 1), changing this vector.
@@ -754,13 +747,13 @@ inherit( Object, Vector4, {
    *
    * @returns {Vector4}
    */
-  normalize: function() {
+  normalize() {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
     }
     return this.divideScalar( mag );
-  },
+  }
 
   /**
    * Rounds each component of this vector with Utils.roundSymmetric.
@@ -771,10 +764,16 @@ inherit( Object, Vector4, {
    *
    * @returns {Vector4}
    */
-  roundSymmetric: function() {
+  roundSymmetric() {
     return this.setXYZW( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ), Utils.roundSymmetric( this.w ) );
   }
-} );
+}
+
+// @public (read-only) - Helps to identify the dimension of the vector
+Vector4.prototype.isVector4 = true;
+Vector4.prototype.dimension = 4;
+
+dot.register( 'Vector4', Vector4 );
 
 // Sets up pooling on Vector4
 Poolable.mixInto( Vector4, {
@@ -782,40 +781,27 @@ Poolable.mixInto( Vector4, {
   defaultArguments: [ 0, 0, 0, 0 ]
 } );
 
-/*---------------------------------------------------------------------------*
- * Immutable Vector form
- *---------------------------------------------------------------------------*/
-
-// @private
-Vector4.Immutable = function( x, y, z, w ) {
-  this.x = x !== undefined ? x : 0;
-  this.y = y !== undefined ? y : 0;
-  this.z = z !== undefined ? z : 0;
-  this.w = w !== undefined ? w : 1;
-};
-const Immutable = Vector4.Immutable;
-
-inherit( Vector4, Immutable );
+class ImmutableVector4 extends Vector4 {}
 
 // throw errors whenever a mutable method is called on our immutable vector
-Immutable.mutableOverrideHelper = function( mutableFunctionName ) {
-  Immutable.prototype[ mutableFunctionName ] = function() {
+ImmutableVector4.mutableOverrideHelper = function( mutableFunctionName ) {
+  ImmutableVector4.prototype[ mutableFunctionName ] = function() {
     throw new Error( 'Cannot call mutable method \'' + mutableFunctionName + '\' on immutable Vector4' );
   };
 };
 
 // TODO: better way to handle this list?
-Immutable.mutableOverrideHelper( 'setXYZW' );
-Immutable.mutableOverrideHelper( 'setX' );
-Immutable.mutableOverrideHelper( 'setY' );
-Immutable.mutableOverrideHelper( 'setZ' );
-Immutable.mutableOverrideHelper( 'setW' );
+ImmutableVector4.mutableOverrideHelper( 'setXYZW' );
+ImmutableVector4.mutableOverrideHelper( 'setX' );
+ImmutableVector4.mutableOverrideHelper( 'setY' );
+ImmutableVector4.mutableOverrideHelper( 'setZ' );
+ImmutableVector4.mutableOverrideHelper( 'setW' );
 
 // @public {Vector4} - helpful immutable constants
-Vector4.ZERO = assert ? new Immutable( 0, 0, 0, 0 ) : new Vector4( 0, 0, 0, 0 );
-Vector4.X_UNIT = assert ? new Immutable( 1, 0, 0, 0 ) : new Vector4( 1, 0, 0, 0 );
-Vector4.Y_UNIT = assert ? new Immutable( 0, 1, 0, 0 ) : new Vector4( 0, 1, 0, 0 );
-Vector4.Z_UNIT = assert ? new Immutable( 0, 0, 1, 0 ) : new Vector4( 0, 0, 1, 0 );
-Vector4.W_UNIT = assert ? new Immutable( 0, 0, 0, 1 ) : new Vector4( 0, 0, 0, 1 );
+Vector4.ZERO = assert ? new ImmutableVector4( 0, 0, 0, 0 ) : new Vector4( 0, 0, 0, 0 );
+Vector4.X_UNIT = assert ? new ImmutableVector4( 1, 0, 0, 0 ) : new Vector4( 1, 0, 0, 0 );
+Vector4.Y_UNIT = assert ? new ImmutableVector4( 0, 1, 0, 0 ) : new Vector4( 0, 1, 0, 0 );
+Vector4.Z_UNIT = assert ? new ImmutableVector4( 0, 0, 1, 0 ) : new Vector4( 0, 0, 1, 0 );
+Vector4.W_UNIT = assert ? new ImmutableVector4( 0, 0, 0, 1 ) : new Vector4( 0, 0, 0, 1 );
 
 export default Vector4;

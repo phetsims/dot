@@ -6,29 +6,25 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import dot from './dot.js';
 
-/**
- *
- * @param {Vector3} center  - The center of the sphere
- * @param {number} radius - The radius of the sphere
- * @constructor
- */
-function Sphere3( center, radius ) {
+class Sphere3 {
+  /**
+   *
+   * @param {Vector3} center  - The center of the sphere
+   * @param {number} radius - The radius of the sphere
+   */
+  constructor( center, radius ) {
 
-  // @public {Vector3} - The location of the center of the sphere
-  this.center = center;
+    // @public {Vector3} - The location of the center of the sphere
+    this.center = center;
 
-  // @public {number} -  the radius of the sphere
-  this.radius = radius;
+    // @public {number} -  the radius of the sphere
+    this.radius = radius;
 
-  assert && assert( radius >= 0, 'the radius of a sphere should be positive' );
-}
+    assert && assert( radius >= 0, 'the radius of a sphere should be positive' );
+  }
 
-dot.register( 'Sphere3', Sphere3 );
-
-inherit( Object, Sphere3, {
 
   /**
    * Determines if a ray (a half-line) intersects this sphere.
@@ -45,7 +41,7 @@ inherit( Object, Sphere3, {
    * @param {number} epsilon - A small varying-point value to be used to handle intersections tangent to the sphere
    * @returns {{ distance: number, hitPoint: Vector3, normal, fromOutside: boolean }| null}
    */
-  intersect: function( ray, epsilon ) {
+  intersect( ray, epsilon ) {
     const raydir = ray.direction;
     const pos = ray.position;
     const centerToRay = pos.minus( this.center );
@@ -99,7 +95,7 @@ inherit( Object, Sphere3, {
         fromOutside: true
       };
     }
-  },
+  }
 
   /**
    *
@@ -113,7 +109,7 @@ inherit( Object, Sphere3, {
    * @returns {Array.<{distance:number, hitPoint:Vector3, normal:Vector3, fromOutside:boolean }>| null} -  An array of intersection
    *                                                                         results like { distance, hitPoint, normal, fromOutside }.
    */
-  intersections: function( ray, epsilon ) {
+  intersections( ray, epsilon ) {
     const raydir = ray.direction;
     const pos = ray.position;
     const centerToRay = pos.minus( this.center );
@@ -172,6 +168,8 @@ inherit( Object, Sphere3, {
       return [ resultA, resultB ];
     }
   }
-} );
+}
+
+dot.register( 'Sphere3', Sphere3 );
 
 export default Sphere3;

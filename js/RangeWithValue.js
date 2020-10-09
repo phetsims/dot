@@ -7,42 +7,38 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import inherit from '../../phet-core/js/inherit.js';
-import dot from './dot.js';
 import Range from './Range.js';
+import dot from './dot.js';
 
-/**
- * @param {number} min - the minimum value of the range
- * @param {number} max - the maximum value of the range
- * @param {number} defaultValue - default value inside the range
- * @constructor
- */
-function RangeWithValue( min, max, defaultValue ) {
+class RangeWithValue extends Range {
+  /**
+   * @param {number} min - the minimum value of the range
+   * @param {number} max - the maximum value of the range
+   * @param {number} defaultValue - default value inside the range
+   */
+  constructor( min, max, defaultValue ) {
 
-  Range.call( this, min, max );
+    super( min, max );
 
-  assert && assert( defaultValue !== undefined, 'default value is required' );
-  assert && assert( defaultValue >= min && defaultValue <= max, 'defaultValue is out of range: ' + defaultValue );
+    assert && assert( defaultValue !== undefined, 'default value is required' );
+    assert && assert( defaultValue >= min && defaultValue <= max, 'defaultValue is out of range: ' + defaultValue );
 
-  // @private
-  this._defaultValue = defaultValue;
-}
+    // @private
+    this._defaultValue = defaultValue;
+  }
 
-dot.register( 'RangeWithValue', RangeWithValue );
-
-inherit( Range, RangeWithValue, {
 
   /**
    * Getter for defaultValue
    * @returns {number}
    * @public
    */
-  getDefaultValue: function() {
+  getDefaultValue() {
     return this._defaultValue;
-  },
+  }
   get defaultValue() {
     return this.getDefaultValue();
-  },
+  }
 
   /**
    * Setter for min
@@ -50,10 +46,10 @@ inherit( Range, RangeWithValue, {
    * @public
    * @override
    */
-  setMin: function( min ) {
+  setMin( min ) {
     assert && assert( this._defaultValue >= min, 'min must be <= defaultValue: ' + min );
-    Range.prototype.setMin.call( this, min );
-  },
+    super.setMin( min );
+  }
 
   /**
    * Setter for max
@@ -61,10 +57,10 @@ inherit( Range, RangeWithValue, {
    * @public
    * @override
    */
-  setMax: function( max ) {
+  setMax( max ) {
     assert && assert( this._defaultValue <= max, 'max must be >= defaultValue: ' + max );
-    Range.prototype.setMax.call( this, max );
-  },
+    super.setMax( max );
+  }
 
   /**
    * Setter for min and max
@@ -73,11 +69,11 @@ inherit( Range, RangeWithValue, {
    * @public
    * @override
    */
-  setMinMax: function( min, max ) {
+  setMinMax( min, max ) {
     assert && assert( this._defaultValue >= min, 'min must be <= defaultValue: ' + min );
     assert && assert( this._defaultValue <= max, 'max must be >= defaultValue: ' + max );
-    Range.prototype.setMinMax.call( this, min, max );
-  },
+    super.setMinMax( min, max );
+  }
 
   /**
    * Converts the attributes of this range to a string
@@ -85,9 +81,9 @@ inherit( Range, RangeWithValue, {
    * @returns {string}
    * @override
    */
-  toString: function() {
+  toString() {
     return '[RangeWithValue (min:' + this.min + ' max:' + this.max + ' defaultValue:' + this._defaultValue + ')]';
-  },
+  }
 
   /**
    * Determines if this RangeWithValue is equal to some object.
@@ -96,11 +92,13 @@ inherit( Range, RangeWithValue, {
    * @returns {boolean}
    * @override
    */
-  equals: function( object ) {
+  equals( object ) {
     return ( this.constructor === object.constructor ) &&
            ( this._defaultValue === object.defaultValue ) &&
-           Range.prototype.equals.call( this, object );
+           super.equals( object );
   }
-} );
+}
+
+dot.register( 'RangeWithValue', RangeWithValue );
 
 export default RangeWithValue;

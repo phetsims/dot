@@ -13,52 +13,45 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import dot from './dot.js';
 import Vector3 from './Vector3.js';
+import dot from './dot.js';
 
-/**
- * Creates a 3-dimensional bounds (bounding box).
- * @constructor
- * @public
- *
- * @param {number} minX - The initial minimum X coordinate of the bounds.
- * @param {number} minY - The initial minimum Y coordinate of the bounds.
- * @param {number} minZ - The initial minimum Z coordinate of the bounds.
- * @param {number} maxX - The initial maximum X coordinate of the bounds.
- * @param {number} maxY - The initial maximum Y coordinate of the bounds.
- * @param {number} maxZ - The initial maximum Z coordinate of the bounds.
- */
-function Bounds3( minX, minY, minZ, maxX, maxY, maxZ ) {
-  assert && assert( maxY !== undefined, 'Bounds3 requires 4 parameters' );
+class Bounds3 {
+  /**
+   * Creates a 3-dimensional bounds (bounding box).
+   * @public
+   *
+   * @param {number} minX - The initial minimum X coordinate of the bounds.
+   * @param {number} minY - The initial minimum Y coordinate of the bounds.
+   * @param {number} minZ - The initial minimum Z coordinate of the bounds.
+   * @param {number} maxX - The initial maximum X coordinate of the bounds.
+   * @param {number} maxY - The initial maximum Y coordinate of the bounds.
+   * @param {number} maxZ - The initial maximum Z coordinate of the bounds.
+   */
+  constructor( minX, minY, minZ, maxX, maxY, maxZ ) {
+    assert && assert( maxY !== undefined, 'Bounds3 requires 4 parameters' );
 
-  // @public {number} - The minimum X coordinate of the bounds.
-  this.minX = minX;
+    // @public {number} - The minimum X coordinate of the bounds.
+    this.minX = minX;
 
-  // @public {number} - The minimum Y coordinate of the bounds.
-  this.minY = minY;
+    // @public {number} - The minimum Y coordinate of the bounds.
+    this.minY = minY;
 
-  // @public {number} - The minimum Z coordinate of the bounds.
-  this.minZ = minZ;
+    // @public {number} - The minimum Z coordinate of the bounds.
+    this.minZ = minZ;
 
-  // @public {number} - The maximum X coordinate of the bounds.
-  this.maxX = maxX;
+    // @public {number} - The maximum X coordinate of the bounds.
+    this.maxX = maxX;
 
-  // @public {number} - The maximum Y coordinate of the bounds.
-  this.maxY = maxY;
+    // @public {number} - The maximum Y coordinate of the bounds.
+    this.maxY = maxY;
 
-  // @public {number} - The maximum Z coordinate of the bounds.
-  this.maxZ = maxZ;
-}
+    // @public {number} - The maximum Z coordinate of the bounds.
+    this.maxZ = maxZ;
+  }
 
-dot.register( 'Bounds3', Bounds3 );
-
-inherit( Object, Bounds3, {
-  // @public (read-only) - Helps to identify the dimension of the bounds
-  isBounds: true,
-  dimension: 3,
 
   /*---------------------------------------------------------------------------*
    * Properties
@@ -70,8 +63,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getWidth: function() { return this.maxX - this.minX; },
-  get width() { return this.getWidth(); },
+  getWidth() { return this.maxX - this.minX; }
+  get width() { return this.getWidth(); }
 
   /**
    * The height of the bounds, defined as maxY - minY.
@@ -79,8 +72,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getHeight: function() { return this.maxY - this.minY; },
-  get height() { return this.getHeight(); },
+  getHeight() { return this.maxY - this.minY; }
+  get height() { return this.getHeight(); }
 
   /**
    * The depth of the bounds, defined as maxZ - minZ.
@@ -88,8 +81,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getDepth: function() { return this.maxZ - this.minZ; },
-  get depth() { return this.getDepth(); },
+  getDepth() { return this.maxZ - this.minZ; }
+  get depth() { return this.getDepth(); }
 
   /*
    * Convenience locations
@@ -108,8 +101,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getX: function() { return this.minX; },
-  get x() { return this.getX(); },
+  getX() { return this.minX; }
+  get x() { return this.getX(); }
 
   /**
    * Alias for minY, when thinking of the bounds as an (x,y,z,width,height,depth) cuboid.
@@ -117,8 +110,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getY: function() { return this.minY; },
-  get y() { return this.getY(); },
+  getY() { return this.minY; }
+  get y() { return this.getY(); }
 
   /**
    * Alias for minZ, when thinking of the bounds as an (x,y,z,width,height,depth) cuboid.
@@ -126,8 +119,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getZ: function() { return this.minZ; },
-  get z() { return this.getZ(); },
+  getZ() { return this.minZ; }
+  get z() { return this.getZ(); }
 
   /**
    * Alias for minX, supporting the explicit getter function style.
@@ -135,7 +128,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getMinX: function() { return this.minX; },
+  getMinX() { return this.minX; }
 
   /**
    * Alias for minY, supporting the explicit getter function style.
@@ -143,7 +136,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getMinY: function() { return this.minY; },
+  getMinY() { return this.minY; }
 
   /**
    * Alias for minZ, supporting the explicit getter function style.
@@ -151,7 +144,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getMinZ: function() { return this.minZ; },
+  getMinZ() { return this.minZ; }
 
   /**
    * Alias for maxX, supporting the explicit getter function style.
@@ -159,7 +152,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getMaxX: function() { return this.maxX; },
+  getMaxX() { return this.maxX; }
 
   /**
    * Alias for maxY, supporting the explicit getter function style.
@@ -167,7 +160,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getMaxY: function() { return this.maxY; },
+  getMaxY() { return this.maxY; }
 
   /**
    * Alias for maxZ, supporting the explicit getter function style.
@@ -175,7 +168,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getMaxZ: function() { return this.maxZ; },
+  getMaxZ() { return this.maxZ; }
 
   /**
    * Alias for minX, when thinking in the UI-layout manner.
@@ -183,8 +176,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getLeft: function() { return this.minX; },
-  get left() { return this.minX; },
+  getLeft() { return this.minX; }
+  get left() { return this.minX; }
 
   /**
    * Alias for minY, when thinking in the UI-layout manner.
@@ -192,8 +185,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getTop: function() { return this.minY; },
-  get top() { return this.minY; },
+  getTop() { return this.minY; }
+  get top() { return this.minY; }
 
   /**
    * Alias for minZ, when thinking in the UI-layout manner.
@@ -201,8 +194,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getBack: function() { return this.minZ; },
-  get back() { return this.minZ; },
+  getBack() { return this.minZ; }
+  get back() { return this.minZ; }
 
   /**
    * Alias for maxX, when thinking in the UI-layout manner.
@@ -210,8 +203,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getRight: function() { return this.maxX; },
-  get right() { return this.maxX; },
+  getRight() { return this.maxX; }
+  get right() { return this.maxX; }
 
   /**
    * Alias for maxY, when thinking in the UI-layout manner.
@@ -219,8 +212,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getBottom: function() { return this.maxY; },
-  get bottom() { return this.maxY; },
+  getBottom() { return this.maxY; }
+  get bottom() { return this.maxY; }
 
   /**
    * Alias for maxZ, when thinking in the UI-layout manner.
@@ -228,8 +221,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getFront: function() { return this.maxZ; },
-  get front() { return this.maxZ; },
+  getFront() { return this.maxZ; }
+  get front() { return this.maxZ; }
 
   /**
    * The horizontal (X-coordinate) center of the bounds, averaging the minX and maxX.
@@ -237,8 +230,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getCenterX: function() { return ( this.maxX + this.minX ) / 2; },
-  get centerX() { return this.getCenterX(); },
+  getCenterX() { return ( this.maxX + this.minX ) / 2; }
+  get centerX() { return this.getCenterX(); }
 
   /**
    * The vertical (Y-coordinate) center of the bounds, averaging the minY and maxY.
@@ -246,8 +239,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getCenterY: function() { return ( this.maxY + this.minY ) / 2; },
-  get centerY() { return this.getCenterY(); },
+  getCenterY() { return ( this.maxY + this.minY ) / 2; }
+  get centerY() { return this.getCenterY(); }
 
   /**
    * The depthwise (Z-coordinate) center of the bounds, averaging the minZ and maxZ.
@@ -255,8 +248,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {number}
    */
-  getCenterZ: function() { return ( this.maxZ + this.minZ ) / 2; },
-  get centerZ() { return this.getCenterZ(); },
+  getCenterZ() { return ( this.maxZ + this.minZ ) / 2; }
+  get centerZ() { return this.getCenterZ(); }
 
   /**
    * The point (centerX, centerY, centerZ), in the center of the bounds.
@@ -264,8 +257,8 @@ inherit( Object, Bounds3, {
    *
    * @returns {Vector3}
    */
-  getCenter: function() { return new Vector3( this.getCenterX(), this.getCenterY(), this.getCenterZ() ); },
-  get center() { return this.getCenter(); },
+  getCenter() { return new Vector3( this.getCenterX(), this.getCenterY(), this.getCenterZ() ); }
+  get center() { return this.getCenter(); }
 
   /**
    * Whether we have negative width, height or depth. Bounds3.NOTHING is a prime example of an empty Bounds3.
@@ -274,7 +267,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {boolean}
    */
-  isEmpty: function() { return this.getWidth() < 0 || this.getHeight() < 0 || this.getDepth() < 0; },
+  isEmpty() { return this.getWidth() < 0 || this.getHeight() < 0 || this.getDepth() < 0; }
 
   /**
    * Whether our minimums and maximums are all finite numbers. This will exclude Bounds3.NOTHING and Bounds3.EVERYTHING.
@@ -282,9 +275,9 @@ inherit( Object, Bounds3, {
    *
    * @returns {boolean}
    */
-  isFinite: function() {
+  isFinite() {
     return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.minZ ) && isFinite( this.maxX ) && isFinite( this.maxY ) && isFinite( this.maxZ );
-  },
+  }
 
   /**
    * Whether this bounds has a non-zero area (non-zero positive width, height and depth).
@@ -292,9 +285,9 @@ inherit( Object, Bounds3, {
    *
    * @returns {boolean}
    */
-  hasNonzeroArea: function() {
+  hasNonzeroArea() {
     return this.getWidth() > 0 && this.getHeight() > 0 && this.getDepth() > 0;
-  },
+  }
 
   /**
    * Whether this bounds has a finite and non-negative width, height and depth.
@@ -302,9 +295,9 @@ inherit( Object, Bounds3, {
    *
    * @returns {boolean}
    */
-  isValid: function() {
+  isValid() {
     return !this.isEmpty() && this.isFinite();
-  },
+  }
 
   /**
    * Whether the coordinates are contained inside the bounding box, or are on the boundary.
@@ -315,9 +308,9 @@ inherit( Object, Bounds3, {
    * @param {number} z - Z coordinate of the point to check
    * @returns {boolean}
    */
-  containsCoordinates: function( x, y, z ) {
+  containsCoordinates( x, y, z ) {
     return this.minX <= x && x <= this.maxX && this.minY <= y && y <= this.maxY && this.minZ <= z && z <= this.maxZ;
-  },
+  }
 
   /**
    * Whether the point is contained inside the bounding box, or is on the boundary.
@@ -326,9 +319,9 @@ inherit( Object, Bounds3, {
    * @param {Vector3} point
    * @returns {boolean}
    */
-  containsPoint: function( point ) {
+  containsPoint( point ) {
     return this.containsCoordinates( point.x, point.y, point.z );
-  },
+  }
 
   /**
    * Whether this bounding box completely contains the bounding box passed as a parameter. The boundary of a box is
@@ -338,9 +331,9 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} bounds
    * @returns {boolean}
    */
-  containsBounds: function( bounds ) {
+  containsBounds( bounds ) {
     return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY && this.minZ <= bounds.minZ && this.maxZ >= bounds.maxZ;
-  },
+  }
 
   /**
    * Whether this and another bounding box have any points of intersection (including touching boundaries).
@@ -349,10 +342,10 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} bounds
    * @returns {boolean}
    */
-  intersectsBounds: function( bounds ) {
+  intersectsBounds( bounds ) {
     // TODO: more efficient way of doing this?
     return !this.intersection( bounds ).isEmpty();
-  },
+  }
 
   /**
    * Debugging string for the bounds.
@@ -360,9 +353,9 @@ inherit( Object, Bounds3, {
    *
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + '),z:(' + this.minZ + ',' + this.maxZ + ')]';
-  },
+  }
 
   /**
    * Exact equality comparison between this bounds and another bounds.
@@ -371,14 +364,14 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} other
    * @returns {boolean} - Whether the two bounds are equal
    */
-  equals: function( other ) {
+  equals( other ) {
     return this.minX === other.minX &&
            this.minY === other.minY &&
            this.minZ === other.minZ &&
            this.maxX === other.maxX &&
            this.maxY === other.maxY &&
            this.maxZ === other.maxZ;
-  },
+  }
 
   /**
    * Approximate equality comparison between this bounds and another bounds.
@@ -389,7 +382,7 @@ inherit( Object, Bounds3, {
    * @returns {boolean} - Whether difference between the two bounds has no min/max with an absolute value greater
    *                      than epsilon.
    */
-  equalsEpsilon: function( other, epsilon ) {
+  equalsEpsilon( other, epsilon ) {
     epsilon = epsilon !== undefined ? epsilon : 0;
     const thisFinite = this.isFinite();
     const otherFinite = other.isFinite();
@@ -417,7 +410,7 @@ inherit( Object, Bounds3, {
              ( isFinite( this.maxY + other.maxY ) ? ( Math.abs( this.maxY - other.maxY ) < epsilon ) : ( this.maxY === other.maxY ) ) &&
              ( isFinite( this.maxZ + other.maxZ ) ? ( Math.abs( this.maxZ - other.maxZ ) < epsilon ) : ( this.maxZ === other.maxZ ) );
     }
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Immutable operations
@@ -434,14 +427,14 @@ inherit( Object, Bounds3, {
    *                             values of the provided bounds so that it equals this bounds.
    * @returns {Bounds3}
    */
-  copy: function( bounds ) {
+  copy( bounds ) {
     if ( bounds ) {
       return bounds.set( this );
     }
     else {
       return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
     }
-  },
+  }
 
   /**
    * The smallest bounds that contains both this bounds and the input bounds, returned as a copy.
@@ -453,7 +446,7 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} bounds
    * @returns {Bounds3}
    */
-  union: function( bounds ) {
+  union( bounds ) {
     return new Bounds3(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
@@ -462,7 +455,7 @@ inherit( Object, Bounds3, {
       Math.max( this.maxY, bounds.maxY ),
       Math.max( this.maxZ, bounds.maxZ )
     );
-  },
+  }
 
   /**
    * The smallest bounds that is contained by both this bounds and the input bounds, returned as a copy.
@@ -474,7 +467,7 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} bounds
    * @returns {Bounds3}
    */
-  intersection: function( bounds ) {
+  intersection( bounds ) {
     return new Bounds3(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
@@ -483,7 +476,7 @@ inherit( Object, Bounds3, {
       Math.min( this.maxY, bounds.maxY ),
       Math.min( this.maxZ, bounds.maxZ )
     );
-  },
+  }
   // TODO: difference should be well-defined, but more logic is needed to compute
 
   /**
@@ -498,7 +491,7 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  withCoordinates: function( x, y, z ) {
+  withCoordinates( x, y, z ) {
     return new Bounds3(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
@@ -507,7 +500,7 @@ inherit( Object, Bounds3, {
       Math.max( this.maxY, y ),
       Math.max( this.maxZ, z )
     );
-  },
+  }
 
   /**
    * The smallest bounds that contains this bounds and the input point, returned as a copy.
@@ -519,9 +512,9 @@ inherit( Object, Bounds3, {
    * @param {Vector3} point
    * @returns {Bounds3}
    */
-  withPoint: function( point ) {
+  withPoint( point ) {
     return this.withCoordinates( point.x, point.y, point.z );
-  },
+  }
 
   /**
    * A copy of this bounds, with minX replaced with the input.
@@ -533,9 +526,9 @@ inherit( Object, Bounds3, {
    * @param {number} minX
    * @returns {Bounds3}
    */
-  withMinX: function( minX ) {
+  withMinX( minX ) {
     return new Bounds3( minX, this.minY, this.minZ, this.maxX, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * A copy of this bounds, with minY replaced with the input.
@@ -547,9 +540,9 @@ inherit( Object, Bounds3, {
    * @param {number} minY
    * @returns {Bounds3}
    */
-  withMinY: function( minY ) {
+  withMinY( minY ) {
     return new Bounds3( this.minX, minY, this.minZ, this.maxX, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * A copy of this bounds, with minZ replaced with the input.
@@ -561,9 +554,9 @@ inherit( Object, Bounds3, {
    * @param {number} minZ
    * @returns {Bounds3}
    */
-  withMinZ: function( minZ ) {
+  withMinZ( minZ ) {
     return new Bounds3( this.minX, this.minY, minZ, this.maxX, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * A copy of this bounds, with maxX replaced with the input.
@@ -575,9 +568,9 @@ inherit( Object, Bounds3, {
    * @param {number} maxX
    * @returns {Bounds3}
    */
-  withMaxX: function( maxX ) {
+  withMaxX( maxX ) {
     return new Bounds3( this.minX, this.minY, this.minZ, maxX, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * A copy of this bounds, with maxY replaced with the input.
@@ -589,9 +582,9 @@ inherit( Object, Bounds3, {
    * @param {number} maxY
    * @returns {Bounds3}
    */
-  withMaxY: function( maxY ) {
+  withMaxY( maxY ) {
     return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, maxY, this.maxZ );
-  },
+  }
 
   /**
    * A copy of this bounds, with maxZ replaced with the input.
@@ -603,9 +596,9 @@ inherit( Object, Bounds3, {
    * @param {number} maxZ
    * @returns {Bounds3}
    */
-  withMaxZ: function( maxZ ) {
+  withMaxZ( maxZ ) {
     return new Bounds3( this.minX, this.minY, this.minZ, this.maxX, this.maxY, maxZ );
-  },
+  }
 
   /**
    * A copy of this bounds, with the minimum values rounded down to the nearest integer, and the maximum values
@@ -618,7 +611,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {Bounds3}
    */
-  roundedOut: function() {
+  roundedOut() {
     return new Bounds3(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
@@ -627,7 +620,7 @@ inherit( Object, Bounds3, {
       Math.ceil( this.maxY ),
       Math.ceil( this.maxZ )
     );
-  },
+  }
 
   /**
    * A copy of this bounds, with the minimum values rounded up to the nearest integer, and the maximum values
@@ -640,7 +633,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {Bounds3}
    */
-  roundedIn: function() {
+  roundedIn() {
     return new Bounds3(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
@@ -649,7 +642,7 @@ inherit( Object, Bounds3, {
       Math.floor( this.maxY ),
       Math.floor( this.maxZ )
     );
-  },
+  }
 
   /**
    * A bounding box (still axis-aligned) that contains the transformed shape of this bounds, applying the matrix as
@@ -666,9 +659,9 @@ inherit( Object, Bounds3, {
    * @param {Matrix4} matrix
    * @returns {Bounds3}
    */
-  transformed: function( matrix ) {
+  transformed( matrix ) {
     return this.copy().transform( matrix );
-  },
+  }
 
   /**
    * A bounding box that is expanded on all sides by the specified amount.)
@@ -680,9 +673,9 @@ inherit( Object, Bounds3, {
    * @param {number} d
    * @returns {Bounds3}
    */
-  dilated: function( d ) {
+  dilated( d ) {
     return new Bounds3( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
-  },
+  }
 
   /**
    * A bounding box that is expanded horizontally (on the left and right) by the specified amount.
@@ -694,9 +687,9 @@ inherit( Object, Bounds3, {
    * @param {number} x
    * @returns {Bounds3}
    */
-  dilatedX: function( x ) {
+  dilatedX( x ) {
     return new Bounds3( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * A bounding box that is expanded vertically (on the top and bottom) by the specified amount.
@@ -708,9 +701,9 @@ inherit( Object, Bounds3, {
    * @param {number} y
    * @returns {Bounds3}
    */
-  dilatedY: function( y ) {
+  dilatedY( y ) {
     return new Bounds3( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
-  },
+  }
 
   /**
    * A bounding box that is expanded depth-wise (on the front and back) by the specified amount.
@@ -722,9 +715,9 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  dilatedZ: function( z ) {
+  dilatedZ( z ) {
     return new Bounds3( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
-  },
+  }
 
   /**
    * A bounding box that is expanded on all sides, with different amounts of expansion along each axis.
@@ -739,9 +732,9 @@ inherit( Object, Bounds3, {
    * @param {number} z - Amount to dilate depth-wise (for each side)
    * @returns {Bounds3}
    */
-  dilatedXYZ: function( x, y, z ) {
+  dilatedXYZ( x, y, z ) {
     return new Bounds3( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
-  },
+  }
 
   /**
    * A bounding box that is contracted on all sides by the specified amount.
@@ -753,7 +746,7 @@ inherit( Object, Bounds3, {
    * @param {number} amount
    * @returns {Bounds3}
    */
-  eroded: function( amount ) { return this.dilated( -amount ); },
+  eroded( amount ) { return this.dilated( -amount ); }
 
   /**
    * A bounding box that is contracted horizontally (on the left and right) by the specified amount.
@@ -765,7 +758,7 @@ inherit( Object, Bounds3, {
    * @param {number} x
    * @returns {Bounds3}
    */
-  erodedX: function( x ) { return this.dilatedX( -x ); },
+  erodedX( x ) { return this.dilatedX( -x ); }
 
   /**
    * A bounding box that is contracted vertically (on the top and bottom) by the specified amount.
@@ -777,7 +770,7 @@ inherit( Object, Bounds3, {
    * @param {number} y
    * @returns {Bounds3}
    */
-  erodedY: function( y ) { return this.dilatedY( -y ); },
+  erodedY( y ) { return this.dilatedY( -y ); }
 
   /**
    * A bounding box that is contracted depth-wise (on the front and back) by the specified amount.
@@ -789,7 +782,7 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  erodedZ: function( z ) { return this.dilatedZ( -z ); },
+  erodedZ( z ) { return this.dilatedZ( -z ); }
 
   /**
    * A bounding box that is contracted on all sides, with different amounts of contraction along each axis.
@@ -803,7 +796,7 @@ inherit( Object, Bounds3, {
    * @param {number} z - Amount to erode depth-wise (for each side)
    * @returns {Bounds3}
    */
-  erodedXYZ: function( x, y, z ) { return this.dilatedXYZ( -x, -y, -z ); },
+  erodedXYZ( x, y, z ) { return this.dilatedXYZ( -x, -y, -z ); }
 
   /**
    * Our bounds, translated horizontally by x, returned as a copy.
@@ -815,9 +808,9 @@ inherit( Object, Bounds3, {
    * @param {number} x
    * @returns {Bounds3}
    */
-  shiftedX: function( x ) {
+  shiftedX( x ) {
     return new Bounds3( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * Our bounds, translated vertically by y, returned as a copy.
@@ -829,9 +822,9 @@ inherit( Object, Bounds3, {
    * @param {number} y
    * @returns {Bounds3}
    */
-  shiftedY: function( y ) {
+  shiftedY( y ) {
     return new Bounds3( this.minX, this.minY + y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
-  },
+  }
 
   /**
    * Our bounds, translated depth-wise by z, returned as a copy.
@@ -843,9 +836,9 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  shiftedZ: function( z ) {
+  shiftedZ( z ) {
     return new Bounds3( this.minX, this.minY, this.minZ + z, this.maxX, this.maxY, this.maxZ + z );
-  },
+  }
 
   /**
    * Our bounds, translated by (x,y,z), returned as a copy.
@@ -859,9 +852,9 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  shifted: function( x, y, z ) {
+  shifted( x, y, z ) {
     return new Bounds3( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Mutable operations
@@ -882,7 +875,7 @@ inherit( Object, Bounds3, {
    * @param {number} maxZ
    * @returns {Bounds3}
    */
-  setMinMax: function( minX, minY, minZ, maxX, maxY, maxZ ) {
+  setMinMax( minX, minY, minZ, maxX, maxY, maxZ ) {
     this.minX = minX;
     this.minY = minY;
     this.minZ = minZ;
@@ -890,7 +883,7 @@ inherit( Object, Bounds3, {
     this.maxY = maxY;
     this.maxZ = maxZ;
     return this;
-  },
+  }
 
   /**
    * Sets the value of minX.
@@ -902,10 +895,10 @@ inherit( Object, Bounds3, {
    * @param {number} minX
    * @returns {Bounds3}
    */
-  setMinX: function( minX ) {
+  setMinX( minX ) {
     this.minX = minX;
     return this;
-  },
+  }
 
   /**
    * Sets the value of minY.
@@ -917,10 +910,10 @@ inherit( Object, Bounds3, {
    * @param {number} minY
    * @returns {Bounds3}
    */
-  setMinY: function( minY ) {
+  setMinY( minY ) {
     this.minY = minY;
     return this;
-  },
+  }
 
   /**
    * Sets the value of minZ.
@@ -932,10 +925,10 @@ inherit( Object, Bounds3, {
    * @param {number} minZ
    * @returns {Bounds3}
    */
-  setMinZ: function( minZ ) {
+  setMinZ( minZ ) {
     this.minZ = minZ;
     return this;
-  },
+  }
 
   /**
    * Sets the value of maxX.
@@ -947,10 +940,10 @@ inherit( Object, Bounds3, {
    * @param {number} maxX
    * @returns {Bounds3}
    */
-  setMaxX: function( maxX ) {
+  setMaxX( maxX ) {
     this.maxX = maxX;
     return this;
-  },
+  }
 
   /**
    * Sets the value of maxY.
@@ -962,10 +955,10 @@ inherit( Object, Bounds3, {
    * @param {number} maxY
    * @returns {Bounds3}
    */
-  setMaxY: function( maxY ) {
+  setMaxY( maxY ) {
     this.maxY = maxY;
     return this;
-  },
+  }
 
   /**
    * Sets the value of maxZ.
@@ -977,10 +970,10 @@ inherit( Object, Bounds3, {
    * @param {number} maxZ
    * @returns {Bounds3}
    */
-  setMaxZ: function( maxZ ) {
+  setMaxZ( maxZ ) {
     this.maxZ = maxZ;
     return this;
-  },
+  }
 
   /**
    * Sets the values of this bounds to be equal to the input bounds.
@@ -992,9 +985,9 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} bounds
    * @returns {Bounds3}
    */
-  set: function( bounds ) {
+  set( bounds ) {
     return this.setMinMax( bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ );
-  },
+  }
 
   /**
    * Modifies this bounds so that it contains both its original bounds and the input bounds.
@@ -1006,7 +999,7 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} bounds
    * @returns {Bounds3}
    */
-  includeBounds: function( bounds ) {
+  includeBounds( bounds ) {
     return this.setMinMax(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
@@ -1015,7 +1008,7 @@ inherit( Object, Bounds3, {
       Math.max( this.maxY, bounds.maxY ),
       Math.max( this.maxZ, bounds.maxZ )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it is the largest bounds contained both in its original bounds and in the input bounds.
@@ -1027,7 +1020,7 @@ inherit( Object, Bounds3, {
    * @param {Bounds3} bounds
    * @returns {Bounds3}
    */
-  constrainBounds: function( bounds ) {
+  constrainBounds( bounds ) {
     return this.setMinMax(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
@@ -1036,7 +1029,7 @@ inherit( Object, Bounds3, {
       Math.min( this.maxY, bounds.maxY ),
       Math.min( this.maxZ, bounds.maxZ )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it contains both its original bounds and the input point (x,y,z).
@@ -1050,7 +1043,7 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  addCoordinates: function( x, y, z ) {
+  addCoordinates( x, y, z ) {
     return this.setMinMax(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
@@ -1059,7 +1052,7 @@ inherit( Object, Bounds3, {
       Math.max( this.maxY, y ),
       Math.max( this.maxZ, z )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it contains both its original bounds and the input point.
@@ -1071,9 +1064,9 @@ inherit( Object, Bounds3, {
    * @param {Vector3} point
    * @returns {Bounds3}
    */
-  addPoint: function( point ) {
+  addPoint( point ) {
     return this.addCoordinates( point.x, point.y, point.z );
-  },
+  }
 
   /**
    * Modifies this bounds so that its boundaries are integer-aligned, rounding the minimum boundaries down and the
@@ -1085,7 +1078,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {Bounds3}
    */
-  roundOut: function() {
+  roundOut() {
     return this.setMinMax(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
@@ -1094,7 +1087,7 @@ inherit( Object, Bounds3, {
       Math.ceil( this.maxY ),
       Math.ceil( this.maxZ )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that its boundaries are integer-aligned, rounding the minimum boundaries up and the
@@ -1106,7 +1099,7 @@ inherit( Object, Bounds3, {
    *
    * @returns {Bounds3}
    */
-  roundIn: function() {
+  roundIn() {
     return this.setMinMax(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
@@ -1115,7 +1108,7 @@ inherit( Object, Bounds3, {
       Math.floor( this.maxY ),
       Math.floor( this.maxZ )
     );
-  },
+  }
 
   /**
    * Modifies this bounds so that it would fully contain a transformed version if its previous value, applying the
@@ -1132,7 +1125,7 @@ inherit( Object, Bounds3, {
    * @param {Matrix4} matrix
    * @returns {Bounds3}
    */
-  transform: function( matrix ) {
+  transform( matrix ) {
     // do nothing
     if ( this.isEmpty() ) {
       return this;
@@ -1172,7 +1165,7 @@ inherit( Object, Bounds3, {
     withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.minY, this.maxZ ) ) );
     withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.maxY, this.maxZ ) ) );
     return this.setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
-  },
+  }
 
   /**
    * Expands this bounds on all sides by the specified amount.
@@ -1184,9 +1177,9 @@ inherit( Object, Bounds3, {
    * @param {number} d
    * @returns {Bounds3}
    */
-  dilate: function( d ) {
+  dilate( d ) {
     return this.setMinMax( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
-  },
+  }
 
   /**
    * Expands this bounds horizontally (left and right) by the specified amount.
@@ -1198,9 +1191,9 @@ inherit( Object, Bounds3, {
    * @param {number} x
    * @returns {Bounds3}
    */
-  dilateX: function( x ) {
+  dilateX( x ) {
     return this.setMinMax( this.minX - x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * Expands this bounds vertically (top and bottom) by the specified amount.
@@ -1212,9 +1205,9 @@ inherit( Object, Bounds3, {
    * @param {number} y
    * @returns {Bounds3}
    */
-  dilateY: function( y ) {
+  dilateY( y ) {
     return this.setMinMax( this.minX, this.minY - y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
-  },
+  }
 
   /**
    * Expands this bounds depth-wise (front and back) by the specified amount.
@@ -1226,9 +1219,9 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  dilateZ: function( z ) {
+  dilateZ( z ) {
     return this.setMinMax( this.minX, this.minY, this.minZ - z, this.maxX, this.maxY, this.maxZ + z );
-  },
+  }
 
   /**
    * Expands this bounds independently along each axis. Will be equal to calling
@@ -1243,9 +1236,9 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  dilateXYZ: function( x, y, z ) {
+  dilateXYZ( x, y, z ) {
     return this.setMinMax( this.minX - x, this.minY - y, this.minZ - z, this.maxX + x, this.maxY + y, this.maxZ + z );
-  },
+  }
 
   /**
    * Contracts this bounds on all sides by the specified amount.
@@ -1257,7 +1250,7 @@ inherit( Object, Bounds3, {
    * @param {number} d
    * @returns {Bounds3}
    */
-  erode: function( d ) { return this.dilate( -d ); },
+  erode( d ) { return this.dilate( -d ); }
 
   /**
    * Contracts this bounds horizontally (left and right) by the specified amount.
@@ -1269,7 +1262,7 @@ inherit( Object, Bounds3, {
    * @param {number} x
    * @returns {Bounds3}
    */
-  erodeX: function( x ) { return this.dilateX( -x ); },
+  erodeX( x ) { return this.dilateX( -x ); }
 
   /**
    * Contracts this bounds vertically (top and bottom) by the specified amount.
@@ -1281,7 +1274,7 @@ inherit( Object, Bounds3, {
    * @param {number} y
    * @returns {Bounds3}
    */
-  erodeY: function( y ) { return this.dilateY( -y ); },
+  erodeY( y ) { return this.dilateY( -y ); }
 
   /**
    * Contracts this bounds depth-wise (front and back) by the specified amount.
@@ -1293,7 +1286,7 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  erodeZ: function( z ) { return this.dilateZ( -z ); },
+  erodeZ( z ) { return this.dilateZ( -z ); }
 
   /**
    * Contracts this bounds independently along each axis. Will be equal to calling
@@ -1308,7 +1301,7 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  erodeXYZ: function( x, y, z ) { return this.dilateXYZ( -x, -y, -z ); },
+  erodeXYZ( x, y, z ) { return this.dilateXYZ( -x, -y, -z ); }
 
   /**
    * Translates our bounds horizontally by x.
@@ -1320,9 +1313,9 @@ inherit( Object, Bounds3, {
    * @param {number} x
    * @returns {Bounds3}
    */
-  shiftX: function( x ) {
+  shiftX( x ) {
     return this.setMinMax( this.minX + x, this.minY, this.minZ, this.maxX + x, this.maxY, this.maxZ );
-  },
+  }
 
   /**
    * Translates our bounds vertically by y.
@@ -1334,9 +1327,9 @@ inherit( Object, Bounds3, {
    * @param {number} y
    * @returns {Bounds3}
    */
-  shiftY: function( y ) {
+  shiftY( y ) {
     return this.setMinMax( this.minX, this.minY + y, this.minZ, this.maxX, this.maxY + y, this.maxZ );
-  },
+  }
 
   /**
    * Translates our bounds depth-wise by z.
@@ -1348,9 +1341,9 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  shiftZ: function( z ) {
+  shiftZ( z ) {
     return this.setMinMax( this.minX, this.minY, this.minZ + z, this.maxX, this.maxY, this.maxZ + z );
-  },
+  }
 
   /**
    * Translates our bounds by (x,y,z).
@@ -1364,10 +1357,9 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  shift: function( x, y, z ) {
+  shift( x, y, z ) {
     return this.setMinMax( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
   }
-}, {
   /**
    * Returns a new Bounds3 object, with the cuboid (3d rectangle) construction with x, y, z, width, height and depth.
    * @public
@@ -1380,9 +1372,9 @@ inherit( Object, Bounds3, {
    * @param {number} depth - The depth (maxZ - minZ) of the bounds.
    * @returns {Bounds3}
    */
-  cuboid: function( x, y, z, width, height, depth ) {
+  static cuboid( x, y, z, width, height, depth ) {
     return new Bounds3( x, y, z, x + width, y + height, z + depth );
-  },
+  }
 
   /**
    * Returns a new Bounds3 object that only contains the specified point (x,y,z). Useful for being dilated to form a
@@ -1395,10 +1387,17 @@ inherit( Object, Bounds3, {
    * @param {number} z
    * @returns {Bounds3}
    */
-  point: function( x, y, z ) {
+  static point( x, y, z ) {
     return new Bounds3( x, y, z, x, y, z );
   }
-} );
+}
+
+// @public (read-only) - Helps to identify the dimension of the bounds
+Bounds3.prototype.isBounds = true;
+Bounds3.prototype.dimension = 3;
+
+dot.register( 'Bounds3', Bounds3 );
+
 Poolable.mixInto( Bounds3, {
   initialize: Bounds3.prototype.setMinMax
 } );

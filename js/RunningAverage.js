@@ -7,44 +7,40 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import dot from './dot.js';
 
-/**
- * @param {number} windowSize - number of points to average
- * @constructor
- */
-function RunningAverage( windowSize ) {
+class RunningAverage {
+  /**
+   * @param {number} windowSize - number of points to average
+   */
+  constructor( windowSize ) {
 
-  assert && assert( windowSize > 0, 'window size must be positive' );
+    assert && assert( windowSize > 0, 'window size must be positive' );
 
-  // @private {number}
-  this.windowSize = windowSize;
+    // @private {number}
+    this.windowSize = windowSize;
 
-  // @private {number[]} - Used circularly.
-  this.samples = new Array( windowSize );
+    // @private {number[]} - Used circularly.
+    this.samples = new Array( windowSize );
 
-  // @private {number} - We add/subtract samples in a circular array pattern using this index.
-  this.sampleIndex = 0;
+    // @private {number} - We add/subtract samples in a circular array pattern using this index.
+    this.sampleIndex = 0;
 
-  // @private {number} - Total sum of the samples within the window (not yet divided by number of samples)
-  this.total = 0;
+    // @private {number} - Total sum of the samples within the window (not yet divided by number of samples)
+    this.total = 0;
 
-  // @private {number} - number of samples received so far
-  this.numSamples = 0;
+    // @private {number} - number of samples received so far
+    this.numSamples = 0;
 
-  this.clear();
-}
+    this.clear();
+  }
 
-dot.register( 'RunningAverage', RunningAverage );
-
-inherit( Object, RunningAverage, {
 
   /**
    * Clear the running average.
    * @public
    */
-  clear: function() {
+  clear() {
     this.total = 0;
     this.numSamples = 0;
 
@@ -52,7 +48,7 @@ inherit( Object, RunningAverage, {
     for ( let i = 0; i < this.windowSize; i++ ) {
       this.samples[ i ] = 0;
     }
-  },
+  }
 
   /**
    * Gets the current value of the running average.
@@ -60,9 +56,9 @@ inherit( Object, RunningAverage, {
    *
    * @returns {number}
    */
-  getRunningAverage: function() {
+  getRunningAverage() {
     return this.total / this.numSamples;
-  },
+  }
 
   /**
    * Returns whether the number of samples is at least as large as the window size (the buffer is full).
@@ -70,9 +66,9 @@ inherit( Object, RunningAverage, {
    *
    * @returns {boolean}
    */
-  isSaturated: function() {
+  isSaturated() {
     return this.numSamples >= this.windowSize;
-  },
+  }
 
   /**
    * Add a data point to the average and return the new running average.
@@ -81,7 +77,7 @@ inherit( Object, RunningAverage, {
    * @param {number} sample
    * @returns {number}
    */
-  updateRunningAverage: function( sample ) {
+  updateRunningAverage( sample ) {
     assert && assert( typeof sample === 'number' && isFinite( sample ) );
 
     // Limit at the window size
@@ -101,6 +97,8 @@ inherit( Object, RunningAverage, {
 
     return this.getRunningAverage();
   }
-} );
+}
+
+dot.register( 'RunningAverage', RunningAverage );
 
 export default RunningAverage;

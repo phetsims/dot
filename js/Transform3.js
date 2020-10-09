@@ -10,54 +10,50 @@
  */
 
 import TinyEmitter from '../../axon/js/TinyEmitter.js';
-import inherit from '../../phet-core/js/inherit.js';
-import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
 import Ray2 from './Ray2.js';
 import Vector2 from './Vector2.js';
+import dot from './dot.js';
 
 const scratchMatrix = new Matrix3();
 
-/**
- * Creates a transform based around an initial matrix.
- * @constructor
- * @public
- *
- * @param {Matrix3} matrix
- */
-function Transform3( matrix ) {
-  // @private {Matrix3} - The primary matrix used for the transform
-  this.matrix = Matrix3.IDENTITY.copy();
+class Transform3 {
+  /**
+   * Creates a transform based around an initial matrix.
+   * @public
+   *
+   * @param {Matrix3} matrix
+   */
+  constructor( matrix ) {
+    // @private {Matrix3} - The primary matrix used for the transform
+    this.matrix = Matrix3.IDENTITY.copy();
 
-  // @private {Matrix3} - The inverse of the primary matrix, computed lazily
-  this.inverse = Matrix3.IDENTITY.copy();
+    // @private {Matrix3} - The inverse of the primary matrix, computed lazily
+    this.inverse = Matrix3.IDENTITY.copy();
 
-  // @private {Matrix3} - The transpose of the primary matrix, computed lazily
-  this.matrixTransposed = Matrix3.IDENTITY.copy();
+    // @private {Matrix3} - The transpose of the primary matrix, computed lazily
+    this.matrixTransposed = Matrix3.IDENTITY.copy();
 
-  // @private {Matrix3} - The inverse of the transposed primary matrix, computed lazily
-  this.inverseTransposed = Matrix3.IDENTITY.copy();
+    // @private {Matrix3} - The inverse of the transposed primary matrix, computed lazily
+    this.inverseTransposed = Matrix3.IDENTITY.copy();
 
-  // @private {boolean} - Whether this.inverse has been computed based on the latest primary matrix
-  this.inverseValid = true;
+    // @private {boolean} - Whether this.inverse has been computed based on the latest primary matrix
+    this.inverseValid = true;
 
-  // @private {boolean} - Whether this.matrixTransposed has been computed based on the latest primary matrix
-  this.transposeValid = true;
+    // @private {boolean} - Whether this.matrixTransposed has been computed based on the latest primary matrix
+    this.transposeValid = true;
 
-  // @private {boolean} - Whether this.inverseTransposed has been computed based on the latest primary matrix
-  this.inverseTransposeValid = true;
+    // @private {boolean} - Whether this.inverseTransposed has been computed based on the latest primary matrix
+    this.inverseTransposeValid = true;
 
-  // @public {TinyEmitter}
-  this.changeEmitter = new TinyEmitter();
+    // @public {TinyEmitter}
+    this.changeEmitter = new TinyEmitter();
 
-  if ( matrix ) {
-    this.setMatrix( matrix );
+    if ( matrix ) {
+      this.setMatrix( matrix );
+    }
   }
-}
 
-dot.register( 'Transform3', Transform3 );
-
-inherit( Object, Transform3, {
 
   /*---------------------------------------------------------------------------*
    * mutators
@@ -69,14 +65,14 @@ inherit( Object, Transform3, {
    *
    * @param {Matrix3} matrix
    */
-  setMatrix: function( matrix ) {
+  setMatrix( matrix ) {
 
     // copy the matrix over to our matrix
     this.matrix.set( matrix );
 
     // set flags and notify
     this.invalidate();
-  },
+  }
 
   /**
    * Validates the matrix or matrix arguments, overrideable by subclasses to refine the validation.
@@ -84,17 +80,17 @@ inherit( Object, Transform3, {
    * @returns {boolean}
    * @protected
    */
-  validateMatrix: function( matrix ) {
+  validateMatrix( matrix ) {
     assert && assert( matrix instanceof Matrix3, 'matrix was incorrect type' );
     assert && assert( matrix.isFinite(), 'matrix must be finite' );
-  },
+  }
 
   /**
    * This should be called after our internal matrix is changed. It marks the other dependent matrices as invalid,
    * and sends out notifications of the change.
    * @private
    */
-  invalidate: function() {
+  invalidate() {
 
     // sanity check
     assert && this.validateMatrix( this.matrix );
@@ -105,7 +101,7 @@ inherit( Object, Transform3, {
     this.inverseTransposeValid = false;
 
     this.changeEmitter.emit();
-  },
+  }
 
   /**
    * Modifies the primary matrix such that: this.matrix = matrix * this.matrix.
@@ -113,7 +109,7 @@ inherit( Object, Transform3, {
    *
    * @param {Matrix3} matrix
    */
-  prepend: function( matrix ) {
+  prepend( matrix ) {
     assert && this.validateMatrix( matrix );
 
     // In the absence of a prepend-multiply function in Matrix3, copy over to a scratch matrix instead
@@ -124,7 +120,7 @@ inherit( Object, Transform3, {
 
     // set flags and notify
     this.invalidate();
-  },
+  }
 
   /**
    * Optimized prepended translation such that: this.matrix = translation( x, y ) * this.matrix.
@@ -133,7 +129,7 @@ inherit( Object, Transform3, {
    * @param {number} x -  x-coordinate
    * @param {number} y -  y-coordinate
    */
-  prependTranslation: function( x, y ) {
+  prependTranslation( x, y ) {
     // See scenery#119 for more details on the need.
 
     assert && assert( typeof x === 'number' && typeof y === 'number' && isFinite( x ) && isFinite( y ),
@@ -143,7 +139,7 @@ inherit( Object, Transform3, {
 
     // set flags and notify
     this.invalidate();
-  },
+  }
 
   /**
    * Modifies the primary matrix such that: this.matrix = this.matrix * matrix
@@ -151,14 +147,14 @@ inherit( Object, Transform3, {
    *
    * @param {Matrix3} matrix
    */
-  append: function( matrix ) {
+  append( matrix ) {
     assert && this.validateMatrix( matrix );
 
     this.matrix.multiplyMatrix( matrix );
 
     // set flags and notify
     this.invalidate();
-  },
+  }
 
   /**
    * Like prepend(), but prepends the other transform's matrix.
@@ -166,9 +162,9 @@ inherit( Object, Transform3, {
    *
    * @param {Transform3} transform
    */
-  prependTransform: function( transform ) {
+  prependTransform( transform ) {
     this.prepend( transform.matrix );
-  },
+  }
 
   /**
    * Like append(), but appends the other transform's matrix.
@@ -176,9 +172,9 @@ inherit( Object, Transform3, {
    *
    * @param {Transform3} transform
    */
-  appendTransform: function( transform ) {
+  appendTransform( transform ) {
     this.append( transform.matrix );
-  },
+  }
 
   /**
    * Sets the transform of a Canvas context to be equivalent to this transform.
@@ -186,9 +182,9 @@ inherit( Object, Transform3, {
    *
    * @param {CanvasRenderingContext2D} context
    */
-  applyToCanvasContext: function( context ) {
+  applyToCanvasContext( context ) {
     context.setTransform( this.matrix.m00(), this.matrix.m10(), this.matrix.m01(), this.matrix.m11(), this.matrix.m02(), this.matrix.m12() );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * getters
@@ -200,7 +196,7 @@ inherit( Object, Transform3, {
    *
    * @returns {Transform3}
    */
-  copy: function() {
+  copy() {
     const transform = new Transform3( this.matrix );
 
     transform.inverse = this.inverse;
@@ -210,7 +206,7 @@ inherit( Object, Transform3, {
     transform.inverseValid = this.inverseValid;
     transform.transposeValid = this.transposeValid;
     transform.inverseTransposeValid = this.inverseTransposeValid;
-  },
+  }
 
   /**
    * Returns the primary matrix of this transform.
@@ -218,9 +214,9 @@ inherit( Object, Transform3, {
    *
    * @returns {Matrix3}
    */
-  getMatrix: function() {
+  getMatrix() {
     return this.matrix;
-  },
+  }
 
   /**
    * Returns the inverse of the primary matrix of this transform.
@@ -228,7 +224,7 @@ inherit( Object, Transform3, {
    *
    * @returns {Matrix3}
    */
-  getInverse: function() {
+  getInverse() {
     if ( !this.inverseValid ) {
       this.inverseValid = true;
 
@@ -236,7 +232,7 @@ inherit( Object, Transform3, {
       this.inverse.invert();
     }
     return this.inverse;
-  },
+  }
 
   /**
    * Returns the transpose of the primary matrix of this transform.
@@ -244,7 +240,7 @@ inherit( Object, Transform3, {
    *
    * @returns {Matrix3}
    */
-  getMatrixTransposed: function() {
+  getMatrixTransposed() {
     if ( !this.transposeValid ) {
       this.transposeValid = true;
 
@@ -252,7 +248,7 @@ inherit( Object, Transform3, {
       this.matrixTransposed.transpose();
     }
     return this.matrixTransposed;
-  },
+  }
 
   /**
    * Returns the inverse of the transpose of matrix of this transform.
@@ -260,7 +256,7 @@ inherit( Object, Transform3, {
    *
    * @returns {Matrix3}
    */
-  getInverseTransposed: function() {
+  getInverseTransposed() {
     if ( !this.inverseTransposeValid ) {
       this.inverseTransposeValid = true;
 
@@ -268,7 +264,7 @@ inherit( Object, Transform3, {
       this.inverseTransposed.transpose();
     }
     return this.inverseTransposed;
-  },
+  }
 
   /**
    * Returns whether our primary matrix is known to be an identity matrix. If false is returned, it doesn't necessarily
@@ -277,9 +273,9 @@ inherit( Object, Transform3, {
    *
    * @returns {boolean}
    */
-  isIdentity: function() {
+  isIdentity() {
     return this.matrix.type === Matrix3.Types.IDENTITY;
-  },
+  }
 
   /**
    * Returns whether any components of our primary matrix are either infinite or NaN.
@@ -287,9 +283,9 @@ inherit( Object, Transform3, {
    *
    * @returns {boolean}
    */
-  isFinite: function() {
+  isFinite() {
     return this.matrix.isFinite();
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * forward transforms (for Vector2 or scalar)
@@ -304,9 +300,9 @@ inherit( Object, Transform3, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  transformPosition2: function( v ) {
+  transformPosition2( v ) {
     return this.matrix.timesVector2( v );
-  },
+  }
 
   /**
    * Transforms a 2-dimensional vector like position is irrelevant (translation is not applied).
@@ -318,11 +314,11 @@ inherit( Object, Transform3, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  transformDelta2: function( v ) {
+  transformDelta2( v ) {
     const m = this.getMatrix();
     // m . v - m . Vector2.ZERO
     return new Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
-  },
+  }
 
   /**
    * Transforms a 2-dimensional vector like it is a normal to a curve (so that the curve is transformed, and the new
@@ -336,9 +332,9 @@ inherit( Object, Transform3, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  transformNormal2: function( v ) {
+  transformNormal2( v ) {
     return this.getInverse().timesTransposeVector2( v ).normalize();
-  },
+  }
 
   /**
    * Returns the resulting x-coordinate of the transformation of all vectors with the initial input x-coordinate. If
@@ -348,11 +344,11 @@ inherit( Object, Transform3, {
    * @param {number} x
    * @returns {number}
    */
-  transformX: function( x ) {
+  transformX( x ) {
     const m = this.getMatrix();
     assert && assert( !m.m01(), 'Transforming an X value with a rotation/shear is ill-defined' );
     return m.m00() * x + m.m02();
-  },
+  }
 
   /**
    * Returns the resulting y-coordinate of the transformation of all vectors with the initial input y-coordinate. If
@@ -362,11 +358,11 @@ inherit( Object, Transform3, {
    * @param {number} y
    * @returns {number}
    */
-  transformY: function( y ) {
+  transformY( y ) {
     const m = this.getMatrix();
     assert && assert( !m.m10(), 'Transforming a Y value with a rotation/shear is ill-defined' );
     return m.m11() * y + m.m12();
-  },
+  }
 
   /**
    * Returns the x-coordinate difference for two transformed vectors, which add the x-coordinate difference of the input
@@ -376,11 +372,11 @@ inherit( Object, Transform3, {
    * @param {number} x
    * @returns {number}
    */
-  transformDeltaX: function( x ) {
+  transformDeltaX( x ) {
     const m = this.getMatrix();
     // same as this.transformDelta2( new Vector2( x, 0 ) ).x;
     return m.m00() * x;
-  },
+  }
 
   /**
    * Returns the y-coordinate difference for two transformed vectors, which add the y-coordinate difference of the input
@@ -390,11 +386,11 @@ inherit( Object, Transform3, {
    * @param {number} y
    * @returns {number}
    */
-  transformDeltaY: function( y ) {
+  transformDeltaY( y ) {
     const m = this.getMatrix();
     // same as this.transformDelta2( new Vector2( 0, y ) ).y;
     return m.m11() * y;
-  },
+  }
 
   /**
    * Returns bounds (axis-aligned) that contains the transformed bounds rectangle.
@@ -407,9 +403,9 @@ inherit( Object, Transform3, {
    * @param {Bounds2} bounds
    * @returns {Bounds2}
    */
-  transformBounds2: function( bounds ) {
+  transformBounds2( bounds ) {
     return bounds.transformed( this.matrix );
-  },
+  }
 
   /**
    * Returns a transformed kite.Shape.
@@ -418,9 +414,9 @@ inherit( Object, Transform3, {
    * @param {Shape} shape
    * @returns {Shape}
    */
-  transformShape: function( shape ) {
+  transformShape( shape ) {
     return shape.transformed( this.matrix );
-  },
+  }
 
   /**
    * Returns a transformed ray.
@@ -429,9 +425,9 @@ inherit( Object, Transform3, {
    * @param {Ray2} ray
    * @returns {Ray2}
    */
-  transformRay2: function( ray ) {
+  transformRay2( ray ) {
     return new Ray2( this.transformPosition2( ray.position ), this.transformDelta2( ray.direction ).normalized() );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * inverse transforms (for Vector2 or scalar)
@@ -448,9 +444,9 @@ inherit( Object, Transform3, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  inversePosition2: function( v ) {
+  inversePosition2( v ) {
     return this.getInverse().timesVector2( v );
-  },
+  }
 
   /**
    * Transforms a 2-dimensional vector by the inverse of our transform like position is irrelevant (translation is not applied).
@@ -464,11 +460,11 @@ inherit( Object, Transform3, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  inverseDelta2: function( v ) {
+  inverseDelta2( v ) {
     const m = this.getInverse();
     // m . v - m . Vector2.ZERO
     return new Vector2( m.m00() * v.x + m.m01() * v.y, m.m10() * v.x + m.m11() * v.y );
-  },
+  }
 
   /**
    * Transforms a 2-dimensional vector by the inverse of our transform like it is a normal to a curve (so that the
@@ -484,9 +480,9 @@ inherit( Object, Transform3, {
    * @param {Vector2} v
    * @returns {Vector2}
    */
-  inverseNormal2: function( v ) {
+  inverseNormal2( v ) {
     return this.matrix.timesTransposeVector2( v ).normalize();
-  },
+  }
 
   /**
    * Returns the resulting x-coordinate of the inverse transformation of all vectors with the initial input x-coordinate. If
@@ -498,11 +494,11 @@ inherit( Object, Transform3, {
    * @param {number} x
    * @returns {number}
    */
-  inverseX: function( x ) {
+  inverseX( x ) {
     const m = this.getInverse();
     assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
     return m.m00() * x + m.m02();
-  },
+  }
 
   /**
    * Returns the resulting y-coordinate of the inverse transformation of all vectors with the initial input y-coordinate. If
@@ -514,11 +510,11 @@ inherit( Object, Transform3, {
    * @param {number} y
    * @returns {number}
    */
-  inverseY: function( y ) {
+  inverseY( y ) {
     const m = this.getInverse();
     assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
     return m.m11() * y + m.m12();
-  },
+  }
 
   /**
    * Returns the x-coordinate difference for two inverse-transformed vectors, which add the x-coordinate difference of the input
@@ -530,12 +526,12 @@ inherit( Object, Transform3, {
    * @param {number} x
    * @returns {number}
    */
-  inverseDeltaX: function( x ) {
+  inverseDeltaX( x ) {
     const m = this.getInverse();
     assert && assert( !m.m01(), 'Inverting an X value with a rotation/shear is ill-defined' );
     // same as this.inverseDelta2( new Vector2( x, 0 ) ).x;
     return m.m00() * x;
-  },
+  }
 
   /**
    * Returns the y-coordinate difference for two inverse-transformed vectors, which add the y-coordinate difference of the input
@@ -547,12 +543,12 @@ inherit( Object, Transform3, {
    * @param {number} y
    * @returns {number}
    */
-  inverseDeltaY: function( y ) {
+  inverseDeltaY( y ) {
     const m = this.getInverse();
     assert && assert( !m.m10(), 'Inverting a Y value with a rotation/shear is ill-defined' );
     // same as this.inverseDelta2( new Vector2( 0, y ) ).y;
     return m.m11() * y;
-  },
+  }
 
   /**
    * Returns bounds (axis-aligned) that contains the inverse-transformed bounds rectangle.
@@ -565,9 +561,9 @@ inherit( Object, Transform3, {
    * @param {Bounds2} bounds
    * @returns {Bounds2}
    */
-  inverseBounds2: function( bounds ) {
+  inverseBounds2( bounds ) {
     return bounds.transformed( this.getInverse() );
-  },
+  }
 
   /**
    * Returns an inverse-transformed kite.Shape.
@@ -578,9 +574,9 @@ inherit( Object, Transform3, {
    * @param {Shape} shape
    * @returns {Shape}
    */
-  inverseShape: function( shape ) {
+  inverseShape( shape ) {
     return shape.transformed( this.getInverse() );
-  },
+  }
 
   /**
    * Returns an inverse-transformed ray.
@@ -591,9 +587,11 @@ inherit( Object, Transform3, {
    * @param {Ray2} ray
    * @returns {Ray2}
    */
-  inverseRay2: function( ray ) {
+  inverseRay2( ray ) {
     return new Ray2( this.inversePosition2( ray.position ), this.inverseDelta2( ray.direction ).normalized() );
   }
-} );
+}
+
+dot.register( 'Transform3', Transform3 );
 
 export default Transform3;
