@@ -28,24 +28,20 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import inherit from '../../phet-core/js/inherit.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 
-/**
- * Creates a BinPacker with the specified containing bounds.
- * @public
- * @constructor
- *
- * @param {Bounds2} bounds - The available bounds to pack bins inside.
- */
-function BinPacker( bounds ) {
-  this.rootBin = new dot.BinPacker.Bin( bounds, null );
-}
+class BinPacker {
+  /**
+   * Creates a BinPacker with the specified containing bounds.
+   * @public
+   *
+   * @param {Bounds2} bounds - The available bounds to pack bins inside.
+   */
+  constructor( bounds ) {
+    this.rootBin = new dot.BinPacker.Bin( bounds, null );
+  }
 
-dot.register( 'BinPacker', BinPacker );
-
-inherit( Object, BinPacker, {
   /**
    * Allocates a bin with the specified width and height if possible (returning a {Bin}), otherwise returns null.
    * @public
@@ -54,7 +50,7 @@ inherit( Object, BinPacker, {
    * @param {number} height
    * @returns {Bin|null}
    */
-  allocate: function( width, height ) {
+  allocate( width, height ) {
     // find a leaf bin that has available room (or null)
     const bin = this.rootBin.findAvailableBin( width, height );
 
@@ -70,7 +66,7 @@ inherit( Object, BinPacker, {
     else {
       return null;
     }
-  },
+  }
 
   /**
    * Deallocates a bin, so that its area can be reused by future allocations.
@@ -78,15 +74,15 @@ inherit( Object, BinPacker, {
    *
    * @param {Bin} bin - The bin that was returned from allocate().
    */
-  deallocate: function( bin ) {
+  deallocate( bin ) {
     bin.unuse();
-  },
+  }
 
   /**
    * @private, for debugging purposes
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     let result = '';
 
     let padding = '';
@@ -102,33 +98,34 @@ inherit( Object, BinPacker, {
 
     return result;
   }
-} );
+}
 
-/**
- * A rectangular bin that can be used itself or split into sub-bins.
- * @public
- * @constructor
- *
- * @param {Bounds2} bounds
- * @param {Bin|null} parent
- */
-BinPacker.Bin = function Bin( bounds, parent ) {
-  // @public {Bounds2} - Our containing bounds
-  this.bounds = bounds;
+dot.register( 'BinPacker', BinPacker );
 
-  // @private {Bin|null} - Parent bin, if applicable
-  this.parent = parent;
+class Bin {
+  /**
+   * A rectangular bin that can be used itself or split into sub-bins.
+   * @public
+   *
+   * @param {Bounds2} bounds
+   * @param {Bin|null} parent
+   */
+  constructor( bounds, parent ) {
+    // @public {Bounds2} - Our containing bounds
+    this.bounds = bounds;
 
-  // @private {boolean} - Whether our children are responsible for our area
-  this.isSplit = false;
+    // @private {Bin|null} - Parent bin, if applicable
+    this.parent = parent;
 
-  // @private {boolean} - Whether we are marked as a bin that is used
-  this.isUsed = false;
+    // @private {boolean} - Whether our children are responsible for our area
+    this.isSplit = false;
 
-  // @private {Array.<Bin>}
-  this.children = [];
-};
-inherit( Object, BinPacker.Bin, {
+    // @private {boolean} - Whether we are marked as a bin that is used
+    this.isUsed = false;
+
+    // @private {Array.<Bin>}
+    this.children = [];
+  }
 
   /**
    * Finds an unused bin with open area that is at least width-x-height in size.
@@ -138,7 +135,7 @@ inherit( Object, BinPacker.Bin, {
    * @param {number} height
    * @returns {Bin|null}
    */
-  findAvailableBin: function( width, height ) {
+  findAvailableBin( width, height ) {
     assert && assert( width > 0 && height > 0, 'Empty bin requested?' );
 
     // If we are marked as used ourself, we can't be used
@@ -164,7 +161,7 @@ inherit( Object, BinPacker.Bin, {
     else {
       return this;
     }
-  },
+  }
 
   /**
    * Splits this bin into multiple child bins, and returns the child with the dimensions (width,height).
@@ -173,7 +170,7 @@ inherit( Object, BinPacker.Bin, {
    * @param {number} width
    * @param {number} height
    */
-  split: function( width, height ) {
+  split( width, height ) {
     assert && assert( this.bounds.width >= width && this.bounds.height >= height,
       'Bin does not have space' );
     assert && assert( !this.isSplit, 'Bin should not be re-split' );
@@ -224,30 +221,30 @@ inherit( Object, BinPacker.Bin, {
     }
 
     return mainBin;
-  },
+  }
 
   /**
    * Mark this bin as used.
    * @private
    */
-  use: function() {
+  use() {
     assert && assert( !this.isSplit, 'Should not mark a split bin as used' );
     assert && assert( !this.isUsed, 'Should not mark a used bin as used' );
 
     this.isUsed = true;
-  },
+  }
 
   /**
    * Mark this bin as not used, and attempt to collapse split parents if all children are unused.
    * @private
    */
-  unuse: function() {
+  unuse() {
     assert && assert( this.isUsed, 'Can only unuse a used instance' );
 
     this.isUsed = false;
 
     this.parent && this.parent.attemptToCollapse();
-  },
+  }
 
   /**
    * If our bin can be collapsed (it is split and has children that are not used AND not split), then we will become
@@ -255,7 +252,7 @@ inherit( Object, BinPacker.Bin, {
    * to clean up unused data structures.
    * @private
    */
-  attemptToCollapse: function() {
+  attemptToCollapse() {
     assert && assert( this.isSplit, 'Should only attempt to collapse split bins' );
 
     // Bail out if a single child isn't able to be collapsed. If it is not split or used, it won't have any children
@@ -274,15 +271,16 @@ inherit( Object, BinPacker.Bin, {
 
     // And attempt to collapse our parent
     this.parent && this.parent.attemptToCollapse();
-  },
+  }
 
   /**
    * @private, for debugging purposes
    * @returns {string}
    */
-  toString: function() {
+  toString() {
     return this.bounds.toString() + ( this.isUsed ? ' used' : '' );
   }
-} );
+}
+BinPacker.Bin = Bin;
 
 export default BinPacker;
