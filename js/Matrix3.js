@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Enumeration from '../../phet-core/js/Enumeration.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import Matrix4 from './Matrix4.js';
@@ -25,7 +26,7 @@ class Matrix3 {
     // @public {Array.<number>} - Entries stored in column-major format
     this.entries = [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
 
-    // @public
+    // @public {Matrix3.Types}
     this.type = Types.IDENTITY;
   }
 
@@ -1469,22 +1470,14 @@ class Matrix3 {
   }
 }
 
-dot.register( 'Matrix3', Matrix3 );
-
-Matrix3.Types = {
-  // NOTE: if an inverted matrix of a type is not that type, change inverted()!
-  // NOTE: if two matrices with identical types are multiplied, the result should have the same type. if not, changed timesMatrix()!
-  // NOTE: on adding a type, exhaustively check all type usage
-  OTHER: 0, // default
-  IDENTITY: 1,
-  TRANSLATION_2D: 2,
-  SCALING: 3,
-  AFFINE: 4
-
-  // TODO: possibly add rotations
-};
-
-var Types = Matrix3.Types;
+const Types = Enumeration.byKeys( [
+  'OTHER',
+  'IDENTITY',
+  'TRANSLATION_2D',
+  'SCALING',
+  'AFFINE'
+] );
+Matrix3.Types = Types;
 
 Matrix3.identity = function() { return Matrix3.dirtyFromPool().setToIdentity(); };
 Matrix3.translation = function( x, y ) { return Matrix3.dirtyFromPool().setToTranslation( x, y ); };
@@ -1566,17 +1559,11 @@ Matrix3.translationTimesMatrix = function( x, y, m ) {
     type );
 };
 
-Matrix3.printer = {
-  print: function( matrix ) {
-    console.log( matrix.toString() );
-  }
-};
-
 // serialize to an Object that can be handled by PhET-iO
 Matrix3.toStateObject = function( matrix3 ) {
   return {
     entries: matrix3.entries,
-    type: matrix3.type
+    type: matrix3.type.name
   };
 };
 
@@ -1584,7 +1571,7 @@ Matrix3.toStateObject = function( matrix3 ) {
 Matrix3.fromStateObject = function( stateObject ) {
   const matrix = Matrix3.identity();
   matrix.entries = stateObject.entries;
-  matrix.type = stateObject.type;
+  matrix.type = Types[ stateObject.type ];
   return matrix;
 };
 
@@ -1595,4 +1582,5 @@ Matrix3.Matrix3IO = new IOType( 'Matrix3IO', {
   fromStateObject: Matrix3.fromStateObject
 } );
 
+dot.register( 'Matrix3', Matrix3 );
 export default Matrix3;
