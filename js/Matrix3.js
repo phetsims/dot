@@ -848,9 +848,11 @@ class Matrix3 {
    * @returns {Matrix3} - Self reference
    */
   makeImmutable() {
-    this.rowMajor = function() {
-      throw new Error( 'Cannot modify immutable matrix' );
-    };
+    if ( assert ) {
+      this.rowMajor = function() {
+        throw new Error( 'Cannot modify immutable matrix' );
+      };
+    }
     return this;
   }
 
@@ -1468,6 +1470,280 @@ class Matrix3 {
     array[ 8 ] = this.m22();
     return array;
   }
+
+  /**
+   * Returns an identity matrix.
+   * @public
+   *
+   * @returns {Matrix3}
+   */
+  static identity() {
+    return Matrix3.dirtyFromPool().setToIdentity();
+  }
+
+  /**
+   * Returns a translation matrix.
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @returns {Matrix3}
+   */
+  static translation( x, y ) {
+    return Matrix3.dirtyFromPool().setToTranslation( x, y );
+  }
+
+  /**
+   * Returns a translation matrix computed from a vector.
+   * @public
+   *
+   * @param {Vector2|Vector3} vector
+   * @returns {Matrix3}
+   */
+  static translationFromVector( vector ) {
+    return Matrix3.translation( vector.x, vector.y );
+  }
+
+  /**
+   * Returns a matrix that scales things in each dimension.
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @returns {Matrix3}
+   */
+  static scaling( x, y ) {
+    return Matrix3.dirtyFromPool().setToScale( x, y );
+  }
+
+  /**
+   * Returns a matrix that scales things in each dimension.
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @returns {Matrix3}
+   */
+  static scale( x, y ) {
+    return Matrix3.scaling( x, y );
+  }
+
+  /**
+   * Returns an affine matrix with the given parameters.
+   * @public
+   *
+   * @param {number} m00
+   * @param {number} m01
+   * @param {number} m02
+   * @param {number} m10
+   * @param {number} m11
+   * @param {number} m12
+   * @returns {Matrix3}
+   */
+  static affine( m00, m01, m02, m10, m11, m12 ) {
+    return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 );
+  }
+
+  /**
+   * Creates a new matrix with all of the entries determined in row-major order.
+   * @public
+   *
+   * @param {number} v00
+   * @param {number} v01
+   * @param {number} v02
+   * @param {number} v10
+   * @param {number} v11
+   * @param {number} v12
+   * @param {number} v20
+   * @param {number} v21
+   * @param {number} v22
+   * @param {Matrix3.Types|undefined} [type]
+   */
+  static rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+    return Matrix3.dirtyFromPool().rowMajor(
+      v00, v01, v02,
+      v10, v11, v12,
+      v20, v21, v22,
+      type
+    );
+  }
+
+  /**
+   * Returns a matrix rotation defined by a rotation of the specified angle around the given unit axis.
+   * @public
+   *
+   * @param {Vector3} axis - normalized
+   * @param {number} angle - in radians
+   * @returns {Matrix3}
+   */
+  static rotationAxisAngle( axis, angle ) {
+    return Matrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle );
+  }
+
+  /**
+   * Returns a matrix that rotates around the x axis (in the yz plane).
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix3}
+   */
+  static rotationX( angle ) {
+    return Matrix3.dirtyFromPool().setToRotationX( angle );
+  }
+
+  /**
+   * Returns a matrix that rotates around the y axis (in the xz plane).
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix3}
+   */
+  static rotationY( angle ) {
+    return Matrix3.dirtyFromPool().setToRotationY( angle );
+  }
+
+  /**
+   * Returns a matrix that rotates around the z axis (in the xy plane).
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix3}
+   */
+  static rotationZ( angle ) {
+    return Matrix3.dirtyFromPool().setToRotationZ( angle );
+  }
+
+  /**
+   * Returns a combined 2d translation + rotation (with the rotation effectively applied first).
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} angle - in radians
+   * @returns {Matrix3}
+   */
+  static translationRotation( x, y, angle ) {
+    return Matrix3.dirtyFromPool().setToTranslationRotation( x, y, angle );
+  }
+
+  /**
+   * Standard 2d rotation matrix for a given angle.
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix3}
+   */
+  static rotation2( angle ) {
+    return Matrix3.dirtyFromPool().setToRotationZ( angle );
+  }
+
+  /**
+   * Returns a matrix which will be a 2d rotation around a given x,y point.
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @param {number} x
+   * @param {number} y
+   * @returns {Matrix3}
+   */
+  static rotationAround( angle, x, y ) {
+    return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
+  }
+
+  /**
+   * Returns a matrix which will be a 2d rotation around a given 2d point.
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @param {Vector2} point
+   * @returns {Matrix3}
+   */
+  static rotationAroundPoint( angle, point ) {
+    return Matrix3.rotationAround( angle, point.x, point.y );
+  }
+
+  /**
+   * Returns a matrix equivalent to a given SVGMatrix.
+   * @public
+   *
+   * @param {SVGMatrix} svgMatrix
+   * @returns {Matrix3}
+   */
+  static fromSVGMatrix( svgMatrix ) {
+    return Matrix3.dirtyFromPool().setToSVGMatrix( svgMatrix );
+  }
+
+  /**
+   * Returns a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally
+   * should be unit vectors.
+   * @public
+   *
+   * @param {Vector3} a
+   * @param {Vector3} b
+   * @returns {Matrix3}
+   */
+  static rotateAToB( a, b ) {
+    return Matrix3.dirtyFromPool().setRotationAToB( a, b );
+  }
+
+  /**
+   * Shortcut for translation times a matrix (without allocating a translation matrix), see scenery#119
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {Matrix3} matrix
+   * @returns {Matrix3}
+   */
+  static translationTimesMatrix( x, y, matrix ) {
+    let type;
+    if ( matrix.type === Types.IDENTITY || matrix.type === Types.TRANSLATION_2D ) {
+      return Matrix3.createFromPool(
+        1, 0, matrix.m02() + x,
+        0, 1, matrix.m12() + y,
+        0, 0, 1,
+        Types.TRANSLATION_2D );
+    }
+    else if ( matrix.type === Types.OTHER ) {
+      type = Types.OTHER;
+    }
+    else {
+      type = Types.AFFINE;
+    }
+    return Matrix3.createFromPool(
+      matrix.m00(), matrix.m01(), matrix.m02() + x,
+      matrix.m10(), matrix.m11(), matrix.m12() + y,
+      matrix.m20(), matrix.m21(), matrix.m22(),
+      type );
+  }
+
+  /**
+   * Serialize to an Object that can be handled by PhET-iO
+   * @public
+   *
+   * @param {Matrix3} matrix3
+   * @returns {Object}
+   */
+  static toStateObject( matrix3 ) {
+    return {
+      entries: matrix3.entries,
+      type: matrix3.type.name
+    };
+  }
+
+  /**
+   * Convert back from a serialized Object to a Matrix3
+   * @public
+   *
+   * @param {Object} stateObject
+   * @returns {Matrix3}
+   */
+  static fromStateObject( stateObject ) {
+    const matrix = Matrix3.identity();
+    matrix.entries = stateObject.entries;
+    matrix.type = Types[ stateObject.type ];
+    return matrix;
+  }
 }
 
 const Types = Enumeration.byKeys( [
@@ -1479,101 +1755,26 @@ const Types = Enumeration.byKeys( [
 ] );
 Matrix3.Types = Types;
 
-Matrix3.identity = function() { return Matrix3.dirtyFromPool().setToIdentity(); };
-Matrix3.translation = function( x, y ) { return Matrix3.dirtyFromPool().setToTranslation( x, y ); };
-Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
-Matrix3.scaling = function( x, y ) { return Matrix3.dirtyFromPool().setToScale( x, y ); };
-Matrix3.scale = Matrix3.scaling;
-Matrix3.affine = function( m00, m01, m02, m10, m11, m12 ) { return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
-Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return Matrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
-
-// axis is a normalized Vector3, angle in radians.
-Matrix3.rotationAxisAngle = function( axis, angle ) { return Matrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
-
-Matrix3.rotationX = function( angle ) { return Matrix3.dirtyFromPool().setToRotationX( angle ); };
-Matrix3.rotationY = function( angle ) { return Matrix3.dirtyFromPool().setToRotationY( angle ); };
-Matrix3.rotationZ = function( angle ) { return Matrix3.dirtyFromPool().setToRotationZ( angle ); };
-
-Matrix3.translationRotation = function( x, y, angle ) { return Matrix3.dirtyFromPool().setToTranslationRotation( x, y, angle ); };
-
-// standard 2d rotation
-Matrix3.rotation2 = Matrix3.rotationZ;
-
-Matrix3.rotationAround = function( angle, x, y ) {
-  return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
-};
-
-Matrix3.rotationAroundPoint = function( angle, point ) {
-  return Matrix3.rotationAround( angle, point.x, point.y );
-};
-
-Matrix3.fromSVGMatrix = function( svgMatrix ) { return Matrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
-
-// a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-Matrix3.rotateAToB = function( a, b ) { return Matrix3.dirtyFromPool().setRotationAToB( a, b ); };
-
 Poolable.mixInto( Matrix3, {
   initialize: Matrix3.prototype.rowMajor,
   useDefaultConstruction: true,
   maxSize: 300
 } );
 
-// create an immutable
-Matrix3.IDENTITY = Matrix3.identity();
-Matrix3.IDENTITY.makeImmutable();
-
+// @public {Matrix3}
+Matrix3.IDENTITY = Matrix3.identity().makeImmutable();
 Matrix3.X_REFLECTION = Matrix3.createFromPool(
   -1, 0, 0,
   0, 1, 0,
   0, 0, 1,
-  Types.AFFINE );
-Matrix3.X_REFLECTION.makeImmutable();
-
+  Types.AFFINE
+).makeImmutable();
 Matrix3.Y_REFLECTION = Matrix3.createFromPool(
   1, 0, 0,
   0, -1, 0,
   0, 0, 1,
-  Types.AFFINE );
-Matrix3.Y_REFLECTION.makeImmutable();
-
-//Shortcut for translation times a matrix (without allocating a translation matrix), see scenery#119
-Matrix3.translationTimesMatrix = function( x, y, m ) {
-  let type;
-  if ( m.type === Types.IDENTITY || m.type === Types.TRANSLATION_2D ) {
-    return Matrix3.createFromPool(
-      1, 0, m.m02() + x,
-      0, 1, m.m12() + y,
-      0, 0, 1,
-      Types.TRANSLATION_2D );
-  }
-  else if ( m.type === Types.OTHER ) {
-    type = Types.OTHER;
-  }
-  else {
-    type = Types.AFFINE;
-  }
-  return Matrix3.createFromPool(
-    m.m00(), m.m01(), m.m02() + x,
-    m.m10(), m.m11(), m.m12() + y,
-    m.m20(), m.m21(), m.m22(),
-    type );
-};
-
-// serialize to an Object that can be handled by PhET-iO
-Matrix3.toStateObject = function( matrix3 ) {
-  return {
-    entries: matrix3.entries,
-    type: matrix3.type.name
-  };
-};
-
-// Convert back from a serialized Object to a Matrix3
-Matrix3.fromStateObject = function( stateObject ) {
-  const matrix = Matrix3.identity();
-  matrix.entries = stateObject.entries;
-  matrix.type = Types[ stateObject.type ];
-  return matrix;
-};
+  Types.AFFINE
+).makeImmutable();
 
 Matrix3.Matrix3IO = new IOType( 'Matrix3IO', {
   valueType: Matrix3,
