@@ -274,7 +274,7 @@ class Transform3 {
    * @returns {boolean}
    */
   isIdentity() {
-    return this.matrix.type === Matrix3.Types.IDENTITY;
+    return this.matrix.isFastIdentity();
   }
 
   /**

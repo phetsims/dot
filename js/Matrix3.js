@@ -8,121 +8,183 @@
 
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import dot from './dot.js';
 import Matrix4 from './Matrix4.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
+import dot from './dot.js';
 
-// Create an identity matrix
-function Matrix3( argumentsShouldNotExist ) {
+class Matrix3 {
+  /**
+   * Creates an identity matrix, that can then be mutated into the proper form.
+   */
+  constructor() {
 
-  //Make sure no clients are expecting to create a matrix with non-identity values
-  assert && assert( !argumentsShouldNotExist, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
+    //Make sure no clients are expecting to create a matrix with non-identity values
+    assert && assert( arguments.length === 0, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
 
-  // entries stored in column-major format
-  this.entries = [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
+    // @public {Array.<number>} - Entries stored in column-major format
+    this.entries = [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
 
-  this.type = Types.IDENTITY;
-}
+    // @public
+    this.type = Types.IDENTITY;
+  }
 
-dot.register( 'Matrix3', Matrix3 );
+  /**
+   * Convenience getter for the individual 0,0 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m00() {
+    return this.entries[ 0 ];
+  }
 
-Matrix3.Types = {
-  // NOTE: if an inverted matrix of a type is not that type, change inverted()!
-  // NOTE: if two matrices with identical types are multiplied, the result should have the same type. if not, changed timesMatrix()!
-  // NOTE: on adding a type, exhaustively check all type usage
-  OTHER: 0, // default
-  IDENTITY: 1,
-  TRANSLATION_2D: 2,
-  SCALING: 3,
-  AFFINE: 4
+  /**
+   * Convenience getter for the individual 0,1 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m01() {
+    return this.entries[ 3 ];
+  }
 
-  // TODO: possibly add rotations
-};
+  /**
+   * Convenience getter for the individual 0,2 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m02() {
+    return this.entries[ 6 ];
+  }
 
-var Types = Matrix3.Types;
+  /**
+   * Convenience getter for the individual 1,0 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m10() {
+    return this.entries[ 1 ];
+  }
 
-Matrix3.identity = function() { return Matrix3.dirtyFromPool().setToIdentity(); };
-Matrix3.translation = function( x, y ) { return Matrix3.dirtyFromPool().setToTranslation( x, y ); };
-Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
-Matrix3.scaling = function( x, y ) { return Matrix3.dirtyFromPool().setToScale( x, y ); };
-Matrix3.scale = Matrix3.scaling;
-Matrix3.affine = function( m00, m01, m02, m10, m11, m12 ) { return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
-Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return Matrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
+  /**
+   * Convenience getter for the individual 1,1 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m11() {
+    return this.entries[ 4 ];
+  }
 
-// axis is a normalized Vector3, angle in radians.
-Matrix3.rotationAxisAngle = function( axis, angle ) { return Matrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
+  /**
+   * Convenience getter for the individual 1,2 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m12() {
+    return this.entries[ 7 ];
+  }
 
-Matrix3.rotationX = function( angle ) { return Matrix3.dirtyFromPool().setToRotationX( angle ); };
-Matrix3.rotationY = function( angle ) { return Matrix3.dirtyFromPool().setToRotationY( angle ); };
-Matrix3.rotationZ = function( angle ) { return Matrix3.dirtyFromPool().setToRotationZ( angle ); };
+  /**
+   * Convenience getter for the individual 2,0 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m20() {
+    return this.entries[ 2 ];
+  }
 
-Matrix3.translationRotation = function( x, y, angle ) { return Matrix3.dirtyFromPool().setToTranslationRotation( x, y, angle ); };
+  /**
+   * Convenience getter for the individual 2,1 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m21() {
+    return this.entries[ 5 ];
+  }
 
-// standard 2d rotation
-Matrix3.rotation2 = Matrix3.rotationZ;
+  /**
+   * Convenience getter for the individual 2,2 entry of the matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  m22() {
+    return this.entries[ 8 ];
+  }
 
-Matrix3.rotationAround = function( angle, x, y ) {
-  return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
-};
-
-Matrix3.rotationAroundPoint = function( angle, point ) {
-  return Matrix3.rotationAround( angle, point.x, point.y );
-};
-
-Matrix3.fromSVGMatrix = function( svgMatrix ) { return Matrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
-
-// a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-Matrix3.rotateAToB = function( a, b ) { return Matrix3.dirtyFromPool().setRotationAToB( a, b ); };
-
-Matrix3.prototype = {
-  constructor: Matrix3,
-
-  /*---------------------------------------------------------------------------*
-   * "Properties"
-   *----------------------------------------------------------------------------*/
-
-  // convenience getters. inline usages of these when performance is critical? TODO: test performance of inlining these, with / without closure compiler
-  m00: function() { return this.entries[ 0 ]; },
-  m01: function() { return this.entries[ 3 ]; },
-  m02: function() { return this.entries[ 6 ]; },
-  m10: function() { return this.entries[ 1 ]; },
-  m11: function() { return this.entries[ 4 ]; },
-  m12: function() { return this.entries[ 7 ]; },
-  m20: function() { return this.entries[ 2 ]; },
-  m21: function() { return this.entries[ 5 ]; },
-  m22: function() { return this.entries[ 8 ]; },
-
-  isIdentity: function() {
+  /**
+   * Returns whether this matrix is an identity matrix.
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isIdentity() {
     return this.type === Types.IDENTITY || this.equals( Matrix3.IDENTITY );
-  },
+  }
 
-  // returning false means "inconclusive, may be identity or not"
-  isFastIdentity: function() {
+  /**
+   * Returns whether this matrix is likely to be an identity matrix (returning false means "inconclusive, may be
+   * identity or not"), but true is guaranteed to be an identity matrix.
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isFastIdentity() {
     return this.type === Types.IDENTITY;
-  },
+  }
 
-  isAffine: function() {
+  /**
+   * Returns whether this matrix is an affine matrix (e.g. no shear).
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isAffine() {
     return this.type === Types.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
-  },
+  }
 
-  // if it's an affine matrix where the components of transforms are independent
-  // i.e. constructed from arbitrary component scaling and translation.
-  isAligned: function() {
+  /**
+   * Returns whether it's an affine matrix where the components of transforms are independent, i.e. constructed from
+   * arbitrary component scaling and translation.
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isAligned() {
     // non-diagonal non-translation entries should all be zero.
     return this.isAffine() && this.m01() === 0 && this.m10() === 0;
-  },
+  }
 
-  // if it's an affine matrix where the components of transforms are independent, but may be switched (unlike isAligned)
-  // i.e. the 2x2 rotational sub-matrix is of one of the two forms:
-  // A 0  or  0  A
-  // 0 B      B  0
-  // This means that moving a transformed point by (x,0) or (0,y) will result in a motion along one of the axes.
-  isAxisAligned: function() {
+
+  /**
+   * Returns if it's an affine matrix where the components of transforms are independent, but may be switched (unlike isAligned)
+   * @public
+   *
+   * i.e. the 2x2 rotational sub-matrix is of one of the two forms:
+   * A 0  or  0  A
+   * 0 B      B  0
+   * This means that moving a transformed point by (x,0) or (0,y) will result in a motion along one of the axes.
+   *
+   * @returns {boolean}
+   */
+  isAxisAligned() {
     return this.isAffine() && ( ( this.m01() === 0 && this.m10() === 0 ) || ( this.m00() === 0 && this.m11() === 0 ) );
-  },
+  }
 
-  isFinite: function() {
+  /**
+   * Returns whether every single entry in this matrix is a finite number (non-NaN, non-infinite).
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isFinite() {
     return isFinite( this.m00() ) &&
            isFinite( this.m01() ) &&
            isFinite( this.m02() ) &&
@@ -132,56 +194,102 @@ Matrix3.prototype = {
            isFinite( this.m20() ) &&
            isFinite( this.m21() ) &&
            isFinite( this.m22() );
-  },
+  }
 
-  getDeterminant: function() {
+  /**
+   * Returns the determinant of this matrix.
+   * @public
+   *
+   * @returns {number}
+   */
+  getDeterminant() {
     return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
-  },
-  get determinant() { return this.getDeterminant(); },
+  }
+  get determinant() { return this.getDeterminant(); }
 
-  // the 2D translation, assuming multiplication with a homogeneous vector
-  getTranslation: function() {
+  /**
+   * Returns the 2D translation, assuming multiplication with a homogeneous vector
+   * @public
+   *
+   * @returns {Vector2}
+   */
+  getTranslation() {
     return new Vector2( this.m02(), this.m12() );
-  },
-  get translation() { return this.getTranslation(); },
+  }
+  get translation() { return this.getTranslation(); }
 
-  // returns a vector that is equivalent to ( T(1,0).magnitude(), T(0,1).magnitude() ) where T is a relative transform
-  getScaleVector: function() {
+  /**
+   * Returns a vector that is equivalent to ( T(1,0).magnitude(), T(0,1).magnitude() ) where T is a relative transform
+   * @public
+   *
+   * @returns {Vector2}
+   */
+  getScaleVector() {
     return new Vector2(
       Math.sqrt( this.m00() * this.m00() + this.m10() * this.m10() ),
       Math.sqrt( this.m01() * this.m01() + this.m11() * this.m11() ) );
-  },
-  get scaleVector() { return this.getScaleVector(); },
+  }
+  get scaleVector() { return this.getScaleVector(); }
 
-  // angle in radians for the 2d rotation from this matrix, between pi, -pi
-  getRotation: function() {
+  /**
+   * Returns the angle in radians for the 2d rotation from this matrix, between pi, -pi
+   * @public
+   *
+   * @returns {number}
+   */
+  getRotation() {
     return Math.atan2( this.m10(), this.m00() );
-  },
-  get rotation() { return this.getRotation(); },
+  }
+  get rotation() { return this.getRotation(); }
 
-  toMatrix4: function() {
+  /**
+   * Returns an identity-padded copy of this matrix with an increased dimension.
+   * @public
+   *
+   * @returns {Matrix4}
+   */
+  toMatrix4() {
     return new Matrix4(
       this.m00(), this.m01(), this.m02(), 0,
       this.m10(), this.m11(), this.m12(), 0,
       this.m20(), this.m21(), this.m22(), 0,
       0, 0, 0, 1 );
-  },
+  }
 
-  toAffineMatrix4: function() {
+  /**
+   * Returns an identity-padded copy of this matrix with an increased dimension, treating this matrix's affine
+   * components only.
+   * @public
+   *
+   * @returns {Matrix4}
+   */
+  toAffineMatrix4() {
     return new Matrix4(
       this.m00(), this.m01(), 0, this.m02(),
       this.m10(), this.m11(), 0, this.m12(),
       0, 0, 1, 0,
       0, 0, 0, 1 );
-  },
+  }
 
-  toString: function() {
+  /**
+   * Returns a string form of this object
+   * @public
+   *
+   * @returns {string}
+   */
+  toString() {
     return this.m00() + ' ' + this.m01() + ' ' + this.m02() + '\n' +
            this.m10() + ' ' + this.m11() + ' ' + this.m12() + '\n' +
            this.m20() + ' ' + this.m21() + ' ' + this.m22();
-  },
+  }
 
-  toSVGMatrix: function() {
+  /**
+   * Creates an SVG form of this matrix, for high-performance processing in SVG output.
+   * @public
+   *
+   * @returns {SVGMatrix}
+   */
+  toSVGMatrix() {
     const result = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGMatrix();
 
     // top two rows
@@ -193,9 +301,15 @@ Matrix3.prototype = {
     result.f = this.m12();
 
     return result;
-  },
+  }
 
-  getCSSTransform: function() {
+  /**
+   * Returns the CSS form (simplified if possible) for this transformation matrix.
+   * @public
+   *
+   * @returns {string}
+   */
+  getCSSTransform() {
     // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
 
     // We need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
@@ -205,10 +319,16 @@ Matrix3.prototype = {
     // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
     // NOTE: the toFixed calls are inlined for performance reasons
     return 'matrix(' + this.entries[ 0 ].toFixed( 20 ) + ',' + this.entries[ 1 ].toFixed( 20 ) + ',' + this.entries[ 3 ].toFixed( 20 ) + ',' + this.entries[ 4 ].toFixed( 20 ) + ',' + this.entries[ 6 ].toFixed( 20 ) + ',' + this.entries[ 7 ].toFixed( 20 ) + ')';
-  },
-  get cssTransform() { return this.getCSSTransform(); },
+  }
+  get cssTransform() { return this.getCSSTransform(); }
 
-  getSVGTransform: function() {
+  /**
+   * Returns the CSS-like SVG matrix form for this transformation matrix.
+   * @public
+   *
+   * @returns {string}
+   */
+  getSVGTransform() {
     // SVG transform presentation attribute. See http://www.w3.org/TR/SVG/coords.html#TransformAttribute
 
     // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
@@ -228,11 +348,16 @@ Matrix3.prototype = {
       default:
         return 'matrix(' + svgNumber( this.entries[ 0 ] ) + ',' + svgNumber( this.entries[ 1 ] ) + ',' + svgNumber( this.entries[ 3 ] ) + ',' + svgNumber( this.entries[ 4 ] ) + ',' + svgNumber( this.entries[ 6 ] ) + ',' + svgNumber( this.entries[ 7 ] ) + ')';
     }
-  },
-  get svgTransform() { return this.getSVGTransform(); },
+  }
+  get svgTransform() { return this.getSVGTransform(); }
 
-  // returns a parameter object suitable for use with jQuery's .css()
-  getCSSTransformStyles: function() {
+  /**
+   * Returns a parameter object suitable for use with jQuery's .css()
+   * @public
+   *
+   * @returns {Object}
+   */
+  getCSSTransformStyles() {
     const transformCSS = this.getCSSTransform();
 
     // notes on triggering hardware acceleration: http://creativejs.com/2011/12/day-2-gpu-accelerate-your-dom-elements/
@@ -249,69 +374,126 @@ Matrix3.prototype = {
       'transform-origin': 'top left', // at the origin of the component. consider 0px 0px instead. Critical, since otherwise this defaults to 50% 50%!!! see https://developer.mozilla.org/en-US/docs/CSS/transform-origin
       '-ms-transform-origin': 'top left' // TODO: do we need other platform-specific transform-origin styles?
     };
-  },
-  get cssTransformStyles() { return this.getCSSTransformStyles(); },
+  }
+  get cssTransformStyles() { return this.getCSSTransformStyles(); }
 
-  // exact equality
-  equals: function( m ) {
-    return this.m00() === m.m00() && this.m01() === m.m01() && this.m02() === m.m02() &&
-           this.m10() === m.m10() && this.m11() === m.m11() && this.m12() === m.m12() &&
-           this.m20() === m.m20() && this.m21() === m.m21() && this.m22() === m.m22();
-  },
+  /**
+   * Returns exact equality with another matrix
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {boolean}
+   */
+  equals( matrix ) {
+    return this.m00() === matrix.m00() && this.m01() === matrix.m01() && this.m02() === matrix.m02() &&
+           this.m10() === matrix.m10() && this.m11() === matrix.m11() && this.m12() === matrix.m12() &&
+           this.m20() === matrix.m20() && this.m21() === matrix.m21() && this.m22() === matrix.m22();
+  }
 
-  // equality within a margin of error
-  equalsEpsilon: function( m, epsilon ) {
-    return Math.abs( this.m00() - m.m00() ) < epsilon && Math.abs( this.m01() - m.m01() ) < epsilon && Math.abs( this.m02() - m.m02() ) < epsilon &&
-           Math.abs( this.m10() - m.m10() ) < epsilon && Math.abs( this.m11() - m.m11() ) < epsilon && Math.abs( this.m12() - m.m12() ) < epsilon &&
-           Math.abs( this.m20() - m.m20() ) < epsilon && Math.abs( this.m21() - m.m21() ) < epsilon && Math.abs( this.m22() - m.m22() ) < epsilon;
-  },
+  /**
+   * Returns equality within a margin of error with another matrix
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @param {number} epsilon
+   * @returns {boolean}
+   */
+  equalsEpsilon( matrix, epsilon ) {
+    return Math.abs( this.m00() - matrix.m00() ) < epsilon &&
+           Math.abs( this.m01() - matrix.m01() ) < epsilon &&
+           Math.abs( this.m02() - matrix.m02() ) < epsilon &&
+           Math.abs( this.m10() - matrix.m10() ) < epsilon &&
+           Math.abs( this.m11() - matrix.m11() ) < epsilon &&
+           Math.abs( this.m12() - matrix.m12() ) < epsilon &&
+           Math.abs( this.m20() - matrix.m20() ) < epsilon &&
+           Math.abs( this.m21() - matrix.m21() ) < epsilon &&
+           Math.abs( this.m22() - matrix.m22() ) < epsilon;
+  }
 
   /*---------------------------------------------------------------------------*
    * Immutable operations (returns a new matrix)
    *----------------------------------------------------------------------------*/
 
-  copy: function() {
+  /**
+   * Returns a copy of this matrix
+   * @public
+   *
+   * @returns {Matrix3}
+   */
+  copy() {
     return Matrix3.createFromPool(
       this.m00(), this.m01(), this.m02(),
       this.m10(), this.m11(), this.m12(),
       this.m20(), this.m21(), this.m22(),
       this.type
     );
-  },
+  }
 
-  plus: function( m ) {
+  /**
+   * Returns a new matrix, defined by this matrix plus the provided matrix
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {Matrix3}
+   */
+  plus( matrix ) {
     return Matrix3.createFromPool(
-      this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
-      this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
-      this.m20() + m.m20(), this.m21() + m.m21(), this.m22() + m.m22()
+      this.m00() + matrix.m00(), this.m01() + matrix.m01(), this.m02() + matrix.m02(),
+      this.m10() + matrix.m10(), this.m11() + matrix.m11(), this.m12() + matrix.m12(),
+      this.m20() + matrix.m20(), this.m21() + matrix.m21(), this.m22() + matrix.m22()
     );
-  },
+  }
 
-  minus: function( m ) {
+  /**
+   * Returns a new matrix, defined by this matrix plus the provided matrix
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {Matrix3}
+   */
+  minus( matrix ) {
     return Matrix3.createFromPool(
-      this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
-      this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
-      this.m20() - m.m20(), this.m21() - m.m21(), this.m22() - m.m22()
+      this.m00() - matrix.m00(), this.m01() - matrix.m01(), this.m02() - matrix.m02(),
+      this.m10() - matrix.m10(), this.m11() - matrix.m11(), this.m12() - matrix.m12(),
+      this.m20() - matrix.m20(), this.m21() - matrix.m21(), this.m22() - matrix.m22()
     );
-  },
+  }
 
-  transposed: function() {
+  /**
+   * Returns a transposed copy of this matrix
+   * @public
+   *
+   * @returns {Matrix3}
+   */
+  transposed() {
     return Matrix3.createFromPool(
       this.m00(), this.m10(), this.m20(),
       this.m01(), this.m11(), this.m21(),
       this.m02(), this.m12(), this.m22(), ( this.type === Types.IDENTITY || this.type === Types.SCALING ) ? this.type : undefined
     );
-  },
+  }
 
-  negated: function() {
+  /**
+   * Returns a negated copy of this matrix
+   * @public
+   *
+   * @returns {Matrix3}
+   */
+  negated() {
     return Matrix3.createFromPool(
       -this.m00(), -this.m01(), -this.m02(),
       -this.m10(), -this.m11(), -this.m12(),
       -this.m20(), -this.m21(), -this.m22()
     );
-  },
+  }
 
-  inverted: function() {
+  /**
+   * Returns an inverted copy of this matrix
+   * @public
+   *
+   * @returns {Matrix3}
+   */
+  inverted() {
     let det;
 
     switch( this.type ) {
@@ -365,95 +547,147 @@ Matrix3.prototype = {
       default:
         throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
     }
-  },
+  }
 
-  timesMatrix: function( m ) {
+  /**
+   * Returns a matrix, defined by the multiplication of this * matrix.
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {Matrix3} - NOTE: this may be the same matrix!
+   */
+  timesMatrix( matrix ) {
     // I * M === M * I === M (the identity)
-    if ( this.type === Types.IDENTITY || m.type === Types.IDENTITY ) {
-      return this.type === Types.IDENTITY ? m : this;
+    if ( this.type === Types.IDENTITY || matrix.type === Types.IDENTITY ) {
+      return this.type === Types.IDENTITY ? matrix : this;
     }
 
-    if ( this.type === m.type ) {
+    if ( this.type === matrix.type ) {
       // currently two matrices of the same type will result in the same result type
       if ( this.type === Types.TRANSLATION_2D ) {
         // faster combination of translations
         return Matrix3.createFromPool(
-          1, 0, this.m02() + m.m02(),
-          0, 1, this.m12() + m.m12(),
+          1, 0, this.m02() + matrix.m02(),
+          0, 1, this.m12() + matrix.m12(),
           0, 0, 1, Types.TRANSLATION_2D );
       }
       else if ( this.type === Types.SCALING ) {
         // faster combination of scaling
         return Matrix3.createFromPool(
-          this.m00() * m.m00(), 0, 0,
-          0, this.m11() * m.m11(), 0,
+          this.m00() * matrix.m00(), 0, 0,
+          0, this.m11() * matrix.m11(), 0,
           0, 0, 1, Types.SCALING );
       }
     }
 
-    if ( this.type !== Types.OTHER && m.type !== Types.OTHER ) {
+    if ( this.type !== Types.OTHER && matrix.type !== Types.OTHER ) {
       // currently two matrices that are anything but "other" are technically affine, and the result will be affine
 
       // affine case
       return Matrix3.createFromPool(
-        this.m00() * m.m00() + this.m01() * m.m10(),
-        this.m00() * m.m01() + this.m01() * m.m11(),
-        this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
-        this.m10() * m.m00() + this.m11() * m.m10(),
-        this.m10() * m.m01() + this.m11() * m.m11(),
-        this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
+        this.m00() * matrix.m00() + this.m01() * matrix.m10(),
+        this.m00() * matrix.m01() + this.m01() * matrix.m11(),
+        this.m00() * matrix.m02() + this.m01() * matrix.m12() + this.m02(),
+        this.m10() * matrix.m00() + this.m11() * matrix.m10(),
+        this.m10() * matrix.m01() + this.m11() * matrix.m11(),
+        this.m10() * matrix.m02() + this.m11() * matrix.m12() + this.m12(),
         0, 0, 1, Types.AFFINE );
     }
 
     // general case
     return Matrix3.createFromPool(
-      this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
-      this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
-      this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
-      this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
-      this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
-      this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
-      this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
-      this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
-      this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
-  },
+      this.m00() * matrix.m00() + this.m01() * matrix.m10() + this.m02() * matrix.m20(),
+      this.m00() * matrix.m01() + this.m01() * matrix.m11() + this.m02() * matrix.m21(),
+      this.m00() * matrix.m02() + this.m01() * matrix.m12() + this.m02() * matrix.m22(),
+      this.m10() * matrix.m00() + this.m11() * matrix.m10() + this.m12() * matrix.m20(),
+      this.m10() * matrix.m01() + this.m11() * matrix.m11() + this.m12() * matrix.m21(),
+      this.m10() * matrix.m02() + this.m11() * matrix.m12() + this.m12() * matrix.m22(),
+      this.m20() * matrix.m00() + this.m21() * matrix.m10() + this.m22() * matrix.m20(),
+      this.m20() * matrix.m01() + this.m21() * matrix.m11() + this.m22() * matrix.m21(),
+      this.m20() * matrix.m02() + this.m21() * matrix.m12() + this.m22() * matrix.m22() );
+  }
 
   /*---------------------------------------------------------------------------*
    * Immutable operations (returns new form of a parameter)
    *----------------------------------------------------------------------------*/
 
-  timesVector2: function( v ) {
-    const x = this.m00() * v.x + this.m01() * v.y + this.m02();
-    const y = this.m10() * v.x + this.m11() * v.y + this.m12();
+  /**
+   * Returns the multiplication of this matrix times the provided vector (treating this matrix as homogeneous, so that
+   * it is the technical multiplication of (x,y,1)).
+   * @public
+   *
+   * @param {Vector2} vector2
+   * @returns {Vector2}
+   */
+  timesVector2( vector2 ) {
+    const x = this.m00() * vector2.x + this.m01() * vector2.y + this.m02();
+    const y = this.m10() * vector2.x + this.m11() * vector2.y + this.m12();
     return new Vector2( x, y );
-  },
+  }
 
-  timesVector3: function( v ) {
-    const x = this.m00() * v.x + this.m01() * v.y + this.m02() * v.z;
-    const y = this.m10() * v.x + this.m11() * v.y + this.m12() * v.z;
-    const z = this.m20() * v.x + this.m21() * v.y + this.m22() * v.z;
+  /**
+   * Returns the multiplication of this matrix times the provided vector
+   * @public
+   *
+   * @param {Vector3} vector3
+   * @returns {Vector3}
+   */
+  timesVector3( vector3 ) {
+    const x = this.m00() * vector3.x + this.m01() * vector3.y + this.m02() * vector3.z;
+    const y = this.m10() * vector3.x + this.m11() * vector3.y + this.m12() * vector3.z;
+    const z = this.m20() * vector3.x + this.m21() * vector3.y + this.m22() * vector3.z;
     return new Vector3( x, y, z );
-  },
+  }
 
-  timesTransposeVector2: function( v ) {
-    const x = this.m00() * v.x + this.m10() * v.y;
-    const y = this.m01() * v.x + this.m11() * v.y;
+  /**
+   * Returns the multiplication of the transpose of this matrix times the provided vector (assuming the 2x2 quadrant)
+   * @public
+   *
+   * @param {Vector2} vector2
+   * @returns {Vector2}
+   */
+  timesTransposeVector2( vector2 ) {
+    const x = this.m00() * vector2.x + this.m10() * vector2.y;
+    const y = this.m01() * vector2.x + this.m11() * vector2.y;
     return new Vector2( x, y );
-  },
+  }
 
-  // TODO: this operation seems to not work for transformDelta2, should be vetted
-  timesRelativeVector2: function( v ) {
-    const x = this.m00() * v.x + this.m01() * v.y;
-    const y = this.m10() * v.y + this.m11() * v.y;
+  /**
+   * TODO: this operation seems to not work for transformDelta2, should be vetted
+   * @public
+   *
+   * @param {Vector2} vector2
+   * @returns {Vector2}
+   */
+  timesRelativeVector2( vector2 ) {
+    const x = this.m00() * vector2.x + this.m01() * vector2.y;
+    const y = this.m10() * vector2.y + this.m11() * vector2.y;
     return new Vector2( x, y );
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Mutable operations (changes this matrix)
    *----------------------------------------------------------------------------*/
 
-  // every mutable method goes through rowMajor
-  rowMajor: function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
+  /**
+   * Sets the entire state of the matrix, in row-major order.
+   * @public
+   *
+   * NOTE: Every mutable method goes through rowMajor
+   *
+   * @param {number} v00
+   * @param {number} v01
+   * @param {number} v02
+   * @param {number} v10
+   * @param {number} v11
+   * @param {number} v12
+   * @param {number} v20
+   * @param {number} v21
+   * @param {number} v22
+   * @param {number} type
+   * @returns {Matrix3} - Self reference
+   */
+  rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
     this.entries[ 0 ] = v00;
     this.entries[ 1 ] = v10;
     this.entries[ 2 ] = v20;
@@ -467,106 +701,244 @@ Matrix3.prototype = {
     // TODO: consider performance of the affine check here
     this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
     return this;
-  },
+  }
 
-  set: function( matrix ) {
+  /**
+   * Sets this matrix to be a copy of another matrix.
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {Matrix3} - Self reference
+   */
+  set( matrix ) {
     return this.rowMajor(
       matrix.m00(), matrix.m01(), matrix.m02(),
       matrix.m10(), matrix.m11(), matrix.m12(),
       matrix.m20(), matrix.m21(), matrix.m22(),
       matrix.type );
-  },
+  }
 
-  setArray: function( array ) {
+  /**
+   * Sets this matrix to be a copy of the column-major data stored in an array (e.g. WebGL).
+   * @public
+   *
+   * @param {Array.<number>|Float32Array|Float64Array} array
+   * @returns {Matrix3} - Self reference
+   */
+  setArray( array ) {
     return this.rowMajor(
       array[ 0 ], array[ 3 ], array[ 6 ],
       array[ 1 ], array[ 4 ], array[ 7 ],
       array[ 2 ], array[ 5 ], array[ 8 ] );
-  },
+  }
 
-  // component setters
-  set00: function( value ) {
+  /**
+   * Sets the individual 0,0 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set00( value ) {
     this.entries[ 0 ] = value;
     return this;
-  },
-  set01: function( value ) {
+  }
+
+  /**
+   * Sets the individual 0,1 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set01( value ) {
     this.entries[ 3 ] = value;
     return this;
-  },
-  set02: function( value ) {
+  }
+
+  /**
+   * Sets the individual 0,2 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set02( value ) {
     this.entries[ 6 ] = value;
     return this;
-  },
-  set10: function( value ) {
+  }
+
+  /**
+   * Sets the individual 1,0 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set10( value ) {
     this.entries[ 1 ] = value;
     return this;
-  },
-  set11: function( value ) {
+  }
+
+  /**
+   * Sets the individual 1,1 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set11( value ) {
     this.entries[ 4 ] = value;
     return this;
-  },
-  set12: function( value ) {
+  }
+
+  /**
+   * Sets the individual 1,2 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set12( value ) {
     this.entries[ 7 ] = value;
     return this;
-  },
-  set20: function( value ) {
+  }
+
+  /**
+   * Sets the individual 2,0 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set20( value ) {
     this.entries[ 2 ] = value;
     return this;
-  },
-  set21: function( value ) {
+  }
+
+  /**
+   * Sets the individual 2,1 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set21( value ) {
     this.entries[ 5 ] = value;
     return this;
-  },
-  set22: function( value ) {
+  }
+
+  /**
+   * Sets the individual 2,2 component of this matrix.
+   * @public
+   *
+   * @param {number} value
+   * @returns {Matrix3} - Self reference
+   */
+  set22( value ) {
     this.entries[ 8 ] = value;
     return this;
-  },
+  }
 
-  makeImmutable: function() {
+  /**
+   * Makes this matrix effectively immutable to the normal methods (except direct setters?)
+   * @public
+   *
+   * @returns {Matrix3} - Self reference
+   */
+  makeImmutable() {
     this.rowMajor = function() {
       throw new Error( 'Cannot modify immutable matrix' );
     };
     return this;
-  },
+  }
 
-  columnMajor: function( v00, v10, v20, v01, v11, v21, v02, v12, v22, type ) {
+  /**
+   * Sets the entire state of the matrix, in column-major order.
+   * @public
+   *
+   * @param {number} v00
+   * @param {number} v10
+   * @param {number} v20
+   * @param {number} v01
+   * @param {number} v11
+   * @param {number} v21
+   * @param {number} v02
+   * @param {number} v12
+   * @param {number} v22
+   * @param {number} type - TODO replace with enumeration
+   * @returns {Matrix3} - Self reference
+   */
+  columnMajor( v00, v10, v20, v01, v11, v21, v02, v12, v22, type ) {
     return this.rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
-  },
+  }
 
-  add: function( m ) {
+  /**
+   * Sets this matrix to itself plus the given matrix.
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {Matrix3} - Self reference
+   */
+  add( matrix ) {
     return this.rowMajor(
-      this.m00() + m.m00(), this.m01() + m.m01(), this.m02() + m.m02(),
-      this.m10() + m.m10(), this.m11() + m.m11(), this.m12() + m.m12(),
-      this.m20() + m.m20(), this.m21() + m.m21(), this.m22() + m.m22()
+      this.m00() + matrix.m00(), this.m01() + matrix.m01(), this.m02() + matrix.m02(),
+      this.m10() + matrix.m10(), this.m11() + matrix.m11(), this.m12() + matrix.m12(),
+      this.m20() + matrix.m20(), this.m21() + matrix.m21(), this.m22() + matrix.m22()
     );
-  },
+  }
 
-  subtract: function( m ) {
+  /**
+   * Sets this matrix to itself minus the given matrix.
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {Matrix3} - Self reference
+   */
+  subtract( m ) {
     return this.rowMajor(
       this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
       this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
       this.m20() - m.m20(), this.m21() - m.m21(), this.m22() - m.m22()
     );
-  },
+  }
 
-  transpose: function() {
+  /**
+   * Sets this matrix to its own transpose.
+   * @public
+   *
+   * @returns {Matrix3} - Self reference
+   */
+  transpose() {
     return this.rowMajor(
       this.m00(), this.m10(), this.m20(),
       this.m01(), this.m11(), this.m21(),
       this.m02(), this.m12(), this.m22(),
       ( this.type === Types.IDENTITY || this.type === Types.SCALING ) ? this.type : undefined
     );
-  },
+  }
 
-  negate: function() {
+  /**
+   * Sets this matrix to its own negation.
+   * @public
+   *
+   * @returns {Matrix3} - Self reference
+   */
+  negate() {
     return this.rowMajor(
       -this.m00(), -this.m01(), -this.m02(),
       -this.m10(), -this.m11(), -this.m12(),
       -this.m20(), -this.m21(), -this.m22()
     );
-  },
+  }
 
-  invert: function() {
+  /**
+   * Sets this matrix to its own inverse.
+   * @public
+   *
+   * @returns {Matrix3} - Self reference
+   */
+  invert() {
     let det;
 
     switch( this.type ) {
@@ -620,11 +992,18 @@ Matrix3.prototype = {
       default:
         throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
     }
-  },
+  }
 
-  multiplyMatrix: function( m ) {
+  /**
+   * Sets this matrix to the value of itself times the provided matrix
+   * @public
+   *
+   * @param {Matrix3} matrix
+   * @returns {Matrix3} - Self reference
+   */
+  multiplyMatrix( matrix ) {
     // M * I === M (the identity)
-    if ( m.type === Types.IDENTITY ) {
+    if ( matrix.type === Types.IDENTITY ) {
       // no change needed
       return this;
     }
@@ -632,55 +1011,63 @@ Matrix3.prototype = {
     // I * M === M (the identity)
     if ( this.type === Types.IDENTITY ) {
       // copy the other matrix to us
-      return this.set( m );
+      return this.set( matrix );
     }
 
-    if ( this.type === m.type ) {
+    if ( this.type === matrix.type ) {
       // currently two matrices of the same type will result in the same result type
       if ( this.type === Types.TRANSLATION_2D ) {
         // faster combination of translations
         return this.rowMajor(
-          1, 0, this.m02() + m.m02(),
-          0, 1, this.m12() + m.m12(),
+          1, 0, this.m02() + matrix.m02(),
+          0, 1, this.m12() + matrix.m12(),
           0, 0, 1, Types.TRANSLATION_2D );
       }
       else if ( this.type === Types.SCALING ) {
         // faster combination of scaling
         return this.rowMajor(
-          this.m00() * m.m00(), 0, 0,
-          0, this.m11() * m.m11(), 0,
+          this.m00() * matrix.m00(), 0, 0,
+          0, this.m11() * matrix.m11(), 0,
           0, 0, 1, Types.SCALING );
       }
     }
 
-    if ( this.type !== Types.OTHER && m.type !== Types.OTHER ) {
+    if ( this.type !== Types.OTHER && matrix.type !== Types.OTHER ) {
       // currently two matrices that are anything but "other" are technically affine, and the result will be affine
 
       // affine case
       return this.rowMajor(
-        this.m00() * m.m00() + this.m01() * m.m10(),
-        this.m00() * m.m01() + this.m01() * m.m11(),
-        this.m00() * m.m02() + this.m01() * m.m12() + this.m02(),
-        this.m10() * m.m00() + this.m11() * m.m10(),
-        this.m10() * m.m01() + this.m11() * m.m11(),
-        this.m10() * m.m02() + this.m11() * m.m12() + this.m12(),
+        this.m00() * matrix.m00() + this.m01() * matrix.m10(),
+        this.m00() * matrix.m01() + this.m01() * matrix.m11(),
+        this.m00() * matrix.m02() + this.m01() * matrix.m12() + this.m02(),
+        this.m10() * matrix.m00() + this.m11() * matrix.m10(),
+        this.m10() * matrix.m01() + this.m11() * matrix.m11(),
+        this.m10() * matrix.m02() + this.m11() * matrix.m12() + this.m12(),
         0, 0, 1, Types.AFFINE );
     }
 
     // general case
     return this.rowMajor(
-      this.m00() * m.m00() + this.m01() * m.m10() + this.m02() * m.m20(),
-      this.m00() * m.m01() + this.m01() * m.m11() + this.m02() * m.m21(),
-      this.m00() * m.m02() + this.m01() * m.m12() + this.m02() * m.m22(),
-      this.m10() * m.m00() + this.m11() * m.m10() + this.m12() * m.m20(),
-      this.m10() * m.m01() + this.m11() * m.m11() + this.m12() * m.m21(),
-      this.m10() * m.m02() + this.m11() * m.m12() + this.m12() * m.m22(),
-      this.m20() * m.m00() + this.m21() * m.m10() + this.m22() * m.m20(),
-      this.m20() * m.m01() + this.m21() * m.m11() + this.m22() * m.m21(),
-      this.m20() * m.m02() + this.m21() * m.m12() + this.m22() * m.m22() );
-  },
+      this.m00() * matrix.m00() + this.m01() * matrix.m10() + this.m02() * matrix.m20(),
+      this.m00() * matrix.m01() + this.m01() * matrix.m11() + this.m02() * matrix.m21(),
+      this.m00() * matrix.m02() + this.m01() * matrix.m12() + this.m02() * matrix.m22(),
+      this.m10() * matrix.m00() + this.m11() * matrix.m10() + this.m12() * matrix.m20(),
+      this.m10() * matrix.m01() + this.m11() * matrix.m11() + this.m12() * matrix.m21(),
+      this.m10() * matrix.m02() + this.m11() * matrix.m12() + this.m12() * matrix.m22(),
+      this.m20() * matrix.m00() + this.m21() * matrix.m10() + this.m22() * matrix.m20(),
+      this.m20() * matrix.m01() + this.m21() * matrix.m11() + this.m22() * matrix.m21(),
+      this.m20() * matrix.m02() + this.m21() * matrix.m12() + this.m22() * matrix.m22() );
+  }
 
-  prependTranslation: function( x, y ) {
+  /**
+   * Mutates this matrix, equivalent to (translation * this).
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @returns {Matrix3} - Self reference
+   */
+  prependTranslation( x, y ) {
     this.set02( this.m02() + x );
     this.set12( this.m12() + y );
 
@@ -694,25 +1081,47 @@ Matrix3.prototype = {
       this.type = Types.AFFINE;
     }
     return this; // for chaining
-  },
+  }
 
-  setToIdentity: function() {
+  /**
+   * Sets this matrix to the 3x3 identity matrix.
+   * @public
+   *
+   * @returns {Matrix3} - Self reference
+   */
+  setToIdentity() {
     return this.rowMajor(
       1, 0, 0,
       0, 1, 0,
       0, 0, 1,
       Types.IDENTITY );
-  },
+  }
 
-  setToTranslation: function( x, y ) {
+  /**
+   * Sets this matrix to the affine translation matrix.
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @returns {Matrix3} - Self reference
+   */
+  setToTranslation( x, y ) {
     return this.rowMajor(
       1, 0, x,
       0, 1, y,
       0, 0, 1,
       Types.TRANSLATION_2D );
-  },
+  }
 
-  setToScale: function( x, y ) {
+  /**
+   * Sets this matrix to the affine scaling matrix.
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @returns {Matrix3} - Self reference
+   */
+  setToScale( x, y ) {
     // allow using one parameter to scale everything
     y = y === undefined ? x : y;
 
@@ -721,15 +1130,33 @@ Matrix3.prototype = {
       0, y, 0,
       0, 0, 1,
       Types.SCALING );
-  },
+  }
 
-  // row major
-  setToAffine: function( m00, m01, m02, m10, m11, m12 ) {
+  /**
+   * Sets this matrix to an affine matrix with the specified row-major values.
+   * @public
+   *
+   * @param {number} m00
+   * @param {number} m01
+   * @param {number} m02
+   * @param {number} m10
+   * @param {number} m11
+   * @param {number} m12
+   * @returns {Matrix3} - Self reference
+   */
+  setToAffine( m00, m01, m02, m10, m11, m12 ) {
     return this.rowMajor( m00, m01, m02, m10, m11, m12, 0, 0, 1, Types.AFFINE );
-  },
+  }
 
-  // axis is a normalized Vector3, angle in radians.
-  setToRotationAxisAngle: function( axis, angle ) {
+  /**
+   * Sets the matrix to a rotation defined by a rotation of the specified angle around the given unit axis.
+   * @public
+   *
+   * @param {Vector3} axis - normalized
+   * @param {number} angle - in radians
+   * @returns {Matrix3} - Self reference
+   */
+  setToRotationAxisAngle( axis, angle ) {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
     const C = 1 - c;
@@ -739,9 +1166,16 @@ Matrix3.prototype = {
       axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s,
       axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c,
       Types.OTHER );
-  },
+  }
 
-  setToRotationX: function( angle ) {
+  /**
+   * Sets this matrix to a rotation around the x axis (in the yz plane).
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix3} - Self reference
+   */
+  setToRotationX( angle ) {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -750,9 +1184,16 @@ Matrix3.prototype = {
       0, c, -s,
       0, s, c,
       Types.OTHER );
-  },
+  }
 
-  setToRotationY: function( angle ) {
+  /**
+   * Sets this matrix to a rotation around the y axis (in the xz plane).
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix3} - Self reference
+   */
+  setToRotationY( angle ) {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -761,9 +1202,16 @@ Matrix3.prototype = {
       0, 1, 0,
       -s, 0, c,
       Types.OTHER );
-  },
+  }
 
-  setToRotationZ: function( angle ) {
+  /**
+   * Sets this matrix to a rotation around the z axis (in the xy plane).
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix3} - Self reference
+   */
+  setToRotationZ( angle ) {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -772,9 +1220,19 @@ Matrix3.prototype = {
       s, c, 0,
       0, 0, 1,
       Types.AFFINE );
-  },
+  }
 
-  setToTranslationRotation: function( x, y, angle ) {
+  /**
+   * Sets this matrix to the combined translation+rotation (where the rotation logically would happen first, THEN it
+   * would be translated).
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} angle - in radians
+   * @returns {Matrix3} - Self reference
+   */
+  setToTranslationRotation( x, y, angle ) {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -783,22 +1241,46 @@ Matrix3.prototype = {
       s, c, y,
       0, 0, 1,
       Types.AFFINE );
-  },
+  }
 
-  setToTranslationRotationPoint: function( translation, angle ) {
+  /**
+   * Sets this matrix to the combined translation+rotation (where the rotation logically would happen first, THEN it
+   * would be translated).
+   * @public
+   *
+   * @param {Vector2} translation
+   * @param {number} angle - in radians
+   * @returns {Matrix3} - Self reference
+   */
+  setToTranslationRotationPoint( translation, angle ) {
     return this.setToTranslationRotation( translation.x, translation.y, angle );
-  },
+  }
 
-  setToSVGMatrix: function( svgMatrix ) {
+  /**
+   * Sets this matrix to the values contained in an SVGMatrix.
+   * @public
+   *
+   * @param {SVGMatrix} svgMatrix
+   * @returns {Matrix3} - Self reference
+   */
+  setToSVGMatrix( svgMatrix ) {
     return this.rowMajor(
       svgMatrix.a, svgMatrix.c, svgMatrix.e,
       svgMatrix.b, svgMatrix.d, svgMatrix.f,
       0, 0, 1,
       Types.AFFINE );
-  },
+  }
 
-  // a rotation matrix that rotates A to B (Vector3 instances), by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
-  setRotationAToB: function( a, b ) {
+  /**
+   * Sets this matrix to a rotation matrix that rotates A to B (Vector3 instances), by rotating about the axis
+   * A.cross( B ) -- Shortest path. ideally should be unit vectors.
+   * @public
+   *
+   * @param {Vector3} a
+   * @param {Vector3} b
+   * @returns {Matrix3} - Self reference
+   */
+  setRotationAToB( a, b ) {
     // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
     const start = a;
     const end = b;
@@ -868,39 +1350,73 @@ Matrix3.prototype = {
         hvxz - v.y, hvyz + v.x, e + hvz * v.z
       );
     }
-  },
+  }
 
   /*---------------------------------------------------------------------------*
    * Mutable operations (changes the parameter)
    *----------------------------------------------------------------------------*/
 
-  multiplyVector2: function( v ) {
-    return v.setXY(
-      this.m00() * v.x + this.m01() * v.y + this.m02(),
-      this.m10() * v.x + this.m11() * v.y + this.m12() );
-  },
+  /**
+   * Sets the vector to the result of (matrix * vector), as a homogeneous multiplicatino.
+   * @public
+   *
+   * @param {Vector2} vector2
+   * @returns {Vector2} - The vector that was mutated
+   */
+  multiplyVector2( vector2 ) {
+    return vector2.setXY(
+      this.m00() * vector2.x + this.m01() * vector2.y + this.m02(),
+      this.m10() * vector2.x + this.m11() * vector2.y + this.m12() );
+  }
 
-  multiplyVector3: function( v ) {
-    return v.setXYZ(
-      this.m00() * v.x + this.m01() * v.y + this.m02() * v.z,
-      this.m10() * v.x + this.m11() * v.y + this.m12() * v.z,
-      this.m20() * v.x + this.m21() * v.y + this.m22() * v.z );
-  },
+  /**
+   * Sets the vector to the result of (matrix * vector).
+   * @public
+   *
+   * @param {Vector3} vector3
+   * @returns {Vector3} - The vector that was mutated
+   */
+  multiplyVector3( vector3 ) {
+    return vector3.setXYZ(
+      this.m00() * vector3.x + this.m01() * vector3.y + this.m02() * vector3.z,
+      this.m10() * vector3.x + this.m11() * vector3.y + this.m12() * vector3.z,
+      this.m20() * vector3.x + this.m21() * vector3.y + this.m22() * vector3.z );
+  }
 
-  multiplyTransposeVector2: function( v ) {
+  /**
+   * Sets the vector to the result of (transpose(matrix) * vector), ignoring the translation parameters.
+   * @public
+   *
+   * @param {Vector2} vector2
+   * @returns {Vector2} - The vector that was mutated
+   */
+  multiplyTransposeVector2( v ) {
     return v.setXY(
       this.m00() * v.x + this.m10() * v.y,
       this.m01() * v.x + this.m11() * v.y );
-  },
+  }
 
-  multiplyRelativeVector2: function( v ) {
+  /**
+   * Sets the vector to the result of (matrix * vector - matrix * zero). Since this is a homogeneous operation, it is
+   * equivalent to the multiplication of (x,y,0).
+   * @public
+   *
+   * @param {Vector2} vector2
+   * @returns {Vector2} - The vector that was mutated
+   */
+  multiplyRelativeVector2( v ) {
     return v.setXY(
       this.m00() * v.x + this.m01() * v.y,
       this.m10() * v.y + this.m11() * v.y );
-  },
+  }
 
-  // sets the transform of a Canvas 2D rendering context to the affine part of this matrix
-  canvasSetTransform: function( context ) {
+  /**
+   * Sets the transform of a Canvas 2D rendering context to the affine part of this matrix
+   * @public
+   *
+   * @param {CanvasRenderingContext2D} context
+   */
+  canvasSetTransform( context ) {
     context.setTransform(
       // inlined array entries
       this.entries[ 0 ],
@@ -910,10 +1426,15 @@ Matrix3.prototype = {
       this.entries[ 6 ],
       this.entries[ 7 ]
     );
-  },
+  }
 
-  // appends the affine part of this matrix to the Canvas 2D rendering context
-  canvasAppendTransform: function( context ) {
+  /**
+   * Appends to the affine part of this matrix to the Canvas 2D rendering context
+   * @public
+   *
+   * @param {CanvasRenderingContext2D} context
+   */
+  canvasAppendTransform( context ) {
     if ( this.type !== Types.IDENTITY ) {
       context.transform(
         // inlined array entries
@@ -925,7 +1446,7 @@ Matrix3.prototype = {
         this.entries[ 7 ]
       );
     }
-  },
+  }
 
   /**
    * Copies the entries of this matrix over to an arbitrary array (typed or normal).
@@ -934,7 +1455,7 @@ Matrix3.prototype = {
    * @param {Array|Float32Array|Float64Array} array
    * @returns {Array|Float32Array|Float64Array} - Returned for chaining
    */
-  copyToArray: function( array ) {
+  copyToArray( array ) {
     array[ 0 ] = this.m00();
     array[ 1 ] = this.m10();
     array[ 2 ] = this.m20();
@@ -946,7 +1467,57 @@ Matrix3.prototype = {
     array[ 8 ] = this.m22();
     return array;
   }
+}
+
+dot.register( 'Matrix3', Matrix3 );
+
+Matrix3.Types = {
+  // NOTE: if an inverted matrix of a type is not that type, change inverted()!
+  // NOTE: if two matrices with identical types are multiplied, the result should have the same type. if not, changed timesMatrix()!
+  // NOTE: on adding a type, exhaustively check all type usage
+  OTHER: 0, // default
+  IDENTITY: 1,
+  TRANSLATION_2D: 2,
+  SCALING: 3,
+  AFFINE: 4
+
+  // TODO: possibly add rotations
 };
+
+var Types = Matrix3.Types;
+
+Matrix3.identity = function() { return Matrix3.dirtyFromPool().setToIdentity(); };
+Matrix3.translation = function( x, y ) { return Matrix3.dirtyFromPool().setToTranslation( x, y ); };
+Matrix3.translationFromVector = function( v ) { return Matrix3.translation( v.x, v.y ); };
+Matrix3.scaling = function( x, y ) { return Matrix3.dirtyFromPool().setToScale( x, y ); };
+Matrix3.scale = Matrix3.scaling;
+Matrix3.affine = function( m00, m01, m02, m10, m11, m12 ) { return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 ); };
+Matrix3.rowMajor = function( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) { return Matrix3.dirtyFromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ); };
+
+// axis is a normalized Vector3, angle in radians.
+Matrix3.rotationAxisAngle = function( axis, angle ) { return Matrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle ); };
+
+Matrix3.rotationX = function( angle ) { return Matrix3.dirtyFromPool().setToRotationX( angle ); };
+Matrix3.rotationY = function( angle ) { return Matrix3.dirtyFromPool().setToRotationY( angle ); };
+Matrix3.rotationZ = function( angle ) { return Matrix3.dirtyFromPool().setToRotationZ( angle ); };
+
+Matrix3.translationRotation = function( x, y, angle ) { return Matrix3.dirtyFromPool().setToTranslationRotation( x, y, angle ); };
+
+// standard 2d rotation
+Matrix3.rotation2 = Matrix3.rotationZ;
+
+Matrix3.rotationAround = function( angle, x, y ) {
+  return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
+};
+
+Matrix3.rotationAroundPoint = function( angle, point ) {
+  return Matrix3.rotationAround( angle, point.x, point.y );
+};
+
+Matrix3.fromSVGMatrix = function( svgMatrix ) { return Matrix3.dirtyFromPool().setToSVGMatrix( svgMatrix ); };
+
+// a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally should be unit vectors
+Matrix3.rotateAToB = function( a, b ) { return Matrix3.dirtyFromPool().setRotationAToB( a, b ); };
 
 Poolable.mixInto( Matrix3, {
   initialize: Matrix3.prototype.rowMajor,
