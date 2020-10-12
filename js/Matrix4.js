@@ -9,6 +9,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Enumeration from '../../phet-core/js/Enumeration.js';
 import Vector3 from './Vector3.js';
 import Vector4 from './Vector4.js';
 import dot from './dot.js';
@@ -800,17 +801,14 @@ class Matrix4 {
 
 dot.register( 'Matrix4', Matrix4 );
 
-Matrix4.Types = {
-  OTHER: 0, // default
-  IDENTITY: 1,
-  TRANSLATION_3D: 2,
-  SCALING: 3,
-  AFFINE: 4
-
-  // TODO: possibly add rotations
-};
-
-const Types = Matrix4.Types;
+const Types = Enumeration.byKeys( [
+  'OTHER',
+  'IDENTITY',
+  'TRANSLATION_3D',
+  'SCALING',
+  'AFFINE'
+] );
+Matrix4.Types = Types;
 
 Matrix4.identity = function() {
   return new Matrix4(
