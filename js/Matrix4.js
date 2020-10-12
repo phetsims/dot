@@ -18,27 +18,27 @@ const Float32Array = window.Float32Array || Array;
 
 class Matrix4 {
   /**
-   * @param {number} v00
-   * @param {number} v01
-   * @param {number} v02
-   * @param {number} v03
-   * @param {number} v10
-   * @param {number} v11
-   * @param {number} v12
-   * @param {number} v13
-   * @param {number} v20
-   * @param {number} v21
-   * @param {number} v22
-   * @param {number} v23
-   * @param {number} v30
-   * @param {number} v31
-   * @param {number} v32
-   * @param {number} v33
+   * @param {number} [v00]
+   * @param {number} [v01]
+   * @param {number} [v02]
+   * @param {number} [v03]
+   * @param {number} [v10]
+   * @param {number} [v11]
+   * @param {number} [v12]
+   * @param {number} [v13]
+   * @param {number} [v20]
+   * @param {number} [v21]
+   * @param {number} [v22]
+   * @param {number} [v23]
+   * @param {number} [v30]
+   * @param {number} [v31]
+   * @param {number} [v32]
+   * @param {number} [v33]
    * @param {Matrix4.Types|undefined} [type]
    */
   constructor( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
 
-    // @publif {Float32Array} - entries stored in column-major format
+    // @public {Float32Array} - entries stored in column-major format
     this.entries = new Float32Array( 16 );
 
     // @public {Matrix3.Types}
@@ -797,6 +797,173 @@ class Matrix4 {
     array[ 15 ] = this.m33();
     return array;
   }
+
+  /**
+   * Returns an identity matrix.
+   * @public
+   *
+   * @returns {Matrix4}
+   */
+  static identity() {
+    return new Matrix4(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
+      Types.IDENTITY );
+  }
+
+  /**
+   * Returns a translation matrix.
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @returns {Matrix4}
+   */
+  static translation( x, y, z ) {
+    return new Matrix4(
+      1, 0, 0, x,
+      0, 1, 0, y,
+      0, 0, 1, z,
+      0, 0, 0, 1,
+      Types.TRANSLATION_3D );
+  }
+
+  /**
+   * Returns a translation matrix computed from a vector.
+   * @public
+   *
+   * @param {Vector3|Vector4} vector
+   * @returns {Matrix4}
+   */
+  static translationFromVector( vector ) {
+    return Matrix4.translation( vector.x, vector.y, vector.z );
+  }
+
+  /**
+   * Returns a matrix that scales things in each dimension.
+   * @public
+   *
+   * @param {number} x
+   * @param {number} y
+   * @param {number} z
+   * @returns {Matrix4}
+   */
+  static scaling( x, y, z ) {
+    // allow using one parameter to scale everything
+    y = y === undefined ? x : y;
+    z = z === undefined ? x : z;
+
+    return new Matrix4(
+      x, 0, 0, 0,
+      0, y, 0, 0,
+      0, 0, z, 0,
+      0, 0, 0, 1,
+      Types.SCALING );
+  }
+
+  /**
+   * Returns a homogeneous matrix rotation defined by a rotation of the specified angle around the given unit axis.
+   * @public
+   *
+   * @param {Vector3} axis - normalized
+   * @param {number} angle - in radians
+   * @returns {Matrix4}
+   */
+  static rotationAxisAngle( axis, angle ) {
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
+    const C = 1 - c;
+
+    return new Matrix4(
+      axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s, 0,
+      axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s, 0,
+      axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
+  }
+
+  // TODO: add in rotation from quaternion, and from quat + translation
+
+
+  /**
+   * Returns a rotation matrix in the yz plane.
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix4}
+   */
+  static rotationX( angle ) {
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
+
+    return new Matrix4(
+      1, 0, 0, 0,
+      0, c, -s, 0,
+      0, s, c, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
+  }
+
+  /**
+   * Returns a rotation matrix in the xz plane.
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix4}
+   */
+  static rotationY( angle ) {
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
+
+    return new Matrix4(
+      c, 0, s, 0,
+      0, 1, 0, 0,
+      -s, 0, c, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
+  }
+
+  /**
+   * Returns a rotation matrix in the xy plane.
+   * @public
+   *
+   * @param {number} angle - in radians
+   * @returns {Matrix4}
+   */
+  static rotationZ( angle ) {
+    const c = Math.cos( angle );
+    const s = Math.sin( angle );
+
+    return new Matrix4(
+      c, -s, 0, 0,
+      s, c, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 1,
+      Types.AFFINE );
+  }
+
+  /**
+   * Returns the specific perspective matrix needed for certain WebGL contexts.
+   * @public
+   *
+   * @param {number} fovYRadians
+   * @param {number} aspect - aspect === width / height
+   * @param {number} zNear
+   * @param {number} zFar
+   * @returns {Matrix4}
+   */
+  static gluPerspective( fovYRadians, aspect, zNear, zFar ) {
+    const cotangent = Math.cos( fovYRadians ) / Math.sin( fovYRadians );
+
+    return new Matrix4(
+      cotangent / aspect, 0, 0, 0,
+      0, cotangent, 0, 0,
+      0, 0, ( zFar + zNear ) / ( zNear - zFar ), ( 2 * zFar * zNear ) / ( zNear - zFar ),
+      0, 0, -1, 0 );
+  }
 }
 
 dot.register( 'Matrix4', Matrix4 );
@@ -808,106 +975,11 @@ const Types = Enumeration.byKeys( [
   'SCALING',
   'AFFINE'
 ] );
+
+// @public {Enumeration}
 Matrix4.Types = Types;
 
-Matrix4.identity = function() {
-  return new Matrix4(
-    1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 1,
-    Types.IDENTITY );
-};
-
-Matrix4.translation = function( x, y, z ) {
-  return new Matrix4(
-    1, 0, 0, x,
-    0, 1, 0, y,
-    0, 0, 1, z,
-    0, 0, 0, 1,
-    Types.TRANSLATION_3D );
-};
-
-Matrix4.translationFromVector = function( v ) { return Matrix4.translation( v.x, v.y, v.z ); };
-
-Matrix4.scaling = function( x, y, z ) {
-  // allow using one parameter to scale everything
-  y = y === undefined ? x : y;
-  z = z === undefined ? x : z;
-
-  return new Matrix4(
-    x, 0, 0, 0,
-    0, y, 0, 0,
-    0, 0, z, 0,
-    0, 0, 0, 1,
-    Types.SCALING );
-};
-
-// axis is a normalized Vector3, angle in radians.
-Matrix4.rotationAxisAngle = function( axis, angle ) {
-  const c = Math.cos( angle );
-  const s = Math.sin( angle );
-  const C = 1 - c;
-
-  return new Matrix4(
-    axis.x * axis.x * C + c, axis.x * axis.y * C - axis.z * s, axis.x * axis.z * C + axis.y * s, 0,
-    axis.y * axis.x * C + axis.z * s, axis.y * axis.y * C + c, axis.y * axis.z * C - axis.x * s, 0,
-    axis.z * axis.x * C - axis.y * s, axis.z * axis.y * C + axis.x * s, axis.z * axis.z * C + c, 0,
-    0, 0, 0, 1,
-    Types.AFFINE );
-};
-
-// TODO: add in rotation from quaternion, and from quat + translation
-
-Matrix4.rotationX = function( angle ) {
-  const c = Math.cos( angle );
-  const s = Math.sin( angle );
-
-  return new Matrix4(
-    1, 0, 0, 0,
-    0, c, -s, 0,
-    0, s, c, 0,
-    0, 0, 0, 1,
-    Types.AFFINE );
-};
-
-Matrix4.rotationY = function( angle ) {
-  const c = Math.cos( angle );
-  const s = Math.sin( angle );
-
-  return new Matrix4(
-    c, 0, s, 0,
-    0, 1, 0, 0,
-    -s, 0, c, 0,
-    0, 0, 0, 1,
-    Types.AFFINE );
-};
-
-Matrix4.rotationZ = function( angle ) {
-  const c = Math.cos( angle );
-  const s = Math.sin( angle );
-
-  return new Matrix4(
-    c, -s, 0, 0,
-    s, c, 0, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 1,
-    Types.AFFINE );
-};
-
-// aspect === width / height
-Matrix4.gluPerspective = function( fovYRadians, aspect, zNear, zFar ) {
-  const cotangent = Math.cos( fovYRadians ) / Math.sin( fovYRadians );
-
-  return new Matrix4(
-    cotangent / aspect, 0, 0, 0,
-    0, cotangent, 0, 0,
-    0, 0, ( zFar + zNear ) / ( zNear - zFar ), ( 2 * zFar * zNear ) / ( zNear - zFar ),
-    0, 0, -1, 0 );
-};
-
-// create an immutable
-Matrix4.IDENTITY = new Matrix4();
-Matrix4.IDENTITY.makeImmutable();
+// @public {Matrix4}
+Matrix4.IDENTITY = new Matrix4().makeImmutable();
 
 export default Matrix4;

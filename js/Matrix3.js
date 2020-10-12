@@ -1746,6 +1746,8 @@ const Types = Enumeration.byKeys( [
   'SCALING',
   'AFFINE'
 ] );
+
+// @public {Enumeration}
 Matrix3.Types = Types;
 
 Poolable.mixInto( Matrix3, {
