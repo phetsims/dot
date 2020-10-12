@@ -13,6 +13,7 @@ import Matrix4 from './Matrix4.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
 import dot from './dot.js';
+import toSVGNumber from './toSVGNumber.js';
 
 class Matrix3 {
   /**
@@ -331,23 +332,15 @@ class Matrix3 {
    */
   getSVGTransform() {
     // SVG transform presentation attribute. See http://www.w3.org/TR/SVG/coords.html#TransformAttribute
-
-    // we need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
-    function svgNumber( number ) {
-      // Largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
-      // See https://github.com/phetsims/dot/issues/36
-      return number.toFixed( 20 );
-    }
-
     switch( this.type ) {
       case Types.IDENTITY:
         return '';
       case Types.TRANSLATION_2D:
-        return 'translate(' + svgNumber( this.entries[ 6 ] ) + ',' + svgNumber( this.entries[ 7 ] ) + ')';
+        return 'translate(' + toSVGNumber( this.entries[ 6 ] ) + ',' + toSVGNumber( this.entries[ 7 ] ) + ')';
       case Types.SCALING:
-        return 'scale(' + svgNumber( this.entries[ 0 ] ) + ( this.entries[ 0 ] === this.entries[ 4 ] ? '' : ',' + svgNumber( this.entries[ 4 ] ) ) + ')';
+        return 'scale(' + toSVGNumber( this.entries[ 0 ] ) + ( this.entries[ 0 ] === this.entries[ 4 ] ? '' : ',' + toSVGNumber( this.entries[ 4 ] ) ) + ')';
       default:
-        return 'matrix(' + svgNumber( this.entries[ 0 ] ) + ',' + svgNumber( this.entries[ 1 ] ) + ',' + svgNumber( this.entries[ 3 ] ) + ',' + svgNumber( this.entries[ 4 ] ) + ',' + svgNumber( this.entries[ 6 ] ) + ',' + svgNumber( this.entries[ 7 ] ) + ')';
+        return 'matrix(' + toSVGNumber( this.entries[ 0 ] ) + ',' + toSVGNumber( this.entries[ 1 ] ) + ',' + toSVGNumber( this.entries[ 3 ] ) + ',' + toSVGNumber( this.entries[ 4 ] ) + ',' + toSVGNumber( this.entries[ 6 ] ) + ',' + toSVGNumber( this.entries[ 7 ] ) + ')';
     }
   }
   get svgTransform() { return this.getSVGTransform(); }
