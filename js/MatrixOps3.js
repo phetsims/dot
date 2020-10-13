@@ -36,7 +36,7 @@ const MatrixOps3 = {
    * @param {number} row
    * @param {number} col
    */
-  index3: function( row, col ) {
+  index3( row, col ) {
     assert && assert( row >= 0 && row < 3 );
     assert && assert( col >= 0 && col < 3 );
     return 3 * row + col;
@@ -48,7 +48,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} matrix - [input] 3x3 Matrix
    * @param {FastMath.Array} result - [output] 3x3 Matrix
    */
-  set3: function( matrix, result ) {
+  set3( matrix, result ) {
     assert && assert( matrix.length >= 9 );
     assert && assert( result.length >= 9 );
     result[ 0 ] = matrix[ 0 ];
@@ -68,7 +68,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} matrix - [input] 3x3 Matrix
    * @param {FastMath.Array} result - [output] 3x3 Matrix
    */
-  transpose3: function( matrix, result ) {
+  transpose3( matrix, result ) {
     assert && assert( matrix.length >= 9 );
     assert && assert( result.length >= 9 );
     const m1 = matrix[ 3 ];
@@ -94,7 +94,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} matrix - [input] 3x3 Matrix
    * @returns {number} - The determinant. 0 indicates a singular (non-invertible) matrix.
    */
-  det3: function( matrix ) {
+  det3( matrix ) {
     assert && assert( matrix.length >= 9 );
     return matrix[ 0 ] * matrix[ 4 ] * matrix[ 8 ] + matrix[ 1 ] * matrix[ 5 ] * matrix[ 6 ] +
            matrix[ 2 ] * matrix[ 3 ] * matrix[ 7 ] - matrix[ 2 ] * matrix[ 4 ] * matrix[ 6 ] -
@@ -108,7 +108,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} right - [input] 3x3 Matrix
    * @param {FastMath.Array} result - [output] 3x3 Matrix
    */
-  mult3: function( left, right, result ) {
+  mult3( left, right, result ) {
     assert && assert( left.length >= 9 );
     assert && assert( right.length >= 9 );
     assert && assert( result.length >= 9 );
@@ -139,7 +139,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} right - [input] 3x3 Matrix
    * @param {FastMath.Array} result - [output] 3x3 Matrix
    */
-  mult3LeftTranspose: function( left, right, result ) {
+  mult3LeftTranspose( left, right, result ) {
     assert && assert( left.length >= 9 );
     assert && assert( right.length >= 9 );
     assert && assert( result.length >= 9 );
@@ -170,7 +170,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} right - [input] 3x3 Matrix
    * @param {FastMath.Array} result - [output] 3x3 Matrix
    */
-  mult3RightTranspose: function( left, right, result ) {
+  mult3RightTranspose( left, right, result ) {
     assert && assert( left.length >= 9 );
     assert && assert( right.length >= 9 );
     assert && assert( result.length >= 9 );
@@ -203,7 +203,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} right - [input] 3x3 Matrix
    * @param {FastMath.Array} result - [output] 3x3 Matrix
    */
-  mult3BothTranspose: function( left, right, result ) {
+  mult3BothTranspose( left, right, result ) {
     assert && assert( left.length >= 9 );
     assert && assert( right.length >= 9 );
     assert && assert( result.length >= 9 );
@@ -234,7 +234,7 @@ const MatrixOps3 = {
    * @param {Vector3} vector - [input]
    * @param {Vector3} result - [output]
    */
-  mult3Vector3: function( matrix, vector, result ) {
+  mult3Vector3( matrix, vector, result ) {
     assert && assert( matrix.length >= 9 );
     const x = matrix[ 0 ] * vector.x + matrix[ 1 ] * vector.y + matrix[ 2 ] * vector.z;
     const y = matrix[ 3 ] * vector.x + matrix[ 4 ] * vector.y + matrix[ 5 ] * vector.z;
@@ -251,7 +251,7 @@ const MatrixOps3 = {
    * @param {number} idx0 - In the range [0,2]
    * @param {number} idx1 - In the range [0,2]
    */
-  swapNegateColumn: function( matrix, idx0, idx1 ) {
+  swapNegateColumn( matrix, idx0, idx1 ) {
     assert && assert( matrix.length >= 9 );
     const tmp0 = matrix[ idx0 ];
     const tmp1 = matrix[ idx0 + 3 ];
@@ -271,7 +271,7 @@ const MatrixOps3 = {
    *
    * @param {FastMath.Array} result - [output] 3x3 Matrix
    */
-  setIdentity3: function( result ) {
+  setIdentity3( result ) {
     result[ 0 ] = result[ 4 ] = result[ 8 ] = 1; // diagonal
     result[ 1 ] = result[ 2 ] = result[ 3 ] = result[ 5 ] = result[ 6 ] = result[ 7 ] = 0; // non-diagonal
   },
@@ -288,7 +288,7 @@ const MatrixOps3 = {
    * @param {number} idx0 - [input] The smaller row/column index
    * @param {number} idx1 - [input] The larger row/column index
    */
-  setGivens3: function( result, cos, sin, idx0, idx1 ) {
+  setGivens3( result, cos, sin, idx0, idx1 ) {
     assert && assert( idx0 < idx1 );
     this.setIdentity3( result );
     result[ this.index3( idx0, idx0 ) ] = cos;
@@ -307,7 +307,7 @@ const MatrixOps3 = {
    * @param {number} idx0 - [input] The smaller row/column index
    * @param {number} idx1 - [input] The larger row/column index
    */
-  preMult3Givens: function( matrix, cos, sin, idx0, idx1 ) {
+  preMult3Givens( matrix, cos, sin, idx0, idx1 ) {
     const baseA = idx0 * 3;
     const baseB = idx1 * 3;
     // lexicographically in column-major order for "affine" section
@@ -336,7 +336,7 @@ const MatrixOps3 = {
    * @param {number} idx0 - [input] The smaller row/column index
    * @param {number} idx1 - [input] The larger row/column index
    */
-  postMult3Givens: function( matrix, cos, sin, idx0, idx1 ) {
+  postMult3Givens( matrix, cos, sin, idx0, idx1 ) {
     // lexicographically in row-major order for the "transposed affine" section
     const a = cos * matrix[ idx0 + 0 ] + sin * matrix[ idx1 + 0 ];
     const b = cos * matrix[ idx1 + 0 ] - sin * matrix[ idx0 + 0 ];
@@ -362,7 +362,7 @@ const MatrixOps3 = {
    * @param {number} idx0 - [input] The smaller row/column index
    * @param {number} idx1 - [input] The larger row/column index
    */
-  applyJacobi3: function( mS, mQ, idx0, idx1 ) {
+  applyJacobi3( mS, mQ, idx0, idx1 ) {
     // submatrix entries for idx0,idx1
     const a11 = mS[ 3 * idx0 + idx0 ];
     const a12 = mS[ 3 * idx0 + idx1 ]; // we assume mS is symmetric, so we don't need a21
@@ -397,7 +397,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} mQ - [input AND output] Unitary 3x3 Matrix
    * @param {number} n - [input] The number of iterations to run
    */
-  jacobiIteration3: function( mS, mQ, n ) {
+  jacobiIteration3( mS, mQ, n ) {
     // for 3x3, we eliminate non-diagonal entries iteratively
     for ( let i = 0; i < n; i++ ) {
       this.applyJacobi3( mS, mQ, 0, 1 );
@@ -416,7 +416,7 @@ const MatrixOps3 = {
    * @param {number} row - [input] The row of the entry to zero out
    * @param {number} col - [input] The column of the entry to zero out
    */
-  qrAnnihilate3: function( q, r, row, col ) {
+  qrAnnihilate3( q, r, row, col ) {
     assert && assert( row > col ); // only in the lower-triangular area
 
     const epsilon = 0.0000000001;
@@ -455,7 +455,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} resultSigma - [output] 3x3 diagonal matrix of singular values
    * @param {FastMath.Array} resultV - [output] 3x3 V matrix (unitary)
    */
-  svd3: function( a, jacobiIterationCount, resultU, resultSigma, resultV ) {
+  svd3( a, jacobiIterationCount, resultU, resultSigma, resultV ) {
     // shorthands
     const q = resultU;
     const v = resultV;
@@ -530,7 +530,7 @@ const MatrixOps3 = {
    * @param {Array.<Vector3>} columnVectors - [input] List of 3D column vectors
    * @param {FastMath.Array} result - [output] 3xN Matrix, where N is the number of column vectors
    */
-  setVectors3: function( columnVectors, result ) {
+  setVectors3( columnVectors, result ) {
     const m = 3;
     const n = columnVectors.length;
 
@@ -553,7 +553,7 @@ const MatrixOps3 = {
    * @param {number} columnIndex - [input] 3xN Matrix
    * @param {Vector3} result - [output] Vector to store the x,y,z
    */
-  getColumnVector3: function( m, n, matrix, columnIndex, result ) {
+  getColumnVector3( m, n, matrix, columnIndex, result ) {
     assert && assert( m === 3 && columnIndex < n );
 
     result.x = matrix[ columnIndex ];
@@ -573,7 +573,7 @@ const MatrixOps3 = {
    * @param {number} row
    * @param {number} col
    */
-  index: function( m, n, row, col ) {
+  index( m, n, row, col ) {
     return n * row + col;
   },
 
@@ -585,7 +585,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} matrix - [input] MxN Matrix
    * @param {FastMath.Array} result - [output] NxM Matrix
    */
-  transpose: function( m, n, matrix, result ) {
+  transpose( m, n, matrix, result ) {
     assert && assert( matrix.length >= m * n );
     assert && assert( result.length >= n * m );
     assert && assert( matrix !== result, 'In-place modification not implemented yet' );
@@ -607,7 +607,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} right - [input] NxP Matrix
    * @param {FastMath.Array} result - [output] MxP Matrix
    */
-  mult: function( m, n, p, left, right, result ) {
+  mult( m, n, p, left, right, result ) {
     assert && assert( left.length >= m * n );
     assert && assert( right.length >= n * p );
     assert && assert( result.length >= m * p );
@@ -634,7 +634,7 @@ const MatrixOps3 = {
    * @param {FastMath.Array} right - [input] PxN Matrix
    * @param {FastMath.Array} result - [output] MxP Matrix
    */
-  multRightTranspose: function( m, n, p, left, right, result ) {
+  multRightTranspose( m, n, p, left, right, result ) {
     assert && assert( left.length >= m * n );
     assert && assert( right.length >= n * p );
     assert && assert( result.length >= m * p );
@@ -660,7 +660,7 @@ const MatrixOps3 = {
    * @param {Permutation} permutation - [input] Permutation
    * @param {FastMath.Array} result - [output] MxN Matrix
    */
-  permuteColumns: function( m, n, matrix, permutation, result ) {
+  permuteColumns( m, n, matrix, permutation, result ) {
     assert && assert( matrix !== result, 'In-place modification not implemented yet' );
     assert && assert( matrix.length >= m * n );
     assert && assert( result.length >= m * n );

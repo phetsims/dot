@@ -29,7 +29,7 @@ var Utils = {
    * @param {number} max
    * @returns {number}
    */
-  clamp: function( value, min, max ) {
+  clamp( value, min, max ) {
     if ( value < min ) {
       return min;
     }
@@ -53,7 +53,7 @@ var Utils = {
    * @param {number} max
    * @returns {number}
    */
-  moduloBetweenDown: function( value, min, max ) {
+  moduloBetweenDown( value, min, max ) {
     assert && assert( max > min, 'max > min required for moduloBetween' );
 
     const divisor = max - min;
@@ -80,7 +80,7 @@ var Utils = {
    * @param {number} max
    * @returns {number}
    */
-  moduloBetweenUp: function( value, min, max ) {
+  moduloBetweenUp( value, min, max ) {
     return -Utils.moduloBetweenDown( -value, -max, -min );
   },
 
@@ -92,7 +92,7 @@ var Utils = {
    * @param {number} b
    * @returns {Array.<number>}
    */
-  rangeInclusive: function( a, b ) {
+  rangeInclusive( a, b ) {
     if ( b < a ) {
       return [];
     }
@@ -111,7 +111,7 @@ var Utils = {
    * @param {number} b
    * @returns {Array.<number>}
    */
-  rangeExclusive: function( a, b ) {
+  rangeExclusive( a, b ) {
     return Utils.rangeInclusive( a + 1, b - 1 );
   },
 
@@ -122,7 +122,7 @@ var Utils = {
    * @param {number} degrees
    * @returns {number}
    */
-  toRadians: function( degrees ) {
+  toRadians( degrees ) {
     return Math.PI * degrees / 180;
   },
 
@@ -133,7 +133,7 @@ var Utils = {
    * @param {number} radians
    * @returns {number}
    */
-  toDegrees: function( radians ) {
+  toDegrees( radians ) {
     return 180 * radians / Math.PI;
   },
 
@@ -145,7 +145,7 @@ var Utils = {
    * @param {number} b
    * @returns {number}
    */
-  mod: function( a, b ) {
+  mod( a, b ) {
     if ( a / b % 1 === 0 ) {
       return 0; // a is a multiple of b
     }
@@ -163,7 +163,7 @@ var Utils = {
    * @param {number} b
    * @returns {number}
    */
-  gcd: function( a, b ) {
+  gcd( a, b ) {
     return Math.abs( b === 0 ? a : this.gcd( b, Utils.mod( a, b ) ) );
   },
 
@@ -175,7 +175,7 @@ var Utils = {
    * @param {number} b
    * @returns {number} lcm, an integer
    */
-  lcm: function( a, b ) {
+  lcm( a, b ) {
     return Utils.roundSymmetric( Math.abs( a * b ) / Utils.gcd( a, b ) );
   },
 
@@ -191,7 +191,7 @@ var Utils = {
    * @param {Vector2} p4
    * @returns {Vector2|null}
    */
-  lineLineIntersection: function( p1, p2, p3, p4 ) {
+  lineLineIntersection( p1, p2, p3, p4 ) {
     const epsilon = 1e-10;
 
     // If the endpoints are the same, they don't properly define a line
@@ -232,7 +232,7 @@ var Utils = {
    * @param {Vector2} p3
    * @returns {Vector2|null}
    */
-  circleCenterFromPoints: function( p1, p2, p3 ) {
+  circleCenterFromPoints( p1, p2, p3 ) {
     // TODO: Can we make scratch vectors here, avoiding the circular reference?
 
     // midpoints between p1-p2 and p2-p3
@@ -261,7 +261,7 @@ var Utils = {
    * @param {Vector2} p
    * @returns {boolean}
    */
-  pointInCircleFromPoints: function( p1, p2, p3, p ) {
+  pointInCircleFromPoints( p1, p2, p3, p ) {
     assert && assert( Utils.triangleAreaSigned( p1, p2, p3 ) > 0,
       'Defined points should be in a counterclockwise order' );
 
@@ -300,7 +300,7 @@ var Utils = {
    * @returns {Object}
    */
   // assumes a sphere with the specified radius, centered at the origin
-  sphereRayIntersection: function( radius, ray, epsilon ) {
+  sphereRayIntersection( radius, ray, epsilon ) {
     epsilon = epsilon === undefined ? 1e-5 : epsilon;
 
     // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
@@ -370,7 +370,7 @@ var Utils = {
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
    */
-  solveLinearRootsReal: function( a, b ) {
+  solveLinearRootsReal( a, b ) {
     if ( a === 0 ) {
       if ( b === 0 ) {
         return null;
@@ -395,7 +395,7 @@ var Utils = {
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
    */
-  solveQuadraticRootsReal: function( a, b, c ) {
+  solveQuadraticRootsReal( a, b, c ) {
     // Check for a degenerate case where we don't have a quadratic, or if the order of magnitude is such where the
     // linear solution would be expected
     const epsilon = 1E7;
@@ -428,7 +428,7 @@ var Utils = {
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
    */
-  solveCubicRootsReal: function( a, b, c, d ) {
+  solveCubicRootsReal( a, b, c, d ) {
     // TODO: a Complex type!
 
     // Check for a degenerate case where we don't have a cubic
@@ -488,7 +488,7 @@ var Utils = {
    * @param {number} x
    * @returns {number}
    */
-  cubeRoot: function( x ) {
+  cubeRoot( x ) {
     return x >= 0 ? Math.pow( x, 1 / 3 ) : -Math.pow( -x, 1 / 3 );
   },
 
@@ -504,7 +504,7 @@ var Utils = {
    * @param {number} a3
    * @returns {number}
    */
-  linear: function( a1, a2, b1, b2, a3 ) {
+  linear( a1, a2, b1, b2, a3 ) {
     assert && assert( typeof a3 === 'number', 'linear requires a number to evaluate' );
     return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
   },
@@ -523,7 +523,7 @@ var Utils = {
    * @param {number} value                               `
    * @returns {number}
    */
-  roundSymmetric: function( value ) {
+  roundSymmetric( value ) {
     return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) ); // eslint-disable-line bad-sim-text
   },
 
@@ -539,7 +539,7 @@ var Utils = {
    * @param {number} decimalPlaces
    * @returns {string}
    */
-  toFixed: function( value, decimalPlaces ) {
+  toFixed( value, decimalPlaces ) {
     const multiplier = Math.pow( 10, decimalPlaces );
     const newValue = Utils.roundSymmetric( value * multiplier ) / multiplier;
     return newValue.toFixed( decimalPlaces );
@@ -557,7 +557,7 @@ var Utils = {
    * @param {number} decimalPlaces
    * @returns {number}
    */
-  toFixedNumber: function( value, decimalPlaces ) {
+  toFixedNumber( value, decimalPlaces ) {
     return parseFloat( Utils.toFixed( value, decimalPlaces ) );
   },
 
@@ -568,7 +568,7 @@ var Utils = {
    * @param {*} value
    * @returns {boolean}
    */
-  isInteger: function( value ) {
+  isInteger( value ) {
     return ( typeof value === 'number' ) && ( value % 1 === 0 );
   },
 
@@ -580,7 +580,7 @@ var Utils = {
    * @param {number} epsilon
    * @returns {boolean}
    */
-  equalsEpsilon: function( a, b, epsilon ) {
+  equalsEpsilon( a, b, epsilon ) {
     return Math.abs( a - b ) <= epsilon;
   },
 
@@ -599,7 +599,7 @@ var Utils = {
    * @param {number} y4
    * @returns {Vector2|null}
    */
-  lineSegmentIntersection: function( x1, y1, x2, y2, x3, y3, x4, y4 ) {
+  lineSegmentIntersection( x1, y1, x2, y2, x3, y3, x4, y4 ) {
 
     // @private
     // Determines counterclockwiseness. Positive if counterclockwise, negative if clockwise, zero if straight line
@@ -650,7 +650,7 @@ var Utils = {
    * @param {Vector2} b - Ending point of the line segment
    * @returns {number}
    */
-  distToSegmentSquared: function( point, a, b ) {
+  distToSegmentSquared( point, a, b ) {
     // the square of the distance between a and b,
     const segmentSquaredLength = a.distanceSquared( b );
 
@@ -688,7 +688,7 @@ var Utils = {
    * @param {Vector2} b - Ending point of the line segment
    * @returns {number}
    */
-  distToSegment: function( point, a, b ) {
+  distToSegment( point, a, b ) {
     return Math.sqrt( this.distToSegmentSquared( point, a, b ) );
   },
 
@@ -702,7 +702,7 @@ var Utils = {
    * @param {number} epsilon
    * @returns {boolean}
    */
-  arePointsCollinear: function( a, b, c, epsilon ) {
+  arePointsCollinear( a, b, c, epsilon ) {
     if ( epsilon === undefined ) {
       epsilon = 0;
     }
@@ -718,7 +718,7 @@ var Utils = {
    * @param {Vector2} c
    * @returns {number}
    */
-  triangleArea: function( a, b, c ) {
+  triangleArea( a, b, c ) {
     return Math.abs( Utils.triangleAreaSigned( a, b, c ) );
   },
 
@@ -735,7 +735,7 @@ var Utils = {
    * @param {Vector2} c
    * @returns {number}
    */
-  triangleAreaSigned: function( a, b, c ) {
+  triangleAreaSigned( a, b, c ) {
     return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
   },
 
@@ -747,7 +747,7 @@ var Utils = {
    * @param {Array.<Vector2>} vertices
    * @returns {Vector2}
    */
-  centroidOfPolygon: function( vertices ) {
+  centroidOfPolygon( vertices ) {
     const centroid = new Vector2( 0, 0 );
 
     let area = 0;
@@ -775,7 +775,7 @@ var Utils = {
    * @param {number} value
    * @returns {number}
    */
-  cosh: function( value ) {
+  cosh( value ) {
     return ( Math.exp( value ) + Math.exp( -value ) ) / 2;
   },
 
@@ -786,7 +786,7 @@ var Utils = {
    * @param {number} value
    * @returns {number}
    */
-  sinh: function( value ) {
+  sinh( value ) {
     return ( Math.exp( value ) - Math.exp( -value ) ) / 2;
   },
 
@@ -797,7 +797,7 @@ var Utils = {
    * @param {number} val
    * @returns {number}
    */
-  log10: function( val ) {
+  log10( val ) {
     return Math.log( val ) / Math.LN10;
   },
 
@@ -814,7 +814,7 @@ var Utils = {
    * @param {Random} random - the source of randomness
    * @returns {number}
    */
-  boxMullerTransform: function( mu, sigma, random ) {
+  boxMullerTransform( mu, sigma, random ) {
     generate = !generate;
 
     if ( !generate ) {
@@ -839,7 +839,7 @@ var Utils = {
    * @param {number} value
    * @returns {number}
    */
-  numberOfDecimalPlaces: function( value ) {
+  numberOfDecimalPlaces( value ) {
     let count = 0;
     let multiplier = 1;
     while ( ( value * multiplier ) % 1 !== 0 ) {
@@ -860,7 +860,7 @@ var Utils = {
    * @param {number} interval
    * @returns {number}
    */
-  roundToInterval: function( value, interval ) {
+  roundToInterval( value, interval ) {
     return Utils.toFixedNumber( Utils.roundSymmetric( value / interval ) * interval,
       Utils.numberOfDecimalPlaces( interval ) );
   }
