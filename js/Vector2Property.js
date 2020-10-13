@@ -10,8 +10,8 @@ import Property from '../../axon/js/Property.js';
 import validate from '../../axon/js/validate.js';
 import merge from '../../phet-core/js/merge.js';
 import Bounds2 from './Bounds2.js';
-import dot from './dot.js';
 import Vector2 from './Vector2.js';
+import dot from './dot.js';
 
 const BOUNDS_VALIDATOR = { isValidValue: value => ( value instanceof Bounds2 || value === null ) };
 

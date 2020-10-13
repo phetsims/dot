@@ -15,7 +15,7 @@ function approximateEquals( assert, a, b, msg ) {
   assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
 }
 
-QUnit.test( 'LinearFunction', function( assert ) {
+QUnit.test( 'LinearFunction', assert => {
   const f = new LinearFunction( 4, 8, 8, 0 ); // not clamped
 
   approximateEquals( assert, f( 0 ), 16 );

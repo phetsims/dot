@@ -13,8 +13,8 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import dot from './dot.js';
 import Utils from './Utils.js';
+import dot from './dot.js';
 
 /**
  * @param {number} a1
@@ -43,7 +43,7 @@ function LinearFunction( a1, a2, b1, b2, clamp ) {
    * @param {boolean} clamp
    * @returns {number}
    */
-  const map = function( a1, a2, b1, b2, a3, clamp ) {
+  const map = ( a1, a2, b1, b2, a3, clamp ) => {
     let b3 = Utils.linear( a1, a2, b1, b2, a3 );
     if ( clamp ) {
       const max = Math.max( b1, b2 );
@@ -60,7 +60,7 @@ function LinearFunction( a1, a2, b1, b2, clamp ) {
    * @param {number} a3
    * @returns {number}
    */
-  const evaluate = function( a3 ) {
+  const evaluate = a3 => {
     return map( a1, a2, b1, b2, a3, clamp );
   };
 
@@ -72,7 +72,7 @@ function LinearFunction( a1, a2, b1, b2, clamp ) {
    * @param {number} b3
    * @returns {number}
    */
-  evaluate.inverse = function( b3 ) {
+  evaluate.inverse = b3 => {
     return map( b1, b2, a1, a2, b3, clamp );
   };
 

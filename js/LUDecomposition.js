@@ -6,95 +6,95 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import dot from './dot.js';
 import Matrix from './Matrix.js';
+import dot from './dot.js';
 
 const ArrayType = window.Float64Array || Array;
 
+class LUDecomposition {
+  constructor( matrix ) {
+    let i;
+    let j;
+    let k;
 
-function LUDecomposition( matrix ) {
-  let i;
-  let j;
-  let k;
+    this.matrix = matrix;
 
-  this.matrix = matrix;
-
-  // TODO: size!
-  this.LU = matrix.getArrayCopy();
-  const LU = this.LU;
-  this.m = matrix.getRowDimension();
-  const m = this.m;
-  this.n = matrix.getColumnDimension();
-  const n = this.n;
-  this.piv = new Uint32Array( m );
-  for ( i = 0; i < m; i++ ) {
-    this.piv[ i ] = i;
-  }
-  this.pivsign = 1;
-  const LUcolj = new ArrayType( m );
-
-  // Outer loop.
-
-  for ( j = 0; j < n; j++ ) {
-
-    // Make a copy of the j-th column to localize references.
+    // TODO: size!
+    this.LU = matrix.getArrayCopy();
+    const LU = this.LU;
+    this.m = matrix.getRowDimension();
+    const m = this.m;
+    this.n = matrix.getColumnDimension();
+    const n = this.n;
+    this.piv = new Uint32Array( m );
     for ( i = 0; i < m; i++ ) {
-      LUcolj[ i ] = LU[ matrix.index( i, j ) ];
+      this.piv[ i ] = i;
     }
+    this.pivsign = 1;
+    const LUcolj = new ArrayType( m );
 
-    // Apply previous transformations.
+    // Outer loop.
 
-    for ( i = 0; i < m; i++ ) {
-      // Most of the time is spent in the following dot product.
-      const kmax = Math.min( i, j );
-      let s = 0.0;
-      for ( k = 0; k < kmax; k++ ) {
-        const ik = matrix.index( i, k );
-        s += LU[ ik ] * LUcolj[ k ];
+    for ( j = 0; j < n; j++ ) {
+
+      // Make a copy of the j-th column to localize references.
+      for ( i = 0; i < m; i++ ) {
+        LUcolj[ i ] = LU[ matrix.index( i, j ) ];
       }
 
-      LUcolj[ i ] -= s;
-      LU[ matrix.index( i, j ) ] = LUcolj[ i ];
-    }
+      // Apply previous transformations.
 
-    // Find pivot and exchange if necessary.
+      for ( i = 0; i < m; i++ ) {
+        // Most of the time is spent in the following dot product.
+        const kmax = Math.min( i, j );
+        let s = 0.0;
+        for ( k = 0; k < kmax; k++ ) {
+          const ik = matrix.index( i, k );
+          s += LU[ ik ] * LUcolj[ k ];
+        }
 
-    let p = j;
-    for ( i = j + 1; i < m; i++ ) {
-      if ( Math.abs( LUcolj[ i ] ) > Math.abs( LUcolj[ p ] ) ) {
-        p = i;
+        LUcolj[ i ] -= s;
+        LU[ matrix.index( i, j ) ] = LUcolj[ i ];
       }
-    }
-    if ( p !== j ) {
-      for ( k = 0; k < n; k++ ) {
-        const pk = matrix.index( p, k );
-        const jk = matrix.index( j, k );
-        const t = LU[ pk ];
-        LU[ pk ] = LU[ jk ];
-        LU[ jk ] = t;
-      }
-      k = this.piv[ p ];
-      this.piv[ p ] = this.piv[ j ];
-      this.piv[ j ] = k;
-      this.pivsign = -this.pivsign;
-    }
 
-    // Compute multipliers.
+      // Find pivot and exchange if necessary.
 
-    if ( j < m && LU[ this.matrix.index( j, j ) ] !== 0.0 ) {
+      let p = j;
       for ( i = j + 1; i < m; i++ ) {
-        LU[ matrix.index( i, j ) ] /= LU[ matrix.index( j, j ) ];
+        if ( Math.abs( LUcolj[ i ] ) > Math.abs( LUcolj[ p ] ) ) {
+          p = i;
+        }
+      }
+      if ( p !== j ) {
+        for ( k = 0; k < n; k++ ) {
+          const pk = matrix.index( p, k );
+          const jk = matrix.index( j, k );
+          const t = LU[ pk ];
+          LU[ pk ] = LU[ jk ];
+          LU[ jk ] = t;
+        }
+        k = this.piv[ p ];
+        this.piv[ p ] = this.piv[ j ];
+        this.piv[ j ] = k;
+        this.pivsign = -this.pivsign;
+      }
+
+      // Compute multipliers.
+
+      if ( j < m && LU[ this.matrix.index( j, j ) ] !== 0.0 ) {
+        for ( i = j + 1; i < m; i++ ) {
+          LU[ matrix.index( i, j ) ] /= LU[ matrix.index( j, j ) ];
+        }
       }
     }
   }
-}
 
-dot.register( 'LUDecomposition', LUDecomposition );
-
-LUDecomposition.prototype = {
-  constructor: LUDecomposition,
-
-  isNonsingular: function() {
+  /**
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isNonsingular() {
     for ( let j = 0; j < this.n; j++ ) {
       const index = this.matrix.index( j, j );
       if ( this.LU[ index ] === 0 ) {
@@ -102,9 +102,14 @@ LUDecomposition.prototype = {
       }
     }
     return true;
-  },
+  }
 
-  getL: function() {
+  /**
+   * @public
+   *
+   * @returns {Matrix}
+   */
+  getL() {
     const result = new Matrix( this.m, this.n );
     for ( let i = 0; i < this.m; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
@@ -120,9 +125,14 @@ LUDecomposition.prototype = {
       }
     }
     return result;
-  },
+  }
 
-  getU: function() {
+  /**
+   * @public
+   *
+   * @returns {Matrix}
+   */
+  getU() {
     const result = new Matrix( this.n, this.n );
     for ( let i = 0; i < this.n; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
@@ -135,25 +145,40 @@ LUDecomposition.prototype = {
       }
     }
     return result;
-  },
+  }
 
-  getPivot: function() {
+  /**
+   * @public
+   *
+   * @returns {Uint32Array}
+   */
+  getPivot() {
     const p = new Uint32Array( this.m );
     for ( let i = 0; i < this.m; i++ ) {
       p[ i ] = this.piv[ i ];
     }
     return p;
-  },
+  }
 
-  getDoublePivot: function() {
+  /**
+   * @public
+   *
+   * @returns {Float64Array}
+   */
+  getDoublePivot() {
     const vals = new ArrayType( this.m );
     for ( let i = 0; i < this.m; i++ ) {
       vals[ i ] = this.piv[ i ];
     }
     return vals;
-  },
+  }
 
-  det: function() {
+  /**
+   * @public
+   *
+   * @returns {number}
+   */
+  det() {
     if ( this.m !== this.n ) {
       throw new Error( 'Matrix must be square.' );
     }
@@ -162,9 +187,15 @@ LUDecomposition.prototype = {
       d *= this.LU[ this.matrix.index( j, j ) ];
     }
     return d;
-  },
+  }
 
-  solve: function( matrix ) {
+  /**
+   * @public
+   *
+   * @param {Matrix} matrix
+   * @returns {Matrix}
+   */
+  solve( matrix ) {
     let i;
     let j;
     let k;
@@ -201,6 +232,8 @@ LUDecomposition.prototype = {
     }
     return Xmat;
   }
-};
+}
+
+dot.register( 'LUDecomposition', LUDecomposition );
 
 export default LUDecomposition;

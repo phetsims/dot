@@ -946,14 +946,19 @@ Poolable.mixInto( Vector2, {
   defaultArguments: [ 0, 0 ]
 } );
 
-class ImmutableVector2 extends Vector2 {}
-
-// throw errors whenever a mutable method is called on our immutable vector
-ImmutableVector2.mutableOverrideHelper = function( mutableFunctionName ) {
-  ImmutableVector2.prototype[ mutableFunctionName ] = function() {
-    throw new Error( 'Cannot call mutable method \'' + mutableFunctionName + '\' on immutable Vector2' );
-  };
-};
+class ImmutableVector2 extends Vector2 {
+  /**
+   * Throw errors whenever a mutable method is called on our immutable vector
+   * @public
+   *
+   * @param {*} mutableFunctionName
+   */
+  static mutableOverrideHelper( mutableFunctionName ) {
+    ImmutableVector2.prototype[ mutableFunctionName ] = () => {
+      throw new Error( 'Cannot call mutable method \'' + mutableFunctionName + '\' on immutable Vector2' );
+    };
+  }
+}
 
 // TODO: better way to handle this list?
 ImmutableVector2.mutableOverrideHelper( 'setXY' );

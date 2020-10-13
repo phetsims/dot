@@ -6,77 +6,86 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import dot from './dot.js';
 import Matrix from './Matrix.js';
+import dot from './dot.js';
 
 const ArrayType = window.Float64Array || Array;
 
+class QRDecomposition {
+  /**
+   * @param {Matrix} matrix
+   */
+  constructor( matrix ) {
+    this.matrix = matrix;
 
-dot.QRDecomposition = function QRDecomposition( matrix ) {
-  this.matrix = matrix;
+    // TODO: size!
+    this.QR = matrix.getArrayCopy();
+    const QR = this.QR;
+    this.m = matrix.getRowDimension();
+    const m = this.m;
+    this.n = matrix.getColumnDimension();
+    const n = this.n;
 
-  // TODO: size!
-  this.QR = matrix.getArrayCopy();
-  const QR = this.QR;
-  this.m = matrix.getRowDimension();
-  const m = this.m;
-  this.n = matrix.getColumnDimension();
-  const n = this.n;
+    this.Rdiag = new ArrayType( n );
 
-  this.Rdiag = new ArrayType( n );
+    let i;
+    let j;
+    let k;
 
-  let i;
-  let j;
-  let k;
-
-  // Main loop.
-  for ( k = 0; k < n; k++ ) {
-    // Compute 2-norm of k-th column without under/overflow.
-    let nrm = 0;
-    for ( i = k; i < m; i++ ) {
-      nrm = Matrix.hypot( nrm, QR[ this.matrix.index( i, k ) ] );
-    }
-
-    if ( nrm !== 0.0 ) {
-      // Form k-th Householder vector.
-      if ( QR[ this.matrix.index( k, k ) ] < 0 ) {
-        nrm = -nrm;
-      }
+    // Main loop.
+    for ( k = 0; k < n; k++ ) {
+      // Compute 2-norm of k-th column without under/overflow.
+      let nrm = 0;
       for ( i = k; i < m; i++ ) {
-        QR[ this.matrix.index( i, k ) ] /= nrm;
+        nrm = Matrix.hypot( nrm, QR[ this.matrix.index( i, k ) ] );
       }
-      QR[ this.matrix.index( k, k ) ] += 1.0;
 
-      // Apply transformation to remaining columns.
-      for ( j = k + 1; j < n; j++ ) {
-        let s = 0.0;
-        for ( i = k; i < m; i++ ) {
-          s += QR[ this.matrix.index( i, k ) ] * QR[ this.matrix.index( i, j ) ];
+      if ( nrm !== 0.0 ) {
+        // Form k-th Householder vector.
+        if ( QR[ this.matrix.index( k, k ) ] < 0 ) {
+          nrm = -nrm;
         }
-        s = -s / QR[ this.matrix.index( k, k ) ];
         for ( i = k; i < m; i++ ) {
-          QR[ this.matrix.index( i, j ) ] += s * QR[ this.matrix.index( i, k ) ];
+          QR[ this.matrix.index( i, k ) ] /= nrm;
+        }
+        QR[ this.matrix.index( k, k ) ] += 1.0;
+
+        // Apply transformation to remaining columns.
+        for ( j = k + 1; j < n; j++ ) {
+          let s = 0.0;
+          for ( i = k; i < m; i++ ) {
+            s += QR[ this.matrix.index( i, k ) ] * QR[ this.matrix.index( i, j ) ];
+          }
+          s = -s / QR[ this.matrix.index( k, k ) ];
+          for ( i = k; i < m; i++ ) {
+            QR[ this.matrix.index( i, j ) ] += s * QR[ this.matrix.index( i, k ) ];
+          }
         }
       }
+      this.Rdiag[ k ] = -nrm;
     }
-    this.Rdiag[ k ] = -nrm;
   }
-};
-const QRDecomposition = dot.QRDecomposition;
 
-QRDecomposition.prototype = {
-  constructor: QRDecomposition,
-
-  isFullRank: function() {
+  /**
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isFullRank() {
     for ( let j = 0; j < this.n; j++ ) {
       if ( this.Rdiag[ j ] === 0 ) {
         return false;
       }
     }
     return true;
-  },
+  }
 
-  getH: function() {
+  /**
+   * @public
+   *
+   * @returns {Matrix}
+   */
+  getH() {
     const result = new Matrix( this.m, this.n );
     for ( let i = 0; i < this.m; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
@@ -89,9 +98,14 @@ QRDecomposition.prototype = {
       }
     }
     return result;
-  },
+  }
 
-  getR: function() {
+  /**
+   * @public
+   *
+   * @returns {Matrix}
+   */
+  getR() {
     const result = new Matrix( this.n, this.n );
     for ( let i = 0; i < this.n; i++ ) {
       for ( let j = 0; j < this.n; j++ ) {
@@ -107,9 +121,14 @@ QRDecomposition.prototype = {
       }
     }
     return result;
-  },
+  }
 
-  getQ: function() {
+  /**
+   * @public
+   *
+   * @returns {Matrix}
+   */
+  getQ() {
     let i;
     let j;
     let k;
@@ -133,9 +152,15 @@ QRDecomposition.prototype = {
       }
     }
     return result;
-  },
+  }
 
-  solve: function( matrix ) {
+  /**
+   * @public
+   *
+   * @param {Matrix} matrix
+   * @returns {Matrix}
+   */
+  solve( matrix ) {
     if ( matrix.getRowDimension() !== this.m ) {
       throw new Error( 'Matrix row dimensions must agree.' );
     }
@@ -178,6 +203,8 @@ QRDecomposition.prototype = {
     }
     return new Matrix( this.n, nx, X, true ).getMatrix( 0, this.n - 1, 0, nx - 1 );
   }
-};
+}
+
+dot.register( 'QRDecomposition', QRDecomposition );
 
 export default QRDecomposition;

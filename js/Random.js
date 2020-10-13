@@ -15,9 +15,9 @@
 
 import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import merge from '../../phet-core/js/merge.js';
-import dot from './dot.js';
 import Range from './Range.js';
 import Utils from './Utils.js';
+import dot from './dot.js';
 
 class Random {
 
@@ -129,12 +129,11 @@ class Random {
    */
   shuffle( array ) {
     assert && assert( array, 'Array should exist' );
-    const self = this;
     let index = -1;
     const result = new Array( array.length );
 
     _.forEach( array, value => {
-      const rand = self.nextIntBetween( 0, ++index );
+      const rand = this.nextIntBetween( 0, ++index );
       result[ index ] = result[ rand ];
       result[ rand ] = value;
     } );

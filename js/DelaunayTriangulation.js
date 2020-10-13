@@ -54,7 +54,7 @@ class DelaunayTriangulation {
     }
 
     // @private {Array.<Vertex>}
-    this.vertices = points.map( function( point, index ) {
+    this.vertices = points.map( ( point, index ) => {
       assert && assert( point instanceof Vector2 && point.isFinite() );
 
       return new Vertex( point, index );

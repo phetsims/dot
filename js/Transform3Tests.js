@@ -24,7 +24,7 @@ function approximateRayEqual( assert, a, b, msg ) {
   assert.ok( a.position.equalsEpsilon( b.position, 0.00001 ) && a.direction.equalsEpsilon( b.direction, 0.00001 ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
 }
 
-QUnit.test( 'Ray2 transforms', function( assert ) {
+QUnit.test( 'Ray2 transforms', assert => {
   const transform = new Transform3( Matrix3.createFromPool( 0, -2, 5, 3, 0, 8, 0, 0, 1 ) );
   const ray = new Ray2( new Vector2( 2, 7 ), new Vector2( -5, 2 ).normalized() );
 
@@ -42,7 +42,7 @@ QUnit.test( 'Ray2 transforms', function( assert ) {
   approximateRayEqual( assert, transform.inverseRay2( transform.transformRay2( ray ) ), ray, 'inverse correctness' );
 } );
 
-QUnit.test( 'Transform x/y', function( assert ) {
+QUnit.test( 'Transform x/y', assert => {
   const t = new Transform3( Matrix3.createFromPool( 2, 0, 10, 0, 3, 1, 0, 0, 1 ) );
   assert.equal( t.transformX( 5 ), 20 );
   assert.equal( t.transformY( 5 ), 16 );
@@ -50,15 +50,15 @@ QUnit.test( 'Transform x/y', function( assert ) {
   assert.equal( t.inverseY( 16 ), 5 );
 
   const t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
-  window.assert && assert.throws( function() { // eslint-disable-line no-undef
+  window.assert && assert.throws( () => { // eslint-disable-line no-undef
     t2.transformX( 5 );
   } );
-  window.assert && assert.throws( function() { // eslint-disable-line no-undef
+  window.assert && assert.throws( () => { // eslint-disable-line no-undef
     t2.transformY( 5 );
   } );
 } );
 
-QUnit.test( 'Transform delta', function( assert ) {
+QUnit.test( 'Transform delta', assert => {
   const t1 = new Transform3( Matrix3.createFromPool( 2, 1, 0, -2, 5, 0, 0, 0, 1 ) );
   const t2 = new Transform3( Matrix3.createFromPool( 2, 1, 52, -2, 5, -61, 0, 0, 1 ) );
 
@@ -73,7 +73,7 @@ QUnit.test( 'Transform delta', function( assert ) {
   assert.ok( t2.inverseDelta2( t2.transformDelta2( v ) ).equalsEpsilon( v, 1e-7 ), 'inverse check, with translation' );
 } );
 
-QUnit.test( 'Transform delta x/y', function( assert ) {
+QUnit.test( 'Transform delta x/y', assert => {
   const t = new Transform3( Matrix3.createFromPool( 2, 0, 52, 0, 5, -61, 0, 0, 1 ) );
 
   approximateEqual( assert, t.transformDeltaX( 1 ), 2, 'deltaX' );
@@ -87,7 +87,7 @@ QUnit.test( 'Transform delta x/y', function( assert ) {
   approximateEqual( assert, t.inverseDeltaY( t.transformDeltaY( v.y ) ), v.y, 'inverse check Y' );
 } );
 
-QUnit.test( 'Transform setMatrix ensuring matrix instance equivalence', function( assert ) {
+QUnit.test( 'Transform setMatrix ensuring matrix instance equivalence', assert => {
   const t = new Transform3();
 
   const m = t.getMatrix();
@@ -102,12 +102,12 @@ QUnit.test( 'Transform setMatrix ensuring matrix instance equivalence', function
   assert.equal( t.getMatrix().m01(), 8 );
 } );
 
-QUnit.test( 'Transform event firing', function( assert ) {
+QUnit.test( 'Transform event firing', assert => {
   const t = new Transform3();
 
   let count = 0;
 
-  t.changeEmitter.addListener( function( assert ) { count += 1; } );
+  t.changeEmitter.addListener( assert => { count += 1; } );
   assert.equal( count, 0 );
   t.setMatrix( Matrix3.rotation2( Math.PI / 2 ) );
   assert.equal( count, 1 );
@@ -119,7 +119,7 @@ QUnit.test( 'Transform event firing', function( assert ) {
   assert.equal( count, 4 );
 } );
 
-QUnit.test( 'Transform inverse validation', function( assert ) {
+QUnit.test( 'Transform inverse validation', assert => {
   const t = new Transform3();
 
   assert.ok( t.transformPosition2( new Vector2( 2, 4 ) ).equals( new Vector2( 2, 4 ) ) );
@@ -133,7 +133,7 @@ QUnit.test( 'Transform inverse validation', function( assert ) {
   assert.ok( t.inversePosition2( new Vector2( 2, 4 ) ).equalsEpsilon( new Vector2( 2, -0.5 ), epsilon ) );
 } );
 
-QUnit.test( 'transform creation and setting', function( assert ) {
+QUnit.test( 'transform creation and setting', assert => {
   const t = new Transform3();
   t.append( Matrix3.rotation2( Math.PI ) );
   assert.ok( true, 'so we have at least 1 test in this set' );

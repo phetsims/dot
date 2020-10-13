@@ -22,7 +22,7 @@ function approxEqualArray( assert, arr, barr, msg ) {
 }
 
 /* eslint-disable no-undef */
-QUnit.test( '3x3 mults', function( assert ) {
+QUnit.test( '3x3 mults', assert => {
   const a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
   const b = new MatrixOps3.Array( [ 4, 3, 1, -7, 2, -1, -1, 0, -2 ] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}
   const c = new MatrixOps3.Array( 9 );
@@ -38,7 +38,7 @@ QUnit.test( '3x3 mults', function( assert ) {
   approxEqualArray( assert, c, [ 18, 4, 1, 9, -5, 8, 50, -41, -15 ], 'mult3BothTranspose' );
 } );
 
-QUnit.test( 'optimized Givens rotation equivalence', function( assert ) {
+QUnit.test( 'optimized Givens rotation equivalence', assert => {
   const a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] );
   const normal = new MatrixOps3.Array( 9 );
   const accel = new MatrixOps3.Array( 9 );
@@ -89,7 +89,7 @@ QUnit.test( 'optimized Givens rotation equivalence', function( assert ) {
   approxEqualArray( assert, normal, accel, 'right mult 1,2' );
 } );
 
-QUnit.test( 'SVD', function( assert ) {
+QUnit.test( 'SVD', assert => {
   const a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] );
   const u = new MatrixOps3.Array( 9 );
   const sigma = new MatrixOps3.Array( 9 );

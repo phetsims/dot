@@ -21,107 +21,101 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import dot from './dot.js';
 import Matrix from './Matrix.js';
+import dot from './dot.js';
 
 const ArrayType = window.Float64Array || Array;
 
+class EigenvalueDecomposition {
+  /**
+   * @param {Matrix} matrix - must be a square matrix
+   */
+  constructor( matrix ) {
+    let i;
+    let j;
 
-/**
- *
- * @param {Matrix} matrix - must be a square matrix
- * @constructor
- */
-function EigenvalueDecomposition( matrix ) {
-  let i;
-  let j;
+    const A = matrix.entries;
+    this.n = matrix.getColumnDimension(); // @private  Row and column dimension (square matrix).
+    const n = this.n;
+    this.V = new ArrayType( n * n ); // @private Array for internal storage of eigenvectors.
 
-  const A = matrix.entries;
-  this.n = matrix.getColumnDimension(); // @private  Row and column dimension (square matrix).
-  const n = this.n;
-  this.V = new ArrayType( n * n ); // @private Array for internal storage of eigenvectors.
+    // Arrays for internal storage of eigenvalues.
+    this.d = new ArrayType( n ); // @private
+    this.e = new ArrayType( n ); // @private
 
-  // Arrays for internal storage of eigenvalues.
-  this.d = new ArrayType( n ); // @private
-  this.e = new ArrayType( n ); // @private
-
-  this.issymmetric = true;
-  for ( j = 0; ( j < n ) && this.issymmetric; j++ ) {
-    for ( i = 0; ( i < n ) && this.issymmetric; i++ ) {
-      this.issymmetric = ( A[ i * this.n + j ] === A[ j * this.n + i ] );
-    }
-  }
-
-  if ( this.issymmetric ) {
-    for ( i = 0; i < n; i++ ) {
-      for ( j = 0; j < n; j++ ) {
-        this.V[ i * this.n + j ] = A[ i * this.n + j ];
+    this.issymmetric = true;
+    for ( j = 0; ( j < n ) && this.issymmetric; j++ ) {
+      for ( i = 0; ( i < n ) && this.issymmetric; i++ ) {
+        this.issymmetric = ( A[ i * this.n + j ] === A[ j * this.n + i ] );
       }
     }
 
-    // Tridiagonalize.
-    this.tred2();
-
-    // Diagonalize.
-    this.tql2();
-
-  }
-  else {
-    this.H = new ArrayType( n * n ); // Array for internal storage of nonsymmetric Hessenberg form.
-    this.ort = new ArrayType( n ); // // Working storage for nonsymmetric algorithm.
-
-    for ( j = 0; j < n; j++ ) {
+    if ( this.issymmetric ) {
       for ( i = 0; i < n; i++ ) {
-        this.H[ i * this.n + j ] = A[ i * this.n + j ];
+        for ( j = 0; j < n; j++ ) {
+          this.V[ i * this.n + j ] = A[ i * this.n + j ];
+        }
       }
+
+      // Tridiagonalize.
+      this.tred2();
+
+      // Diagonalize.
+      this.tql2();
+
     }
+    else {
+      this.H = new ArrayType( n * n ); // Array for internal storage of nonsymmetric Hessenberg form.
+      this.ort = new ArrayType( n ); // // Working storage for nonsymmetric algorithm.
 
-    // Reduce to Hessenberg form.
-    this.orthes();
+      for ( j = 0; j < n; j++ ) {
+        for ( i = 0; i < n; i++ ) {
+          this.H[ i * this.n + j ] = A[ i * this.n + j ];
+        }
+      }
 
-    // Reduce Hessenberg to real Schur form.
-    this.hqr2();
+      // Reduce to Hessenberg form.
+      this.orthes();
+
+      // Reduce Hessenberg to real Schur form.
+      this.hqr2();
+    }
   }
-}
 
-dot.register( 'EigenvalueDecomposition', EigenvalueDecomposition );
-
-EigenvalueDecomposition.prototype = {
-  constructor: EigenvalueDecomposition,
 
   /**
    * Returns a square array of all eigenvectors arranged in a columnar format
    * @public
    * @returns {ArrayType.<number>} - a n*n matrix
    */
-  getV: function() {
+  getV() {
     return this.V.copy();
-  },
+  }
 
   /**
    * Returns an array that contains the real part of the eigenvalues
    * @public
    * @returns {ArrayType.<number>} - a one dimensional array
    */
-  getRealEigenvalues: function() {
+  getRealEigenvalues() {
     return this.d;
-  },
+  }
 
   /**
    * Returns an array that contains the imaginary parts of the eigenvalues
    * @public
    * @returns {ArrayType.<number>} - a one dimensional array
    */
-  getImagEigenvalues: function() {
+  getImagEigenvalues() {
     return this.e;
-  },
+  }
 
   /**
    * Return the block diagonal eigenvalue matrix
    * @public
    * @returns {Matrix} - a n * n matrix
    */
-  getD: function() {
+  getD() {
     const n = this.n;
     const d = this.d;
     const e = this.e;
@@ -141,13 +135,13 @@ EigenvalueDecomposition.prototype = {
       }
     }
     return X;
-  },
+  }
 
   /**
    * Symmetric Householder reduction to tridiagonal form.
    * @private
    */
-  tred2: function() {
+  tred2() {
     const n = this.n;
     const V = this.V;
     const d = this.d;
@@ -271,13 +265,13 @@ EigenvalueDecomposition.prototype = {
     }
     V[ ( n - 1 ) * n + ( n - 1 ) ] = 1.0;
     e[ 0 ] = 0.0;
-  },
+  }
 
   /**
    * Symmetric tridiagonal QL algorithm.
    * @private
    */
-  tql2: function() {
+  tql2() {
     const n = this.n;
     const V = this.V;
     const d = this.d;
@@ -404,13 +398,13 @@ EigenvalueDecomposition.prototype = {
         }
       }
     }
-  },
+  }
 
   /**
    *  Nonsymmetric reduction to Hessenberg form.
    *  @private
    */
-  orthes: function() {
+  orthes() {
     const n = this.n;
     const V = this.V;
     const H = this.H;
@@ -508,10 +502,18 @@ EigenvalueDecomposition.prototype = {
         }
       }
     }
-  },
+  }
 
-  // Complex scalar division.
-  cdiv: function( xr, xi, yr, yi ) {
+  /**
+   * Complex scalar division.
+   * @private
+   *
+   * @param {*} xr
+   * @param {*} xi
+   * @param {*} yr
+   * @param {*} yi
+   */
+  cdiv( xr, xi, yr, yi ) {
     let r;
     let d;
     if ( Math.abs( yr ) > Math.abs( yi ) ) {
@@ -526,7 +528,7 @@ EigenvalueDecomposition.prototype = {
       this.cdivr = ( r * xr + xi ) / d;
       this.cdivi = ( r * xi - xr ) / d;
     }
-  },
+  }
 
   /**
    * This methods finds the eigenvalues and eigenvectors
@@ -537,7 +539,7 @@ EigenvalueDecomposition.prototype = {
    *
    * @private
    */
-  hqr2: function() {
+  hqr2() {
     let n;
     const V = this.V;
     const d = this.d;
@@ -1009,6 +1011,8 @@ EigenvalueDecomposition.prototype = {
       }
     }
   }
-};
+}
+
+dot.register( 'EigenvalueDecomposition', EigenvalueDecomposition );
 
 export default EigenvalueDecomposition;

@@ -56,13 +56,13 @@ function V2() {
   return new Vector2( 0.739498, 0.827537 );
 }
 
-QUnit.test( 'Affine detection', function( assert ) {
+QUnit.test( 'Affine detection', assert => {
   assert.equal( A().type, Matrix3.Types.OTHER );
   assert.equal( B().type, Matrix3.Types.OTHER );
   assert.equal( C().type, Matrix3.Types.AFFINE );
 } );
 
-QUnit.test( 'Row-major', function( assert ) {
+QUnit.test( 'Row-major', assert => {
   const m = Matrix3.createFromPool( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
   assert.equal( m.m00(), 1, 'm00' );
   assert.equal( m.m01(), 2, 'm01' );
@@ -75,7 +75,7 @@ QUnit.test( 'Row-major', function( assert ) {
   assert.equal( m.m22(), 9, 'm22' );
 } );
 
-QUnit.test( 'Column-major', function( assert ) {
+QUnit.test( 'Column-major', assert => {
   const m = Matrix3.createFromPool();
   m.columnMajor( 1, 4, 7, 2, 5, 8, 3, 6, 9 );
   assert.equal( m.m00(), 1, 'm00' );
@@ -89,17 +89,17 @@ QUnit.test( 'Column-major', function( assert ) {
   assert.equal( m.m22(), 9, 'm22' );
 } );
 
-QUnit.test( 'Determinant', function( assert ) {
+QUnit.test( 'Determinant', assert => {
   approximateEqual( assert, A().getDeterminant(), -0.0717069, 'A' );
   approximateEqual( assert, B().getDeterminant(), -1.42292, 'B' );
 } );
 
-QUnit.test( 'Rotation', function( assert ) {
+QUnit.test( 'Rotation', assert => {
   const angle = Math.PI / 6 + 0.2543;
   approximateEqual( assert, Matrix3.rotation2( angle ).getRotation(), angle );
 } );
 
-QUnit.test( 'plus / add', function( assert ) {
+QUnit.test( 'plus / add', assert => {
   const a = A();
   const b = B();
   const result = Matrix3.createFromPool( 0.583184, -1.32807, 0.400818, -0.207545, 0.401791, 0.882298, 0.81168, 0.370878, -0.0835274 );
@@ -111,7 +111,7 @@ QUnit.test( 'plus / add', function( assert ) {
   approximateMatrixEqual( assert, a, result, 'verifying mutability' );
 } );
 
-QUnit.test( 'minus / subtract', function( assert ) {
+QUnit.test( 'minus / subtract', assert => {
   const a = A();
   const b = B();
   const result = Matrix3.createFromPool( -0.149837, 0.417574, -0.580365, -0.3163, -0.819726, -1.04049, -0.949493, -1.61117, 0.634326 );
@@ -123,7 +123,7 @@ QUnit.test( 'minus / subtract', function( assert ) {
   approximateMatrixEqual( assert, a, result, 'verifying mutability' );
 } );
 
-QUnit.test( 'transposed / transpose', function( assert ) {
+QUnit.test( 'transposed / transpose', assert => {
   const a = A();
   const result = Matrix3.createFromPool( 0.216673, -0.261922, -0.0689069, -0.455249, -0.208968, -0.620147, -0.0897734, -0.0790977, 0.275399 );
 
@@ -134,7 +134,7 @@ QUnit.test( 'transposed / transpose', function( assert ) {
   approximateMatrixEqual( assert, a, result, 'verifying mutability' );
 } );
 
-QUnit.test( 'negated / negate', function( assert ) {
+QUnit.test( 'negated / negate', assert => {
   const a = A();
   const result = Matrix3.createFromPool( -0.216673, 0.455249, 0.0897734, 0.261922, 0.208968, 0.0790977, 0.0689069, 0.620147, -0.275399 );
 
@@ -145,7 +145,7 @@ QUnit.test( 'negated / negate', function( assert ) {
   approximateMatrixEqual( assert, a, result, 'verifying mutability' );
 } );
 
-QUnit.test( 'inverted / invert', function( assert ) {
+QUnit.test( 'inverted / invert', assert => {
   const a = A();
   const result = Matrix3.createFromPool( 1.48663, -2.52483, -0.240555, -1.08195, -0.745893, -0.566919, -2.06439, -2.31134, 2.29431 );
 
@@ -156,7 +156,7 @@ QUnit.test( 'inverted / invert', function( assert ) {
   approximateMatrixEqual( assert, a, result, 'verifying mutability' );
 } );
 
-QUnit.test( 'timesMatrix / multiplyMatrix', function( assert ) {
+QUnit.test( 'timesMatrix / multiplyMatrix', assert => {
   const a = A();
   const b = B();
   const result = Matrix3.createFromPool( -0.0243954, -0.556133, -0.299155, -0.177013, 0.0225954, -0.301007, 0.183536, -0.0456892, -0.72886 );
@@ -168,7 +168,7 @@ QUnit.test( 'timesMatrix / multiplyMatrix', function( assert ) {
   approximateMatrixEqual( assert, a, result, 'verifying mutability' );
 } );
 
-QUnit.test( 'timesVector2 / multiplyVector2', function( assert ) {
+QUnit.test( 'timesVector2 / multiplyVector2', assert => {
   const c = C();
   const v = V2();
   const result = new Vector2( 0.543836, 0.926107 );
@@ -180,7 +180,7 @@ QUnit.test( 'timesVector2 / multiplyVector2', function( assert ) {
   approximateMatrixEqual( assert, v, result, 'verifying mutability' );
 } );
 
-QUnit.test( 'timesTransposeVector2 / multiplyTransposeVector2', function( assert ) {
+QUnit.test( 'timesTransposeVector2 / multiplyTransposeVector2', assert => {
   const c = C();
   const v = V2();
 
@@ -191,7 +191,7 @@ QUnit.test( 'timesTransposeVector2 / multiplyTransposeVector2', function( assert
   approximateMatrixEqual( assert, v, c.timesTransposeVector2( V2() ), 'verifying mutability' );
 } );
 
-QUnit.test( 'timesRelativeVector2 / multiplyRelativeVector2', function( assert ) {
+QUnit.test( 'timesRelativeVector2 / multiplyRelativeVector2', assert => {
   const c = C();
   const v = V2();
 
@@ -202,7 +202,7 @@ QUnit.test( 'timesRelativeVector2 / multiplyRelativeVector2', function( assert )
   approximateMatrixEqual( assert, v, c.timesRelativeVector2( V2() ), 'verifying mutability' );
 } );
 
-QUnit.test( 'Inverse / Multiplication tests', function( assert ) {
+QUnit.test( 'Inverse / Multiplication tests', assert => {
   approximateMatrixEqual( assert, Matrix3.IDENTITY.inverted(), Matrix3.IDENTITY, 'I * I = I' );
   approximateMatrixEqual( assert, Matrix3.IDENTITY.timesMatrix( A() ), A(), 'I * A = A' );
   approximateMatrixEqual( assert, A().timesMatrix( Matrix3.IDENTITY ), A(), 'A * I = A' );
@@ -218,7 +218,7 @@ QUnit.test( 'Inverse / Multiplication tests', function( assert ) {
   approximateMatrixEqual( assert, C().timesMatrix( C().inverted() ), Matrix3.IDENTITY, 'C inverse check' );
 } );
 
-QUnit.test( 'Matrix Scaling Tests', function( assert ) {
+QUnit.test( 'Matrix Scaling Tests', assert => {
   const scale = Matrix3.scale( -2, 3 );
   const scaleVector = scale.getScaleVector();
   approximateEqual( assert, scaleVector.x, 2, 'Scale X should be -2' );
@@ -237,7 +237,7 @@ QUnit.test( 'Matrix Scaling Tests', function( assert ) {
   approximateEqual( assert, rotation.getScaleVector().y, 1, 'rotation x' );
 } );
 
-QUnit.test( 'Matrix scaling()', function( assert ) {
+QUnit.test( 'Matrix scaling()', assert => {
   const rotation = Matrix3.rotation2( Math.PI / 4 );
   const translation = Matrix3.translation( 20, 30 );
   const scale2 = Matrix3.scaling( 2 );

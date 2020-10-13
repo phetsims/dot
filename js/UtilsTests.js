@@ -7,9 +7,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
+import dot from './dot.js';
 
 QUnit.module( 'Utils' );
 
@@ -27,7 +27,7 @@ function arrayApproximateEquals( assert, a, b, msg ) {
   }
 }
 
-QUnit.test( 'Modulus between up/down tests', function( assert ) {
+QUnit.test( 'Modulus between up/down tests', assert => {
   assert.equal( Utils.moduloBetweenDown( 8, 0, 1 ), 0 );
   assert.equal( Utils.moduloBetweenUp( 8, 0, 1 ), 1 );
 
@@ -41,7 +41,7 @@ QUnit.test( 'Modulus between up/down tests', function( assert ) {
   assert.equal( Utils.moduloBetweenUp( 8, -2, 2 ), 0 );
 } );
 
-QUnit.test( 'roundSymmetric', function( assert ) {
+QUnit.test( 'roundSymmetric', assert => {
   assert.equal( Utils.roundSymmetric( 0.5 ), 1, '0.5 => 1' );
   assert.equal( Utils.roundSymmetric( 0.3 ), 0, '0.3 => 0' );
   assert.equal( Utils.roundSymmetric( 0.8 ), 1, '0.8 => 1' );
@@ -62,7 +62,7 @@ QUnit.test( 'roundSymmetric', function( assert ) {
   assert.ok( original.equals( rounded ), 'both rounded now' );
 } );
 
-QUnit.test( 'lineLineIntersection', function( assert ) {
+QUnit.test( 'lineLineIntersection', assert => {
   const f = Utils.lineLineIntersection;
 
   const p1 = Vector2.ZERO;
@@ -77,7 +77,7 @@ QUnit.test( 'lineLineIntersection', function( assert ) {
   assert.equal( f( p1, p2, p2, p3 ).y, 1 );
 } );
 
-QUnit.test( 'lineSegmentIntersection', function( assert ) {
+QUnit.test( 'lineSegmentIntersection', assert => {
   const h = Utils.lineSegmentIntersection;
 
   const p1 = dot.Vector2.ZERO;
@@ -86,9 +86,7 @@ QUnit.test( 'lineSegmentIntersection', function( assert ) {
   const p4 = new dot.Vector2( -3, -3 );
   const p5 = new dot.Vector2( 8, -10 );
 
-  const f = function( p1, p2, p3, p4 ) {
-    return h( p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
-  };
+  const f = ( p1, p2, p3, p4 ) => h( p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
 
   assert.equal( f( p4, p1, p1, p2 ), null );
   assert.equal( f( p3, p2, p4, p1 ), null );
@@ -104,7 +102,7 @@ QUnit.test( 'lineSegmentIntersection', function( assert ) {
   assert.equal( f( p3, p4, p3, p2 ).y, 8 );
 } );
 
-QUnit.test( 'distToSegmentSquared', function( assert ) {
+QUnit.test( 'distToSegmentSquared', assert => {
   const f = Utils.distToSegmentSquared;
 
   const p1 = Vector2.ZERO;
@@ -118,19 +116,19 @@ QUnit.test( 'distToSegmentSquared', function( assert ) {
   approximateEquals( assert, f( p3, p2, p2 ), 2 );
 } );
 
-QUnit.test( 'linear map', function( assert ) {
+QUnit.test( 'linear map', assert => {
   approximateEquals( assert, Utils.linear( 4, 8, 8, 0, 4 ), 8 );
   approximateEquals( assert, Utils.linear( 4, 8, 8, 0, 8 ), 0 );
   approximateEquals( assert, Utils.linear( 4, 8, 8, 0, 6 ), 4 );
 } );
 
-QUnit.test( 'clamp', function( assert ) {
+QUnit.test( 'clamp', assert => {
   assert.equal( Utils.clamp( 5, 1, 4 ), 4 );
   assert.equal( Utils.clamp( 3, 1, 4 ), 3 );
   assert.equal( Utils.clamp( 0, 1, 4 ), 1 );
 } );
 
-QUnit.test( 'rangeInclusive', function( assert ) {
+QUnit.test( 'rangeInclusive', assert => {
   let arr = Utils.rangeInclusive( 2, 4 );
   assert.equal( arr.length, 3 );
   assert.equal( arr[ 0 ], 2 );
@@ -141,7 +139,7 @@ QUnit.test( 'rangeInclusive', function( assert ) {
   assert.equal( arr.length, 0 );
 } );
 
-QUnit.test( 'rangeExclusive', function( assert ) {
+QUnit.test( 'rangeExclusive', assert => {
   let arr = Utils.rangeExclusive( 2, 4 );
   assert.equal( arr.length, 1 );
   assert.equal( arr[ 0 ], 3 );
@@ -150,19 +148,19 @@ QUnit.test( 'rangeExclusive', function( assert ) {
   assert.equal( arr.length, 0 );
 } );
 
-QUnit.test( 'toRadians', function( assert ) {
+QUnit.test( 'toRadians', assert => {
   approximateEquals( assert, Utils.toRadians( 90 ), Math.PI / 2 );
   approximateEquals( assert, Utils.toRadians( 45 ), Math.PI / 4 );
   approximateEquals( assert, Utils.toRadians( -45 ), -Math.PI / 4 );
 } );
 
-QUnit.test( 'toDegrees', function( assert ) {
+QUnit.test( 'toDegrees', assert => {
   approximateEquals( assert, 90, Utils.toDegrees( Math.PI / 2 ) );
   approximateEquals( assert, 45, Utils.toDegrees( Math.PI / 4 ) );
   approximateEquals( assert, -45, Utils.toDegrees( -Math.PI / 4 ) );
 } );
 
-QUnit.test( 'numberOfDecimalPlaces', function( assert ) {
+QUnit.test( 'numberOfDecimalPlaces', assert => {
   assert.equal( Utils.numberOfDecimalPlaces( 10 ), 0 );
   assert.equal( Utils.numberOfDecimalPlaces( -10 ), 0 );
   assert.equal( Utils.numberOfDecimalPlaces( 10.1 ), 1 );
@@ -175,7 +173,7 @@ QUnit.test( 'numberOfDecimalPlaces', function( assert ) {
   assert.equal( Utils.numberOfDecimalPlaces( -0.001 ), 3 );
 } );
 
-QUnit.test( 'roundToInterval', function( assert ) {
+QUnit.test( 'roundToInterval', assert => {
   assert.equal( Utils.roundToInterval( 0.567, 0.01 ), 0.57 );
   assert.equal( Utils.roundToInterval( -0.567, 0.01 ), -0.57 );
   assert.equal( Utils.roundToInterval( 0.567, 0.02 ), 0.56 );
@@ -188,7 +186,7 @@ QUnit.test( 'roundToInterval', function( assert ) {
   assert.equal( Utils.roundToInterval( -4.9, 2 ), -4 );
 } );
 
-QUnit.test( 'solveLinearRootsReal', function( assert ) {
+QUnit.test( 'solveLinearRootsReal', assert => {
   assert.equal( Utils.solveLinearRootsReal( 0, 0 ), null, '0*x + 0 = 0 --- all values are solutions' );
   arrayApproximateEquals( assert, Utils.solveLinearRootsReal( 1, 0 ), [ 0 ], '1*x + 0 = 0 --- 0 is a solution' );
   arrayApproximateEquals( assert, Utils.solveLinearRootsReal( -1, 0 ), [ 0 ], '-1*x + 0 = 0 --- 0 is a solution' );
@@ -199,7 +197,7 @@ QUnit.test( 'solveLinearRootsReal', function( assert ) {
   arrayApproximateEquals( assert, Utils.solveLinearRootsReal( -3, 2 ), [ 2 / 3 ], '-3*x + 2 = 0 --- one solution' );
 } );
 
-QUnit.test( 'solveQuadraticRootsReal', function( assert ) {
+QUnit.test( 'solveQuadraticRootsReal', assert => {
   assert.equal( Utils.solveQuadraticRootsReal( 0, 0, 0 ), null, '0*x + 0 = 0 --- all values are solutions' );
   arrayApproximateEquals( assert, Utils.solveQuadraticRootsReal( 0, 1, 0 ), [ 0 ], '1*x + 0 = 0 --- 0 is a solution' );
   arrayApproximateEquals( assert, Utils.solveQuadraticRootsReal( 0, -1, 0 ), [ 0 ], '-1*x + 0 = 0 --- 0 is a solution' );
@@ -215,7 +213,7 @@ QUnit.test( 'solveQuadraticRootsReal', function( assert ) {
   arrayApproximateEquals( assert, Utils.solveQuadraticRootsReal( 2, -1, -3 ), [ -1, 3 / 2 ], '2x^2 - x = 3 --- two solutions' );
 } );
 
-QUnit.test( 'solveCubicRootsReal', function( assert ) {
+QUnit.test( 'solveCubicRootsReal', assert => {
   assert.equal( Utils.solveCubicRootsReal( 0, 0, 0, 0 ), null, '0*x + 0 = 0 --- all values are solutions' );
   arrayApproximateEquals( assert, Utils.solveCubicRootsReal( 0, 0, 1, 0 ), [ 0 ], '1*x + 0 = 0 --- 0 is a solution' );
   arrayApproximateEquals( assert, Utils.solveCubicRootsReal( 0, 0, -1, 0 ), [ 0 ], '-1*x + 0 = 0 --- 0 is a solution' );

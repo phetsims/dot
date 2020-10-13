@@ -764,7 +764,7 @@ class Matrix4 {
    */
   makeImmutable() {
     if ( assert ) {
-      this.rowMajor = function() {
+      this.rowMajor = () => {
         throw new Error( 'Cannot modify immutable matrix' );
       };
     }
