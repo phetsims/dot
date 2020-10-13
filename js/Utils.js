@@ -6,8 +6,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import dot from './dot.js';
 import Vector2 from './Vector2.js';
+import dot from './dot.js';
 
 // constants
 const EPSILON = Number.MIN_VALUE;
@@ -606,9 +606,7 @@ var Utils = {
     // Point1(a,b), Point2(c,d), Point3(e,f)
     // See http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf
     // @returns {number}
-    const ccw = function( a, b, c, d, e, f ) {
-      return ( f - b ) * ( c - a ) - ( d - b ) * ( e - a );
-    };
+    const ccw = ( a, b, c, d, e, f ) => ( f - b ) * ( c - a ) - ( d - b ) * ( e - a );
 
     // Check if intersection doesn't exist. See http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
     // If point1 and point2 are on opposite sides of line 3 4, exactly one of the two triples 1, 3, 4 and 2, 3, 4
