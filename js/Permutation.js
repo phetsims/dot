@@ -79,7 +79,7 @@ class Permutation {
   withIndicesPermuted( indices ) {
     const result = [];
     const self = this;
-    Permutation.forEachPermutation( indices, function( integers ) {
+    Permutation.forEachPermutation( indices, integers => {
       const oldIndices = self.indices;
       const newPermutation = oldIndices.slice( 0 );
 
@@ -125,7 +125,7 @@ class Permutation {
    */
   static permutations( size ) {
     const result = [];
-    Permutation.forEachPermutation( dot.rangeInclusive( 0, size - 1 ), function( integers ) {
+    Permutation.forEachPermutation( dot.rangeInclusive( 0, size - 1 ), integers => {
       result.push( new Permutation( integers ) );
     } );
     return result;
