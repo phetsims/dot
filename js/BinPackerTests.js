@@ -11,14 +11,14 @@ import Bounds2 from './Bounds2.js';
 
 QUnit.module( 'BinPacker' );
 
-QUnit.test( 'Entire BinPacker allocation', function( assert ) {
+QUnit.test( 'Entire BinPacker allocation', assert => {
   const p = new BinPacker( new Bounds2( 0, 0, 1, 1 ) );
   const bin = p.allocate( 1, 1 );
   assert.ok( bin, 'Should have a bin' );
   assert.ok( !p.allocate( 1, 1 ), 'Should not be able to fit another bin' );
 } );
 
-QUnit.test( 'Many bins', function( assert ) {
+QUnit.test( 'Many bins', assert => {
   function checkNoOverlappingBins( array, containingBounds ) {
     for ( let i = 0; i < array.length; i++ ) {
       if ( array[ i ] ) {

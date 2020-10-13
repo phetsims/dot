@@ -59,7 +59,7 @@ const ConvexHull2 = {
    *                                     should it be included?
    * @returns {Array.<Vector2>}
    */
-  grahamScan: function( points, includeCollinear ) {
+  grahamScan: ( points, includeCollinear ) => {
     if ( points.length <= 2 ) {
       return points;
     }
@@ -67,7 +67,7 @@ const ConvexHull2 = {
     // find the point 'p' with the lowest y value
     let minY = Number.POSITIVE_INFINITY;
     let p = null;
-    _.each( points, function( point ) {
+    _.each( points, point => {
       if ( point.y <= minY ) {
         // if two points have the same y value, take the one with the lowest x
         if ( point.y === minY && p ) {
@@ -83,7 +83,7 @@ const ConvexHull2 = {
     } );
 
     // sorts the points by their angle. Between 0 and PI
-    points = _.sortBy( points, function( point ) {
+    points = _.sortBy( points, point => {
       return point.minus( p ).angle;
     } );
 
@@ -93,7 +93,7 @@ const ConvexHull2 = {
     // our result array
     const result = [ p ];
 
-    _.each( points, function( point ) {
+    _.each( points, point => {
       // ignore points equal to our starting point
       if ( p.x === point.x && p.y === point.y ) { return; }
 

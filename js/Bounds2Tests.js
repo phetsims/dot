@@ -23,11 +23,11 @@ function approximateBoundsEquals( assert, a, b, msg ) {
   assert.ok( Math.abs( a.maxY - b.maxY ) < epsilon, msg + ' maxY: expected: ' + b.maxY + ', result: ' + a.maxY );
 }
 
-QUnit.test( 'Rectangle', function( assert ) {
+QUnit.test( 'Rectangle', assert => {
   assert.ok( new Bounds2( -2, -4, 2, 4 ).equals( new Rectangle( -2, -4, 4, 8 ) ), 'Bounds2-Rectangle equivalence' );
 } );
 
-QUnit.test( 'Basic', function( assert ) {
+QUnit.test( 'Basic', assert => {
   const bounds = new Bounds2( 1, 2, 3, 4 );
   assert.ok( bounds.minX === 1, 'minX' );
   assert.ok( bounds.minY === 2, 'minY' );
@@ -41,7 +41,7 @@ QUnit.test( 'Basic', function( assert ) {
   assert.ok( bounds.centerY === 3, 'centerY' );
 } );
 
-QUnit.test( 'Coordinates', function( assert ) {
+QUnit.test( 'Coordinates', assert => {
   const bounds = new Bounds2( 1, 2, 3, 4 );
   assert.ok( !bounds.isEmpty(), 'isEmpty' );
 
@@ -71,7 +71,7 @@ function B() { return new Bounds2( 1, 1, 5, 4 ); }
 
 function C() { return new Bounds2( 1.5, 1.2, 5.7, 4.8 ); }
 
-QUnit.test( 'Mutable / immutable versions', function( assert ) {
+QUnit.test( 'Mutable / immutable versions', assert => {
   approximateBoundsEquals( assert, A().union( B() ), A().includeBounds( B() ), 'union / includeBounds' );
   approximateBoundsEquals( assert, A().intersection( B() ), A().constrainBounds( B() ), 'intersection / constrainBounds' );
   approximateBoundsEquals( assert, A().withCoordinates( 10, 12 ), A().addCoordinates( 10, 12 ), 'withCoordinates / addCoordinates' );
@@ -95,13 +95,13 @@ QUnit.test( 'Mutable / immutable versions', function( assert ) {
   approximateBoundsEquals( assert, A().shifted( 1.5, 2 ), A().shift( 1.5, 2 ), 'shifted / shift' );
 } );
 
-QUnit.test( 'Bounds transforms', function( assert ) {
+QUnit.test( 'Bounds transforms', assert => {
   approximateBoundsEquals( assert, A().transformed( Matrix3.translation( 10, 20 ) ), new Bounds2( 10, 20, 12, 23 ), 'translation' );
   approximateBoundsEquals( assert, A().transformed( Matrix3.rotation2( Math.PI / 2 ) ), new Bounds2( -3, 0, 0, 2 ), 'rotation' );
   approximateBoundsEquals( assert, A().transformed( Matrix3.scale( 3, 2 ) ), new Bounds2( 0, 0, 6, 6 ), 'scale' );
 } );
 
-QUnit.test( 'Equality', function( assert ) {
+QUnit.test( 'Equality', assert => {
   assert.ok( new Bounds2( 0, 1, 2, 3 ).equals( new Bounds2( 0, 1, 2, 3 ) ), 'Without epsilon: regular - reflexive' );
   assert.ok( new Bounds2( 0, 1, 2, 3 ).equalsEpsilon( new Bounds2( 0, 1, 2, 3 ), epsilon ), 'With epsilon: regular - reflexive' );
   assert.ok( !new Bounds2( 0, 1, 2, 3 ).equals( new Bounds2( 0, 1, 2, 5 ) ), 'Without epsilon: regular - different' );

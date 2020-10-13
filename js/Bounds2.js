@@ -1456,12 +1456,12 @@ Poolable.mixInto( Bounds2, {
 } );
 
 function catchImmutableSetterLowHangingFruit( bounds ) {
-  bounds.setMinMax = function() { throw new Error( 'Attempt to set "setMinMax" of an immutable Bounds2 object' ); };
-  bounds.set = function() { throw new Error( 'Attempt to set "set" of an immutable Bounds2 object' ); };
-  bounds.includeBounds = function() { throw new Error( 'Attempt to set "includeBounds" of an immutable Bounds2 object' ); };
-  bounds.constrainBounds = function() { throw new Error( 'Attempt to set "constrainBounds" of an immutable Bounds2 object' ); };
-  bounds.addCoordinates = function() { throw new Error( 'Attempt to set "addCoordinates" of an immutable Bounds2 object' ); };
-  bounds.transform = function() { throw new Error( 'Attempt to set "transform" of an immutable Bounds2 object' ); };
+  bounds.setMinMax = () => { throw new Error( 'Attempt to set "setMinMax" of an immutable Bounds2 object' ); };
+  bounds.set = () => { throw new Error( 'Attempt to set "set" of an immutable Bounds2 object' ); };
+  bounds.includeBounds = () => { throw new Error( 'Attempt to set "includeBounds" of an immutable Bounds2 object' ); };
+  bounds.constrainBounds = () => { throw new Error( 'Attempt to set "constrainBounds" of an immutable Bounds2 object' ); };
+  bounds.addCoordinates = () => { throw new Error( 'Attempt to set "addCoordinates" of an immutable Bounds2 object' ); };
+  bounds.transform = () => { throw new Error( 'Attempt to set "transform" of an immutable Bounds2 object' ); };
 }
 
 if ( assert ) {
