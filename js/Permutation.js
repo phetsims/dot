@@ -78,9 +78,8 @@ class Permutation {
    */
   withIndicesPermuted( indices ) {
     const result = [];
-    const self = this;
     Permutation.forEachPermutation( indices, integers => {
-      const oldIndices = self.indices;
+      const oldIndices = this.indices;
       const newPermutation = oldIndices.slice( 0 );
 
       for ( let i = 0; i < indices.length; i++ ) {
