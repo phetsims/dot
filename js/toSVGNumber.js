@@ -1,4 +1,4 @@
-// Copyright 2013-2020, University of Colorado Boulder
+// Copyright 2020, University of Colorado Boulder
 
 /**
  * Outputs a number for use in SVG's style/transform/path strings.
