@@ -22,7 +22,7 @@ class Transform3 {
    * Creates a transform based around an initial matrix.
    * @public
    *
-   * @param {Matrix3} matrix
+   * @param {Matrix3} [matrix]
    */
   constructor( matrix ) {
     // @private {Matrix3} - The primary matrix used for the transform
