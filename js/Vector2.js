@@ -8,9 +8,9 @@
 
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
-import dot from './dot.js';
 
 class Vector2 {
   /**
@@ -875,6 +875,7 @@ class Vector2 {
   toStateObject() {
     return { x: this.x, y: this.y };
   }
+
   // static methods
 
   /**
@@ -989,11 +990,8 @@ Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
  */
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
-Vector2.Vector2IO = new IOType( 'Vector2IO', {
-  valueType: Vector2,
-  documentation: 'A numerical object with x and y properties, like {x:3,y:4}',
-  toStateObject: vector2 => vector2.toStateObject(),
-  fromStateObject: Vector2.fromStateObject
+Vector2.Vector2IO = IOType.fromCoreType( 'Vector2IO', Vector2, {
+  documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
 } );
 
 export default Vector2;
