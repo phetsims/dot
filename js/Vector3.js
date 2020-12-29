@@ -188,7 +188,7 @@ class Vector3 {
   }
 
   /**
-   * Whether all of the components are numbers (not NaN) that are not infinity or -infinity.
+   * Returns false if any component is NaN, infinity, or -infinity. Otherwise returns true.
    * @public
    *
    * @returns {boolean}
