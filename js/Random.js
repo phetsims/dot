@@ -101,8 +101,8 @@ class Random {
   nextIntBetween( min, max ) {
 
     assert && assert( arguments.length === 2, 'nextIntBetween must have exactly 2 arguments' );
-    assert && assert( Utils.isInteger( min ), 'min must be an integer: ' + min );
-    assert && assert( Utils.isInteger( max ), 'max must be an integer: ' + max );
+    assert && assert( Number.isInteger( min ), 'min must be an integer: ' + min );
+    assert && assert( Number.isInteger( max ), 'max must be an integer: ' + max );
 
     const range = max - min;
     return this.nextInt( range + 1 ) + min;

@@ -562,17 +562,6 @@ var Utils = {
   },
 
   /**
-   * Determines whether a value is an integer.
-   * @public
-   *
-   * @param {*} value
-   * @returns {boolean}
-   */
-  isInteger( value ) {
-    return ( typeof value === 'number' ) && ( value % 1 === 0 );
-  },
-
-  /**
    * Returns true if two numbers are within epsilon of each other.
    *
    * @param {number} a
