@@ -1400,7 +1400,7 @@ class Bounds2 {
    * @public
    *
    * @param {number|Vector2} x
-   * @param [number] y
+   * @param {number} y
    * @returns {Bounds2}
    */
   static point( x, y ) {
