@@ -4,7 +4,7 @@
  * Random number generator with an optional seed.  It uses seedrandom.js, a monkey patch for Math, see
  * https://github.com/davidbau/seedrandom.
  *
- * If you are developing a PhET Simulation, you should probably use the global `phet.joist.random` because it
+ * If you are developing a PhET Simulation, you should probably use the global `DOT/dotRandom` because it
  * provides built-in support for phet-io seeding and a check that it isn't used before the seed has been set.
  *
  * @author John Blanco (PhET Interactive Simulations)
@@ -13,11 +13,10 @@
  * @author Mohamed Safi
  */
 
-import assertMutuallyExclusiveOptions from '../../phet-core/js/assertMutuallyExclusiveOptions.js';
 import merge from '../../phet-core/js/merge.js';
+import dot from './dot.js';
 import Range from './Range.js';
 import Utils from './Utils.js';
-import dot from './dot.js';
 
 class Random {
 
@@ -26,26 +25,20 @@ class Random {
    */
   constructor( options ) {
 
-    // If staticSeed and seed are both specified, there will be an assertion error.
-    assert && assertMutuallyExclusiveOptions( options, [ 'staticSeed' ], [ 'seed' ] );
-
     options = merge( {
 
       // {number|null} seed for the random number generator.  When seed is null, Math.random() is used.
-      seed: null,
-
-      // {boolean} if true, use the seed specified statically in `phet.chipper.randomSeed`.  This value is declared
-      // in initialize-globals.js and can be overridden by PhET-iO for reproducible playback (see PhetioEngineIO.setRandomSeed).
-      staticSeed: false
+      seed: null
     }, options );
 
     // @private {number|null} initialized via setSeed below
-    this.seed = options.staticSeed ? window.phet.chipper.randomSeed : options.seed;
+    this.seed = null;
 
     // If seed is provided, create a local random number generator without altering Math.random.
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
     // @private {function:number|null} initialized via setSeed below
-    this.seedrandom = ( this.seed !== null ) ? new Math.seedrandom( this.seed + '' ) : null;
+    this.seedrandom = null;
+    this.setSeed( options.seed );
 
     // @public (read-only) - the number of times `nextDouble` is called
     this.numberOfCalls = 0;
@@ -148,7 +141,7 @@ class Random {
    */
   nextDouble() {
     this.numberOfCalls++;
-    return this.seed === null ? Math.random() : this.seedrandom(); // eslint-disable-line bad-sim-text
+    return this.seedrandom();
   }
 
   /**
@@ -192,6 +185,19 @@ class Random {
       // because random.nextDoubleBetween requires min < max
       return range.min;
     }
+  }
+
+  /**
+   * @public
+   * @param {number} seed
+   */
+  setSeed( seed ) {
+    this.seed = seed;
+
+    // If seed is provided, create a local random number generator without altering Math.random.
+    // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
+    // @private {function:number|null} initialized via setSeed below
+    this.seedrandom = new Math.seedrandom( ( seed || Math.random() ) + '' ); // eslint-disable-line bad-sim-text
   }
 }
 
