@@ -189,7 +189,7 @@ class Random {
 
   /**
    * @public
-   * @param {number} seed
+   * @param {number|null} seed - if null, Math.random will be used to create the seed.
    */
   setSeed( seed ) {
 
