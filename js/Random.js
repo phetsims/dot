@@ -192,12 +192,18 @@ class Random {
    * @param {number|null} seed - if null, Math.random will be used to create the seed.
    */
   setSeed( seed ) {
+    assert && assert( seed === null || typeof seed === 'number' );
 
-    // If seed is provided, create a local random number generator without altering Math.random.
-    seed = typeof seed === 'number' ? seed : Math.random(); // eslint-disable-line bad-sim-text
+    if ( typeof seed === 'number' ) {
+      assert && assert( Math.seedrandom, 'cannot set seed with 3rd party library "Math.seedrandom".' );
+    }
+    else {
+      seed = Math.random(); // eslint-disable-line bad-sim-text
+    }
 
     this.seed = seed;
 
+    // If seed is provided, create a local random number generator without altering Math.random.
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
     // @private {function:number|null}
     this.seedrandom = Math.seedrandom ? new Math.seedrandom( seed + '' ) : () => Math.random(); // eslint-disable-line bad-sim-text
