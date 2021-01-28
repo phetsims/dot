@@ -729,7 +729,7 @@ class Bounds2 {
    * @returns {Bounds2}
    */
   dilated( d ) {
-    return new Bounds2( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
+    return this.dilatedXY( d, d );
   }
 
   /**
@@ -1200,7 +1200,7 @@ class Bounds2 {
    * @returns {Bounds2}
    */
   dilate( d ) {
-    return this.setMinMax( this.minX - d, this.minY - d, this.maxX + d, this.maxY + d );
+    return this.dilateXY( d, d );
   }
 
   /**
