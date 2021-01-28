@@ -882,7 +882,7 @@ class Bounds2 {
    * @param {number} y
    * @returns {Bounds2}
    */
-  shifted( x, y ) {
+  shiftedXY( x, y ) {
     return new Bounds2( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
   }
 
@@ -1353,7 +1353,7 @@ class Bounds2 {
    * @param {number} y
    * @returns {Bounds2}
    */
-  shift( x, y ) {
+  shiftXY( x, y ) {
     return this.setMinMax( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
   }
 

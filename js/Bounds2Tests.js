@@ -92,7 +92,7 @@ QUnit.test( 'Mutable / immutable versions', assert => {
   approximateBoundsEquals( assert, A().eroded( 1.5 ), A().erode( 1.5 ), 'eroded / erode' );
   approximateBoundsEquals( assert, A().shiftedX( 1.5 ), A().shiftX( 1.5 ), 'shiftedX / shiftX' );
   approximateBoundsEquals( assert, A().shiftedY( 1.5 ), A().shiftY( 1.5 ), 'shiftedY / shiftY' );
-  approximateBoundsEquals( assert, A().shifted( 1.5, 2 ), A().shift( 1.5, 2 ), 'shifted / shift' );
+  approximateBoundsEquals( assert, A().shiftedXY( 1.5, 2 ), A().shiftXY( 1.5, 2 ), 'shifted / shift' );
 } );
 
 QUnit.test( 'Bounds transforms', assert => {
