@@ -199,8 +199,8 @@ class Random {
     this.seed = seed;
 
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
-    // @private {function:number|null} initialized via setSeed below
-    this.seedrandom = new Math.seedrandom( seed + '' );
+    // @private {function:number|null}
+    this.seedrandom = Math.seedrandom ? new Math.seedrandom( seed + '' ) : () => Math.random(); // eslint-disable-line bad-sim-text
   }
 }
 
