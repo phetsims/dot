@@ -17,6 +17,7 @@ import './OpenRangeTests.js';
 import './PiecewiseLinearFunctionTests.js';
 import './RangeTests.js';
 import './RangeWithValueTests.js';
+import './RunningAverageTests.js';
 import './StatsTests.js';
 import './Transform3Tests.js';
 import './UtilsTests.js';
