@@ -674,7 +674,7 @@ class Bounds3 {
    * @returns {Bounds3}
    */
   dilated( d ) {
-    return new Bounds3( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
+    return this.dilatedXYZ( d, d, d );
   }
 
   /**
@@ -852,7 +852,7 @@ class Bounds3 {
    * @param {number} z
    * @returns {Bounds3}
    */
-  shifted( x, y, z ) {
+  shiftedXYZ( x, y, z ) {
     return new Bounds3( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
   }
 
@@ -1178,7 +1178,7 @@ class Bounds3 {
    * @returns {Bounds3}
    */
   dilate( d ) {
-    return this.setMinMax( this.minX - d, this.minY - d, this.minZ - d, this.maxX + d, this.maxY + d, this.maxZ + d );
+    return this.dilateXYZ( d, d, d );
   }
 
   /**
@@ -1357,7 +1357,7 @@ class Bounds3 {
    * @param {number} z
    * @returns {Bounds3}
    */
-  shift( x, y, z ) {
+  shiftXYZ( x, y, z ) {
     return this.setMinMax( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
   }
   /**
