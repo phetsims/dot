@@ -887,6 +887,17 @@ class Bounds2 {
   }
 
   /**
+   * Returns our bounds, translated by a vector, returned as a copy.
+   * @public
+   *
+   * @param {Vector2} v
+   * @returns {Bounds2}
+   */
+  shifted( v ) {
+    return this.shiftedXY( v.x, v.y );
+  }
+
+  /**
    * Returns an interpolated value of this bounds and the argument.
    * @public
    *
@@ -1355,6 +1366,17 @@ class Bounds2 {
    */
   shiftXY( x, y ) {
     return this.setMinMax( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
+  }
+
+  /**
+   * Translates our bounds by the given vector.
+   * @public
+   *
+   * @param {Vector2} v
+   * @returns {Bounds2}
+   */
+  shift( v ) {
+    return this.shiftXY( v.x, v.y );
   }
 
   /**

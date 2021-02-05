@@ -856,6 +856,17 @@ class Bounds3 {
     return new Bounds3( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
   }
 
+  /**
+   * Returns our bounds, translated by a vector, returned as a copy.
+   * @public
+   *
+   * @param {Vector3} v
+   * @returns {Bounds3}
+   */
+  shifted( v ) {
+    return this.shiftedXYZ( v.x, v.y, v.z );
+  }
+
   /*---------------------------------------------------------------------------*
    * Mutable operations
    *
@@ -1360,6 +1371,18 @@ class Bounds3 {
   shiftXYZ( x, y, z ) {
     return this.setMinMax( this.minX + x, this.minY + y, this.minZ + z, this.maxX + x, this.maxY + y, this.maxZ + z );
   }
+
+  /**
+   * Translates our bounds by the given vector.
+   * @public
+   *
+   * @param {Vector3} v
+   * @returns {Bounds3}
+   */
+  shift( v ) {
+    return this.shiftXYZ( v.x, v.y, v.z );
+  }
+
   /**
    * Returns a new Bounds3 object, with the cuboid (3d rectangle) construction with x, y, z, width, height and depth.
    * @public
