@@ -370,7 +370,7 @@ class Matrix3 {
       '-moz-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
       '-ms-transform': transformCSS,
       '-o-transform': transformCSS,
-      'transform': transformCSS,
+      transform: transformCSS,
       'transform-origin': 'top left', // at the origin of the component. consider 0px 0px instead. Critical, since otherwise this defaults to 50% 50%!!! see https://developer.mozilla.org/en-US/docs/CSS/transform-origin
       '-ms-transform-origin': 'top left' // TODO: do we need other platform-specific transform-origin styles?
     };
