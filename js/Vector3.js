@@ -48,6 +48,7 @@ class Vector3 {
   getMagnitude() {
     return Math.sqrt( this.magnitudeSquared );
   }
+
   get magnitude() {
     return this.getMagnitude();
   }
@@ -61,6 +62,7 @@ class Vector3 {
   getMagnitudeSquared() {
     return this.dot( this );
   }
+
   get magnitudeSquared() {
     return this.getMagnitudeSquared();
   }
@@ -799,6 +801,7 @@ class Vector3 {
   toStateObject() {
     return { x: this.x, y: this.y, z: this.z };
   }
+
   // static methods
 
   /**
@@ -825,7 +828,7 @@ class Vector3 {
    * @returns {Vector3}
    */
   static fromStateObject( stateObject ) {
-    return new Vector3( stateObject.x, stateObject.y, stateObject.z);
+    return new Vector3( stateObject.x, stateObject.y, stateObject.z );
   }
 }
 

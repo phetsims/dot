@@ -335,6 +335,7 @@ class Matrix4 {
   getTranslation() {
     return new Vector3( this.m03(), this.m13(), this.m23() );
   }
+
   get translation() { return this.getTranslation(); }
 
   /**
@@ -362,6 +363,7 @@ class Matrix4 {
       Math.sqrt( m0103 * m0103 + m1113 * m1113 + m2123 * m2123 + m3133 * m3133 ),
       Math.sqrt( m0203 * m0203 + m1213 * m1213 + m2223 * m2223 + m3233 * m3233 ) );
   }
+
   get scaleVector() { return this.getScaleVector(); }
 
   /**
@@ -393,6 +395,7 @@ class Matrix4 {
            this.entries[ 14 ].toFixed( 20 ) + ',' +
            this.entries[ 15 ].toFixed( 20 ) + ')';
   }
+
   get cssTransform() { return this.getCSSTransform(); }
 
   /**
@@ -741,6 +744,7 @@ class Matrix4 {
            this.m01() * this.m10() * this.m22() * this.m33() +
            this.m00() * this.m11() * this.m22() * this.m33();
   }
+
   get determinant() { return this.getDeterminant(); }
 
   /**

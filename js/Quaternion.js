@@ -140,6 +140,7 @@ class Quaternion {
   getMagnitude() {
     return Math.sqrt( this.magnitudeSquared );
   }
+
   get magnitude() {
     return this.getMagnitude();
   }
@@ -153,6 +154,7 @@ class Quaternion {
   getMagnitudeSquared() {
     return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
   }
+
   get magnitudeSquared() {
     return this.getMagnitudeSquared();
   }

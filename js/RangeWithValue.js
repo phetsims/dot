@@ -36,6 +36,7 @@ class RangeWithValue extends Range {
   getDefaultValue() {
     return this._defaultValue;
   }
+
   get defaultValue() {
     return this.getDefaultValue();
   }

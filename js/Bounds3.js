@@ -64,6 +64,7 @@ class Bounds3 {
    * @returns {number}
    */
   getWidth() { return this.maxX - this.minX; }
+
   get width() { return this.getWidth(); }
 
   /**
@@ -73,6 +74,7 @@ class Bounds3 {
    * @returns {number}
    */
   getHeight() { return this.maxY - this.minY; }
+
   get height() { return this.getHeight(); }
 
   /**
@@ -82,6 +84,7 @@ class Bounds3 {
    * @returns {number}
    */
   getDepth() { return this.maxZ - this.minZ; }
+
   get depth() { return this.getDepth(); }
 
   /*
@@ -102,6 +105,7 @@ class Bounds3 {
    * @returns {number}
    */
   getX() { return this.minX; }
+
   get x() { return this.getX(); }
 
   /**
@@ -111,6 +115,7 @@ class Bounds3 {
    * @returns {number}
    */
   getY() { return this.minY; }
+
   get y() { return this.getY(); }
 
   /**
@@ -120,6 +125,7 @@ class Bounds3 {
    * @returns {number}
    */
   getZ() { return this.minZ; }
+
   get z() { return this.getZ(); }
 
   /**
@@ -177,6 +183,7 @@ class Bounds3 {
    * @returns {number}
    */
   getLeft() { return this.minX; }
+
   get left() { return this.minX; }
 
   /**
@@ -186,6 +193,7 @@ class Bounds3 {
    * @returns {number}
    */
   getTop() { return this.minY; }
+
   get top() { return this.minY; }
 
   /**
@@ -195,6 +203,7 @@ class Bounds3 {
    * @returns {number}
    */
   getBack() { return this.minZ; }
+
   get back() { return this.minZ; }
 
   /**
@@ -204,6 +213,7 @@ class Bounds3 {
    * @returns {number}
    */
   getRight() { return this.maxX; }
+
   get right() { return this.maxX; }
 
   /**
@@ -213,6 +223,7 @@ class Bounds3 {
    * @returns {number}
    */
   getBottom() { return this.maxY; }
+
   get bottom() { return this.maxY; }
 
   /**
@@ -222,6 +233,7 @@ class Bounds3 {
    * @returns {number}
    */
   getFront() { return this.maxZ; }
+
   get front() { return this.maxZ; }
 
   /**
@@ -231,6 +243,7 @@ class Bounds3 {
    * @returns {number}
    */
   getCenterX() { return ( this.maxX + this.minX ) / 2; }
+
   get centerX() { return this.getCenterX(); }
 
   /**
@@ -240,6 +253,7 @@ class Bounds3 {
    * @returns {number}
    */
   getCenterY() { return ( this.maxY + this.minY ) / 2; }
+
   get centerY() { return this.getCenterY(); }
 
   /**
@@ -249,6 +263,7 @@ class Bounds3 {
    * @returns {number}
    */
   getCenterZ() { return ( this.maxZ + this.minZ ) / 2; }
+
   get centerZ() { return this.getCenterZ(); }
 
   /**
@@ -258,6 +273,7 @@ class Bounds3 {
    * @returns {Vector3}
    */
   getCenter() { return new Vector3( this.getCenterX(), this.getCenterY(), this.getCenterZ() ); }
+
   get center() { return this.getCenter(); }
 
   /**
@@ -477,6 +493,7 @@ class Bounds3 {
       Math.min( this.maxZ, bounds.maxZ )
     );
   }
+
   // TODO: difference should be well-defined, but more logic is needed to compute
 
   /**

@@ -207,6 +207,7 @@ class Matrix3 {
   getDeterminant() {
     return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
   }
+
   get determinant() { return this.getDeterminant(); }
 
   /**
@@ -218,6 +219,7 @@ class Matrix3 {
   getTranslation() {
     return new Vector2( this.m02(), this.m12() );
   }
+
   get translation() { return this.getTranslation(); }
 
   /**
@@ -231,6 +233,7 @@ class Matrix3 {
       Math.sqrt( this.m00() * this.m00() + this.m10() * this.m10() ),
       Math.sqrt( this.m01() * this.m01() + this.m11() * this.m11() ) );
   }
+
   get scaleVector() { return this.getScaleVector(); }
 
   /**
@@ -242,6 +245,7 @@ class Matrix3 {
   getRotation() {
     return Math.atan2( this.m10(), this.m00() );
   }
+
   get rotation() { return this.getRotation(); }
 
   /**
@@ -322,6 +326,7 @@ class Matrix3 {
     // NOTE: the toFixed calls are inlined for performance reasons
     return 'matrix(' + this.entries[ 0 ].toFixed( 20 ) + ',' + this.entries[ 1 ].toFixed( 20 ) + ',' + this.entries[ 3 ].toFixed( 20 ) + ',' + this.entries[ 4 ].toFixed( 20 ) + ',' + this.entries[ 6 ].toFixed( 20 ) + ',' + this.entries[ 7 ].toFixed( 20 ) + ')';
   }
+
   get cssTransform() { return this.getCSSTransform(); }
 
   /**
@@ -343,6 +348,7 @@ class Matrix3 {
         return 'matrix(' + toSVGNumber( this.entries[ 0 ] ) + ',' + toSVGNumber( this.entries[ 1 ] ) + ',' + toSVGNumber( this.entries[ 3 ] ) + ',' + toSVGNumber( this.entries[ 4 ] ) + ',' + toSVGNumber( this.entries[ 6 ] ) + ',' + toSVGNumber( this.entries[ 7 ] ) + ')';
     }
   }
+
   get svgTransform() { return this.getSVGTransform(); }
 
   /**
@@ -369,6 +375,7 @@ class Matrix3 {
       '-ms-transform-origin': 'top left' // TODO: do we need other platform-specific transform-origin styles?
     };
   }
+
   get cssTransformStyles() { return this.getCSSTransformStyles(); }
 
   /**

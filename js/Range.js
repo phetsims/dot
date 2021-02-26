@@ -35,6 +35,7 @@ class Range {
   getMin() {
     return this._min;
   }
+
   get min() {
     return this.getMin();
   }
@@ -48,6 +49,7 @@ class Range {
     assert && assert( min <= this._max, 'min must be <= max: ' + min );
     this._min = min;
   }
+
   set min( min ) {
     this.setMin( min );
   }
@@ -60,6 +62,7 @@ class Range {
   getMax() {
     return this._max;
   }
+
   get max() {
     return this.getMax();
   }
@@ -73,6 +76,7 @@ class Range {
     assert && assert( this._min <= max, 'max must be >= to min: ' + max );
     this._max = max;
   }
+
   set max( max ) {
     this.setMax( max );
   }

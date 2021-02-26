@@ -281,6 +281,7 @@ class Bin {
     return this.bounds.toString() + ( this.isUsed ? ' used' : '' );
   }
 }
+
 BinPacker.Bin = Bin;
 
 export default BinPacker;

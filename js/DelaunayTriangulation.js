@@ -679,6 +679,7 @@ class DelaunayTriangulation {
       this.legalizeEdge( triangle2Edge2 );
     }
   }
+
   /**
    * Comparison for sorting points by y, then by x.
    * @private

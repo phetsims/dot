@@ -65,6 +65,7 @@ class Vector4 {
   getMagnitudeSquared() {
     return this.dot( this );
   }
+
   get magnitudeSquared() {
     return this.getMagnitudeSquared();
   }

@@ -59,6 +59,7 @@ class Bounds2 {
    * @returns {number}
    */
   getWidth() { return this.maxX - this.minX; }
+
   get width() { return this.getWidth(); }
 
   /**
@@ -68,6 +69,7 @@ class Bounds2 {
    * @returns {number}
    */
   getHeight() { return this.maxY - this.minY; }
+
   get height() { return this.getHeight(); }
 
   /*
@@ -88,6 +90,7 @@ class Bounds2 {
    * @returns {number}
    */
   getX() { return this.minX; }
+
   get x() { return this.getX(); }
 
   /**
@@ -97,6 +100,7 @@ class Bounds2 {
    * @returns {number}
    */
   getY() { return this.minY; }
+
   get y() { return this.getY(); }
 
   /**
@@ -138,6 +142,7 @@ class Bounds2 {
    * @returns {number}
    */
   getLeft() { return this.minX; }
+
   get left() { return this.minX; }
 
   /**
@@ -147,6 +152,7 @@ class Bounds2 {
    * @returns {number}
    */
   getTop() { return this.minY; }
+
   get top() { return this.minY; }
 
   /**
@@ -156,6 +162,7 @@ class Bounds2 {
    * @returns {number}
    */
   getRight() { return this.maxX; }
+
   get right() { return this.maxX; }
 
   /**
@@ -165,6 +172,7 @@ class Bounds2 {
    * @returns {number}
    */
   getBottom() { return this.maxY; }
+
   get bottom() { return this.maxY; }
 
   /**
@@ -174,6 +182,7 @@ class Bounds2 {
    * @returns {number}
    */
   getCenterX() { return ( this.maxX + this.minX ) / 2; }
+
   get centerX() { return this.getCenterX(); }
 
   /**
@@ -183,6 +192,7 @@ class Bounds2 {
    * @returns {number}
    */
   getCenterY() { return ( this.maxY + this.minY ) / 2; }
+
   get centerY() { return this.getCenterY(); }
 
   /**
@@ -192,6 +202,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getLeftTop() { return new dot.Vector2( this.minX, this.minY ); }
+
   get leftTop() { return this.getLeftTop(); }
 
   /**
@@ -201,6 +212,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getCenterTop() { return new dot.Vector2( this.getCenterX(), this.minY ); }
+
   get centerTop() { return this.getCenterTop(); }
 
   /**
@@ -210,6 +222,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getRightTop() { return new dot.Vector2( this.maxX, this.minY ); }
+
   get rightTop() { return this.getRightTop(); }
 
   /**
@@ -219,6 +232,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getLeftCenter() { return new dot.Vector2( this.minX, this.getCenterY() ); }
+
   get leftCenter() { return this.getLeftCenter(); }
 
   /**
@@ -228,6 +242,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getCenter() { return new dot.Vector2( this.getCenterX(), this.getCenterY() ); }
+
   get center() { return this.getCenter(); }
 
   /**
@@ -237,6 +252,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getRightCenter() { return new dot.Vector2( this.maxX, this.getCenterY() ); }
+
   get rightCenter() { return this.getRightCenter(); }
 
   /**
@@ -246,6 +262,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getLeftBottom() { return new dot.Vector2( this.minX, this.maxY ); }
+
   get leftBottom() { return this.getLeftBottom(); }
 
   /**
@@ -255,6 +272,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getCenterBottom() { return new dot.Vector2( this.getCenterX(), this.maxY ); }
+
   get centerBottom() { return this.getCenterBottom(); }
 
   /**
@@ -264,6 +282,7 @@ class Bounds2 {
    * @returns {Vector2}
    */
   getRightBottom() { return new dot.Vector2( this.maxX, this.maxY ); }
+
   get rightBottom() { return this.getRightBottom(); }
 
   /**
@@ -539,6 +558,7 @@ class Bounds2 {
       Math.min( this.maxY, bounds.maxY )
     );
   }
+
   // TODO: difference should be well-defined, but more logic is needed to compute
 
   /**
@@ -1401,6 +1421,7 @@ class Bounds2 {
     if ( result.y > this.maxY ) { result.y = this.maxY; }
     return result;
   }
+
   /**
    * Returns a new Bounds2 object, with the familiar rectangle construction with x, y, width, and height.
    * @public

@@ -62,9 +62,9 @@ QUnit.test( 'setter overrides', assert => {
 QUnit.test( 'assertion failures', assert => {
   if ( window.assert ) {
     assert.throws( () => new OpenRange( 1, 10, {
-        openMin: false,
-        openMax: false
-      } ), 'include both min and max throws an error' );
+      openMin: false,
+      openMax: false
+    } ), 'include both min and max throws an error' );
     assert.throws( () => new OpenRange( 1, 1, minHalfOpenOptions ), 'min open range with min === max throws an error' );
     assert.throws( () => new OpenRange( 1, 1, maxHalfOpenOptions ), 'max open range with min === max throws an error' );
     assert.throws( () => new OpenRange( 1, 1 ), 'full open range with min === max throws an error' );

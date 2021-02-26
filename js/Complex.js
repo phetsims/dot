@@ -66,6 +66,7 @@ class Complex {
   getMagnitude() {
     return Math.sqrt( this.magnitudeSquared );
   }
+
   get magnitude() {
     return this.getMagnitude();
   }
@@ -79,6 +80,7 @@ class Complex {
   getMagnitudeSquared() {
     return this.real * this.real + this.imaginary * this.imaginary;
   }
+
   get magnitudeSquared() {
     return this.getMagnitudeSquared();
   }
@@ -462,6 +464,7 @@ class Complex {
   toString() {
     return 'Complex(' + this.real + ', ' + this.imaginary + ')';
   }
+
   /**
    * Constructs a complex number from just the real part (assuming the imaginary part is 0).
    * @public
