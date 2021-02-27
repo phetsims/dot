@@ -81,7 +81,7 @@ class Random {
    */
   nextInt( n ) {
     const value = this.nextDouble() * n;
-    return value | 0; // convert to int by removing the decimal places
+    return Math.floor( value );
   }
 
   /**
