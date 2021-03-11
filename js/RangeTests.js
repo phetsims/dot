@@ -59,9 +59,9 @@ QUnit.test( 'getNormalizedValue', assert => {
   };
   testSameRange( 0 );
   testSameRange( 1 );
-  testSameRange( .5 );
-  testSameRange( .2 );
-  testSameRange( .2432124 );
+  testSameRange( 0.5 );
+  testSameRange( 0.2 );
+  testSameRange( 0.2432124 );
 
   const rangeNoLength = new Range( 1, 1 );
   window.assert && assert.throws( () => {
@@ -74,6 +74,6 @@ QUnit.test( 'getNormalizedValue', assert => {
   const range = new Range( 2, 10 );
   assert.ok( range.getNormalizedValue( 2 ) === 0, 'min' );
   assert.ok( range.getNormalizedValue( 10 ) === 1, 'max' );
-  assert.ok( range.getNormalizedValue( 6 ) === .5, 'half' );
+  assert.ok( range.getNormalizedValue( 6 ) === 0.5, 'half' );
   assert.ok( range.getNormalizedValue( 3.5432 ) === 0.19290000000000002, 'random weird number' );
 } );
