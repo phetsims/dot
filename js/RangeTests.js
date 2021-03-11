@@ -72,8 +72,8 @@ QUnit.test( 'getNormalizedValue', assert => {
   }, 'outside range no length' );
 
   const range = new Range( 2, 10 );
-  assert.ok( 0 === range.getNormalizedValue( 2 ), 'min' );
-  assert.ok( 1 === range.getNormalizedValue( 10 ), 'max' );
-  assert.ok( .5 === range.getNormalizedValue( 6 ), 'half' );
-  assert.ok( 0.19290000000000002 === range.getNormalizedValue( 3.5432 ), 'random weird number' );
+  assert.ok( range.getNormalizedValue( 2 ) === 0, 'min' );
+  assert.ok( range.getNormalizedValue( 10 ) === 1, 'max' );
+  assert.ok( range.getNormalizedValue( 6 ) === .5, 'half' );
+  assert.ok( range.getNormalizedValue( 3.5432 ) === 0.19290000000000002, 'random weird number' );
 } );
