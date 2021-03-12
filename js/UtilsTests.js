@@ -14,16 +14,16 @@ import dot from './dot.js';
 QUnit.module( 'Utils' );
 
 function approximateEquals( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
+  assert.ok( Math.abs( a - b ) < 0.00000001, `${msg} expected: ${b}, result: ${a}` );
 }
 
 function arrayApproximateEquals( assert, a, b, msg ) {
   const aSorted = a.slice().sort();
   const bSorted = b.slice().sort();
 
-  assert.equal( a.length, b.length, msg + ' (length different)' );
+  assert.equal( a.length, b.length, `${msg} (length different)` );
   for ( let i = 0; i < a.length; i++ ) {
-    approximateEquals( assert, aSorted[ i ], bSorted[ i ], msg + ' (index ' + i + ')' );
+    approximateEquals( assert, aSorted[ i ], bSorted[ i ], `${msg} (index ${i})` );
   }
 }
 
@@ -47,10 +47,10 @@ QUnit.test( 'roundSymmetric', assert => {
   assert.equal( Utils.roundSymmetric( 0.8 ), 1, '0.8 => 1' );
   assert.equal( Utils.roundSymmetric( -0.5 ), -1, '-0.5 => -1' );
   for ( let i = 0; i < 20; i++ ) {
-    assert.equal( Utils.roundSymmetric( i ), i, i + ' integer' );
-    assert.equal( Utils.roundSymmetric( -i ), -i, -i + ' integer' );
-    assert.equal( Utils.roundSymmetric( i + 0.5 ), i + 1, ( i + 0.5 ) + ' => ' + ( i + 1 ) );
-    assert.equal( Utils.roundSymmetric( -i - 0.5 ), -i - 1, ( -i - 0.5 ) + ' => ' + ( -i - 1 ) );
+    assert.equal( Utils.roundSymmetric( i ), i, `${i} integer` );
+    assert.equal( Utils.roundSymmetric( -i ), -i, `${-i} integer` );
+    assert.equal( Utils.roundSymmetric( i + 0.5 ), i + 1, `${i + 0.5} => ${i + 1}` );
+    assert.equal( Utils.roundSymmetric( -i - 0.5 ), -i - 1, `${-i - 0.5} => ${-i - 1}` );
   }
 
   const original = dot.v2( 1.5, -2.5 );

@@ -13,17 +13,17 @@ import Vector2 from './Vector2.js';
 QUnit.module( 'Matrix3' );
 
 function approximateEquals( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
+  assert.ok( Math.abs( a - b ) < 0.00000001, `${msg} expected: ${b}, result: ${a}` );
 }
 
 const epsilon = 0.00001;
 
 function approximateEqual( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < epsilon, msg + ' expected: ' + b + ', got: ' + a );
+  assert.ok( Math.abs( a - b ) < epsilon, `${msg} expected: ${b}, got: ${a}` );
 }
 
 function approximateMatrixEqual( assert, a, b, msg ) {
-  assert.ok( a.equalsEpsilon( b, epsilon ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
+  assert.ok( a.equalsEpsilon( b, epsilon ), `${msg} expected: ${b.toString()}, got: ${a.toString()}` );
 }
 
 // test matrices, randomly generated

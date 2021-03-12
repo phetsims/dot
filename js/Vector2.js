@@ -561,7 +561,7 @@ class Vector2 {
    * @returns {string}
    */
   toString() {
-    return 'Vector2(' + this.x + ', ' + this.y + ')';
+    return `Vector2(${this.x}, ${this.y})`;
   }
 
   /**
@@ -956,7 +956,7 @@ class ImmutableVector2 extends Vector2 {
    */
   static mutableOverrideHelper( mutableFunctionName ) {
     ImmutableVector2.prototype[ mutableFunctionName ] = () => {
-      throw new Error( 'Cannot call mutable method \'' + mutableFunctionName + '\' on immutable Vector2' );
+      throw new Error( `Cannot call mutable method '${mutableFunctionName}' on immutable Vector2` );
     };
   }
 }

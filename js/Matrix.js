@@ -622,10 +622,10 @@ class Matrix {
    */
   toString() {
     let result = '';
-    result += 'dim: ' + this.getRowDimension() + 'x' + this.getColumnDimension() + '\n';
+    result += `dim: ${this.getRowDimension()}x${this.getColumnDimension()}\n`;
     for ( let row = 0; row < this.getRowDimension(); row++ ) {
       for ( let col = 0; col < this.getColumnDimension(); col++ ) {
-        result += this.get( row, col ) + ' ';
+        result += `${this.get( row, col )} `;
       }
       result += '\n';
     }
@@ -798,7 +798,7 @@ class Matrix {
       return Matrix.rowVector4( vector );
     }
     else {
-      throw new Error( 'undetected type of vector: ' + vector.toString() );
+      throw new Error( `undetected type of vector: ${vector.toString()}` );
     }
   }
 
@@ -849,7 +849,7 @@ class Matrix {
       return Matrix.columnVector4( vector );
     }
     else {
-      throw new Error( 'undetected type of vector: ' + vector.toString() );
+      throw new Error( `undetected type of vector: ${vector.toString()}` );
     }
   }
 

@@ -40,7 +40,7 @@ class Permutation {
   apply( arrayOrInt ) {
     if ( isArray( arrayOrInt ) ) {
       if ( arrayOrInt.length !== this.size() ) {
-        throw new Error( 'Permutation length ' + this.size() + ' not equal to list length ' + arrayOrInt.length );
+        throw new Error( `Permutation length ${this.size()} not equal to list length ${arrayOrInt.length}` );
       }
 
       // permute it as an array
@@ -96,7 +96,7 @@ class Permutation {
    * @returns {string}
    */
   toString() {
-    return 'P[' + this.indices.join( ', ' ) + ']';
+    return `P[${this.indices.join( ', ' )}]`;
   }
 
   /**

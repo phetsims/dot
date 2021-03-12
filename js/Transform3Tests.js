@@ -17,11 +17,11 @@ QUnit.module( 'Transform3' );
 const epsilon = 1e-7;
 
 function approximateEqual( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < epsilon, msg + ' expected: ' + b + ', got: ' + a );
+  assert.ok( Math.abs( a - b ) < epsilon, `${msg} expected: ${b}, got: ${a}` );
 }
 
 function approximateRayEqual( assert, a, b, msg ) {
-  assert.ok( a.position.equalsEpsilon( b.position, 0.00001 ) && a.direction.equalsEpsilon( b.direction, 0.00001 ), msg + ' expected: ' + b.toString() + ', got: ' + a.toString() );
+  assert.ok( a.position.equalsEpsilon( b.position, 0.00001 ) && a.direction.equalsEpsilon( b.direction, 0.00001 ), `${msg} expected: ${b.toString()}, got: ${a.toString()}` );
 }
 
 QUnit.test( 'Ray2 transforms', assert => {

@@ -475,7 +475,7 @@ class Vector3 {
    * @returns {string}
    */
   toString() {
-    return 'Vector3(' + this.x + ', ' + this.y + ', ' + this.z + ')';
+    return `Vector3(${this.x}, ${this.y}, ${this.z})`;
   }
 
   /**
@@ -853,7 +853,7 @@ class ImmutableVector3 extends Vector3 {
    */
   static mutableOverrideHelper( mutableFunctionName ) {
     ImmutableVector3.prototype[ mutableFunctionName ] = () => {
-      throw new Error( 'Cannot call mutable method \'' + mutableFunctionName + '\' on immutable Vector3' );
+      throw new Error( `Cannot call mutable method '${mutableFunctionName}' on immutable Vector3` );
     };
   }
 }

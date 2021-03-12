@@ -17,10 +17,10 @@ QUnit.module( 'Bounds2' );
 const epsilon = 0.00000001;
 
 function approximateBoundsEquals( assert, a, b, msg ) {
-  assert.ok( Math.abs( a.minX - b.minX ) < epsilon, msg + ' minX: expected: ' + b.minX + ', result: ' + a.minX );
-  assert.ok( Math.abs( a.minY - b.minY ) < epsilon, msg + ' minY: expected: ' + b.minY + ', result: ' + a.minY );
-  assert.ok( Math.abs( a.maxX - b.maxX ) < epsilon, msg + ' maxX: expected: ' + b.maxX + ', result: ' + a.maxX );
-  assert.ok( Math.abs( a.maxY - b.maxY ) < epsilon, msg + ' maxY: expected: ' + b.maxY + ', result: ' + a.maxY );
+  assert.ok( Math.abs( a.minX - b.minX ) < epsilon, `${msg} minX: expected: ${b.minX}, result: ${a.minX}` );
+  assert.ok( Math.abs( a.minY - b.minY ) < epsilon, `${msg} minY: expected: ${b.minY}, result: ${a.minY}` );
+  assert.ok( Math.abs( a.maxX - b.maxX ) < epsilon, `${msg} maxX: expected: ${b.maxX}, result: ${a.maxX}` );
+  assert.ok( Math.abs( a.maxY - b.maxY ) < epsilon, `${msg} maxY: expected: ${b.maxY}, result: ${a.maxY}` );
 }
 
 QUnit.test( 'Rectangle', assert => {

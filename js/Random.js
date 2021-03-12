@@ -94,8 +94,8 @@ class Random {
   nextIntBetween( min, max ) {
 
     assert && assert( arguments.length === 2, 'nextIntBetween must have exactly 2 arguments' );
-    assert && assert( Number.isInteger( min ), 'min must be an integer: ' + min );
-    assert && assert( Number.isInteger( max ), 'max must be an integer: ' + max );
+    assert && assert( Number.isInteger( min ), `min must be an integer: ${min}` );
+    assert && assert( Number.isInteger( max ), `max must be an integer: ${max}` );
 
     const range = max - min;
     return this.nextInt( range + 1 ) + min;
@@ -206,7 +206,7 @@ class Random {
     // If seed is provided, create a local random number generator without altering Math.random.
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
     // @private {function:number|null}
-    this.seedrandom = Math.seedrandom ? new Math.seedrandom( seed + '' ) : () => Math.random(); // eslint-disable-line bad-sim-text
+    this.seedrandom = Math.seedrandom ? new Math.seedrandom( `${seed}` ) : () => Math.random(); // eslint-disable-line bad-sim-text
   }
 }
 

@@ -12,7 +12,7 @@ import DampedHarmonic from './DampedHarmonic.js';
 QUnit.module( 'DampedHarmonic' );
 
 function approxEquals( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < 1e-4, msg + ': ' + a + ' ~= ' + b );
+  assert.ok( Math.abs( a - b ) < 1e-4, `${msg}: ${a} ~= ${b}` );
 }
 
 function estimateDerivative( harmonic, t ) {

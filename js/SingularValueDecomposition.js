@@ -468,7 +468,7 @@ class SingularValueDecomposition {
           break;
 
         default:
-          throw new Error( 'invalid kase: ' + kase );
+          throw new Error( `invalid kase: ${kase}` );
       }
     }
   }

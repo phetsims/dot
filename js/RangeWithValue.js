@@ -21,7 +21,7 @@ class RangeWithValue extends Range {
     super( min, max );
 
     assert && assert( defaultValue !== undefined, 'default value is required' );
-    assert && assert( defaultValue >= min && defaultValue <= max, 'defaultValue is out of range: ' + defaultValue );
+    assert && assert( defaultValue >= min && defaultValue <= max, `defaultValue is out of range: ${defaultValue}` );
 
     // @private
     this._defaultValue = defaultValue;
@@ -48,7 +48,7 @@ class RangeWithValue extends Range {
    * @override
    */
   setMin( min ) {
-    assert && assert( this._defaultValue >= min, 'min must be <= defaultValue: ' + min );
+    assert && assert( this._defaultValue >= min, `min must be <= defaultValue: ${min}` );
     super.setMin( min );
   }
 
@@ -59,7 +59,7 @@ class RangeWithValue extends Range {
    * @override
    */
   setMax( max ) {
-    assert && assert( this._defaultValue <= max, 'max must be >= defaultValue: ' + max );
+    assert && assert( this._defaultValue <= max, `max must be >= defaultValue: ${max}` );
     super.setMax( max );
   }
 
@@ -71,8 +71,8 @@ class RangeWithValue extends Range {
    * @override
    */
   setMinMax( min, max ) {
-    assert && assert( this._defaultValue >= min, 'min must be <= defaultValue: ' + min );
-    assert && assert( this._defaultValue <= max, 'max must be >= defaultValue: ' + max );
+    assert && assert( this._defaultValue >= min, `min must be <= defaultValue: ${min}` );
+    assert && assert( this._defaultValue <= max, `max must be >= defaultValue: ${max}` );
     super.setMinMax( min, max );
   }
 
@@ -83,7 +83,7 @@ class RangeWithValue extends Range {
    * @override
    */
   toString() {
-    return '[RangeWithValue (min:' + this.min + ' max:' + this.max + ' defaultValue:' + this._defaultValue + ')]';
+    return `[RangeWithValue (min:${this.min} max:${this.max} defaultValue:${this._defaultValue})]`;
   }
 
   /**

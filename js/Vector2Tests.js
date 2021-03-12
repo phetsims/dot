@@ -12,7 +12,7 @@ import Vector2 from './Vector2.js';
 QUnit.module( 'Vector2' );
 
 function approximateEquals( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
+  assert.ok( Math.abs( a - b ) < 0.00000001, `${msg} expected: ${b}, result: ${a}` );
 }
 
 QUnit.test( 'distance', assert => {

@@ -370,7 +370,7 @@ class Bounds3 {
    * @returns {string}
    */
   toString() {
-    return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + '),z:(' + this.minZ + ',' + this.maxZ + ')]';
+    return `[x:(${this.minX},${this.maxX}),y:(${this.minY},${this.maxY}),z:(${this.minZ},${this.maxZ})]`;
   }
 
   /**

@@ -88,8 +88,8 @@ class BinPacker {
     let padding = '';
 
     function binTree( bin ) {
-      result += padding + bin.toString() + '\n';
-      padding = padding + '  ';
+      result += `${padding + bin.toString()}\n`;
+      padding = `${padding}  `;
       _.each( bin.children, binTree );
       padding = padding.substring( 2 );
     }

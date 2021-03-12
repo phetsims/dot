@@ -13,7 +13,7 @@ QUnit.module( 'Complex' );
 
 function approximateComplexEquals( assert, a, b, msg ) {
   const epsilon = 0.00001;
-  assert.ok( a.equalsEpsilon( b, epsilon ), msg + ' expected: ' + b.toString() + ', result: ' + a.toString() );
+  assert.ok( a.equalsEpsilon( b, epsilon ), `${msg} expected: ${b.toString()}, result: ${a.toString()}` );
 }
 
 QUnit.test( 'Basic', assert => {

@@ -448,7 +448,7 @@ class Bounds2 {
    * @returns {string}
    */
   toString() {
-    return '[x:(' + this.minX + ',' + this.maxX + '),y:(' + this.minY + ',' + this.maxY + ')]';
+    return `[x:(${this.minX},${this.maxX}),y:(${this.minY},${this.maxY})]`;
   }
 
   /**

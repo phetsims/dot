@@ -284,9 +284,9 @@ class Matrix3 {
    * @returns {string}
    */
   toString() {
-    return this.m00() + ' ' + this.m01() + ' ' + this.m02() + '\n' +
-           this.m10() + ' ' + this.m11() + ' ' + this.m12() + '\n' +
-           this.m20() + ' ' + this.m21() + ' ' + this.m22();
+    return `${this.m00()} ${this.m01()} ${this.m02()}\n${
+           this.m10()} ${this.m11()} ${this.m12()}\n${
+           this.m20()} ${this.m21()} ${this.m22()}`;
   }
 
   /**
@@ -324,7 +324,7 @@ class Matrix3 {
 
     // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
     // NOTE: the toFixed calls are inlined for performance reasons
-    return 'matrix(' + this.entries[ 0 ].toFixed( 20 ) + ',' + this.entries[ 1 ].toFixed( 20 ) + ',' + this.entries[ 3 ].toFixed( 20 ) + ',' + this.entries[ 4 ].toFixed( 20 ) + ',' + this.entries[ 6 ].toFixed( 20 ) + ',' + this.entries[ 7 ].toFixed( 20 ) + ')';
+    return `matrix(${this.entries[ 0 ].toFixed( 20 )},${this.entries[ 1 ].toFixed( 20 )},${this.entries[ 3 ].toFixed( 20 )},${this.entries[ 4 ].toFixed( 20 )},${this.entries[ 6 ].toFixed( 20 )},${this.entries[ 7 ].toFixed( 20 )})`;
   }
 
   get cssTransform() { return this.getCSSTransform(); }
@@ -341,11 +341,11 @@ class Matrix3 {
       case Types.IDENTITY:
         return '';
       case Types.TRANSLATION_2D:
-        return 'translate(' + toSVGNumber( this.entries[ 6 ] ) + ',' + toSVGNumber( this.entries[ 7 ] ) + ')';
+        return `translate(${toSVGNumber( this.entries[ 6 ] )},${toSVGNumber( this.entries[ 7 ] )})`;
       case Types.SCALING:
-        return 'scale(' + toSVGNumber( this.entries[ 0 ] ) + ( this.entries[ 0 ] === this.entries[ 4 ] ? '' : ',' + toSVGNumber( this.entries[ 4 ] ) ) + ')';
+        return `scale(${toSVGNumber( this.entries[ 0 ] )}${this.entries[ 0 ] === this.entries[ 4 ] ? '' : `,${toSVGNumber( this.entries[ 4 ] )}`})`;
       default:
-        return 'matrix(' + toSVGNumber( this.entries[ 0 ] ) + ',' + toSVGNumber( this.entries[ 1 ] ) + ',' + toSVGNumber( this.entries[ 3 ] ) + ',' + toSVGNumber( this.entries[ 4 ] ) + ',' + toSVGNumber( this.entries[ 6 ] ) + ',' + toSVGNumber( this.entries[ 7 ] ) + ')';
+        return `matrix(${toSVGNumber( this.entries[ 0 ] )},${toSVGNumber( this.entries[ 1 ] )},${toSVGNumber( this.entries[ 3 ] )},${toSVGNumber( this.entries[ 4 ] )},${toSVGNumber( this.entries[ 6 ] )},${toSVGNumber( this.entries[ 7 ] )})`;
     }
   }
 
@@ -366,8 +366,8 @@ class Matrix3 {
       '-webkit-perspective': 1000,
       '-webkit-backface-visibility': 'hidden',
 
-      '-webkit-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
-      '-moz-transform': transformCSS + ' translateZ(0)', // trigger hardware acceleration if possible
+      '-webkit-transform': `${transformCSS} translateZ(0)`, // trigger hardware acceleration if possible
+      '-moz-transform': `${transformCSS} translateZ(0)`, // trigger hardware acceleration if possible
       '-ms-transform': transformCSS,
       '-o-transform': transformCSS,
       transform: transformCSS,
@@ -546,7 +546,7 @@ class Matrix3 {
           throw new Error( 'Matrix could not be inverted, determinant === 0' );
         }
       default:
-        throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
+        throw new Error( `Matrix3.inverted with unknown type: ${this.type}` );
     }
   }
 
@@ -993,7 +993,7 @@ class Matrix3 {
           throw new Error( 'Matrix could not be inverted, determinant === 0' );
         }
       default:
-        throw new Error( 'Matrix3.inverted with unknown type: ' + this.type );
+        throw new Error( `Matrix3.inverted with unknown type: ${this.type}` );
     }
   }
 

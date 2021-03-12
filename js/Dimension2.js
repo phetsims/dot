@@ -32,7 +32,7 @@ class Dimension2 {
    * @returns {string}
    */
   toString() {
-    return '[' + this.width + 'w, ' + this.height + 'h]';
+    return `[${this.width}w, ${this.height}h]`;
   }
 
   /**

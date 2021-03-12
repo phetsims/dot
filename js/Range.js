@@ -18,7 +18,7 @@ class Range {
    */
   constructor( min, max ) {
 
-    assert && assert( min <= max, 'max must be >= min. min: ' + min + ', max: ' + max );
+    assert && assert( min <= max, `max must be >= min. min: ${min}, max: ${max}` );
 
     // @private {number} - the minimum value of the range
     this._min = min;
@@ -46,7 +46,7 @@ class Range {
    * @param {number} min
    */
   setMin( min ) {
-    assert && assert( min <= this._max, 'min must be <= max: ' + min );
+    assert && assert( min <= this._max, `min must be <= max: ${min}` );
     this._min = min;
   }
 
@@ -73,7 +73,7 @@ class Range {
    * @param {number} max
    */
   setMax( max ) {
-    assert && assert( this._min <= max, 'max must be >= to min: ' + max );
+    assert && assert( this._min <= max, `max must be >= to min: ${max}` );
     this._max = max;
   }
 
@@ -88,7 +88,7 @@ class Range {
    * @param {number} max
    */
   setMinMax( min, max ) {
-    assert && assert( min <= max, 'max must be >= to min. min: ' + min + ', max: ' + max );
+    assert && assert( min <= max, `max must be >= to min. min: ${min}, max: ${max}` );
     this._min = min;
     this._max = max;
   }
@@ -167,7 +167,7 @@ class Range {
    * @returns {string}
    */
   toString() {
-    return '[Range (min:' + this._min + ' max:' + this._max + ')]';
+    return `[Range (min:${this._min} max:${this._max})]`;
   }
 
   /**

@@ -59,7 +59,7 @@ class Ray3 {
    * @returns {string}
    */
   toString() {
-    return this.position.toString() + ' => ' + this.direction.toString();
+    return `${this.position.toString()} => ${this.direction.toString()}`;
   }
 }
 

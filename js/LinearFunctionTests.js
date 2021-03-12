@@ -12,7 +12,7 @@ import LinearFunction from './LinearFunction.js';
 QUnit.module( 'LinearFunction' );
 
 function approximateEquals( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < 0.00000001, msg + ' expected: ' + b + ', result: ' + a );
+  assert.ok( Math.abs( a - b ) < 0.00000001, `${msg} expected: ${b}, result: ${a}` );
 }
 
 QUnit.test( 'LinearFunction', assert => {

@@ -112,7 +112,7 @@ class OpenRange extends Range {
   toString() {
     const leftBracket = this.openMin ? '(' : '[';
     const rightBracket = this.openMax ? ')' : ']';
-    return '[Range ' + leftBracket + 'min:' + this.min + ' max:' + this.max + rightBracket + ']';
+    return `[Range ${leftBracket}min:${this.min} max:${this.max}${rightBracket}]`;
   }
 
   /**

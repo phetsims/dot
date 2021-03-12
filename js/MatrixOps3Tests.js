@@ -17,7 +17,7 @@ function approxEqual( assert, a, b, msg ) {
 
 function approxEqualArray( assert, arr, barr, msg ) {
   for ( let i = 0; i < arr.length; i++ ) {
-    approxEqual( assert, arr[ i ], barr[ i ], msg + ': index ' + i );
+    approxEqual( assert, arr[ i ], barr[ i ], `${msg}: index ${i}` );
   }
 }
 

@@ -462,7 +462,7 @@ class Complex {
    * @returns {string}
    */
   toString() {
-    return 'Complex(' + this.real + ', ' + this.imaginary + ')';
+    return `Complex(${this.real}, ${this.imaginary})`;
   }
 
   /**
