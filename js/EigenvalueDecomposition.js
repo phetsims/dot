@@ -928,10 +928,10 @@ class EigenvalueDecomposition {
         H[ n * n + n - 1 ] = 0.0;
         H[ n * n + n ] = 1.0;
         for ( i = n - 2; i >= 0; i-- ) {
-          var ra;
-          var sa;
-          var vr;
-          var vi;
+          let ra;
+          let sa;
+          let vr;
+          let vi;
           ra = 0.0;
           sa = 0.0;
           for ( j = l; j <= n; j++ ) {

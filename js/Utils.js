@@ -18,7 +18,7 @@ let generate;
 let z0;
 let z1;
 
-var Utils = {
+const Utils = {
   /**
    * Returns the original value if it is inclusively within the [max,min] range. If it's below the range, min is
    * returned, and if it's above the range, max is returned.

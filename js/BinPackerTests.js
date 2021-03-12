@@ -118,7 +118,7 @@ QUnit.test( 'Many bins', assert => {
   checkNoOverlappingBins( bins, bounds );
 
   // remove some (every other one)
-  for ( var i = 0; i < bins.length; i += 2 ) {
+  for ( let i = 0; i < bins.length; i += 2 ) {
     if ( bins[ i ] ) {
       p.deallocate( bins[ i ] );
       bins[ i ] = null;
@@ -149,7 +149,7 @@ QUnit.test( 'Many bins', assert => {
   checkNoOverlappingBins( bins, bounds );
 
   // remove all bins
-  for ( i = 0; i < bins.length; i++ ) {
+  for ( let i = 0; i < bins.length; i++ ) {
     if ( bins[ i ] ) {
       p.deallocate( bins[ i ] );
       bins[ i ] = null;

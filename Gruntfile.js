@@ -9,7 +9,7 @@ const documentationToHTML = require( '../chipper/js/common/documentationToHTML' 
 const fs = require( 'fs' );
 
 // constants
-var beautify_html = jsBeautify.html;
+const beautify_html = jsBeautify.html;
 
 // use chipper's gruntfile
 const Gruntfile = require( '../chipper/js/grunt/Gruntfile.js' ); // eslint-disable-line

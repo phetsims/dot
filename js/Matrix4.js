@@ -543,7 +543,7 @@ class Matrix4 {
           0, 0, 0, 1 / this.m33(), Types.SCALING );
       case Types.AFFINE:
       case Types.OTHER:
-        var det = this.getDeterminant();
+        var det = this.getDeterminant(); // eslint-disable-line no-var
         if ( det !== 0 ) {
           return new Matrix4(
             ( -this.m31() * this.m22() * this.m13() + this.m21() * this.m32() * this.m13() + this.m31() * this.m12() * this.m23() - this.m11() * this.m32() * this.m23() - this.m21() * this.m12() * this.m33() + this.m11() * this.m22() * this.m33() ) / det,

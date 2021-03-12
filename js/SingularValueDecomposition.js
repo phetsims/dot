@@ -248,7 +248,7 @@ class SingularValueDecomposition {
     const eps = pow( 2.0, -52.0 );
     const tiny = pow( 2.0, -966.0 );
     while ( p > 0 ) {
-      var kase;
+      let kase;
 
       // Here is where a test for too many iterations would go.
       if ( iter > 500 ) {
@@ -279,7 +279,7 @@ class SingularValueDecomposition {
         kase = 4;
       }
       else {
-        var ks;
+        let ks;
         for ( ks = p - 1; ks >= k; ks-- ) {
           if ( ks === k ) {
             break;

@@ -332,7 +332,7 @@ class DelaunayTriangulation {
         assert && assert( leftFrontEdge.triangles.length === 1 );
 
         let lastVertex = rightFrontEdge.startVertex;
-        var nextVertex;
+        let nextVertex;
         currentTriangle = rightFrontEdge.triangles[ 0 ];
         // TODO: Triangle operations to make this more readable
         while ( DelaunayTriangulation.vertexProduct( vertex, nextVertex = currentTriangle.getEdgeOppositeFromVertex( vertex ).getOtherVertex( lastVertex ), bottomVertex ) < 0 ) {
@@ -376,7 +376,7 @@ class DelaunayTriangulation {
             }
             else {
               // If this is the next edge intersected
-              var nextEdge;
+              let nextEdge;
               if ( nextTriangle.aEdge !== currentEdge && nextTriangle.aEdge.intersectsConstrainedEdge( vertex, bottomVertex ) ) {
                 nextEdge = nextTriangle.aEdge;
               }
@@ -414,13 +414,13 @@ class DelaunayTriangulation {
         }
       }
 
-      for ( var j = 0; j < trianglesToRemove.length; j++ ) {
+      for ( let j = 0; j < trianglesToRemove.length; j++ ) {
         const triangleToRemove = trianglesToRemove[ j ];
         arrayRemove( this.triangles, triangleToRemove );
         triangleToRemove.remove();
       }
 
-      for ( j = 0; j < edgesToRemove.length; j++ ) {
+      for ( let j = 0; j < edgesToRemove.length; j++ ) {
         arrayRemove( this.edges, edgesToRemove[ j ] );
       }
 
@@ -551,11 +551,11 @@ class DelaunayTriangulation {
     assert && assert( lastFrontEdge.triangles.length === 1 );
 
     // Handle adding any triangles not in the convex hull (on the front edge)
-    for ( var i = 0; i < frontEdges.length - 1; i++ ) {
-      var firstEdge = frontEdges[ i ];
-      var secondEdge = frontEdges[ i + 1 ];
+    for ( let i = 0; i < frontEdges.length - 1; i++ ) {
+      var firstEdge = frontEdges[ i ]; // eslint-disable-line no-var
+      var secondEdge = frontEdges[ i + 1 ]; // eslint-disable-line no-var
       if ( Utils.triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
-        var newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstEdge.startVertex, firstEdge.endVertex, secondEdge.endVertex );
+        var newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstEdge.startVertex, firstEdge.endVertex, secondEdge.endVertex ); // eslint-disable-line no-var
         frontEdges.splice( i, 2, newEdge );
         // start scanning from behind where we were previously (if possible)
         i = Math.max( i - 2, -1 );
@@ -579,7 +579,7 @@ class DelaunayTriangulation {
       const edge = nextTriangle.getNonArtificialEdge();
       if ( edge ) {
         backEdges.push( edge );
-        var sharedVertex = edge.getSharedVertex( currentSplitEdge );
+        var sharedVertex = edge.getSharedVertex( currentSplitEdge ); // eslint-disable-line no-var
         currentSplitEdge = nextTriangle.getEdgeOppositeFromVertex( sharedVertex );
       }
       // Our min-max-bottomPoint triangle (pivot, no edge to add)
@@ -595,7 +595,7 @@ class DelaunayTriangulation {
       artificialEdges.push( currentSplitEdge );
     }
 
-    for ( i = 0; i < artificialEdges.length; i++ ) {
+    for ( let i = 0; i < artificialEdges.length; i++ ) {
       arrayRemove( this.edges, artificialEdges[ i ] );
     }
 
@@ -603,7 +603,7 @@ class DelaunayTriangulation {
     window.triDebug && window.triDebug( this );
 
     // Handle adding any triangles not in the convex hull (on the back edge)
-    for ( i = 0; i < backEdges.length - 1; i++ ) {
+    for ( let i = 0; i < backEdges.length - 1; i++ ) {
       firstEdge = backEdges[ i + 1 ];
       secondEdge = backEdges[ i ];
 
@@ -620,11 +620,11 @@ class DelaunayTriangulation {
       }
     }
 
-    for ( i = 0; i < frontEdges.length; i++ ) {
+    for ( let i = 0; i < frontEdges.length; i++ ) {
       this.convexHull.push( frontEdges[ i ].startVertex );
     }
     this.convexHull.push( frontEdges[ frontEdges.length - 1 ].endVertex );
-    for ( i = backEdges.length - 1; i >= 1; i-- ) {
+    for ( let i = backEdges.length - 1; i >= 1; i-- ) {
       this.convexHull.push( backEdges[ i ].getSharedVertex( backEdges[ i - 1 ] ) );
     }
   }
