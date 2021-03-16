@@ -378,22 +378,22 @@ class Matrix4 {
     // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
     // NOTE: the toFixed calls are inlined for performance reasons
     return `matrix3d(${
-           this.entries[ 0 ].toFixed( 20 )},${
-           this.entries[ 1 ].toFixed( 20 )},${
-           this.entries[ 2 ].toFixed( 20 )},${
-           this.entries[ 3 ].toFixed( 20 )},${
-           this.entries[ 4 ].toFixed( 20 )},${
-           this.entries[ 5 ].toFixed( 20 )},${
-           this.entries[ 6 ].toFixed( 20 )},${
-           this.entries[ 7 ].toFixed( 20 )},${
-           this.entries[ 8 ].toFixed( 20 )},${
-           this.entries[ 9 ].toFixed( 20 )},${
-           this.entries[ 10 ].toFixed( 20 )},${
-           this.entries[ 11 ].toFixed( 20 )},${
-           this.entries[ 12 ].toFixed( 20 )},${
-           this.entries[ 13 ].toFixed( 20 )},${
-           this.entries[ 14 ].toFixed( 20 )},${
-           this.entries[ 15 ].toFixed( 20 )})`;
+      this.entries[ 0 ].toFixed( 20 )},${
+      this.entries[ 1 ].toFixed( 20 )},${
+      this.entries[ 2 ].toFixed( 20 )},${
+      this.entries[ 3 ].toFixed( 20 )},${
+      this.entries[ 4 ].toFixed( 20 )},${
+      this.entries[ 5 ].toFixed( 20 )},${
+      this.entries[ 6 ].toFixed( 20 )},${
+      this.entries[ 7 ].toFixed( 20 )},${
+      this.entries[ 8 ].toFixed( 20 )},${
+      this.entries[ 9 ].toFixed( 20 )},${
+      this.entries[ 10 ].toFixed( 20 )},${
+      this.entries[ 11 ].toFixed( 20 )},${
+      this.entries[ 12 ].toFixed( 20 )},${
+      this.entries[ 13 ].toFixed( 20 )},${
+      this.entries[ 14 ].toFixed( 20 )},${
+      this.entries[ 15 ].toFixed( 20 )})`;
   }
 
   get cssTransform() { return this.getCSSTransform(); }
@@ -755,9 +755,9 @@ class Matrix4 {
    */
   toString() {
     return `${this.m00()} ${this.m01()} ${this.m02()} ${this.m03()}\n${
-           this.m10()} ${this.m11()} ${this.m12()} ${this.m13()}\n${
-           this.m20()} ${this.m21()} ${this.m22()} ${this.m23()}\n${
-           this.m30()} ${this.m31()} ${this.m32()} ${this.m33()}`;
+      this.m10()} ${this.m11()} ${this.m12()} ${this.m13()}\n${
+      this.m20()} ${this.m21()} ${this.m22()} ${this.m23()}\n${
+      this.m30()} ${this.m31()} ${this.m32()} ${this.m33()}`;
   }
 
   /**
