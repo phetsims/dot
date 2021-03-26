@@ -9,10 +9,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+/* eslint-disable bad-sim-text */
+
 import Enumeration from '../../phet-core/js/Enumeration.js';
+import dot from './dot.js';
 import Vector3 from './Vector3.js';
 import Vector4 from './Vector4.js';
-import dot from './dot.js';
 
 const Float32Array = window.Float32Array || Array;
 

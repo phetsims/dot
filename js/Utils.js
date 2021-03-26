@@ -542,7 +542,7 @@ const Utils = {
   toFixed( value, decimalPlaces ) {
     const multiplier = Math.pow( 10, decimalPlaces );
     const newValue = Utils.roundSymmetric( value * multiplier ) / multiplier;
-    return newValue.toFixed( decimalPlaces );
+    return newValue.toFixed( decimalPlaces ); // eslint-disable-line bad-sim-text
   },
 
   /**

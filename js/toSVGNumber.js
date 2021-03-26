@@ -20,7 +20,7 @@ import dot from './dot.js';
 function toSVGNumber( number ) {
   // Largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
   // See https://github.com/phetsims/dot/issues/36
-  return number.toFixed( 20 );
+  return number.toFixed( 20 ); // eslint-disable-line bad-sim-text
 }
 
 dot.register( 'toSVGNumber', toSVGNumber );

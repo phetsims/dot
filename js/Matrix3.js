@@ -9,11 +9,11 @@
 import Enumeration from '../../phet-core/js/Enumeration.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import dot from './dot.js';
 import Matrix4 from './Matrix4.js';
+import toSVGNumber from './toSVGNumber.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
-import dot from './dot.js';
-import toSVGNumber from './toSVGNumber.js';
 
 class Matrix3 {
   /**
@@ -324,7 +324,7 @@ class Matrix3 {
 
     // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
     // NOTE: the toFixed calls are inlined for performance reasons
-    return `matrix(${this.entries[ 0 ].toFixed( 20 )},${this.entries[ 1 ].toFixed( 20 )},${this.entries[ 3 ].toFixed( 20 )},${this.entries[ 4 ].toFixed( 20 )},${this.entries[ 6 ].toFixed( 20 )},${this.entries[ 7 ].toFixed( 20 )})`;
+    return `matrix(${this.entries[ 0 ].toFixed( 20 )},${this.entries[ 1 ].toFixed( 20 )},${this.entries[ 3 ].toFixed( 20 )},${this.entries[ 4 ].toFixed( 20 )},${this.entries[ 6 ].toFixed( 20 )},${this.entries[ 7 ].toFixed( 20 )})`; // eslint-disable-line bad-sim-text
   }
 
   get cssTransform() { return this.getCSSTransform(); }
