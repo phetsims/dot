@@ -96,11 +96,11 @@ class Dimension2 {
   }
 
   /**
-   * Flip the width and height and return in a new Dimension2
+   * Swap width and height and return a new Dimension2
    * @returns {Dimension2}
    * @public
    */
-  flipped() {
+  swapped() {
     return new Dimension2( this.height, this.width );
   }
 
