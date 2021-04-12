@@ -552,10 +552,10 @@ class DelaunayTriangulation {
 
     // Handle adding any triangles not in the convex hull (on the front edge)
     for ( let i = 0; i < frontEdges.length - 1; i++ ) {
-      var firstEdge = frontEdges[ i ]; // eslint-disable-line no-var
-      var secondEdge = frontEdges[ i + 1 ]; // eslint-disable-line no-var
+      const firstEdge = frontEdges[ i ];
+      const secondEdge = frontEdges[ i + 1 ];
       if ( Utils.triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
-        var newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstEdge.startVertex, firstEdge.endVertex, secondEdge.endVertex ); // eslint-disable-line no-var
+        const newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstEdge.startVertex, firstEdge.endVertex, secondEdge.endVertex );
         frontEdges.splice( i, 2, newEdge );
         // start scanning from behind where we were previously (if possible)
         i = Math.max( i - 2, -1 );
@@ -579,7 +579,7 @@ class DelaunayTriangulation {
       const edge = nextTriangle.getNonArtificialEdge();
       if ( edge ) {
         backEdges.push( edge );
-        var sharedVertex = edge.getSharedVertex( currentSplitEdge ); // eslint-disable-line no-var
+        const sharedVertex = edge.getSharedVertex( currentSplitEdge );
         currentSplitEdge = nextTriangle.getEdgeOppositeFromVertex( sharedVertex );
       }
       // Our min-max-bottomPoint triangle (pivot, no edge to add)
@@ -604,14 +604,14 @@ class DelaunayTriangulation {
 
     // Handle adding any triangles not in the convex hull (on the back edge)
     for ( let i = 0; i < backEdges.length - 1; i++ ) {
-      firstEdge = backEdges[ i + 1 ];
-      secondEdge = backEdges[ i ];
+      const firstEdge = backEdges[ i + 1 ];
+      const secondEdge = backEdges[ i ];
 
-      sharedVertex = firstEdge.getSharedVertex( secondEdge );
+      const sharedVertex = firstEdge.getSharedVertex( secondEdge );
       const firstVertex = firstEdge.getOtherVertex( sharedVertex );
       const secondVertex = secondEdge.getOtherVertex( sharedVertex );
       if ( Utils.triangleAreaSigned( secondVertex.point, sharedVertex.point, firstVertex.point ) > 1e-10 ) {
-        newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstVertex, sharedVertex, secondVertex );
+        const newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstVertex, sharedVertex, secondVertex );
         backEdges.splice( i, 2, newEdge );
         // start scanning from behind where we were previously (if possible)
         i = Math.max( i - 2, -1 );
