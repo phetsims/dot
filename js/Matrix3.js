@@ -685,7 +685,7 @@ class Matrix3 {
    * @param {number} v20
    * @param {number} v21
    * @param {number} v22
-   * @param {number} type
+   * @param {number} [type]
    * @returns {Matrix3} - Self reference
    */
   rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type ) {
@@ -1404,7 +1404,7 @@ class Matrix3 {
    * equivalent to the multiplication of (x,y,0).
    * @public
    *
-   * @param {Vector2} vector2
+   * @param {Vector2} v
    * @returns {Vector2} - The vector that was mutated
    */
   multiplyRelativeVector2( v ) {
