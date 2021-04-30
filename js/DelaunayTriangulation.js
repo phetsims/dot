@@ -1150,6 +1150,7 @@ class Triangle {
     if ( this.cEdge === edge ) {
       return this.aEdge;
     }
+    throw new Error( 'illegal edge' );
   }
 
   /**
@@ -1171,6 +1172,8 @@ class Triangle {
     if ( this.cEdge === edge ) {
       return this.bEdge;
     }
+
+    throw new Error( 'illegal edge' );
   }
 
   /**
