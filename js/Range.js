@@ -9,6 +9,7 @@
  */
 
 import IOType from '../../tandem/js/types/IOType.js';
+import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 
 class Range {
@@ -220,8 +221,16 @@ dot.register( 'Range', Range );
 Range.RangeIO = new IOType( 'RangeIO', {
   valueType: Range,
   documentation: 'A range with "min" and a "max" members.',
-  toStateObject: range => ( { min: range.min, max: range.max } ),
-  fromStateObject: stateObject => new Range( stateObject.min, stateObject.max ) // eslint-disable-line no-html-constructors
+  toStateObject: range => ( {
+    min: NumberIO.toStateObject( range.min ),
+    max: NumberIO.toStateObject( range.max )
+  } ),
+
+  // eslint-disable-next-line no-html-constructors
+  fromStateObject: stateObject => new Range(
+    NumberIO.fromStateObject( stateObject.min ),
+    NumberIO.fromStateObject( stateObject.max )
+  )
 } );
 
 export default Range;
