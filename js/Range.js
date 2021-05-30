@@ -230,7 +230,11 @@ Range.RangeIO = new IOType( 'RangeIO', {
   fromStateObject: stateObject => new Range(
     NumberIO.fromStateObject( stateObject.min ),
     NumberIO.fromStateObject( stateObject.max )
-  )
+  ),
+  stateSchema: {
+    min: NumberIO,
+    max: NumberIO
+  }
 } );
 
 export default Range;

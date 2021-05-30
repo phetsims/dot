@@ -8,10 +8,11 @@
 
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import NumberIO from '../../tandem/js/types/NumberIO.js';
+import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
 import Vector4 from './Vector4.js';
-import dot from './dot.js';
 
 class Vector3 {
   /**
@@ -874,7 +875,12 @@ Vector3.Vector3IO = new IOType( 'Vector3IO', {
   valueType: Vector3,
   documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
   toStateObject: vector3 => vector3.toStateObject(),
-  fromStateObject: Vector3.fromStateObject
+  fromStateObject: Vector3.fromStateObject,
+  stateSchema: {
+    x: NumberIO,
+    y: NumberIO,
+    z: NumberIO
+  }
 } );
 
 export default Vector3;

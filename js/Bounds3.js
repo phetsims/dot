@@ -15,6 +15,7 @@
 
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import NumberIO from '../../tandem/js/types/NumberIO.js';
 import Vector3 from './Vector3.js';
 import dot from './dot.js';
 
@@ -1473,6 +1474,10 @@ Bounds3.EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFI
 Bounds3.Bounds3IO = new IOType( 'Bounds3IO', {
   valueType: Bounds3,
   documentation: 'a 3-dimensional bounds (bounding box)',
+  stateSchema: {
+    minX: NumberIO, minY: NumberIO, minZ: NumberIO,
+    maxX: NumberIO, maxY: NumberIO, maxZ: NumberIO
+  },
   toStateObject: bounds3 => ( {
     minX: bounds3.minX, minY: bounds3.minY, minZ: bounds3.minZ,
     maxX: bounds3.maxX, maxY: bounds3.maxY, maxZ: bounds3.maxZ

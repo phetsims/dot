@@ -7,8 +7,11 @@
  */
 
 import Enumeration from '../../phet-core/js/Enumeration.js';
+import EnumerationIO from '../../phet-core/js/EnumerationIO.js';
 import Poolable from '../../phet-core/js/Poolable.js';
+import ArrayIO from '../../tandem/js/types/ArrayIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Matrix4 from './Matrix4.js';
 import toSVGNumber from './toSVGNumber.js';
@@ -1782,7 +1785,11 @@ Matrix3.Matrix3IO = new IOType( 'Matrix3IO', {
   valueType: Matrix3,
   documentation: 'A 3x3 matrix often used for holding transform data.',
   toStateObject: matrix3 => Matrix3.toStateObject( matrix3 ),
-  fromStateObject: Matrix3.fromStateObject
+  fromStateObject: Matrix3.fromStateObject,
+  stateSchema: {
+    entries: ArrayIO( NumberIO ),
+    type: EnumerationIO( Types )
+  }
 } );
 
 dot.register( 'Matrix3', Matrix3 );

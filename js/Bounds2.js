@@ -15,6 +15,7 @@
 
 import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import NumberIO from '../../tandem/js/types/NumberIO.js';
 import Vector2 from './Vector2.js';
 import dot from './dot.js';
 
@@ -1516,7 +1517,13 @@ Bounds2.Bounds2IO = new IOType( 'Bounds2IO', {
   valueType: Bounds2,
   documentation: 'a 2-dimensional bounds rectangle',
   toStateObject: bounds2 => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
-  fromStateObject: stateObject => new Bounds2( stateObject.minX, stateObject.minY, stateObject.maxX, stateObject.maxY )
+  fromStateObject: stateObject => new Bounds2( stateObject.minX, stateObject.minY, stateObject.maxX, stateObject.maxY ),
+  stateSchema: {
+    minX: NumberIO,
+    maxX: NumberIO,
+    minY: NumberIO,
+    maxY: NumberIO
+  }
 } );
 
 export default Bounds2;
