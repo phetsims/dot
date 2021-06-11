@@ -1,7 +1,8 @@
 // Copyright 2021, University of Colorado Boulder
 
 /**
- * One dimensional (scalar) transforms, which are invertible.
+ * One dimensional (scalar) transforms, which are invertible. Unlike Transform3 and Transform4, Transform1
+ * may be nonlinear.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
