@@ -16,7 +16,7 @@ const Gruntfile = require( '../chipper/js/grunt/Gruntfile.js' ); // eslint-disab
 
 // Add repo-specific grunt tasks
 module.exports = function( grunt ) {
-  'use strict';
+  
 
   grunt.registerTask( 'doc-dot', 'Generates Documentation', () => {
     let indexHTML = '';
