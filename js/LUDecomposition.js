@@ -1,7 +1,8 @@
 // Copyright 2013-2020, University of Colorado Boulder
 
 /**
- * LU decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
+ * LU decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/).  Please note the arbitrary-precision
+ * copy LUDecompositionDecimal which should be maintained with this file.
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
