@@ -827,13 +827,12 @@ const Utils = {
    * @returns {number}
    */
   numberOfDecimalPlaces( value ) {
-    let count = 0;
-    let multiplier = 1;
-    while ( ( value * multiplier ) % 1 !== 0 ) {
-      count++;
-      multiplier *= 10;
+    if ( Math.floor( value ) === value ) {
+      return 0;
     }
-    return count;
+    else {
+      return value.toString().split( '.' )[ 1 ].length;
+    }
   },
 
   /**
