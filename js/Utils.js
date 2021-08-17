@@ -823,14 +823,16 @@ const Utils = {
 
   /**
    * Determines the number of decimal places in a value.
-   * @param {number} value
+   * @param {number} value - a finite number, scientific notation is not supported for decimal numbers
    * @returns {number}
    */
   numberOfDecimalPlaces( value ) {
+    assert && assert( typeof value === 'number' && isFinite( value ), `value must be a finite number ${value}` );
     if ( Math.floor( value ) === value ) {
       return 0;
     }
     else {
+      assert && assert( !value.toString().includes( 'e' ), `scientific notation is not supported: ${value}` );
       return value.toString().split( '.' )[ 1 ].length;
     }
   },
