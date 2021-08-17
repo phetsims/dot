@@ -177,15 +177,17 @@ QUnit.test( 'numberOfDecimalPlaces', assert => {
   assert.equal( Utils.numberOfDecimalPlaces( 1e50 ), 0 ); // scientific notation is supported for integers
 
   // Tests that should fail.
-  window.assert && assert.throws( () => {
-    Utils.numberOfDecimalPlaces( 'foo' );
-  }, 'value must be a number' );
-  window.assert && assert.throws( () => {
-    Utils.numberOfDecimalPlaces( Infinity );
-  }, 'value must be a finite number' );
-  window.assert && assert.throws( () => {
-    Utils.numberOfDecimalPlaces( 1e-50 );
-  }, 'scientific notation is not supported for decimals' );
+  if ( window.assert ) {
+    assert.throws( () => {
+      Utils.numberOfDecimalPlaces( 'foo' );
+    }, 'value must be a number' );
+    assert.throws( () => {
+      Utils.numberOfDecimalPlaces( Infinity );
+    }, 'value must be a finite number' );
+    assert.throws( () => {
+      Utils.numberOfDecimalPlaces( 1e-50 );
+    }, 'scientific notation is not supported for decimals' );
+  }
 } );
 
 QUnit.test( 'roundToInterval', assert => {
