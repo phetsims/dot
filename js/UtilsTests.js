@@ -171,6 +171,7 @@ QUnit.test( 'numberOfDecimalPlaces', assert => {
   assert.equal( Utils.numberOfDecimalPlaces( -0.567 ), 3 );
   assert.equal( Utils.numberOfDecimalPlaces( 0.001 ), 3 );
   assert.equal( Utils.numberOfDecimalPlaces( -0.001 ), 3 );
+  assert.equal( Utils.numberOfDecimalPlaces( 0.56 ), 2 );
 } );
 
 QUnit.test( 'roundToInterval', assert => {
