@@ -174,13 +174,17 @@ QUnit.test( 'numberOfDecimalPlaces', assert => {
   assert.equal( Utils.numberOfDecimalPlaces( 0.001 ), 3 );
   assert.equal( Utils.numberOfDecimalPlaces( -0.001 ), 3 );
   assert.equal( Utils.numberOfDecimalPlaces( 0.56 ), 2 );
-  assert.equal( Utils.numberOfDecimalPlaces( 1e50 ), 0 ); // scientific notation is supported for integers
+  assert.equal( Utils.numberOfDecimalPlaces( 1e50 ), 0 );
+  assert.equal( Utils.numberOfDecimalPlaces( 1e-50 ), 50 );
+  assert.equal( Utils.numberOfDecimalPlaces( 1.5e-50 ), 51 );
+  assert.equal( Utils.numberOfDecimalPlaces( 1.5e1 ), 0 );
+  assert.equal( Utils.numberOfDecimalPlaces( 1.5e-2 ), 3 );
+  assert.equal( Utils.numberOfDecimalPlaces( 2.345e-17 ), 20 );
 
   // Tests that should fail.
   if ( window.assert ) {
     assert.throws( () => Utils.numberOfDecimalPlaces( 'foo' ), 'value must be a number' );
     assert.throws( () => Utils.numberOfDecimalPlaces( Infinity ), 'value must be a finite number' );
-    assert.throws( () => Utils.numberOfDecimalPlaces( 1e-50 ), 'scientific notation is not supported for decimals' );
   }
 } );
 

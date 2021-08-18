@@ -823,6 +823,8 @@ const Utils = {
 
   /**
    * Determines the number of decimal places in a value.
+   * @public
+   *
    * @param {number} value - a finite number, scientific notation is not supported for decimal numbers
    * @returns {number}
    */
@@ -832,8 +834,25 @@ const Utils = {
       return 0;
     }
     else {
-      assert && assert( !value.toString().includes( 'e' ), `scientific notation is not supported: ${value}` );
-      return value.toString().split( '.' )[ 1 ].length;
+      const string = value.toString();
+
+      // Handle scientific notation
+      if ( string.includes( 'e' ) ) {
+        // e.g. '1e-21', '5.6e+34', etc.
+        const split = string.split( 'e' );
+        const mantissa = split[ 0 ]; // The left part, e.g. '1' or '5.6'
+        const exponent = parseInt( split[ 1 ], 10 ); // The right part, e.g. '-21' or '+34'
+
+        // How many decimal places are there in the left part
+        const mantissaDecimalPlaces = mantissa.includes( '.' ) ? mantissa.split( '.' )[ 1 ].length : 0;
+
+        // We adjust the number of decimal places by the exponent, e.g. '1.5e1' has zero decimal places, and
+        // '1.5e-2' has three.
+        return Math.max( mantissaDecimalPlaces - exponent, 0 );
+      }
+      else { // Handle decimal notation. Since we're not an integer, we should be guaranteed to have a decimal
+        return string.split( '.' )[ 1 ].length;
+      }
     }
   },
 
