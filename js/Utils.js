@@ -425,60 +425,70 @@ const Utils = {
    * @param {number} b
    * @param {number} c
    * @param {number} d
+   * @param {number} [discriminantThreshold] - for determining whether we have a single real root
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
    */
-  solveCubicRootsReal( a, b, c, d ) {
+  solveCubicRootsReal( a, b, c, d, discriminantThreshold = 1e-7 ) {
+
+    let roots;
+
     // TODO: a Complex type!
 
     // Check for a degenerate case where we don't have a cubic
     if ( a === 0 ) {
-      return Utils.solveQuadraticRootsReal( b, c, d );
-    }
-
-    //We need to test whether a is several orders of magnitude less than b, c, d
-    const epsilon = 1E7;
-
-    if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon || Math.abs( d / a ) > epsilon ) {
-      return Utils.solveQuadraticRootsReal( b, c, d );
-    }
-    if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
-      return [ 0 ].concat( Utils.solveQuadraticRootsReal( a, b, c ) );
-    }
-
-    b /= a;
-    c /= a;
-    d /= a;
-
-    const q = ( 3.0 * c - ( b * b ) ) / 9;
-    const r = ( -( 27 * d ) + b * ( 9 * c - 2 * ( b * b ) ) ) / 54;
-    const discriminant = q * q * q + r * r;
-    const b3 = b / 3;
-
-    if ( discriminant > 1e-8 ) {
-      // a single real root
-      const dsqrt = Math.sqrt( discriminant );
-      return [ Utils.cubeRoot( r + dsqrt ) + Utils.cubeRoot( r - dsqrt ) - b3 ];
-    }
-
-    // three real roots
-    if ( discriminant === 0 ) {
-      // contains a double root
-      const rsqrt = Utils.cubeRoot( r );
-      const doubleRoot = -b3 - rsqrt;
-      return [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
+      roots = Utils.solveQuadraticRootsReal( b, c, d );
     }
     else {
-      // all unique
-      let qX = -q * q * q;
-      qX = Math.acos( r / Math.sqrt( qX ) );
-      const rr = 2 * Math.sqrt( -q );
-      return [
-        -b3 + rr * Math.cos( qX / 3 ),
-        -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
-        -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
-      ];
+      //We need to test whether a is several orders of magnitude less than b, c, d
+      const epsilon = 1E7;
+
+      if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon || Math.abs( d / a ) > epsilon ) {
+        roots = Utils.solveQuadraticRootsReal( b, c, d );
+      }
+      else {
+        if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
+          roots = [ 0 ].concat( Utils.solveQuadraticRootsReal( a, b, c ) );
+        }
+        else {
+          b /= a;
+          c /= a;
+          d /= a;
+
+          const q = ( 3.0 * c - ( b * b ) ) / 9;
+          const r = ( -( 27 * d ) + b * ( 9 * c - 2 * ( b * b ) ) ) / 54;
+          const discriminant = q * q * q + r * r;
+          const b3 = b / 3;
+
+          if ( discriminant > discriminantThreshold ) {
+            // a single real root
+            const dsqrt = Math.sqrt( discriminant );
+            roots = [ Utils.cubeRoot( r + dsqrt ) + Utils.cubeRoot( r - dsqrt ) - b3 ];
+          }
+          else if ( discriminant === 0 ) {
+            // contains a double root (but with three roots)
+            const rsqrt = Utils.cubeRoot( r );
+            const doubleRoot = -b3 - rsqrt;
+            roots = [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
+          }
+          else {
+            // all unique (three roots)
+            let qX = -q * q * q;
+            qX = Math.acos( r / Math.sqrt( qX ) );
+            const rr = 2 * Math.sqrt( -q );
+            roots = [
+              -b3 + rr * Math.cos( qX / 3 ),
+              -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
+              -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
+            ];
+          }
+        }
+      }
     }
+
+    assert && roots && roots.forEach( root => assert( isFinite( root ), 'All returned solveCubicRootsReal roots should be finite' ) );
+
+    return roots;
   },
 
   /**
