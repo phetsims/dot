@@ -455,7 +455,7 @@ const Utils = {
     const discriminant = q * q * q + r * r;
     const b3 = b / 3;
 
-    if ( discriminant > 1e-7 ) {
+    if ( discriminant > 1e-6 ) {
       // a single real root
       const dsqrt = Math.sqrt( discriminant );
       return [ Utils.cubeRoot( r + dsqrt ) + Utils.cubeRoot( r - dsqrt ) - b3 ];
