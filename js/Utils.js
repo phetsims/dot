@@ -465,7 +465,7 @@ const Utils = {
             const dsqrt = Math.sqrt( discriminant );
             roots = [ Utils.cubeRoot( r + dsqrt ) + Utils.cubeRoot( r - dsqrt ) - b3 ];
           }
-          else if ( discriminant === 0 ) {
+          else if ( discriminant > -discriminantThreshold ) { // would truly be discriminant==0, but floating-point error
             // contains a double root (but with three roots)
             const rsqrt = Utils.cubeRoot( r );
             const doubleRoot = -b3 - rsqrt;
