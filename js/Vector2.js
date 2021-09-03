@@ -877,6 +877,19 @@ class Vector2 {
     return { x: this.x, y: this.y };
   }
 
+
+  /**
+   * Returns a map of state keys and their associated IOTypes, see IOType.fromCoreType for details.
+   * @returns {Object.<string,IOType>}
+   * @public
+   */
+  static get STATE_SCHEMA() {
+    return {
+      x: NumberIO,
+      y: NumberIO
+    };
+  }
+
   // static methods
 
   /**
@@ -992,11 +1005,7 @@ Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
 Vector2.Vector2IO = IOType.fromCoreType( 'Vector2IO', Vector2, {
-  documentation: 'A numerical object with x and y properties, like {x:3,y:4}',
-  stateSchema: {
-    x: NumberIO,
-    y: NumberIO
-  }
+  documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
 } );
 
 export default Vector2;
