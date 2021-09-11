@@ -797,10 +797,14 @@ class Vector3 {
    * Returns a duck-typed object meant for use with tandem/phet-io serialization.
    * @public
    *
-   * @returns {{x:number, y:number, z:number}}
+   * @returns {Object} - see stateSchema for schema
    */
   toStateObject() {
-    return { x: this.x, y: this.y, z: this.z };
+    return {
+      x: NumberIO.toStateObject( this.x ),
+      y: NumberIO.toStateObject( this.y ),
+      z: NumberIO.toStateObject( this.z )
+    };
   }
 
   // static methods
@@ -825,11 +829,15 @@ class Vector3 {
    * @public
    * @static
    *
-   * @param {{x:number, y:number, z:number}} stateObject
+   * @param {Object} stateObject - see stateSchema for schema
    * @returns {Vector3}
    */
   static fromStateObject( stateObject ) {
-    return new Vector3( stateObject.x, stateObject.y, stateObject.z );
+    return new Vector3(
+      NumberIO.fromStateObject( stateObject.x ),
+      NumberIO.fromStateObject( stateObject.y ),
+      NumberIO.fromStateObject( stateObject.z )
+    );
   }
 }
 

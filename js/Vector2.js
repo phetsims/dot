@@ -868,13 +868,17 @@ class Vector2 {
   }
 
   /**
-   * Returns a duck-typed object meant for use with tandem/phet-io serialization.
+   * Returns a duck-typed object meant for use with tandem/phet-io serialization. Although this is redundant with
+   * stateSchema, it is a nice feature of such a heavily-used type to be able to call toStateObject directly on the type.
    * @public
    *
-   * @returns {{x:number, y:number}}
+   * @returns {Object} - see stateSchema for schema
    */
   toStateObject() {
-    return { x: this.x, y: this.y };
+    return {
+      x: NumberIO.toStateObject( this.x ),
+      y: NumberIO.toStateObject( this.y )
+    };
   }
 
 
@@ -911,11 +915,14 @@ class Vector2 {
    * @public
    * @static
    *
-   * @param {{x:number, y:number}} stateObject
+   * @param {Object} stateObject - see stateSchema for schema
    * @returns {Vector2}
    */
   static fromStateObject( stateObject ) {
-    return new Vector2( stateObject.x, stateObject.y );
+    return new Vector2(
+      NumberIO.fromStateObject( stateObject.x ),
+      NumberIO.fromStateObject( stateObject.y )
+    );
   }
 
   /**
