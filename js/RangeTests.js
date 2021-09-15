@@ -90,8 +90,10 @@ QUnit.test( 'expandNormalizedValue', assert => {
   testSameRange( 0.2432124 );
 
   const range = new Range( 2, 10 );
+  assert.ok( range.expandNormalizedValue( -2 ) === -14, 'less than min' );
   assert.ok( range.expandNormalizedValue( 0 ) === 2, 'min' );
   assert.ok( range.expandNormalizedValue( 1 ) === 10, 'max' );
+  assert.ok( range.expandNormalizedValue( 2 ) === 18, 'double' );
   assert.ok( range.expandNormalizedValue( 0.5 ) === 6, 'half' );
   assert.ok( range.expandNormalizedValue( 0.75 ) === 8, 'random weird number' );
 } );
