@@ -208,6 +208,20 @@ class Range {
   }
 
   /**
+   * Compute the opposite of a normalized value. Given a normalized value (between 0 and 1). Worked with any number
+   * though, (even outside of the range). It is the client's responsibility to clamp if that is important to the
+   * usage.
+   * @public
+   * @param {number} normalizedValue
+   * @returns {number}
+   */
+  expandNormalizedValue( normalizedValue ) {
+    assert && assert( typeof normalizedValue === 'number' );
+    assert && assert( this.getLength() !== 0, 'cannot get expand normalized value without a range length' );
+    return normalizedValue * this.getLength() + this.min;
+  }
+
+  /**
    * In https://github.com/phetsims/dot/issues/57, defaultValue was moved to RangeWithValue.
    * This ES5 getter catches programming errors where defaultValue is still used with Range.
    */

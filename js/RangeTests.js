@@ -77,3 +77,21 @@ QUnit.test( 'getNormalizedValue', assert => {
   assert.ok( range.getNormalizedValue( 6 ) === 0.5, 'half' );
   assert.ok( range.getNormalizedValue( 3.5432 ) === 0.19290000000000002, 'random weird number' );
 } );
+
+QUnit.test( 'expandNormalizedValue', assert => {
+  const testSameRange = normalizedValue => {
+    assert.ok( normalizedValue === new Range( 0, 1 ).expandNormalizedValue( normalizedValue ),
+      `normalized normalized in range from 0 to 1 is the same as value: ${normalizedValue}` );
+  };
+  testSameRange( 0.1 );
+  testSameRange( 1 );
+  testSameRange( 0.5 );
+  testSameRange( 0.2 );
+  testSameRange( 0.2432124 );
+
+  const range = new Range( 2, 10 );
+  assert.ok( range.expandNormalizedValue( 0 ) === 2, 'min' );
+  assert.ok( range.expandNormalizedValue( 1 ) === 10, 'max' );
+  assert.ok( range.expandNormalizedValue( 0.5 ) === 6, 'half' );
+  assert.ok( range.expandNormalizedValue( 0.75 ) === 8, 'random weird number' );
+} );
