@@ -1124,7 +1124,7 @@ class Matrix3 {
    * @public
    *
    * @param {number} x
-   * @param {number} y
+   * @param {number} [y]
    * @returns {Matrix3} - Self reference
    */
   setToScale( x, y ) {
