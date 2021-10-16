@@ -898,7 +898,7 @@ class Matrix3 {
    * Sets this matrix to itself minus the given matrix.
    * @public
    *
-   * @param {Matrix3} matrix
+   * @param {Matrix3} m
    * @returns {Matrix3} - Self reference
    */
   subtract( m ) {
@@ -1393,7 +1393,7 @@ class Matrix3 {
    * Sets the vector to the result of (transpose(matrix) * vector), ignoring the translation parameters.
    * @public
    *
-   * @param {Vector2} vector2
+   * @param {Vector2} v
    * @returns {Vector2} - The vector that was mutated
    */
   multiplyTransposeVector2( v ) {
@@ -1512,7 +1512,7 @@ class Matrix3 {
    * @public
    *
    * @param {number} x
-   * @param {number} y
+   * @param {number} [y]
    * @returns {Matrix3}
    */
   static scaling( x, y ) {
