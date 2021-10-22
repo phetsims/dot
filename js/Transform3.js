@@ -77,7 +77,6 @@ class Transform3 {
   /**
    * Validates the matrix or matrix arguments, overrideable by subclasses to refine the validation.
    * @param {Matrix} matrix
-   * @returns {boolean}
    * @protected
    */
   validateMatrix( matrix ) {
