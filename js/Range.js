@@ -224,6 +224,8 @@ class Range {
   /**
    * In https://github.com/phetsims/dot/issues/57, defaultValue was moved to RangeWithValue.
    * This ES5 getter catches programming errors where defaultValue is still used with Range.
+   * @public
+   * @returns {number}
    */
   get defaultValue() {
     throw new Error( 'defaultValue is undefined, did you mean to use RangeWithValue?' );
