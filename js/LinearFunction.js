@@ -5,8 +5,8 @@
  * <p>
  * Example usage:
  * <code>
- * var f = new dot.LinearFunction( 0, 100, 0, 200 );
- * f( 50 ); // 100
+ * var f = new LinearFunction( 0, 100, 0, 200 );
+ * f.evaluate( 50 ); // 100
  * f.inverse( 100 ); // 50
  * </code>
  *
