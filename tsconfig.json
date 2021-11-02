@@ -1,3 +1,6 @@
+// This tsconfig file includes everything a project depending on dot would need.  This does not include the
+// unit tests, which depends on things like phetioEngine
+// @author Sam Reid (PhET Interactive Simulations)
 {
   "extends": "../chipper/tsconfig-core.json",
   "references": [
@@ -6,7 +9,7 @@
     }
   ],
   "include": [
-    "js/**/*",
+    "js/**/*"
   ],
   "exclude": [
     "js/**/*test*"
