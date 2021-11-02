@@ -16,42 +16,23 @@
 import Utils from './Utils.js';
 import dot from './dot.js';
 
-/**
- * @param {number} a1
- * @param {number} a2
- * @param {number} b1
- * @param {number} b2
- * @param {boolean} [clamp=false] - clamp the result to the provided ranges, false by default
- * @constructor
- */
-function LinearFunction( a1, a2, b1, b2, clamp ) {
-
-  clamp = _.isUndefined( clamp ) ? false : clamp;
+class LinearFunction {
 
   /**
-   * Linearly interpolate two points and evaluate the line equation for a third point.
-   * f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
-   * Optionally clamp the result to the range [b1,b2].
-   *
-   * @private
-   *
    * @param {number} a1
    * @param {number} a2
    * @param {number} b1
    * @param {number} b2
-   * @param {number} a3
-   * @param {boolean} clamp
-   * @returns {number}
+   * @param {boolean} [clamp=false] - clamp the result to the provided ranges, false by default
+   * @constructor
    */
-  const map = ( a1, a2, b1, b2, a3, clamp ) => {
-    let b3 = Utils.linear( a1, a2, b1, b2, a3 );
-    if ( clamp ) {
-      const max = Math.max( b1, b2 );
-      const min = Math.min( b1, b2 );
-      b3 = Utils.clamp( b3, min, max );
-    }
-    return b3;
-  };
+  constructor( a1, a2, b1, b2, clamp = false ) {
+    this.a1 = a1;
+    this.a2 = a2;
+    this.b1 = b1;
+    this.b2 = b2;
+    this.clamp = clamp;
+  }
 
   /**
    * Maps from a to b.
@@ -60,10 +41,9 @@ function LinearFunction( a1, a2, b1, b2, clamp ) {
    * @param {number} a3
    * @returns {number}
    */
-  const evaluate = a3 => {
-    return map( a1, a2, b1, b2, a3, clamp );
-  };
-
+  evaluate( a3 ) {
+    return map( this.a1, this.a2, this.b1, this.b2, a3, this.clamp );
+  }
 
   /**
    * Maps from b to a
@@ -72,13 +52,35 @@ function LinearFunction( a1, a2, b1, b2, clamp ) {
    * @param {number} b3
    * @returns {number}
    */
-  evaluate.inverse = b3 => {
-    return map( b1, b2, a1, a2, b3, clamp );
-  };
-
-  return evaluate; // return the evaluation function, so we use sites look like: f(a) f.inverse(b)
+  inverse( b3 ) {
+    return map( this.b1, this.b2, this.a1, this.a2, b3, this.clamp );
+  }
 }
 
-dot.register( 'LinearFunction', LinearFunction );
+/**
+ * Linearly interpolate two points and evaluate the line equation for a third point.
+ * f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
+ * Optionally clamp the result to the range [b1,b2].
+ *
+ * @private
+ *
+ * @param {number} a1
+ * @param {number} a2
+ * @param {number} b1
+ * @param {number} b2
+ * @param {number} a3
+ * @param {boolean} clamp
+ * @returns {number}
+ */
+const map = ( a1, a2, b1, b2, a3, clamp ) => {
+  let b3 = Utils.linear( a1, a2, b1, b2, a3 );
+  if ( clamp ) {
+    const max = Math.max( b1, b2 );
+    const min = Math.min( b1, b2 );
+    b3 = Utils.clamp( b3, min, max );
+  }
+  return b3;
+};
 
+dot.register( 'LinearFunction', LinearFunction );
 export default LinearFunction;

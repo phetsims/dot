@@ -18,10 +18,10 @@ function approximateEquals( assert, a, b, msg ) {
 QUnit.test( 'LinearFunction', assert => {
   const f = new LinearFunction( 4, 8, 8, 0 ); // not clamped
 
-  approximateEquals( assert, f( 0 ), 16 );
-  approximateEquals( assert, f( 4 ), 8 );
-  approximateEquals( assert, f( 8 ), 0 );
-  approximateEquals( assert, f( 6 ), 4 );
+  approximateEquals( assert, f.evaluate( 0 ), 16 );
+  approximateEquals( assert, f.evaluate( 4 ), 8 );
+  approximateEquals( assert, f.evaluate( 8 ), 0 );
+  approximateEquals( assert, f.evaluate( 6 ), 4 );
   approximateEquals( assert, f.inverse( 16 ), 0 );
   approximateEquals( assert, f.inverse( 8 ), 4 );
   approximateEquals( assert, f.inverse( 0 ), 8 );
@@ -29,10 +29,10 @@ QUnit.test( 'LinearFunction', assert => {
 
   const g = new LinearFunction( 4, 8, 8, 0, true ); // clamped
 
-  approximateEquals( assert, g( 0 ), 8 );
-  approximateEquals( assert, g( 4 ), 8 );
-  approximateEquals( assert, g( 8 ), 0 );
-  approximateEquals( assert, g( 6 ), 4 );
+  approximateEquals( assert, g.evaluate( 0 ), 8 );
+  approximateEquals( assert, g.evaluate( 4 ), 8 );
+  approximateEquals( assert, g.evaluate( 8 ), 0 );
+  approximateEquals( assert, g.evaluate( 6 ), 4 );
   approximateEquals( assert, g.inverse( 16 ), 4 );
   approximateEquals( assert, g.inverse( 8 ), 4 );
   approximateEquals( assert, g.inverse( 0 ), 8 );
