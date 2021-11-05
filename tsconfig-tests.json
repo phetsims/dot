@@ -1,6 +1,5 @@
-// This tsconfig file adds the tests
-// @author Sam Reid (PhET Interactive Simulations)
 {
+  "_comment": "This tsconfig file adds the tests, @author Sam Reid (PhET Interactive Simulations)",
   "extends": "../chipper/tsconfig-core.json",
   "references": [
     {
