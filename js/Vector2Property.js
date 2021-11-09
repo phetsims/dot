@@ -15,6 +15,9 @@ import dot from './dot.js';
 
 const BOUNDS_VALIDATOR = { isValidValue: value => ( value instanceof Bounds2 || value === null ) };
 
+/**
+ * @extends Property<Vector2>
+ */
 class Vector2Property extends Property {
 
   /**
