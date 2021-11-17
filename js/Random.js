@@ -104,8 +104,8 @@ class Random {
   /**
    * Randomly select one element from the given array.
    * @public
-   * @param {Object[]} array - the array from which one element will be selected, must have at least one element
-   * @returns {Object} - the selected element from the array
+   * @param {Array<T>} array - the array from which one element will be selected, must have at least one element
+   * @returns {T} - the selected element from the array
    */
   sample( array ) {
     assert && assert( array.length > 0, 'Array should have at least 1 item.' );
