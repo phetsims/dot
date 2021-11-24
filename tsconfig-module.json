@@ -5,7 +5,7 @@
   "extends": "../chipper/tsconfig-core.json",
   "references": [
     {
-      "path": "../axon"
+      "path": "../axon/tsconfig-module.json"
     }
   ],
   "include": [
