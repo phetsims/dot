@@ -12,6 +12,10 @@
     "js/**/*"
   ],
   "exclude": [
-    "js/**/*test*"
+    "js/**/*test*",
+    //
+    // included in axon
+    "../dot/js/Range.js",
+    "../dot/js/dot.js"
   ]
 }
