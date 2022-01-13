@@ -7,7 +7,7 @@
  */
 
 import EnumerationDeprecated from '../../phet-core/js/EnumerationDeprecated.js';
-import EnumerationIO from '../../phet-core/js/EnumerationIO.js';
+import EnumerationIO from '../../tandem/js/types/EnumerationIO.js';
 import Poolable from '../../phet-core/js/Poolable.js';
 import ArrayIO from '../../tandem/js/types/ArrayIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
