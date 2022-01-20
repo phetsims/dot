@@ -100,6 +100,16 @@ class Permutation {
   }
 
   /**
+   * @public
+   *
+   * @param {Permutation} permutation
+   * @returns {boolean}
+   */
+  equals( permutation ) {
+    return this.indices.length === permutation.indices.length && _.isEqual( this.indices, permutation.indices );
+  }
+
+  /**
    * Creates an identity permutation of a given size.
    * @public
    *
