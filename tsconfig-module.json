@@ -9,7 +9,9 @@
     }
   ],
   "include": [
-    "js/**/*"
+    "js/**/*",
+    "../chipper/phet-types.d.ts",
+    "../chipper/node_modules/@types/lodash/index.d.ts"
   ],
   "exclude": [
     "js/**/*test*",
