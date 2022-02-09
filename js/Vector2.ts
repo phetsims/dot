@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Poolable from '../../phet-core/js/Poolable.js';
+import Poolable, { PoolableVersion } from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
@@ -14,73 +14,57 @@ import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
 
 class Vector2 {
+
+  // The X coordinate of the vector.
+  x: number;
+
+  // The Y coordinate of the vector.
+  y: number;
+
   /**
    * Creates a 2-dimensional vector with the specified X and Y values.
-   * @public
    *
-   * @param {number} x - X coordinate
-   * @param {number} y - Y coordinate
+   * @param x - X coordinate
+   * @param y - Y coordinate
    */
-  constructor( x, y ) {
+  constructor( x: number, y: number ) {
     assert && assert( typeof x === 'number', 'x needs to be a number' );
     assert && assert( typeof y === 'number', 'y needs to be a number' );
 
-    // @public {number} - The X coordinate of the vector.
     this.x = x;
-
-    // @public {number} - The Y coordinate of the vector.
     this.y = y;
   }
 
 
   /**
    * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2}$.
-   * @public
-   *
-   * @returns {number}
    */
-  getMagnitude() {
+  getMagnitude(): number {
     return Math.sqrt( this.magnitudeSquared );
   }
 
-  get magnitude() {
-    return this.getMagnitude();
-  }
+  get magnitude(): number { return this.getMagnitude(); }
 
   /**
    * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2$.
-   * @public
-   *
-   * @returns {number}
    */
-  getMagnitudeSquared() {
+  getMagnitudeSquared(): number {
     return this.x * this.x + this.y * this.y;
   }
 
-  get magnitudeSquared() {
-    return this.getMagnitudeSquared();
-  }
+  get magnitudeSquared(): number { return this.getMagnitudeSquared(); }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point.
-   * @public
-   *
-   * @param {Vector2} point
-   * @returns {number}
    */
-  distance( point ) {
+  distance( point: PoolableVector2 ): number {
     return Math.sqrt( this.distanceSquared( point ) );
   }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point (x,y).
-   * @public
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {number}
    */
-  distanceXY( x, y ) {
+  distanceXY( x: number, y: number ): number {
     const dx = this.x - x;
     const dy = this.y - y;
     return Math.sqrt( dx * dx + dy * dy );
@@ -88,12 +72,8 @@ class Vector2 {
 
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point.
-   * @public
-   *
-   * @param {Vector2} point
-   * @returns {number}
    */
-  distanceSquared( point ) {
+  distanceSquared( point: PoolableVector2 ): number {
     const dx = this.x - point.x;
     const dy = this.y - point.y;
     return dx * dx + dy * dy;
@@ -101,13 +81,8 @@ class Vector2 {
 
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point with coordinates (x,y).
-   * @public
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {number}
    */
-  distanceSquaredXY( x, y ) {
+  distanceSquaredXY( x: number, y: number ): number {
     const dx = this.x - x;
     const dy = this.y - y;
     return dx * dx + dy * dy;
@@ -115,24 +90,15 @@ class Vector2 {
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector v.
-   * @public
-   *
-   * @param {Vector2} v
-   * @returns {number}
    */
-  dot( v ) {
+  dot( v: PoolableVector2 ): number {
     return this.x * v.x + this.y * v.y;
   }
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector (x,y).
-   * @public
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {number}
    */
-  dotXY( x, y ) {
+  dotXY( x: number, y: number ): number {
     return this.x * x + this.y * y;
   }
 
@@ -140,55 +106,43 @@ class Vector2 {
    * The angle $\theta$ of this vector, such that this vector is equal to
    * $$ u = \begin{bmatrix} r\cos\theta \\ r\sin\theta \end{bmatrix} $$
    * for the magnitude $r \ge 0$ of the vector, with $\theta\in(-\pi,\pi]$
-   * @public
-   *
-   * @returns {number}
    */
-  getAngle() {
+  getAngle(): number {
     return Math.atan2( this.y, this.x );
   }
 
-  get angle() {
+  get angle(): number {
     return this.getAngle();
   }
 
   /**
    * The angle between this vector and another vector, in the range $\theta\in[0, \pi]$.
-   * @public
    *
    * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
    * is the input vector (normalized).
-   *
-   * @param {Vector2} v
-   * @returns {number}
    */
-  angleBetween( v ) {
+  angleBetween( v: PoolableVector2 ): number {
     const thisMagnitude = this.magnitude;
     const vMagnitude = v.magnitude;
+    // @ts-ignore TODO: import with circular protection
     return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
   }
 
   /**
    * Exact equality comparison between this vector and another vector.
-   * @public
-   *
-   * @param {Vector2} other
-   * @returns {boolean} - Whether the two vectors have equal components
+
+   * @returns - Whether the two vectors have equal components
    */
-  equals( other ) {
+  equals( other: PoolableVector2 ): boolean {
     return this.x === other.x && this.y === other.y;
   }
 
   /**
    * Approximate equality comparison between this vector and another vector.
-   * @public
    *
-   * @param {Vector2} other
-   * @param {number} epsilon
-   * @returns {boolean} - Whether difference between the two vectors has no component with an absolute value greater
-   *                      than epsilon.
+   * @returns - Whether difference between the two vectors has no component with an absolute value greater than epsilon.
    */
-  equalsEpsilon( other, epsilon ) {
+  equalsEpsilon( other: PoolableVector2, epsilon: number ): boolean {
     if ( !epsilon ) {
       epsilon = 0;
     }
@@ -197,11 +151,8 @@ class Vector2 {
 
   /**
    * Returns false if either component is NaN, infinity, or -infinity. Otherwise returns true.
-   * @public
-   *
-   * @returns {boolean}
    */
-  isFinite() {
+  isFinite(): boolean {
     return isFinite( this.x ) && isFinite( this.y );
   }
 
@@ -211,367 +162,277 @@ class Vector2 {
 
   /**
    * Creates a copy of this vector, or if a vector is passed in, set that vector's values to ours.
-   * @public
    *
    * This is the immutable form of the function set(), if a vector is provided. This will return a new vector, and
    * will not modify this vector.
    *
-   * @param {Vector2} [vector] - If not provided, creates a new Vector2 with filled in values. Otherwise, fills in the
-   *                             values of the provided vector so that it equals this vector.
-   * @returns {Vector2}
+   * @param [vector] - If not provided, creates a new Vector2 with filled in values. Otherwise, fills in the
+   *                   values of the provided vector so that it equals this vector.
    */
-  copy( vector ) {
+  copy( vector?: PoolableVector2 ): PoolableVector2 {
     if ( vector ) {
-      return vector.set( this );
+      return vector.set( this as unknown as PoolableVector2 );
     }
     else {
-      return new Vector2( this.x, this.y );
+      return PoolableVector2.createFromPool( this.x, this.y );
     }
   }
 
   /**
    * The scalar value of the z-component of the equivalent 3-dimensional cross product:
    * $$ f( u, v ) = \left( \begin{bmatrix} u_x \\ u_y \\ 0 \end{bmatrix} \times \begin{bmatrix} v_x \\ v_y \\ 0 \end{bmatrix} \right)_z = u_x v_y - u_y v_x $$
-   * @public
-   *
-   * @param {Vector2} v
-   * @returns {number}
    */
-  crossScalar( v ) {
+  crossScalar( v: PoolableVector2 ): number {
     return this.x * v.y - this.y * v.x;
   }
 
   /**
    * Normalized (re-scaled) copy of this vector such that its magnitude is 1. If its initial magnitude is zero, an
    * error is thrown.
-   * @public
    *
    * This is the immutable form of the function normalize(). This will return a new vector, and will not modify this
    * vector.
-   *
-   * @returns {Vector2}
    */
-  normalized() {
+  normalized(): PoolableVector2 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
     }
     else {
-      return new Vector2( this.x / mag, this.y / mag );
+      return PoolableVector2.createFromPool( this.x / mag, this.y / mag );
     }
   }
 
   /**
    * Returns a copy of this vector with each component rounded by Utils.roundSymmetric.
-   * @public
    *
    * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @returns {Vector2}
    */
-  roundedSymmetric() {
+  roundedSymmetric(): PoolableVector2 {
     return this.copy().roundSymmetric();
   }
 
   /**
    * Re-scaled copy of this vector such that it has the desired magnitude. If its initial magnitude is zero, an error
    * is thrown. If the passed-in magnitude is negative, the direction of the resulting vector will be reversed.
-   * @public
    *
    * This is the immutable form of the function setMagnitude(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} magnitude
-   * @returns {Vector2}
    */
-  withMagnitude( magnitude ) {
+  withMagnitude( magnitude: number ): PoolableVector2 {
     return this.copy().setMagnitude( magnitude );
   }
 
   /**
    * Copy of this vector, scaled by the desired scalar value.
-   * @public
    *
    * This is the immutable form of the function multiplyScalar(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  timesScalar( scalar ) {
-    return new Vector2( this.x * scalar, this.y * scalar );
+  timesScalar( scalar: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x * scalar, this.y * scalar );
   }
 
   /**
    * Same as timesScalar.
-   * @public
    *
    * This is the immutable form of the function multiply(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  times( scalar ) {
-    // make sure it's not a vector!
-    assert && assert( scalar.dimension === undefined );
+  times( scalar: number ): PoolableVector2 {
+    assert && assert( typeof scalar === 'number' );
+
     return this.timesScalar( scalar );
   }
 
   /**
    * Copy of this vector, multiplied component-wise by the passed-in vector v.
-   * @public
    *
    * This is the immutable form of the function componentMultiply(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {Vector2} v
-   * @returns {Vector2}
    */
-  componentTimes( v ) {
-    return new Vector2( this.x * v.x, this.y * v.y );
+  componentTimes( v: PoolableVector2 ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x * v.x, this.y * v.y );
   }
 
   /**
    * Addition of this vector and another vector, returning a copy.
-   * @public
    *
    * This is the immutable form of the function add(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {Vector2} v
-   * @returns {Vector2}
    */
-  plus( v ) {
-    return new Vector2( this.x + v.x, this.y + v.y );
+  plus( v: PoolableVector2 ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x + v.x, this.y + v.y );
   }
 
   /**
    * Addition of this vector and another vector (x,y), returning a copy.
-   * @public
    *
    * This is the immutable form of the function addXY(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {Vector2}
    */
-  plusXY( x, y ) {
-    return new Vector2( this.x + x, this.y + y );
+  plusXY( x: number, y: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x + x, this.y + y );
   }
 
   /**
    * Addition of this vector with a scalar (adds the scalar to every component), returning a copy.
-   * @public
    *
    * This is the immutable form of the function addScalar(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  plusScalar( scalar ) {
-    return new Vector2( this.x + scalar, this.y + scalar );
+  plusScalar( scalar: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x + scalar, this.y + scalar );
   }
 
   /**
    * Subtraction of this vector by another vector v, returning a copy.
-   * @public
    *
    * This is the immutable form of the function subtract(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {Vector2} v
-   * @returns {Vector2}
    */
-  minus( v ) {
-    return new Vector2( this.x - v.x, this.y - v.y );
+  minus( v: PoolableVector2 ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x - v.x, this.y - v.y );
   }
 
   /**
    * Subtraction of this vector by another vector (x,y), returning a copy.
-   * @public
    *
    * This is the immutable form of the function subtractXY(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {Vector2}
    */
-  minusXY( x, y ) {
-    return new Vector2( this.x - x, this.y - y );
+  minusXY( x: number, y: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x - x, this.y - y );
   }
 
   /**
    * Subtraction of this vector by a scalar (subtracts the scalar from every component), returning a copy.
-   * @public
    *
    * This is the immutable form of the function subtractScalar(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  minusScalar( scalar ) {
-    return new Vector2( this.x - scalar, this.y - scalar );
+  minusScalar( scalar: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x - scalar, this.y - scalar );
   }
 
   /**
    * Division of this vector by a scalar (divides every component by the scalar), returning a copy.
-   * @public
    *
    * This is the immutable form of the function divideScalar(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  dividedScalar( scalar ) {
-    return new Vector2( this.x / scalar, this.y / scalar );
+  dividedScalar( scalar: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x / scalar, this.y / scalar );
   }
 
   /**
    * Negated copy of this vector (multiplies every component by -1).
-   * @public
    *
    * This is the immutable form of the function negate(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @returns {Vector2}
    */
-  negated() {
-    return new Vector2( -this.x, -this.y );
+  negated(): PoolableVector2 {
+    return PoolableVector2.createFromPool( -this.x, -this.y );
   }
 
   /**
    * Rotated by -pi/2 (perpendicular to this vector), returned as a copy.
-   * @public
-   *
-   * @returns {Vector2}
    */
-  getPerpendicular() {
-    return new Vector2( this.y, -this.x );
+  getPerpendicular(): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.y, -this.x );
   }
 
-  get perpendicular() {
+  get perpendicular(): PoolableVector2 {
     return this.getPerpendicular();
   }
 
   /**
    * Rotated by an arbitrary angle, in radians. Returned as a copy.
-   * @public
    *
    * This is the immutable form of the function rotate(). This will return a new vector, and will not modify
    * this vector.
    *
-   * @param {number} angle - In radians
-   * @returns {Vector2}
+   * @param angle - In radians
    */
-  rotated( angle ) {
+  rotated( angle: number ): PoolableVector2 {
     const newAngle = this.angle + angle;
     const mag = this.magnitude;
-    return new Vector2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
+    return PoolableVector2.createFromPool( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
   }
 
   /**
    * Mutable method that rotates this vector about an x,y point.
-   * @public
    *
-   * @param {number} x - origin of rotation in x
-   * @param {number} y - origin of rotation in y
-   * @param {number} angle - radians to rotate
-   * @returns {Vector2} this for chaining
+   * @param x - origin of rotation in x
+   * @param y - origin of rotation in y
+   * @param angle - radians to rotate
+   * @returns this for chaining
    */
-  rotateAboutXY( x, y, angle ) {
+  rotateAboutXY( x: number, y: number, angle: number ): PoolableVector2 {
     const dx = this.x - x;
     const dy = this.y - y;
     const cos = Math.cos( angle );
     const sin = Math.sin( angle );
     this.x = x + dx * cos - dy * sin;
     this.y = y + dx * sin + dy * cos;
-    return this; // for chaining
+
+    return ( this as unknown as PoolableVector2 );
   }
 
   /**
    * Same as rotateAboutXY but with a point argument.
-   * @public
-   *
-   * @param {Vector2} point
-   * @param {number} angle
-   * @returns {Vector2} this for chaining
    */
-  rotateAboutPoint( point, angle ) {
+  rotateAboutPoint( point: PoolableVector2, angle: number ): PoolableVector2 {
     return this.rotateAboutXY( point.x, point.y, angle );
   }
 
   /**
    * Immutable method that returns a new Vector2 that is rotated about the given point.
-   * @public
    *
-   * @param {number} x - origin for rotation in x
-   * @param {number} y - origin for rotation in y
-   * @param {number} angle - radians to rotate
-   * @returns {Vector2} the new Vector2
+   * @param x - origin for rotation in x
+   * @param y - origin for rotation in y
+   * @param angle - radians to rotate
    */
-  rotatedAboutXY( x, y, angle ) {
-    return new Vector2( this.x, this.y ).rotateAboutXY( x, y, angle );
+  rotatedAboutXY( x: number, y: number, angle: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x, this.y ).rotateAboutXY( x, y, angle );
   }
 
   /**
    * Immutable method that returns a new Vector2 rotated about the given point.
-   * @public
-   *
-   * @param {Vector2} point
-   * @param {number} angle
-   * @returns {Vector2} the new Vector2
    */
-  rotatedAboutPoint( point, angle ) {
+  rotatedAboutPoint( point: PoolableVector2, angle: number ): PoolableVector2 {
     return this.rotatedAboutXY( point.x, point.y, angle );
   }
 
   /**
    * A linear interpolation between this vector (ratio=0) and another vector (ratio=1).
-   * @public
    *
-   * @param {Vector2} vector
-   * @param {number} ratio - Not necessarily constrained in [0, 1]
-   * @returns {Vector2}
+   * @param vector
+   * @param ratio - Not necessarily constrained in [0, 1]
    */
-  blend( vector, ratio ) {
-    return new Vector2( this.x + ( vector.x - this.x ) * ratio, this.y + ( vector.y - this.y ) * ratio );
+  blend( vector: PoolableVector2, ratio: number ): PoolableVector2 {
+    return PoolableVector2.createFromPool( this.x + ( vector.x - this.x ) * ratio, this.y + ( vector.y - this.y ) * ratio );
   }
 
   /**
    * The average (midpoint) between this vector and another vector.
-   * @public
-   *
-   * @param {Vector2} vector
-   * @returns {Vector2}
    */
-  average( vector ) {
+  average( vector: PoolableVector2 ): PoolableVector2 {
     return this.blend( vector, 0.5 );
   }
 
   /**
    * Debugging string for the vector.
-   * @public
-   *
-   * @returns {string}
    */
-  toString() {
+  toString(): string {
     return `Vector2(${this.x}, ${this.y})`;
   }
 
   /**
    * Converts this to a 3-dimensional vector, with the z-component equal to 0.
-   * @public
-   *
-   * @returns {Vector3}
    */
-  toVector3() {
+  toVector3(): Vector3 {
     return new Vector3( this.x, this.y, 0 );
   }
 
@@ -582,240 +443,173 @@ class Vector2 {
 
   /**
    * Sets all of the components of this vector, returning this.
-   * @public
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {Vector2}
    */
-  setXY( x, y ) {
+  setXY( x: number, y: number ): PoolableVector2 {
     this.x = x;
     this.y = y;
-    return this;
+    return ( this as unknown as PoolableVector2 );
   }
 
   /**
    * Sets the x-component of this vector, returning this.
-   * @public
-   *
-   * @param {number} x
-   * @returns {Vector2}
    */
-  setX( x ) {
+  setX( x: number ): PoolableVector2 {
     this.x = x;
-    return this;
+
+    return ( this as unknown as PoolableVector2 );
   }
 
   /**
    * Sets the y-component of this vector, returning this.
-   * @public
-   *
-   * @param {number} y
-   * @returns {Vector2}
    */
-  setY( y ) {
+  setY( y: number ): PoolableVector2 {
     this.y = y;
-    return this;
+    return ( this as unknown as PoolableVector2 );
   }
 
   /**
    * Sets this vector to be a copy of another vector.
-   * @public
    *
    * This is the mutable form of the function copy(). This will mutate (change) this vector, in addition to returning
    * this vector itself.
-   *
-   * @param {Vector2} v
-   * @returns {Vector2}
    */
-  set( v ) {
+  set( v: PoolableVector2 ): PoolableVector2 {
     return this.setXY( v.x, v.y );
   }
 
   /**
    * Sets the magnitude of this vector. If the passed-in magnitude is negative, this flips the vector and sets its
    * magnitude to abs( magnitude ).
-   * @public
    *
    * This is the mutable form of the function withMagnitude(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} magnitude
-   * @returns {Vector2}
    */
-  setMagnitude( magnitude ) {
+  setMagnitude( magnitude: number ): PoolableVector2 {
     const scale = magnitude / this.magnitude;
+
     return this.multiplyScalar( scale );
   }
 
   /**
    * Adds another vector to this vector, changing this vector.
-   * @public
    *
    * This is the mutable form of the function plus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {Vector2} v
-   * @returns {Vector2}
    */
-  add( v ) {
+  add( v: PoolableVector2 ): PoolableVector2 {
     return this.setXY( this.x + v.x, this.y + v.y );
   }
 
   /**
    * Adds another vector (x,y) to this vector, changing this vector.
-   * @public
    *
    * This is the mutable form of the function plusXY(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {Vector2}
    */
-  addXY( x, y ) {
+  addXY( x: number, y: number ): PoolableVector2 {
     return this.setXY( this.x + x, this.y + y );
   }
 
   /**
    * Adds a scalar to this vector (added to every component), changing this vector.
-   * @public
    *
    * This is the mutable form of the function plusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  addScalar( scalar ) {
+  addScalar( scalar: number ): PoolableVector2 {
     return this.setXY( this.x + scalar, this.y + scalar );
   }
 
   /**
    * Subtracts this vector by another vector, changing this vector.
-   * @public
    *
    * This is the mutable form of the function minus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {Vector2} v
-   * @returns {Vector2}
    */
-  subtract( v ) {
+  subtract( v: PoolableVector2 ): PoolableVector2 {
     return this.setXY( this.x - v.x, this.y - v.y );
   }
 
   /**
    * Subtracts this vector by another vector (x,y), changing this vector.
-   * @public
    *
    * This is the mutable form of the function minusXY(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} x
-   * @param {number} y
-   * @returns {Vector2}
    */
-  subtractXY( x, y ) {
+  subtractXY( x: number, y: number ): PoolableVector2 {
     return this.setXY( this.x - x, this.y - y );
   }
 
   /**
    * Subtracts this vector by a scalar (subtracts each component by the scalar), changing this vector.
-   * @public
    *
    * This is the mutable form of the function minusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  subtractScalar( scalar ) {
+  subtractScalar( scalar: number ): PoolableVector2 {
     return this.setXY( this.x - scalar, this.y - scalar );
   }
 
   /**
    * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
-   * @public
    *
    * This is the mutable form of the function timesScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  multiplyScalar( scalar ) {
+  multiplyScalar( scalar: number ): PoolableVector2 {
     return this.setXY( this.x * scalar, this.y * scalar );
   }
 
   /**
    * Multiplies this vector by a scalar (multiplies each component by the scalar), changing this vector.
    * Same as multiplyScalar.
-   * @public
    *
    * This is the mutable form of the function times(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  multiply( scalar ) {
-    // make sure it's not a vector!
-    assert && assert( scalar.dimension === undefined );
+  multiply( scalar: number ): PoolableVector2 {
+    assert && assert( typeof scalar === 'number' );
+
     return this.multiplyScalar( scalar );
   }
 
   /**
    * Multiplies this vector by another vector component-wise, changing this vector.
-   * @public
    *
    * This is the mutable form of the function componentTimes(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {Vector2} v
-   * @returns {Vector2}
    */
-  componentMultiply( v ) {
+  componentMultiply( v: PoolableVector2 ): PoolableVector2 {
     return this.setXY( this.x * v.x, this.y * v.y );
   }
 
   /**
    * Divides this vector by a scalar (divides each component by the scalar), changing this vector.
-   * @public
    *
    * This is the mutable form of the function dividedScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @param {number} scalar
-   * @returns {Vector2}
    */
-  divideScalar( scalar ) {
+  divideScalar( scalar: number ): PoolableVector2 {
     return this.setXY( this.x / scalar, this.y / scalar );
   }
 
   /**
    * Negates this vector (multiplies each component by -1), changing this vector.
-   * @public
    *
    * This is the mutable form of the function negated(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @returns {Vector2}
    */
-  negate() {
+  negate(): PoolableVector2 {
     return this.setXY( -this.x, -this.y );
   }
 
   /**
    * Normalizes this vector (rescales to where the magnitude is 1), changing this vector.
-   * @public
    *
    * This is the mutable form of the function normalized(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
-   *
-   * @returns {Vector2}
    */
-  normalize() {
+  normalize(): PoolableVector2 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -827,28 +621,23 @@ class Vector2 {
 
   /**
    * Rounds each component of this vector with Utils.roundSymmetric.
-   * @public
    *
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.
-   *
-   * @returns {Vector2}
    */
-  roundSymmetric() {
+  roundSymmetric(): PoolableVector2 {
     return this.setXY( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ) );
   }
 
   /**
    * Rotates this vector by the angle (in radians), changing this vector.
-   * @public
    *
    * This is the mutable form of the function rotated(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    *
-   * @param {number} angle - In radians
-   * @returns {Vector2}
+   * @param angle - In radians
    */
-  rotate( angle ) {
+  rotate( angle: number ): PoolableVector2 {
     const newAngle = this.angle + angle;
     const mag = this.magnitude;
     return this.setXY( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
@@ -857,24 +646,21 @@ class Vector2 {
   /**
    * Sets this vector's value to be the x,y values matching the given magnitude and angle (in radians), changing
    * this vector, and returning itself.
-   * @public
    *
-   * @param {number} magnitude
-   * @param {number} angle - In radians
-   * @returns {Vector2}
+   * @param magnitude
+   * @param angle - In radians
    */
-  setPolar( magnitude, angle ) {
+  setPolar( magnitude: number, angle: number ): PoolableVector2 {
     return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
   }
 
   /**
    * Returns a duck-typed object meant for use with tandem/phet-io serialization. Although this is redundant with
    * stateSchema, it is a nice feature of such a heavily-used type to be able to call toStateObject directly on the type.
-   * @public
    *
-   * @returns {Object} - see stateSchema for schema
+   * @returns - see stateSchema for schema
    */
-  toStateObject() {
+  toStateObject(): { x: number, y: number } {
     return {
       x: NumberIO.toStateObject( this.x ),
       y: NumberIO.toStateObject( this.y )
@@ -884,10 +670,8 @@ class Vector2 {
 
   /**
    * Returns a map of state keys and their associated IOTypes, see IOType.fromCoreType for details.
-   * @returns {Object.<string,IOType>}
-   * @public
    */
-  static get STATE_SCHEMA() {
+  static get STATE_SCHEMA(): { x: IOType, y: IOType } {
     return {
       x: NumberIO,
       y: NumberIO
@@ -899,27 +683,18 @@ class Vector2 {
   /**
    * Returns a Vector2 with the specified magnitude $r$ and angle $\theta$ (in radians), with the formula:
    * $$ f( r, \theta ) = \begin{bmatrix} r\cos\theta \\ r\sin\theta \end{bmatrix} $$
-   * @public
-   * @static
-   *
-   * @param {number} magnitude
-   * @param {number} angle
-   * @returns {Vector2}
    */
-  static createPolar( magnitude, angle ) {
+  static createPolar( magnitude: number, angle: number ): PoolableVector2 {
     return new Vector2( 0, 0 ).setPolar( magnitude, angle );
   }
 
   /**
    * Constructs a Vector2 from a duck-typed object, for use with tandem/phet-io deserialization.
-   * @public
-   * @static
    *
-   * @param {Object} stateObject - see stateSchema for schema
-   * @returns {Vector2}
+   * @param stateObject - see stateSchema for schema
    */
-  static fromStateObject( stateObject ) {
-    return new Vector2(
+  static fromStateObject( stateObject: { x: number, y: number } ): PoolableVector2 {
+    return PoolableVector2.createFromPool(
       NumberIO.fromStateObject( stateObject.x ),
       NumberIO.fromStateObject( stateObject.y )
     );
@@ -927,14 +702,10 @@ class Vector2 {
 
   /**
    * Allocation-free implementation that gets the angle between two vectors
-   * @public
-   * @static
    *
-   * @param {Vector2} startVector
-   * @param {Vector2} endVector
-   * @returns {number} the angle between the vectors
+   * @returns the angle between the vectors
    */
-  static getAngleBetweenVectors( startVector, endVector ) {
+  static getAngleBetweenVectors( startVector: PoolableVector2, endVector: PoolableVector2 ): number {
     const dx = endVector.x - startVector.x;
     const dy = endVector.y - startVector.y;
     return Math.atan2( dy, dx );
@@ -942,18 +713,34 @@ class Vector2 {
 
   /**
    * Allocation-free way to get the distance between vectors.
-   * @public
-   * @static
    *
-   * @param {Vector2} startVector
-   * @param {Vector2} endVector
-   * @returns {number} the angle between the vectors
+   * @returns the angle between the vectors
    */
-  static getDistanceBetweenVectors( startVector, endVector ) {
+  static getDistanceBetweenVectors( startVector: PoolableVector2, endVector: PoolableVector2 ): number {
     const dx = endVector.x - startVector.x;
     const dy = endVector.y - startVector.y;
     return Math.sqrt( dx * dx + dy * dy );
   }
+
+  isVector2!: boolean;
+  dimension!: number;
+
+  /**
+   * ImmutableVector2 zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
+   */
+  static ZERO: PoolableVector2;
+
+  /**
+   * ImmutableVector2 vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
+   */
+  static X_UNIT: PoolableVector2;
+
+  /**
+   * ImmutableVector2 vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
+   */
+  static Y_UNIT: PoolableVector2;
+
+  static Vector2IO: IOType;
 }
 
 // @public (read-only) - Helps to identify the dimension of the vector
@@ -962,57 +749,40 @@ Vector2.prototype.dimension = 2;
 
 dot.register( 'Vector2', Vector2 );
 
+type PoolableVector2 = PoolableVersion<typeof Vector2>;
+const PoolableVector2 = Poolable.mixInto( Vector2, { // eslint-disable-line
+  maxSize: 1000
+} );
+
 // Sets up pooling on Vector2
 Poolable.mixInto( Vector2, {
   initialize: Vector2.prototype.setXY,
   defaultArguments: [ 0, 0 ]
 } );
 
-class ImmutableVector2 extends Vector2 {
+class ImmutableVector2 extends PoolableVector2 {
   /**
    * Throw errors whenever a mutable method is called on our immutable vector
-   * @public
-   *
-   * @param {*} mutableFunctionName
    */
-  static mutableOverrideHelper( mutableFunctionName ) {
+  static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setXY' ) {
     ImmutableVector2.prototype[ mutableFunctionName ] = () => {
       throw new Error( `Cannot call mutable method '${mutableFunctionName}' on immutable Vector2` );
     };
   }
 }
 
-// TODO: better way to handle this list?
 ImmutableVector2.mutableOverrideHelper( 'setXY' );
 ImmutableVector2.mutableOverrideHelper( 'setX' );
 ImmutableVector2.mutableOverrideHelper( 'setY' );
 
-/**
- * ImmutableVector2 zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
- * @public
- *
- * @constant {Vector2} ZERO
- */
-Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new Vector2( 0, 0 );
 
-/**
- * ImmutableVector2 vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
- * @public
- *
- * @constant {Vector2} X_UNIT
- */
-Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
-
-/**
- * ImmutableVector2 vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
- * @public
- *
- * @constant {Vector2} Y_UNIT
- */
-Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
+Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new PoolableVector2( 0, 0 );
+Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new PoolableVector2( 1, 0 );
+Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new PoolableVector2( 0, 1 );
 
 Vector2.Vector2IO = IOType.fromCoreType( 'Vector2IO', Vector2, {
   documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
 } );
 
-export default Vector2;
+export default PoolableVector2;
+export { Vector2 as RawVector2 };
