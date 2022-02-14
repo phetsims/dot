@@ -775,7 +775,6 @@ ImmutableVector2.mutableOverrideHelper( 'setXY' );
 ImmutableVector2.mutableOverrideHelper( 'setX' );
 ImmutableVector2.mutableOverrideHelper( 'setY' );
 
-
 Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new PoolableVector2( 0, 0 );
 Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new PoolableVector2( 1, 0 );
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new PoolableVector2( 0, 1 );
