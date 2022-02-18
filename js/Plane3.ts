@@ -7,35 +7,28 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Ray3 from './Ray3.js';
 import Vector3 from './Vector3.js';
 import dot from './dot.js';
 
 class Plane3 {
+
+  normal: Vector3;
+  distance: number;
+
   /**
-   *
-   * @param {Vector3} normal - A normal vector (perpendicular) to the plane
-   * @param {number} distance - The signed distance to the plane from the origin, so that normal.times( distance )
+   * @param normal - A normal vector (perpendicular) to the plane
+   * @param distance - The signed distance to the plane from the origin, so that normal.times( distance )
    *                            will be a point on the plane.
    */
-  constructor( normal, distance ) {
-    // @public {Vector3}
+  constructor( normal: Vector3, distance: number ) {
     this.normal = normal;
-
-    // @public {number}
     this.distance = distance;
 
     assert && assert( Math.abs( normal.magnitude - 1 ) < 0.01, 'the normal vector must be a unit vector' );
   }
 
-
-  /**
-   * Returns the intersection point of a ray with this plane.
-   * @public
-   *
-   * @param {Ray3} ray
-   * @returns {Vector3}
-   */
-  intersectWithRay( ray ) {
+  intersectWithRay( ray: Ray3 ): Vector3 {
     return ray.pointAtDistance( ray.distanceToPlane( this ) );
   }
 
@@ -43,14 +36,12 @@ class Plane3 {
    * Returns a new plane that passes through three points $(\vec{a},\vec{b},\vec{c})$
    * The normal of the plane points along $\vec{c-a} \times \vec{b-a}$
    * Passing three collinear points will return null
-   * @public
    *
-   * @param {Vector3} a - first point
-   * @param {Vector3} b - second point
-   * @param {Vector3} c - third point
-   * @returns {Plane3|null}
+   * @param a - first point
+   * @param b - second point
+   * @param c - third point
    */
-  static fromTriangle( a, b, c ) {
+  static fromTriangle( a: Vector3, b: Vector3, c: Vector3 ): Plane3 | null {
     const normal = ( c.minus( a ) ).cross( b.minus( a ) );
     if ( normal.magnitude === 0 ) {
       return null;
@@ -59,11 +50,14 @@ class Plane3 {
 
     return new Plane3( normal, normal.dot( a ) );
   }
+
+  static XY: Plane3;
+  static XZ: Plane3;
+  static YZ: Plane3;
 }
 
 dot.register( 'Plane3', Plane3 );
 
-// @public {Plane3}
 Plane3.XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
 Plane3.XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
 Plane3.YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );

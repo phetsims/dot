@@ -751,11 +751,7 @@ dot.register( 'Vector2', Vector2 );
 
 type PoolableVector2 = PoolableVersion<typeof Vector2>;
 const PoolableVector2 = Poolable.mixInto( Vector2, { // eslint-disable-line
-  maxSize: 1000
-} );
-
-// Sets up pooling on Vector2
-Poolable.mixInto( Vector2, {
+  maxSize: 1000,
   initialize: Vector2.prototype.setXY,
   defaultArguments: [ 0, 0 ]
 } );
