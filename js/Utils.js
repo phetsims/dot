@@ -696,7 +696,7 @@ const Utils = {
    * @param {Vector2} a
    * @param {Vector2} b
    * @param {Vector2} c
-   * @param {number} epsilon
+   * @param {number} [epsilon]
    * @returns {boolean}
    */
   arePointsCollinear( a, b, c, epsilon ) {
