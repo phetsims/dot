@@ -1,4 +1,4 @@
-// Copyright 2014-2020, University of Colorado Boulder
+// Copyright 2014-2022, University of Colorado Boulder
 
 /**
  * A mathematical plane in 3 dimensions determined by a normal vector to the plane and the distance to the closest
