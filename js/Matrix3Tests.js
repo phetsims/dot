@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Matrix3 from './Matrix3.js';
+import Matrix3, { Matrix3Type } from './Matrix3.js';
 import Vector2 from './Vector2.js';
 
 QUnit.module( 'Matrix3' );
@@ -57,9 +57,9 @@ function V2() {
 }
 
 QUnit.test( 'Affine detection', assert => {
-  assert.equal( A().type, Matrix3.Types.OTHER );
-  assert.equal( B().type, Matrix3.Types.OTHER );
-  assert.equal( C().type, Matrix3.Types.AFFINE );
+  assert.equal( A().type, Matrix3Type.OTHER );
+  assert.equal( B().type, Matrix3Type.OTHER );
+  assert.equal( C().type, Matrix3Type.AFFINE );
 } );
 
 QUnit.test( 'Row-major', assert => {

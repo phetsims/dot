@@ -43,7 +43,7 @@ class Matrix4 {
     // @public {Float32Array} - entries stored in column-major format
     this.entries = new Float32Array( 16 );
 
-    // @public {Matrix3.Types}
+    // @public {Matrix4.Types}
     this.type = Types.OTHER; // will be set by rowMajor
 
     this.rowMajor(
