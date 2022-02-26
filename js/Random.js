@@ -209,9 +209,38 @@ class Random {
     // @private {function:number|null}
     this.seedrandom = Math.seedrandom ? new Math.seedrandom( `${seed}` ) : () => Math.random(); // eslint-disable-line bad-sim-text
   }
+
+  /**
+   * Choose a numeric index from the array of weights.  The array of weights does not need to be normalized.
+   * See https://stackoverflow.com/questions/8877249/generate-random-integers-with-probabilities
+   * See also ContinuousServer.weightedSampleTest which uses the same algorithm
+   * @param {number[]} weights
+   * @returns {number}
+   * @public
+   */
+  sampleProbabilities( weights ) {
+    const totalWeight = _.sum( weights );
+
+    const cutoffWeight = totalWeight * this.nextDouble();
+    let cumulativeWeight = 0;
+
+    for ( let i = 0; i < weights.length; i++ ) {
+      cumulativeWeight += weights[ i ];
+      if ( cumulativeWeight >= cutoffWeight ) {
+        return i;
+      }
+    }
+
+    // The fallback is the last test
+    assert && assert( !weights[ weights.length - 1 ] === 0, 'if last weight is zero, should have selected something beforehand' );
+    return weights.length - 1;
+  }
 }
 
 Random.allRandomInstances = new Set();
+Random.isNormalized = array => {
+  assert && assert( _.sum( array ) === 1 );
+};
 
 dot.register( 'Random', Random );
 
