@@ -1,4 +1,4 @@
-// Copyright 2015-2021, University of Colorado Boulder
+// Copyright 2015-2022, University of Colorado Boulder
 
 /**
  * Random number generator with an optional seed.  It uses seedrandom.js, a monkey patch for Math, see
