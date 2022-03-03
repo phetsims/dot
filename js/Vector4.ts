@@ -6,12 +6,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Poolable, { PoolableVersion } from '../../phet-core/js/Poolable.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
 import dot from './dot.js';
+import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 
-class Vector4 {
+class Vector4 implements IPoolable {
 
   // The X coordinate of the vector.
   x: number;
@@ -62,7 +62,7 @@ class Vector4 {
    * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2+z^2+w^2$.
    */
   getMagnitudeSquared(): number {
-    return this.dot( this as unknown as PoolableVector4 );
+    return this.dot( this as unknown as Vector4 );
   }
 
   get magnitudeSquared(): number {
@@ -72,7 +72,7 @@ class Vector4 {
   /**
    * The Euclidean distance between this vector (treated as a point) and another point.
    */
-  distance( point: PoolableVector4 ): number {
+  distance( point: Vector4 ): number {
     return this.minus( point ).magnitude;
   }
 
@@ -90,7 +90,7 @@ class Vector4 {
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point.
    */
-  distanceSquared( point: PoolableVector4 ): number {
+  distanceSquared( point: Vector4 ): number {
     return this.minus( point ).magnitudeSquared;
   }
 
@@ -108,7 +108,7 @@ class Vector4 {
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector v.
    */
-  dot( v: PoolableVector4 ): number {
+  dot( v: Vector4 ): number {
     return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
   }
 
@@ -125,7 +125,7 @@ class Vector4 {
    * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
    * is the input vector (normalized).
    */
-  angleBetween( v: PoolableVector4 ): number {
+  angleBetween( v: Vector4 ): number {
     // @ts-ignore TODO: import with circular protection
     return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
   }
@@ -136,7 +136,7 @@ class Vector4 {
    * @param other
    * @returns - Whether the two vectors have equal components
    */
-  equals( other: PoolableVector4 ): boolean {
+  equals( other: Vector4 ): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
   }
 
@@ -146,7 +146,7 @@ class Vector4 {
    * @returns - Whether difference between the two vectors has no component with an absolute value greater
    *                      than epsilon.
    */
-  equalsEpsilon( other: PoolableVector4, epsilon: number ): boolean {
+  equalsEpsilon( other: Vector4, epsilon: number ): boolean {
     if ( !epsilon ) {
       epsilon = 0;
     }
@@ -170,15 +170,15 @@ class Vector4 {
    * This is the immutable form of the function set(), if a vector is provided. This will return a new vector, and
    * will not modify this vector.
    *
-   * @param  [vector] - If not provided, creates a PoolableVector4.createFromPool with filled in values. Otherwise, fills in the
+   * @param  [vector] - If not provided, creates a v4 with filled in values. Otherwise, fills in the
    *                    values of the provided vector so that it equals this vector.
    */
-  copy( vector?: PoolableVector4 ): PoolableVector4 {
+  copy( vector?: Vector4 ): Vector4 {
     if ( vector ) {
-      return vector.set( this as unknown as PoolableVector4 );
+      return vector.set( this as unknown as Vector4 );
     }
     else {
-      return PoolableVector4.createFromPool( this.x, this.y, this.z, this.w );
+      return v4( this.x, this.y, this.z, this.w );
     }
   }
 
@@ -189,7 +189,7 @@ class Vector4 {
    * This is the immutable form of the function normalize(). This will return a new vector, and will not modify this
    * vector.
    */
-  normalized(): PoolableVector4 {
+  normalized(): Vector4 {
     const magnitude = this.magnitude;
     assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude vector' );
     return this.dividedScalar( magnitude );
@@ -201,7 +201,7 @@ class Vector4 {
    * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
    * this vector.
    */
-  roundedSymmetric(): PoolableVector4 {
+  roundedSymmetric(): Vector4 {
     return this.copy().roundSymmetric();
   }
 
@@ -213,7 +213,7 @@ class Vector4 {
    * this vector.
    *
    */
-  withMagnitude( magnitude: number ): PoolableVector4 {
+  withMagnitude( magnitude: number ): Vector4 {
     return this.copy().setMagnitude( magnitude );
   }
 
@@ -225,8 +225,8 @@ class Vector4 {
    *
    * @param {number} scalar
    */
-  timesScalar( scalar: number ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
+  timesScalar( scalar: number ): Vector4 {
+    return v4( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
   }
 
   /**
@@ -235,7 +235,7 @@ class Vector4 {
    * This is the immutable form of the function multiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  times( scalar: number ): PoolableVector4 {
+  times( scalar: number ): Vector4 {
     // make sure it's not a vector!
     assert && assert( typeof scalar === 'number' );
     return this.timesScalar( scalar );
@@ -247,8 +247,8 @@ class Vector4 {
    * This is the immutable form of the function componentMultiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  componentTimes( v: PoolableVector4 ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
+  componentTimes( v: Vector4 ): Vector4 {
+    return v4( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
   }
 
   /**
@@ -257,8 +257,8 @@ class Vector4 {
    * This is the immutable form of the function add(). This will return a new vector, and will not modify
    * this vector.
    */
-  plus( v: PoolableVector4 ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
+  plus( v: Vector4 ): Vector4 {
+    return v4( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
   }
 
   /**
@@ -267,8 +267,8 @@ class Vector4 {
    * This is the immutable form of the function addXYZW(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusXYZW( x: number, y: number, z: number, w: number ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x + x, this.y + y, this.z + z, this.w + w );
+  plusXYZW( x: number, y: number, z: number, w: number ): Vector4 {
+    return v4( this.x + x, this.y + y, this.z + z, this.w + w );
   }
 
   /**
@@ -277,8 +277,8 @@ class Vector4 {
    * This is the immutable form of the function addScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusScalar( scalar: number ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
+  plusScalar( scalar: number ): Vector4 {
+    return v4( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
   }
 
   /**
@@ -287,8 +287,8 @@ class Vector4 {
    * This is the immutable form of the function subtract(). This will return a new vector, and will not modify
    * this vector.
    */
-  minus( v: PoolableVector4 ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
+  minus( v: Vector4 ): Vector4 {
+    return v4( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
   }
 
   /**
@@ -297,8 +297,8 @@ class Vector4 {
    * This is the immutable form of the function subtractXYZW(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusXYZW( x: number, y: number, z: number, w: number ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x - x, this.y - y, this.z - z, this.w - w );
+  minusXYZW( x: number, y: number, z: number, w: number ): Vector4 {
+    return v4( this.x - x, this.y - y, this.z - z, this.w - w );
   }
 
   /**
@@ -307,8 +307,8 @@ class Vector4 {
    * This is the immutable form of the function subtractScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusScalar( scalar: number ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
+  minusScalar( scalar: number ): Vector4 {
+    return v4( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
   }
 
   /**
@@ -317,8 +317,8 @@ class Vector4 {
    * This is the immutable form of the function divideScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  dividedScalar( scalar: number ): PoolableVector4 {
-    return PoolableVector4.createFromPool( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
+  dividedScalar( scalar: number ): Vector4 {
+    return v4( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
   }
 
   /**
@@ -328,8 +328,8 @@ class Vector4 {
    * this vector.
    *
    */
-  negated(): PoolableVector4 {
-    return PoolableVector4.createFromPool( -this.x, -this.y, -this.z, -this.w );
+  negated(): Vector4 {
+    return v4( -this.x, -this.y, -this.z, -this.w );
   }
 
   /**
@@ -338,14 +338,14 @@ class Vector4 {
    * @param vector
    * @param ratio - Not necessarily constrained in [0, 1]
    */
-  blend( vector: PoolableVector4, ratio: number ): PoolableVector4 {
-    return this.plus( vector.minus( this as unknown as PoolableVector4 ).times( ratio ) );
+  blend( vector: Vector4, ratio: number ): Vector4 {
+    return this.plus( vector.minus( this as unknown as Vector4 ).times( ratio ) );
   }
 
   /**
    * The average (midpoint) between this vector and another vector.
    */
-  average( vector: PoolableVector4 ): PoolableVector4 {
+  average( vector: Vector4 ): Vector4 {
     return this.blend( vector, 0.5 );
   }
 
@@ -371,44 +371,44 @@ class Vector4 {
   /**
    * Sets all of the components of this vector, returning this.
    */
-  setXYZW( x: number, y: number, z: number, w: number ): PoolableVector4 {
+  setXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     this.x = x;
     this.y = y;
     this.z = z;
     this.w = w;
-    return this as unknown as PoolableVector4;
+    return this as unknown as Vector4;
   }
 
   /**
    * Sets the x-component of this vector, returning this.
    */
-  setX( x: number ): PoolableVector4 {
+  setX( x: number ): Vector4 {
     this.x = x;
-    return this as unknown as PoolableVector4;
+    return this as unknown as Vector4;
   }
 
   /**
    * Sets the y-component of this vector, returning this.
    */
-  setY( y: number ): PoolableVector4 {
+  setY( y: number ): Vector4 {
     this.y = y;
-    return this as unknown as PoolableVector4;
+    return this as unknown as Vector4;
   }
 
   /**
    * Sets the z-component of this vector, returning this.
    */
-  setZ( z: number ): PoolableVector4 {
+  setZ( z: number ): Vector4 {
     this.z = z;
-    return this as unknown as PoolableVector4;
+    return this as unknown as Vector4;
   }
 
   /**
    * Sets the w-component of this vector, returning this.
    */
-  setW( w: number ): PoolableVector4 {
+  setW( w: number ): Vector4 {
     this.w = w;
-    return this as unknown as PoolableVector4;
+    return this as unknown as Vector4;
   }
 
   /**
@@ -417,7 +417,7 @@ class Vector4 {
    * This is the mutable form of the function copy(). This will mutate (change) this vector, in addition to returning
    * this vector itself.
    */
-  set( v: PoolableVector4 ): PoolableVector4 {
+  set( v: Vector4 ): Vector4 {
     return this.setXYZW( v.x, v.y, v.z, v.w );
   }
 
@@ -428,7 +428,7 @@ class Vector4 {
    * This is the mutable form of the function withMagnitude(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  setMagnitude( magnitude: number ): PoolableVector4 {
+  setMagnitude( magnitude: number ): Vector4 {
     const scale = magnitude / this.magnitude;
     return this.multiplyScalar( scale );
   }
@@ -439,7 +439,7 @@ class Vector4 {
    * This is the mutable form of the function plus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  add( v: PoolableVector4 ): PoolableVector4 {
+  add( v: Vector4 ): Vector4 {
     return this.setXYZW( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
   }
 
@@ -449,7 +449,7 @@ class Vector4 {
    * This is the mutable form of the function plusXYZW(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addXYZW( x: number, y: number, z: number, w: number ): PoolableVector4 {
+  addXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     return this.setXYZW( this.x + x, this.y + y, this.z + z, this.w + w );
   }
 
@@ -459,7 +459,7 @@ class Vector4 {
    * This is the mutable form of the function plusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addScalar( scalar: number ): PoolableVector4 {
+  addScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
   }
 
@@ -469,7 +469,7 @@ class Vector4 {
    * This is the mutable form of the function minus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtract( v: PoolableVector4 ): PoolableVector4 {
+  subtract( v: Vector4 ): Vector4 {
     return this.setXYZW( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
   }
 
@@ -479,7 +479,7 @@ class Vector4 {
    * This is the mutable form of the function minusXYZW(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractXYZW( x: number, y: number, z: number, w: number ): PoolableVector4 {
+  subtractXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     return this.setXYZW( this.x - x, this.y - y, this.z - z, this.w - w );
   }
 
@@ -489,7 +489,7 @@ class Vector4 {
    * This is the mutable form of the function minusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractScalar( scalar: number ): PoolableVector4 {
+  subtractScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
   }
 
@@ -499,7 +499,7 @@ class Vector4 {
    * This is the mutable form of the function timesScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiplyScalar( scalar: number ): PoolableVector4 {
+  multiplyScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
   }
 
@@ -510,7 +510,7 @@ class Vector4 {
    * This is the mutable form of the function times(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiply( scalar: number ): PoolableVector4 {
+  multiply( scalar: number ): Vector4 {
     // make sure it's not a vector!
     assert && assert( typeof scalar === 'number' );
     return this.multiplyScalar( scalar );
@@ -522,7 +522,7 @@ class Vector4 {
    * This is the mutable form of the function componentTimes(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  componentMultiply( v: PoolableVector4 ): PoolableVector4 {
+  componentMultiply( v: Vector4 ): Vector4 {
     return this.setXYZW( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
   }
 
@@ -532,7 +532,7 @@ class Vector4 {
    * This is the mutable form of the function dividedScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  divideScalar( scalar: number ): PoolableVector4 {
+  divideScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
   }
 
@@ -542,7 +542,7 @@ class Vector4 {
    * This is the mutable form of the function negated(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  negate(): PoolableVector4 {
+  negate(): Vector4 {
     return this.setXYZW( -this.x, -this.y, -this.z, -this.w );
   }
 
@@ -552,7 +552,7 @@ class Vector4 {
    * This is the mutable form of the function normalized(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  normalize(): PoolableVector4 {
+  normalize(): Vector4 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -566,17 +566,27 @@ class Vector4 {
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.
    */
-  roundSymmetric(): PoolableVector4 {
+  roundSymmetric(): Vector4 {
     return this.setXYZW( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ), Utils.roundSymmetric( this.w ) );
   }
 
+  freeToPool() {
+    Vector4.pool.freeToPool( this );
+  }
+
+  static pool = new Pool( Vector4, {
+    maxSize: 1000,
+    initialize: Vector4.prototype.setXYZW,
+    defaultArguments: [ 0, 0, 0, 0 ]
+  } );
+
   isVector4!: boolean;
   dimension!: number;
-  static ZERO: PoolableVector4;
-  static X_UNIT: PoolableVector4;
-  static Y_UNIT: PoolableVector4;
-  static Z_UNIT: PoolableVector4;
-  static W_UNIT: PoolableVector4;
+  static ZERO: Vector4;
+  static X_UNIT: Vector4;
+  static Y_UNIT: Vector4;
+  static Z_UNIT: Vector4;
+  static W_UNIT: Vector4;
 }
 
 // @public (read-only) - Helps to identify the dimension of the vector
@@ -585,14 +595,10 @@ Vector4.prototype.dimension = 4;
 
 dot.register( 'Vector4', Vector4 );
 
-type PoolableVector4 = PoolableVersion<typeof Vector4>;
-const PoolableVector4 = Poolable.mixInto( Vector4, { // eslint-disable-line
-  maxSize: 1000,
-  initialize: Vector4.prototype.setXYZW,
-  defaultArguments: [ 0, 0, 0, 0 ]
-} );
+const v4 = Vector4.pool.create.bind( Vector4.pool );
+dot.register( 'v4', v4 );
 
-class ImmutableVector4 extends PoolableVector4 {
+class ImmutableVector4 extends Vector4 {
   /**
    * Throw errors whenever a mutable method is called on our immutable vector
    */
@@ -609,11 +615,11 @@ ImmutableVector4.mutableOverrideHelper( 'setY' );
 ImmutableVector4.mutableOverrideHelper( 'setZ' );
 ImmutableVector4.mutableOverrideHelper( 'setW' );
 
-Vector4.ZERO = assert ? new ImmutableVector4( 0, 0, 0, 0 ) : new PoolableVector4( 0, 0, 0, 0 );
-Vector4.X_UNIT = assert ? new ImmutableVector4( 1, 0, 0, 0 ) : new PoolableVector4( 1, 0, 0, 0 );
-Vector4.Y_UNIT = assert ? new ImmutableVector4( 0, 1, 0, 0 ) : new PoolableVector4( 0, 1, 0, 0 );
-Vector4.Z_UNIT = assert ? new ImmutableVector4( 0, 0, 1, 0 ) : new PoolableVector4( 0, 0, 1, 0 );
-Vector4.W_UNIT = assert ? new ImmutableVector4( 0, 0, 0, 1 ) : new PoolableVector4( 0, 0, 0, 1 );
+Vector4.ZERO = assert ? new ImmutableVector4( 0, 0, 0, 0 ) : new Vector4( 0, 0, 0, 0 );
+Vector4.X_UNIT = assert ? new ImmutableVector4( 1, 0, 0, 0 ) : new Vector4( 1, 0, 0, 0 );
+Vector4.Y_UNIT = assert ? new ImmutableVector4( 0, 1, 0, 0 ) : new Vector4( 0, 1, 0, 0 );
+Vector4.Z_UNIT = assert ? new ImmutableVector4( 0, 0, 1, 0 ) : new Vector4( 0, 0, 1, 0 );
+Vector4.W_UNIT = assert ? new ImmutableVector4( 0, 0, 0, 1 ) : new Vector4( 0, 0, 0, 1 );
 
-export default PoolableVector4;
-export { Vector4 as RawVector4 };
+export default Vector4;
+export { v4 };

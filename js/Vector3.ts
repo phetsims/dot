@@ -6,13 +6,13 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Poolable, { PoolableVersion } from '../../phet-core/js/Poolable.js';
+import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Utils from './Utils.js';
-import Vector2 from './Vector2.js';
-import Vector4 from './Vector4.js';
+import Vector2, { v2 } from './Vector2.js';
+import Vector4, { v4 } from './Vector4.js';
 
 type Vector3StateObject = {
   x: number;
@@ -20,7 +20,7 @@ type Vector3StateObject = {
   z: number;
 };
 
-class Vector3 {
+class Vector3 implements IPoolable {
 
   // The X coordinate of the vector.
   x: number;
@@ -65,7 +65,7 @@ class Vector3 {
    * T squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2+z^2$.
    */
   getMagnitudeSquared(): number {
-    return this.dot( this as unknown as PoolableVector3 );
+    return this.dot( this as unknown as Vector3 );
   }
 
   get magnitudeSquared(): number {
@@ -75,7 +75,7 @@ class Vector3 {
   /**
    * The Euclidean distance between this vector (treated as a point) and another point.
    */
-  distance( point: PoolableVector3 ): number {
+  distance( point: Vector3 ): number {
     return Math.sqrt( this.distanceSquared( point ) );
   }
 
@@ -92,7 +92,7 @@ class Vector3 {
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point.
    */
-  distanceSquared( point: PoolableVector3 ): number {
+  distanceSquared( point: Vector3 ): number {
     const dx = this.x - point.x;
     const dy = this.y - point.y;
     const dz = this.z - point.z;
@@ -112,7 +112,7 @@ class Vector3 {
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector v.
    */
-  dot( v: PoolableVector3 ): number {
+  dot( v: Vector3 ): number {
     return this.x * v.x + this.y * v.y + this.z * v.z;
   }
 
@@ -129,7 +129,7 @@ class Vector3 {
    * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
    * is the input vector (normalized).
    */
-  angleBetween( v: PoolableVector3 ): number {
+  angleBetween( v: Vector3 ): number {
     // @ts-ignore TODO: import with circular protection
     return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
   }
@@ -139,7 +139,7 @@ class Vector3 {
    *
    * @returns - Whether the two vectors have equal components
    */
-  equals( other: PoolableVector3 ): boolean {
+  equals( other: Vector3 ): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z;
   }
 
@@ -149,7 +149,7 @@ class Vector3 {
    * @returns - Whether difference between the two vectors has no component with an absolute value greater
    *                      than epsilon.
    */
-  equalsEpsilon( other: PoolableVector3, epsilon: number ): boolean {
+  equalsEpsilon( other: Vector3, epsilon: number ): boolean {
     if ( !epsilon ) {
       epsilon = 0;
     }
@@ -176,20 +176,20 @@ class Vector3 {
    * @param [vector] - If not provided, creates a new Vector3 with filled in values. Otherwise, fills in the
    *                   values of the provided vector so that it equals this vector.
    */
-  copy( vector?: PoolableVector3 ): PoolableVector3 {
+  copy( vector?: Vector3 ): Vector3 {
     if ( vector ) {
-      return vector.set( this as unknown as PoolableVector3 );
+      return vector.set( this as unknown as Vector3 );
     }
     else {
-      return PoolableVector3.createFromPool( this.x, this.y, this.z );
+      return v3( this.x, this.y, this.z );
     }
   }
 
   /**
    * The Euclidean 3-dimensional cross-product of this vector by the passed-in vector.
    */
-  cross( v: PoolableVector3 ): PoolableVector3 {
-    return PoolableVector3.createFromPool(
+  cross( v: Vector3 ): Vector3 {
+    return v3(
       this.y * v.z - this.z * v.y,
       this.z * v.x - this.x * v.z,
       this.x * v.y - this.y * v.x
@@ -203,13 +203,13 @@ class Vector3 {
    * This is the immutable form of the function normalize(). This will return a new vector, and will not modify this
    * vector.
    */
-  normalized(): PoolableVector3 {
+  normalized(): Vector3 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
     }
     else {
-      return PoolableVector3.createFromPool( this.x / mag, this.y / mag, this.z / mag );
+      return v3( this.x / mag, this.y / mag, this.z / mag );
     }
   }
 
@@ -218,7 +218,7 @@ class Vector3 {
    * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
    * this vector.
    */
-  roundedSymmetric(): PoolableVector3 {
+  roundedSymmetric(): Vector3 {
     return this.copy().roundSymmetric();
   }
 
@@ -229,7 +229,7 @@ class Vector3 {
    * This is the immutable form of the function setMagnitude(). This will return a new vector, and will not modify
    * this vector.
    */
-  withMagnitude( magnitude: number ): PoolableVector3 {
+  withMagnitude( magnitude: number ): Vector3 {
     return this.copy().setMagnitude( magnitude );
   }
 
@@ -239,8 +239,8 @@ class Vector3 {
    * This is the immutable form of the function multiplyScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  timesScalar( scalar: number ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x * scalar, this.y * scalar, this.z * scalar );
+  timesScalar( scalar: number ): Vector3 {
+    return v3( this.x * scalar, this.y * scalar, this.z * scalar );
   }
 
   /**
@@ -249,7 +249,7 @@ class Vector3 {
    * This is the immutable form of the function multiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  times( scalar: number ): PoolableVector3 {
+  times( scalar: number ): Vector3 {
     // make sure it's not a vector!
     assert && assert( typeof scalar === 'number' );
     return this.timesScalar( scalar );
@@ -261,8 +261,8 @@ class Vector3 {
    * This is the immutable form of the function componentMultiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  componentTimes( v: PoolableVector3 ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x * v.x, this.y * v.y, this.z * v.z );
+  componentTimes( v: Vector3 ): Vector3 {
+    return v3( this.x * v.x, this.y * v.y, this.z * v.z );
   }
 
   /**
@@ -271,8 +271,8 @@ class Vector3 {
    * This is the immutable form of the function add(). This will return a new vector, and will not modify
    * this vector.
    */
-  plus( v: PoolableVector3 ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x + v.x, this.y + v.y, this.z + v.z );
+  plus( v: Vector3 ): Vector3 {
+    return v3( this.x + v.x, this.y + v.y, this.z + v.z );
   }
 
   /**
@@ -281,8 +281,8 @@ class Vector3 {
    * This is the immutable form of the function addXYZ(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusXYZ( x: number, y: number, z: number ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x + x, this.y + y, this.z + z );
+  plusXYZ( x: number, y: number, z: number ): Vector3 {
+    return v3( this.x + x, this.y + y, this.z + z );
   }
 
   /**
@@ -291,8 +291,8 @@ class Vector3 {
    * This is the immutable form of the function addScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusScalar( scalar: number ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x + scalar, this.y + scalar, this.z + scalar );
+  plusScalar( scalar: number ): Vector3 {
+    return v3( this.x + scalar, this.y + scalar, this.z + scalar );
   }
 
   /**
@@ -301,8 +301,8 @@ class Vector3 {
    * This is the immutable form of the function subtract(). This will return a new vector, and will not modify
    * this vector.
    */
-  minus( v: PoolableVector3 ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x - v.x, this.y - v.y, this.z - v.z );
+  minus( v: Vector3 ): Vector3 {
+    return v3( this.x - v.x, this.y - v.y, this.z - v.z );
   }
 
   /**
@@ -311,8 +311,8 @@ class Vector3 {
    * This is the immutable form of the function subtractXYZ(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusXYZ( x: number, y: number, z: number ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x - x, this.y - y, this.z - z );
+  minusXYZ( x: number, y: number, z: number ): Vector3 {
+    return v3( this.x - x, this.y - y, this.z - z );
   }
 
   /**
@@ -321,8 +321,8 @@ class Vector3 {
    * This is the immutable form of the function subtractScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusScalar( scalar: number ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x - scalar, this.y - scalar, this.z - scalar );
+  minusScalar( scalar: number ): Vector3 {
+    return v3( this.x - scalar, this.y - scalar, this.z - scalar );
   }
 
   /**
@@ -331,8 +331,8 @@ class Vector3 {
    * This is the immutable form of the function divideScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  dividedScalar( scalar: number ): PoolableVector3 {
-    return PoolableVector3.createFromPool( this.x / scalar, this.y / scalar, this.z / scalar );
+  dividedScalar( scalar: number ): Vector3 {
+    return v3( this.x / scalar, this.y / scalar, this.z / scalar );
   }
 
   /**
@@ -342,8 +342,8 @@ class Vector3 {
    * this vector.
    *
    */
-  negated(): PoolableVector3 {
-    return PoolableVector3.createFromPool( -this.x, -this.y, -this.z );
+  negated(): Vector3 {
+    return v3( -this.x, -this.y, -this.z );
   }
 
   /**
@@ -352,14 +352,14 @@ class Vector3 {
    * @param vector
    * @param ratio - Not necessarily constrained in [0, 1]
    */
-  blend( vector: PoolableVector3, ratio: number ): PoolableVector3 {
-    return this.plus( vector.minus( this as unknown as PoolableVector3 ).times( ratio ) );
+  blend( vector: Vector3, ratio: number ): Vector3 {
+    return this.plus( vector.minus( this as unknown as Vector3 ).times( ratio ) );
   }
 
   /**
    * The average (midpoint) between this vector and another vector.
    */
-  average( vector: PoolableVector3 ): PoolableVector3 {
+  average( vector: Vector3 ): Vector3 {
     return this.blend( vector, 0.5 );
   }
 
@@ -374,14 +374,14 @@ class Vector3 {
    * Converts this to a 2-dimensional vector, discarding the z-component.
    */
   toVector2(): Vector2 {
-    return Vector2.createFromPool( this.x, this.y );
+    return v2( this.x, this.y );
   }
 
   /**
    * Converts this to a 4-dimensional vector, with the w-component equal to 1 (useful for homogeneous coordinates).
    */
   toVector4(): Vector4 {
-    return Vector4.createFromPool( this.x, this.y, this.z, 1 );
+    return v4( this.x, this.y, this.z, 1 );
   }
 
   /*---------------------------------------------------------------------------*
@@ -392,35 +392,35 @@ class Vector3 {
   /**
    * Sets all of the components of this vector, returning this.
    */
-  setXYZ( x: number, y: number, z: number ): PoolableVector3 {
+  setXYZ( x: number, y: number, z: number ): Vector3 {
     this.x = x;
     this.y = y;
     this.z = z;
-    return this as unknown as PoolableVector3;
+    return this as unknown as Vector3;
   }
 
   /**
    * Sets the x-component of this vector, returning this.
    */
-  setX( x: number ): PoolableVector3 {
+  setX( x: number ): Vector3 {
     this.x = x;
-    return this as unknown as PoolableVector3;
+    return this as unknown as Vector3;
   }
 
   /**
    * Sets the y-component of this vector, returning this.
    */
-  setY( y: number ): PoolableVector3 {
+  setY( y: number ): Vector3 {
     this.y = y;
-    return this as unknown as PoolableVector3;
+    return this as unknown as Vector3;
   }
 
   /**
    * Sets the z-component of this vector, returning this.
    */
-  setZ( z: number ): PoolableVector3 {
+  setZ( z: number ): Vector3 {
     this.z = z;
-    return this as unknown as PoolableVector3;
+    return this as unknown as Vector3;
   }
 
   /**
@@ -429,7 +429,7 @@ class Vector3 {
    * This is the mutable form of the function copy(). This will mutate (change) this vector, in addition to returning
    * this vector itself.
    */
-  set( v: PoolableVector3 ): PoolableVector3 {
+  set( v: Vector3 ): Vector3 {
     return this.setXYZ( v.x, v.y, v.z );
   }
 
@@ -440,7 +440,7 @@ class Vector3 {
    * This is the mutable form of the function withMagnitude(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  setMagnitude( magnitude: number ): PoolableVector3 {
+  setMagnitude( magnitude: number ): Vector3 {
     const scale = magnitude / this.magnitude;
     return this.multiplyScalar( scale );
   }
@@ -451,7 +451,7 @@ class Vector3 {
    * This is the mutable form of the function plus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  add( v: PoolableVector3 ): PoolableVector3 {
+  add( v: Vector3 ): Vector3 {
     return this.setXYZ( this.x + v.x, this.y + v.y, this.z + v.z );
   }
 
@@ -461,7 +461,7 @@ class Vector3 {
    * This is the mutable form of the function plusXYZ(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addXYZ( x: number, y: number, z: number ): PoolableVector3 {
+  addXYZ( x: number, y: number, z: number ): Vector3 {
     return this.setXYZ( this.x + x, this.y + y, this.z + z );
   }
 
@@ -471,7 +471,7 @@ class Vector3 {
    * This is the mutable form of the function plusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addScalar( scalar: number ): PoolableVector3 {
+  addScalar( scalar: number ): Vector3 {
     return this.setXYZ( this.x + scalar, this.y + scalar, this.z + scalar );
   }
 
@@ -481,7 +481,7 @@ class Vector3 {
    * This is the mutable form of the function minus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtract( v: PoolableVector3 ): PoolableVector3 {
+  subtract( v: Vector3 ): Vector3 {
     return this.setXYZ( this.x - v.x, this.y - v.y, this.z - v.z );
   }
 
@@ -491,7 +491,7 @@ class Vector3 {
    * This is the mutable form of the function minusXYZ(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractXYZ( x: number, y: number, z: number ): PoolableVector3 {
+  subtractXYZ( x: number, y: number, z: number ): Vector3 {
     return this.setXYZ( this.x - x, this.y - y, this.z - z );
   }
 
@@ -501,7 +501,7 @@ class Vector3 {
    * This is the mutable form of the function minusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractScalar( scalar: number ): PoolableVector3 {
+  subtractScalar( scalar: number ): Vector3 {
     return this.setXYZ( this.x - scalar, this.y - scalar, this.z - scalar );
   }
 
@@ -511,7 +511,7 @@ class Vector3 {
    * This is the mutable form of the function timesScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiplyScalar( scalar: number ): PoolableVector3 {
+  multiplyScalar( scalar: number ): Vector3 {
     return this.setXYZ( this.x * scalar, this.y * scalar, this.z * scalar );
   }
 
@@ -522,7 +522,7 @@ class Vector3 {
    * This is the mutable form of the function times(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiply( scalar: number ): PoolableVector3 {
+  multiply( scalar: number ): Vector3 {
     // make sure it's not a vector!
     assert && assert( typeof scalar === 'number' );
     return this.multiplyScalar( scalar );
@@ -534,7 +534,7 @@ class Vector3 {
    * This is the mutable form of the function componentTimes(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  componentMultiply( v: PoolableVector3 ): PoolableVector3 {
+  componentMultiply( v: Vector3 ): Vector3 {
     return this.setXYZ( this.x * v.x, this.y * v.y, this.z * v.z );
   }
 
@@ -544,7 +544,7 @@ class Vector3 {
    * This is the mutable form of the function dividedScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  divideScalar( scalar: number ): PoolableVector3 {
+  divideScalar( scalar: number ): Vector3 {
     return this.setXYZ( this.x / scalar, this.y / scalar, this.z / scalar );
   }
 
@@ -554,14 +554,14 @@ class Vector3 {
    * This is the mutable form of the function negated(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  negate(): PoolableVector3 {
+  negate(): Vector3 {
     return this.setXYZ( -this.x, -this.y, -this.z );
   }
 
   /**
    * Sets our value to the Euclidean 3-dimensional cross-product of this vector by the passed-in vector.
    */
-  setCross( v: PoolableVector3 ): PoolableVector3 {
+  setCross( v: Vector3 ): Vector3 {
     return this.setXYZ(
       this.y * v.z - this.z * v.y,
       this.z * v.x - this.x * v.z,
@@ -575,7 +575,7 @@ class Vector3 {
    * This is the mutable form of the function normalized(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  normalize(): PoolableVector3 {
+  normalize(): Vector3 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -591,7 +591,7 @@ class Vector3 {
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.
    */
-  roundSymmetric(): PoolableVector3 {
+  roundSymmetric(): Vector3 {
     return this.setXYZ( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ) );
   }
 
@@ -606,6 +606,16 @@ class Vector3 {
     };
   }
 
+  freeToPool() {
+    Vector3.pool.freeToPool( this );
+  }
+
+  static pool = new Pool( Vector3, {
+    maxSize: 1000,
+    initialize: Vector3.prototype.setXYZ,
+    defaultArguments: [ 0, 0, 0 ]
+  } );
+
   // static methods
 
   /**
@@ -616,7 +626,7 @@ class Vector3 {
    * @param ratio  - Between 0 (at start vector) and 1 (at end vector)
    * @returns Spherical linear interpolation between the start and end
    */
-  static slerp( start: PoolableVector3, end: PoolableVector3, ratio: number ): PoolableVector3 {
+  static slerp( start: Vector3, end: Vector3, ratio: number ): Vector3 {
     // NOTE: we can't create a require() loop here
     // @ts-ignore TODO: import with circular protection
     return dot.Quaternion.slerp( new dot.Quaternion(), dot.Quaternion.getRotationQuaternion( start, end ), ratio ).timesVector3( start );
@@ -625,8 +635,8 @@ class Vector3 {
   /**
    * Constructs a Vector3 from a duck-typed object, for use with tandem/phet-io deserialization.
    */
-  static fromStateObject( stateObject: Vector3StateObject ): PoolableVector3 {
-    return PoolableVector3.createFromPool(
+  static fromStateObject( stateObject: Vector3StateObject ): Vector3 {
+    return v3(
       NumberIO.fromStateObject( stateObject.x ),
       NumberIO.fromStateObject( stateObject.y ),
       NumberIO.fromStateObject( stateObject.z )
@@ -635,10 +645,10 @@ class Vector3 {
 
   isVector3!: boolean;
   dimension!: number;
-  static ZERO: PoolableVector3;
-  static X_UNIT: PoolableVector3;
-  static Y_UNIT: PoolableVector3;
-  static Z_UNIT: PoolableVector3;
+  static ZERO: Vector3;
+  static X_UNIT: Vector3;
+  static Y_UNIT: Vector3;
+  static Z_UNIT: Vector3;
   static Vector3IO: IOType;
 }
 
@@ -648,14 +658,10 @@ Vector3.prototype.dimension = 3;
 
 dot.register( 'Vector3', Vector3 );
 
-type PoolableVector3 = PoolableVersion<typeof Vector3>;
-const PoolableVector3 = Poolable.mixInto( Vector3, { // eslint-disable-line
-  maxSize: 1000,
-  initialize: Vector3.prototype.setXYZ,
-  defaultArguments: [ 0, 0, 0 ]
-} );
+const v3 = Vector3.pool.create.bind( Vector3.pool );
+dot.register( 'v3', v3 );
 
-class ImmutableVector3 extends PoolableVector3 {
+class ImmutableVector3 extends Vector3 {
   /**
    * Throw errors whenever a mutable method is called on our immutable vector
    */
@@ -671,15 +677,15 @@ ImmutableVector3.mutableOverrideHelper( 'setX' );
 ImmutableVector3.mutableOverrideHelper( 'setY' );
 ImmutableVector3.mutableOverrideHelper( 'setZ' );
 
-Vector3.ZERO = assert ? new ImmutableVector3( 0, 0, 0 ) : new PoolableVector3( 0, 0, 0 );
-Vector3.X_UNIT = assert ? new ImmutableVector3( 1, 0, 0 ) : new PoolableVector3( 1, 0, 0 );
-Vector3.Y_UNIT = assert ? new ImmutableVector3( 0, 1, 0 ) : new PoolableVector3( 0, 1, 0 );
-Vector3.Z_UNIT = assert ? new ImmutableVector3( 0, 0, 1 ) : new PoolableVector3( 0, 0, 1 );
+Vector3.ZERO = assert ? new ImmutableVector3( 0, 0, 0 ) : new Vector3( 0, 0, 0 );
+Vector3.X_UNIT = assert ? new ImmutableVector3( 1, 0, 0 ) : new Vector3( 1, 0, 0 );
+Vector3.Y_UNIT = assert ? new ImmutableVector3( 0, 1, 0 ) : new Vector3( 0, 1, 0 );
+Vector3.Z_UNIT = assert ? new ImmutableVector3( 0, 0, 1 ) : new Vector3( 0, 0, 1 );
 
 Vector3.Vector3IO = new IOType( 'Vector3IO', {
   valueType: Vector3,
   documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
-  toStateObject: ( vector3: PoolableVector3 ) => vector3.toStateObject(),
+  toStateObject: ( vector3: Vector3 ) => vector3.toStateObject(),
   fromStateObject: Vector3.fromStateObject,
   stateSchema: {
     x: NumberIO,
@@ -688,5 +694,5 @@ Vector3.Vector3IO = new IOType( 'Vector3IO', {
   }
 } );
 
-export default PoolableVector3;
-export { Vector3 as RawVector3 };
+export default Vector3;
+export { v3 };

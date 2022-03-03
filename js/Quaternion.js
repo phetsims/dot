@@ -204,7 +204,7 @@ class Quaternion {
     const zz = this.z * this.z * flip;
     const zw = this.w * this.z * flip;
 
-    return Matrix3.dirtyFromPool().columnMajor(
+    return Matrix3.pool.fetch().columnMajor(
       1 - ( yy + zz ),
       ( xy + zw ),
       ( xz - yw ),

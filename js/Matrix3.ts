@@ -7,7 +7,6 @@
  */
 
 import EnumerationIO from '../../tandem/js/types/EnumerationIO.js';
-import Poolable2 from '../../phet-core/js/Poolable2.js';
 import ArrayIO from '../../tandem/js/types/ArrayIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
@@ -18,6 +17,7 @@ import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
 import EnumerationValue from '../../phet-core/js/EnumerationValue.js';
 import Enumeration from '../../phet-core/js/Enumeration.js';
+import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 
 class Matrix3Type extends EnumerationValue {
   static OTHER = new Matrix3Type();
@@ -34,16 +34,13 @@ type NineNumbers = [
   number, number, number,
   number, number, number
 ];
-type NineNumbersAndType = [ ...NineNumbers, Matrix3Type ];
-type NineNumbersAndOptionalType = [ ...NineNumbers, Matrix3Type | undefined ];
-type NineNumbersOptionalType = NineNumbers | NineNumbersAndType | NineNumbersAndOptionalType;
 
 type Matrix3StateObject = {
   entries: NineNumbers;
   type: string;
 };
 
-class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
+class Matrix3 implements IPoolable {
 
   // Entries stored in column-major format
   entries: NineNumbers;
@@ -54,10 +51,8 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Creates an identity matrix, that can then be mutated into the proper form.
    */
   constructor() {
-    super();
-
     //Make sure no clients are expecting to create a matrix with non-identity values
-    assert && assert( arguments.length === 0, 'Matrix3 constructor should not be called with any arguments.  Use Matrix3.createFromPool()/Matrix3.identity()/etc.' );
+    assert && assert( arguments.length === 0, 'Matrix3 constructor should not be called with any arguments.  Use m3()/Matrix3.identity()/etc.' );
 
     this.entries = [ 1, 0, 0, 0, 1, 0, 0, 0, 1 ];
     this.type = Matrix3Type.IDENTITY;
@@ -364,7 +359,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns a copy of this matrix
    */
   copy(): Matrix3 {
-    return Matrix3.createFromPool(
+    return m3(
       this.m00(), this.m01(), this.m02(),
       this.m10(), this.m11(), this.m12(),
       this.m20(), this.m21(), this.m22(),
@@ -376,7 +371,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns a new matrix, defined by this matrix plus the provided matrix
    */
   plus( matrix: Matrix3 ): Matrix3 {
-    return Matrix3.createFromPool(
+    return m3(
       this.m00() + matrix.m00(), this.m01() + matrix.m01(), this.m02() + matrix.m02(),
       this.m10() + matrix.m10(), this.m11() + matrix.m11(), this.m12() + matrix.m12(),
       this.m20() + matrix.m20(), this.m21() + matrix.m21(), this.m22() + matrix.m22()
@@ -387,7 +382,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns a new matrix, defined by this matrix plus the provided matrix
    */
   minus( matrix: Matrix3 ): Matrix3 {
-    return Matrix3.createFromPool(
+    return m3(
       this.m00() - matrix.m00(), this.m01() - matrix.m01(), this.m02() - matrix.m02(),
       this.m10() - matrix.m10(), this.m11() - matrix.m11(), this.m12() - matrix.m12(),
       this.m20() - matrix.m20(), this.m21() - matrix.m21(), this.m22() - matrix.m22()
@@ -398,7 +393,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns a transposed copy of this matrix
    */
   transposed(): Matrix3 {
-    return Matrix3.createFromPool(
+    return m3(
       this.m00(), this.m10(), this.m20(),
       this.m01(), this.m11(), this.m21(),
       this.m02(), this.m12(), this.m22(), ( this.type === Matrix3Type.IDENTITY || this.type === Matrix3Type.SCALING ) ? this.type : undefined
@@ -409,7 +404,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns a negated copy of this matrix
    */
   negated(): Matrix3 {
-    return Matrix3.createFromPool(
+    return m3(
       -this.m00(), -this.m01(), -this.m02(),
       -this.m10(), -this.m11(), -this.m12(),
       -this.m20(), -this.m21(), -this.m22()
@@ -426,19 +421,19 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
       case Matrix3Type.IDENTITY:
         return this;
       case Matrix3Type.TRANSLATION_2D:
-        return Matrix3.createFromPool(
+        return m3(
           1, 0, -this.m02(),
           0, 1, -this.m12(),
           0, 0, 1, Matrix3Type.TRANSLATION_2D );
       case Matrix3Type.SCALING:
-        return Matrix3.createFromPool(
+        return m3(
           1 / this.m00(), 0, 0,
           0, 1 / this.m11(), 0,
           0, 0, 1 / this.m22(), Matrix3Type.SCALING );
       case Matrix3Type.AFFINE:
         det = this.getDeterminant();
         if ( det !== 0 ) {
-          return Matrix3.createFromPool(
+          return m3(
             ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
             ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
             ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
@@ -454,7 +449,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
       case Matrix3Type.OTHER:
         det = this.getDeterminant();
         if ( det !== 0 ) {
-          return Matrix3.createFromPool(
+          return m3(
             ( -this.m12() * this.m21() + this.m11() * this.m22() ) / det,
             ( this.m02() * this.m21() - this.m01() * this.m22() ) / det,
             ( -this.m02() * this.m11() + this.m01() * this.m12() ) / det,
@@ -491,14 +486,14 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
       // currently two matrices of the same type will result in the same result type
       if ( this.type === Matrix3Type.TRANSLATION_2D ) {
         // faster combination of translations
-        return Matrix3.createFromPool(
+        return m3(
           1, 0, this.m02() + matrix.m02(),
           0, 1, this.m12() + matrix.m12(),
           0, 0, 1, Matrix3Type.TRANSLATION_2D );
       }
       else if ( this.type === Matrix3Type.SCALING ) {
         // faster combination of scaling
-        return Matrix3.createFromPool(
+        return m3(
           this.m00() * matrix.m00(), 0, 0,
           0, this.m11() * matrix.m11(), 0,
           0, 0, 1, Matrix3Type.SCALING );
@@ -509,7 +504,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
       // currently two matrices that are anything but "other" are technically affine, and the result will be affine
 
       // affine case
-      return Matrix3.createFromPool(
+      return m3(
         this.m00() * matrix.m00() + this.m01() * matrix.m10(),
         this.m00() * matrix.m01() + this.m01() * matrix.m11(),
         this.m00() * matrix.m02() + this.m01() * matrix.m12() + this.m02(),
@@ -520,7 +515,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
     }
 
     // general case
-    return Matrix3.createFromPool(
+    return m3(
       this.m00() * matrix.m00() + this.m01() * matrix.m10() + this.m02() * matrix.m20(),
       this.m00() * matrix.m01() + this.m01() * matrix.m11() + this.m02() * matrix.m21(),
       this.m00() * matrix.m02() + this.m01() * matrix.m12() + this.m02() * matrix.m22(),
@@ -1219,18 +1214,28 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
     return array;
   }
 
+  freeToPool() {
+    Matrix3.pool.freeToPool( this );
+  }
+
+  static pool = new Pool( Matrix3, {
+    initialize: Matrix3.prototype.rowMajor,
+    useDefaultConstruction: true,
+    maxSize: 300
+  } );
+
   /**
    * Returns an identity matrix.
    */
   static identity(): Matrix3 {
-    return Matrix3.dirtyFromPool().setToIdentity();
+    return fromPool().setToIdentity();
   }
 
   /**
    * Returns a translation matrix.
    */
   static translation( x: number, y: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToTranslation( x, y );
+    return fromPool().setToTranslation( x, y );
   }
 
   /**
@@ -1244,7 +1249,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns a matrix that scales things in each dimension.
    */
   static scaling( x: number, y?: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToScale( x, y );
+    return fromPool().setToScale( x, y );
   }
 
   /**
@@ -1258,14 +1263,14 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns an affine matrix with the given parameters.
    */
   static affine( m00: number, m01: number, m02: number, m10: number, m11: number, m12: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToAffine( m00, m01, m02, m10, m11, m12 );
+    return fromPool().setToAffine( m00, m01, m02, m10, m11, m12 );
   }
 
   /**
    * Creates a new matrix with all entries determined in row-major order.
    */
   static rowMajor( v00: number, v01: number, v02: number, v10: number, v11: number, v12: number, v20: number, v21: number, v22: number, type?: Matrix3Type ): Matrix3 {
-    return Matrix3.dirtyFromPool().rowMajor(
+    return fromPool().rowMajor(
       v00, v01, v02,
       v10, v11, v12,
       v20, v21, v22,
@@ -1280,7 +1285,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * @param angle - in radians
    */
   static rotationAxisAngle( axis: Vector3, angle: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToRotationAxisAngle( axis, angle );
+    return fromPool().setToRotationAxisAngle( axis, angle );
   }
 
   /**
@@ -1289,7 +1294,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * @param angle - in radians
    */
   static rotationX( angle: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToRotationX( angle );
+    return fromPool().setToRotationX( angle );
   }
 
   /**
@@ -1298,7 +1303,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * @param angle - in radians
    */
   static rotationY( angle: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToRotationY( angle );
+    return fromPool().setToRotationY( angle );
   }
 
   /**
@@ -1307,7 +1312,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * @param angle - in radians
    */
   static rotationZ( angle: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToRotationZ( angle );
+    return fromPool().setToRotationZ( angle );
   }
 
   /**
@@ -1316,7 +1321,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * @param angle - in radians
    */
   static translationRotation( x: number, y: number, angle: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToTranslationRotation( x, y, angle );
+    return fromPool().setToTranslationRotation( x, y, angle );
   }
 
   /**
@@ -1325,7 +1330,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * @param angle - in radians
    */
   static rotation2( angle: number ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToRotationZ( angle );
+    return fromPool().setToRotationZ( angle );
   }
 
   /**
@@ -1353,7 +1358,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * Returns a matrix equivalent to a given SVGMatrix.
    */
   static fromSVGMatrix( svgMatrix: SVGMatrix ): Matrix3 {
-    return Matrix3.dirtyFromPool().setToSVGMatrix( svgMatrix );
+    return fromPool().setToSVGMatrix( svgMatrix );
   }
 
   /**
@@ -1361,7 +1366,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
    * should be unit vectors.
    */
   static rotateAToB( a: Vector3, b: Vector3 ): Matrix3 {
-    return Matrix3.dirtyFromPool().setRotationAToB( a, b );
+    return fromPool().setRotationAToB( a, b );
   }
 
   /**
@@ -1370,7 +1375,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
   static translationTimesMatrix( x: number, y: number, matrix: Matrix3 ): Matrix3 {
     let type;
     if ( matrix.type === Matrix3Type.IDENTITY || matrix.type === Matrix3Type.TRANSLATION_2D ) {
-      return Matrix3.createFromPool(
+      return m3(
         1, 0, matrix.m02() + x,
         0, 1, matrix.m12() + y,
         0, 0, 1,
@@ -1382,7 +1387,7 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
     else {
       type = Matrix3Type.AFFINE;
     }
-    return Matrix3.createFromPool(
+    return m3(
       matrix.m00(), matrix.m01(), matrix.m02() + x,
       matrix.m10(), matrix.m11(), matrix.m12() + y,
       matrix.m20(), matrix.m21(), matrix.m22(),
@@ -1415,20 +1420,21 @@ class Matrix3 extends Poolable2<NineNumbersOptionalType, Matrix3>( Object ) {
   static Matrix3IO: IOType;
 }
 
-Matrix3.initializePool( {
-  initialize: Matrix3.prototype.rowMajor,
-  useDefaultConstruction: true,
-  maxSize: 300
-} );
+dot.register( 'Matrix3', Matrix3 );
+
+const m3 = Matrix3.pool.create.bind( Matrix3.pool );
+dot.register( 'm3', m3 );
+
+const fromPool = Matrix3.pool.fetch.bind( Matrix3.pool );
 
 Matrix3.IDENTITY = Matrix3.identity().makeImmutable();
-Matrix3.X_REFLECTION = Matrix3.createFromPool(
+Matrix3.X_REFLECTION = m3(
   -1, 0, 0,
   0, 1, 0,
   0, 0, 1,
   Matrix3Type.AFFINE
 ).makeImmutable();
-Matrix3.Y_REFLECTION = Matrix3.createFromPool(
+Matrix3.Y_REFLECTION = m3(
   1, 0, 0,
   0, -1, 0,
   0, 0, 1,
@@ -1446,6 +1452,5 @@ Matrix3.Matrix3IO = new IOType( 'Matrix3IO', {
   }
 } );
 
-dot.register( 'Matrix3', Matrix3 );
 export default Matrix3;
 export { Matrix3Type };
