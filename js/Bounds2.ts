@@ -13,12 +13,12 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Poolable, { PoolableVersion } from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import Vector2 from './Vector2.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
+import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 
 // Temporary instances to be used in the transform method.
 const scratchVector2 = new Vector2( 0, 0 );
@@ -30,7 +30,7 @@ type Bounds2StateObject = {
   maxY: number;
 };
 
-class Bounds2 {
+class Bounds2 implements IPoolable {
 
   // The minimum X coordinate of the bounds.
   minX: number;
@@ -293,14 +293,14 @@ class Bounds2 {
    * Whether this bounding box completely contains the bounding box passed as a parameter. The boundary of a box is
    * considered to be "contained".
    */
-  containsBounds( bounds: PoolableBounds2 ): boolean {
+  containsBounds( bounds: Bounds2 ): boolean {
     return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY;
   }
 
   /**
    * Whether this and another bounding box have any points of intersection (including touching boundaries).
    */
-  intersectsBounds( bounds: PoolableBounds2 ): boolean {
+  intersectsBounds( bounds: Bounds2 ): boolean {
     const minX = Math.max( this.minX, bounds.minX );
     const minY = Math.max( this.minY, bounds.minY );
     const maxX = Math.min( this.maxX, bounds.maxX );
@@ -360,7 +360,7 @@ class Bounds2 {
    *
    * @returns - Whether the two bounds are equal
    */
-  equals( other: PoolableBounds2 ): boolean {
+  equals( other: Bounds2 ): boolean {
     return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
   }
 
@@ -370,7 +370,7 @@ class Bounds2 {
    * @returns - Whether difference between the two bounds has no min/max with an absolute value greater
    *            than epsilon.
    */
-  equalsEpsilon( other: PoolableBounds2, epsilon: number ): boolean {
+  equalsEpsilon( other: Bounds2, epsilon: number ): boolean {
     epsilon = epsilon !== undefined ? epsilon : 0;
     const thisFinite = this.isFinite();
     const otherFinite = other.isFinite();
@@ -384,7 +384,7 @@ class Bounds2 {
     else if ( thisFinite !== otherFinite ) {
       return false; // one is finite, the other is not. definitely not equal
     }
-    else if ( ( this as unknown as PoolableBounds2 ) === other ) {
+    else if ( ( this as unknown as Bounds2 ) === other ) {
       return true; // exact same instance, must be equal
     }
     else {
@@ -409,12 +409,12 @@ class Bounds2 {
    * @param [bounds] - If not provided, creates a new Bounds2 with filled in values. Otherwise, fills in the
    *                   values of the provided bounds so that it equals this bounds.
    */
-  copy( bounds?: PoolableBounds2 ): PoolableBounds2 {
+  copy( bounds?: Bounds2 ): Bounds2 {
     if ( bounds ) {
-      return bounds.set( this as unknown as PoolableBounds2 );
+      return bounds.set( this as unknown as Bounds2 );
     }
     else {
-      return PoolableBounds2.createFromPool( this.minX, this.minY, this.maxX, this.maxY );
+      return b2( this.minX, this.minY, this.maxX, this.maxY );
     }
   }
 
@@ -424,8 +424,8 @@ class Bounds2 {
    * This is the immutable form of the function includeBounds(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  union( bounds: PoolableBounds2 ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool(
+  union( bounds: Bounds2 ): Bounds2 {
+    return b2(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
       Math.max( this.maxX, bounds.maxX ),
@@ -439,8 +439,8 @@ class Bounds2 {
    * This is the immutable form of the function constrainBounds(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  intersection( bounds: PoolableBounds2 ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool(
+  intersection( bounds: Bounds2 ): Bounds2 {
+    return b2(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
       Math.min( this.maxX, bounds.maxX ),
@@ -456,8 +456,8 @@ class Bounds2 {
    * This is the immutable form of the function addCoordinates(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withCoordinates( x: number, y: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool(
+  withCoordinates( x: number, y: number ): Bounds2 {
+    return b2(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
       Math.max( this.maxX, x ),
@@ -471,7 +471,7 @@ class Bounds2 {
    * This is the immutable form of the function addPoint(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withPoint( point: Vector2 ): PoolableBounds2 {
+  withPoint( point: Vector2 ): Bounds2 {
     return this.withCoordinates( point.x, point.y );
   }
 
@@ -481,7 +481,7 @@ class Bounds2 {
    * This is the immutable form of the function addX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withX( x: number ): PoolableBounds2 {
+  withX( x: number ): Bounds2 {
     return this.copy().addX( x );
   }
 
@@ -491,7 +491,7 @@ class Bounds2 {
    * This is the immutable form of the function addY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withY( y: number ): PoolableBounds2 {
+  withY( y: number ): Bounds2 {
     return this.copy().addY( y );
   }
 
@@ -501,8 +501,8 @@ class Bounds2 {
    * This is the immutable form of the function setMinX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMinX( minX: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( minX, this.minY, this.maxX, this.maxY );
+  withMinX( minX: number ): Bounds2 {
+    return b2( minX, this.minY, this.maxX, this.maxY );
   }
 
   /**
@@ -511,8 +511,8 @@ class Bounds2 {
    * This is the immutable form of the function setMinY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMinY( minY: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX, minY, this.maxX, this.maxY );
+  withMinY( minY: number ): Bounds2 {
+    return b2( this.minX, minY, this.maxX, this.maxY );
   }
 
   /**
@@ -521,8 +521,8 @@ class Bounds2 {
    * This is the immutable form of the function setMaxX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMaxX( maxX: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX, this.minY, maxX, this.maxY );
+  withMaxX( maxX: number ): Bounds2 {
+    return b2( this.minX, this.minY, maxX, this.maxY );
   }
 
   /**
@@ -531,8 +531,8 @@ class Bounds2 {
    * This is the immutable form of the function setMaxY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMaxY( maxY: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX, this.minY, this.maxX, maxY );
+  withMaxY( maxY: number ): Bounds2 {
+    return b2( this.minX, this.minY, this.maxX, maxY );
   }
 
   /**
@@ -543,8 +543,8 @@ class Bounds2 {
    * This is the immutable form of the function roundOut(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  roundedOut(): PoolableBounds2 {
-    return PoolableBounds2.createFromPool(
+  roundedOut(): Bounds2 {
+    return b2(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
       Math.ceil( this.maxX ),
@@ -560,8 +560,8 @@ class Bounds2 {
    * This is the immutable form of the function roundIn(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  roundedIn(): PoolableBounds2 {
-    return PoolableBounds2.createFromPool(
+  roundedIn(): Bounds2 {
+    return b2(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
       Math.floor( this.maxX ),
@@ -580,7 +580,7 @@ class Bounds2 {
    * This is the immutable form of the function transform(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  transformed( matrix: Matrix3 ): PoolableBounds2 {
+  transformed( matrix: Matrix3 ): Bounds2 {
     return this.copy().transform( matrix );
   }
 
@@ -590,7 +590,7 @@ class Bounds2 {
    * This is the immutable form of the function dilate(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  dilated( d: number ): PoolableBounds2 {
+  dilated( d: number ): Bounds2 {
     return this.dilatedXY( d, d );
   }
 
@@ -600,8 +600,8 @@ class Bounds2 {
    * This is the immutable form of the function dilateX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  dilatedX( x: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX - x, this.minY, this.maxX + x, this.maxY );
+  dilatedX( x: number ): Bounds2 {
+    return b2( this.minX - x, this.minY, this.maxX + x, this.maxY );
   }
 
   /**
@@ -610,8 +610,8 @@ class Bounds2 {
    * This is the immutable form of the function dilateY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  dilatedY( y: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX, this.minY - y, this.maxX, this.maxY + y );
+  dilatedY( y: number ): Bounds2 {
+    return b2( this.minX, this.minY - y, this.maxX, this.maxY + y );
   }
 
   /**
@@ -624,8 +624,8 @@ class Bounds2 {
    * @param x - Amount to dilate horizontally (for each side)
    * @param y - Amount to dilate vertically (for each side)
    */
-  dilatedXY( x: number, y: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
+  dilatedXY( x: number, y: number ): Bounds2 {
+    return b2( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
   }
 
   /**
@@ -634,7 +634,7 @@ class Bounds2 {
    * This is the immutable form of the function erode(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  eroded( amount: number ): PoolableBounds2 { return this.dilated( -amount ); }
+  eroded( amount: number ): Bounds2 { return this.dilated( -amount ); }
 
   /**
    * A bounding box that is contracted horizontally (on the left and right) by the specified amount.
@@ -642,7 +642,7 @@ class Bounds2 {
    * This is the immutable form of the function erodeX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  erodedX( x: number ): PoolableBounds2 { return this.dilatedX( -x ); }
+  erodedX( x: number ): Bounds2 { return this.dilatedX( -x ); }
 
   /**
    * A bounding box that is contracted vertically (on the top and bottom) by the specified amount.
@@ -650,7 +650,7 @@ class Bounds2 {
    * This is the immutable form of the function erodeY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  erodedY( y: number ): PoolableBounds2 { return this.dilatedY( -y ); }
+  erodedY( y: number ): Bounds2 { return this.dilatedY( -y ); }
 
   /**
    * A bounding box that is contracted on all sides, with different amounts of contraction horizontally and vertically.
@@ -661,7 +661,7 @@ class Bounds2 {
    * @param x - Amount to erode horizontally (for each side)
    * @param y - Amount to erode vertically (for each side)
    */
-  erodedXY( x: number, y: number ): PoolableBounds2 { return this.dilatedXY( -x, -y ); }
+  erodedXY( x: number, y: number ): Bounds2 { return this.dilatedXY( -x, -y ); }
 
   /**
    * A bounding box that is expanded by a specific amount on all sides (or if some offsets are negative, will contract
@@ -675,8 +675,8 @@ class Bounds2 {
    * @param right - Amount to expand to the right (adds to maxX)
    * @param bottom - Amount to expand to the bottom (adds to maxY)
    */
-  withOffsets( left: number, top: number, right: number, bottom: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
+  withOffsets( left: number, top: number, right: number, bottom: number ): Bounds2 {
+    return b2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
   }
 
   /**
@@ -685,8 +685,8 @@ class Bounds2 {
    * This is the immutable form of the function shiftX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  shiftedX( x: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX + x, this.minY, this.maxX + x, this.maxY );
+  shiftedX( x: number ): Bounds2 {
+    return b2( this.minX + x, this.minY, this.maxX + x, this.maxY );
   }
 
   /**
@@ -695,8 +695,8 @@ class Bounds2 {
    * This is the immutable form of the function shiftY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  shiftedY( y: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX, this.minY + y, this.maxX, this.maxY + y );
+  shiftedY( y: number ): Bounds2 {
+    return b2( this.minX, this.minY + y, this.maxX, this.maxY + y );
   }
 
   /**
@@ -705,14 +705,14 @@ class Bounds2 {
    * This is the immutable form of the function shift(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  shiftedXY( x: number, y: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
+  shiftedXY( x: number, y: number ): Bounds2 {
+    return b2( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
   }
 
   /**
    * Returns our bounds, translated by a vector, returned as a copy.
    */
-  shifted( v: Vector2 ): PoolableBounds2 {
+  shifted( v: Vector2 ): Bounds2 {
     return this.shiftedXY( v.x, v.y );
   }
 
@@ -723,9 +723,9 @@ class Bounds2 {
    * @param ratio - 0 will result in a copy of `this`, 1 will result in bounds, and in-between controls the
    *                         amount of each.
    */
-  blend( bounds: PoolableBounds2, ratio: number ): PoolableBounds2 {
+  blend( bounds: Bounds2, ratio: number ): Bounds2 {
     const t = 1 - ratio;
-    return PoolableBounds2.createFromPool(
+    return b2(
       t * this.minX + ratio * bounds.minX,
       t * this.minY + ratio * bounds.minY,
       t * this.maxX + ratio * bounds.maxX,
@@ -743,12 +743,12 @@ class Bounds2 {
   /**
    * Sets each value for this bounds, and returns itself.
    */
-  setMinMax( minX: number, minY: number, maxX: number, maxY: number ): PoolableBounds2 {
+  setMinMax( minX: number, minY: number, maxX: number, maxY: number ): Bounds2 {
     this.minX = minX;
     this.minY = minY;
     this.maxX = maxX;
     this.maxY = maxY;
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -757,9 +757,9 @@ class Bounds2 {
    * This is the mutable form of the function withMinX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMinX( minX: number ): PoolableBounds2 {
+  setMinX( minX: number ): Bounds2 {
     this.minX = minX;
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -768,9 +768,9 @@ class Bounds2 {
    * This is the mutable form of the function withMinY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMinY( minY: number ): PoolableBounds2 {
+  setMinY( minY: number ): Bounds2 {
     this.minY = minY;
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -779,9 +779,9 @@ class Bounds2 {
    * This is the mutable form of the function withMaxX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMaxX( maxX: number ): PoolableBounds2 {
+  setMaxX( maxX: number ): Bounds2 {
     this.maxX = maxX;
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -790,9 +790,9 @@ class Bounds2 {
    * This is the mutable form of the function withMaxY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMaxY( maxY: number ): PoolableBounds2 {
+  setMaxY( maxY: number ): Bounds2 {
     this.maxY = maxY;
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -801,7 +801,7 @@ class Bounds2 {
    * This is the mutable form of the function copy(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  set( bounds: PoolableBounds2 ): PoolableBounds2 {
+  set( bounds: Bounds2 ): Bounds2 {
     return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
   }
 
@@ -811,7 +811,7 @@ class Bounds2 {
    * This is the mutable form of the function union(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  includeBounds( bounds: PoolableBounds2 ): PoolableBounds2 {
+  includeBounds( bounds: Bounds2 ): Bounds2 {
     return this.setMinMax(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
@@ -826,7 +826,7 @@ class Bounds2 {
    * This is the mutable form of the function intersection(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  constrainBounds( bounds: PoolableBounds2 ): PoolableBounds2 {
+  constrainBounds( bounds: Bounds2 ): Bounds2 {
     return this.setMinMax(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
@@ -841,7 +841,7 @@ class Bounds2 {
    * This is the mutable form of the function withCoordinates(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addCoordinates( x: number, y: number ): PoolableBounds2 {
+  addCoordinates( x: number, y: number ): Bounds2 {
     return this.setMinMax(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
@@ -856,7 +856,7 @@ class Bounds2 {
    * This is the mutable form of the function withPoint(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addPoint( point: Vector2 ): PoolableBounds2 {
+  addPoint( point: Vector2 ): Bounds2 {
     return this.addCoordinates( point.x, point.y );
   }
 
@@ -867,10 +867,10 @@ class Bounds2 {
    * This is the mutable form of the function withX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addX( x: number ): PoolableBounds2 {
+  addX( x: number ): Bounds2 {
     this.minX = Math.min( x, this.minX );
     this.maxX = Math.max( x, this.maxX );
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -880,10 +880,10 @@ class Bounds2 {
    * This is the mutable form of the function withY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addY( y: number ): PoolableBounds2 {
+  addY( y: number ): Bounds2 {
     this.minY = Math.min( y, this.minY );
     this.maxY = Math.max( y, this.maxY );
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -893,7 +893,7 @@ class Bounds2 {
    * This is the mutable form of the function roundedOut(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  roundOut(): PoolableBounds2 {
+  roundOut(): Bounds2 {
     return this.setMinMax(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
@@ -909,7 +909,7 @@ class Bounds2 {
    * This is the mutable form of the function roundedIn(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  roundIn(): PoolableBounds2 {
+  roundIn(): Bounds2 {
     return this.setMinMax(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
@@ -929,15 +929,15 @@ class Bounds2 {
    * This is the mutable form of the function transformed(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  transform( matrix: Matrix3 ): PoolableBounds2 {
+  transform( matrix: Matrix3 ): Bounds2 {
     // if we contain no area, no change is needed
     if ( this.isEmpty() ) {
-      return ( this as unknown as PoolableBounds2 );
+      return ( this as unknown as Bounds2 );
     }
 
     // optimization to bail for identity matrices
     if ( matrix.isIdentity() ) {
-      return ( this as unknown as PoolableBounds2 );
+      return ( this as unknown as Bounds2 );
     }
 
     const minX = this.minX;
@@ -953,7 +953,7 @@ class Bounds2 {
     this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( minX, maxY ) ) );
     this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( maxX, minY ) ) );
     this.addPoint( matrix.multiplyVector2( scratchVector2.setXY( maxX, maxY ) ) );
-    return ( this as unknown as PoolableBounds2 );
+    return ( this as unknown as Bounds2 );
   }
 
   /**
@@ -962,7 +962,7 @@ class Bounds2 {
    * This is the mutable form of the function dilated(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilate( d: number ): PoolableBounds2 {
+  dilate( d: number ): Bounds2 {
     return this.dilateXY( d, d );
   }
 
@@ -972,7 +972,7 @@ class Bounds2 {
    * This is the mutable form of the function dilatedX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilateX( x: number ): PoolableBounds2 {
+  dilateX( x: number ): Bounds2 {
     return this.setMinMax( this.minX - x, this.minY, this.maxX + x, this.maxY );
   }
 
@@ -982,7 +982,7 @@ class Bounds2 {
    * This is the mutable form of the function dilatedY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilateY( y: number ): PoolableBounds2 {
+  dilateY( y: number ): Bounds2 {
     return this.setMinMax( this.minX, this.minY - y, this.maxX, this.maxY + y );
   }
 
@@ -993,7 +993,7 @@ class Bounds2 {
    * This is the mutable form of the function dilatedXY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilateXY( x: number, y: number ): PoolableBounds2 {
+  dilateXY( x: number, y: number ): Bounds2 {
     return this.setMinMax( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
   }
 
@@ -1003,7 +1003,7 @@ class Bounds2 {
    * This is the mutable form of the function eroded(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erode( d: number ): PoolableBounds2 { return this.dilate( -d ); }
+  erode( d: number ): Bounds2 { return this.dilate( -d ); }
 
   /**
    * Contracts this bounds horizontally (left and right) by the specified amount.
@@ -1011,7 +1011,7 @@ class Bounds2 {
    * This is the mutable form of the function erodedX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erodeX( x: number ): PoolableBounds2 { return this.dilateX( -x ); }
+  erodeX( x: number ): Bounds2 { return this.dilateX( -x ); }
 
   /**
    * Contracts this bounds vertically (top and bottom) by the specified amount.
@@ -1019,7 +1019,7 @@ class Bounds2 {
    * This is the mutable form of the function erodedY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erodeY( y: number ): PoolableBounds2 { return this.dilateY( -y ); }
+  erodeY( y: number ): Bounds2 { return this.dilateY( -y ); }
 
   /**
    * Contracts this bounds independently in the horizontal and vertical directions. Will be equal to calling
@@ -1028,7 +1028,7 @@ class Bounds2 {
    * This is the mutable form of the function erodedXY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erodeXY( x: number, y: number ): PoolableBounds2 { return this.dilateXY( -x, -y ); }
+  erodeXY( x: number, y: number ): Bounds2 { return this.dilateXY( -x, -y ); }
 
   /**
    * Expands this bounds independently for each side (or if some offsets are negative, will contract those sides).
@@ -1041,8 +1041,8 @@ class Bounds2 {
    * @param right - Amount to expand to the right (adds to maxX)
    * @param bottom - Amount to expand to the bottom (adds to maxY)
    */
-  offset( left: number, top: number, right: number, bottom: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
+  offset( left: number, top: number, right: number, bottom: number ): Bounds2 {
+    return b2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
   }
 
   /**
@@ -1051,7 +1051,7 @@ class Bounds2 {
    * This is the mutable form of the function shiftedX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  shiftX( x: number ): PoolableBounds2 {
+  shiftX( x: number ): Bounds2 {
     return this.setMinMax( this.minX + x, this.minY, this.maxX + x, this.maxY );
   }
 
@@ -1061,7 +1061,7 @@ class Bounds2 {
    * This is the mutable form of the function shiftedY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  shiftY( y: number ): PoolableBounds2 {
+  shiftY( y: number ): Bounds2 {
     return this.setMinMax( this.minX, this.minY + y, this.maxX, this.maxY + y );
   }
 
@@ -1071,14 +1071,14 @@ class Bounds2 {
    * This is the mutable form of the function shifted(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  shiftXY( x: number, y: number ): PoolableBounds2 {
+  shiftXY( x: number, y: number ): Bounds2 {
     return this.setMinMax( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
   }
 
   /**
    * Translates our bounds by the given vector.
    */
-  shift( v: Vector2 ): PoolableBounds2 {
+  shift( v: Vector2 ): Bounds2 {
     return this.shiftXY( v.x, v.y );
   }
 
@@ -1103,6 +1103,15 @@ class Bounds2 {
     return result;
   }
 
+  freeToPool() {
+    Bounds2.pool.freeToPool( this );
+  }
+
+  static pool = new Pool( Bounds2, {
+    initialize: Bounds2.prototype.setMinMax,
+    defaultArguments: [ Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ]
+  } );
+
   /**
    * Returns a new Bounds2 object, with the familiar rectangle construction with x, y, width, and height.
    *
@@ -1111,8 +1120,8 @@ class Bounds2 {
    * @param width - The width (maxX - minX) of the bounds.
    * @param height - The height (maxY - minY) of the bounds.
    */
-  static rect( x: number, y: number, width: number, height: number ): PoolableBounds2 {
-    return PoolableBounds2.createFromPool( x, y, x + width, y + height );
+  static rect( x: number, y: number, width: number, height: number ): Bounds2 {
+    return b2( x, y, x + width, y + height );
   }
 
   /**
@@ -1124,15 +1133,15 @@ class Bounds2 {
    * @param {number} y
    * @returns {Bounds2}
    */
-  static point( x: number, y: number ): PoolableBounds2;
-  static point( v: Vector2 ): PoolableBounds2; // eslint-disable-line
+  static point( x: number, y: number ): Bounds2;
+  static point( v: Vector2 ): Bounds2; // eslint-disable-line
   static point( x: Vector2 | number, y?: number ) { // eslint-disable-line
     if ( x instanceof Vector2 ) {
       const p = x as Vector2;
-      return PoolableBounds2.createFromPool( p.x, p.y, p.x, p.y );
+      return b2( p.x, p.y, p.x, p.y );
     }
     else {
-      return PoolableBounds2.createFromPool( x as number, y as number, x as number, y as number );
+      return b2( x as number, y as number, x as number, y as number );
     }
   }
 
@@ -1149,7 +1158,7 @@ class Bounds2 {
    *
    * Additionally, intersections with NOTHING will always return a Bounds2 equivalent to NOTHING.
    */
-  static NOTHING: PoolableBounds2;
+  static NOTHING: Bounds2;
 
   /**
    * A contant Bounds2 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
@@ -1160,26 +1169,23 @@ class Bounds2 {
    *
    * Additionally, unions with EVERYTHING will always return a Bounds2 equivalent to EVERYTHING.
    */
-  static EVERYTHING: PoolableBounds2;
+  static EVERYTHING: Bounds2;
 
   static Bounds2IO: IOType;
 }
 
+dot.register( 'Bounds2', Bounds2 );
+
+const b2 = Bounds2.pool.create.bind( Bounds2.pool );
+dot.register( 'b2', b2 );
+
 Bounds2.prototype.isBounds = true;
 Bounds2.prototype.dimension = 2;
 
-dot.register( 'Bounds2', Bounds2 );
+Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ) as Bounds2;
+Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY ) as Bounds2;
 
-Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ) as PoolableBounds2;
-Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY ) as PoolableBounds2;
-
-type PoolableBounds2 = PoolableVersion<typeof Bounds2>;
-const PoolableBounds2 = Poolable.mixInto( Bounds2, { // eslint-disable-line
-  initialize: Bounds2.prototype.setMinMax,
-  defaultArguments: [ Bounds2.NOTHING.minX, Bounds2.NOTHING.minY, Bounds2.NOTHING.maxX, Bounds2.NOTHING.maxY ]
-} );
-
-function catchImmutableSetterLowHangingFruit( bounds: PoolableBounds2 ) {
+function catchImmutableSetterLowHangingFruit( bounds: Bounds2 ) {
   bounds.setMinMax = () => { throw new Error( 'Attempt to set "setMinMax" of an immutable Bounds2 object' ); };
   bounds.set = () => { throw new Error( 'Attempt to set "set" of an immutable Bounds2 object' ); };
   bounds.includeBounds = () => { throw new Error( 'Attempt to set "includeBounds" of an immutable Bounds2 object' ); };
@@ -1196,8 +1202,8 @@ if ( assert ) {
 Bounds2.Bounds2IO = new IOType( 'Bounds2IO', {
   valueType: Bounds2,
   documentation: 'a 2-dimensional bounds rectangle',
-  toStateObject: ( bounds2: PoolableBounds2 ) => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
-  fromStateObject: ( stateObject: Bounds2StateObject ) => new PoolableBounds2( stateObject.minX, stateObject.minY, stateObject.maxX, stateObject.maxY ),
+  toStateObject: ( bounds2: Bounds2 ) => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
+  fromStateObject: ( stateObject: Bounds2StateObject ) => new Bounds2( stateObject.minX, stateObject.minY, stateObject.maxX, stateObject.maxY ),
   stateSchema: {
     minX: NumberIO,
     maxX: NumberIO,
@@ -1206,6 +1212,5 @@ Bounds2.Bounds2IO = new IOType( 'Bounds2IO', {
   }
 } );
 
-export default PoolableBounds2;
-export { Bounds2 as RawBounds2 };
+export default Bounds2;
 export type { Bounds2StateObject };
