@@ -17,16 +17,20 @@ import Utils from './Utils.js';
 import dot from './dot.js';
 
 class LinearFunction {
+  private a1: number;
+  private a2: number;
+  private b1: number;
+  private b2: number;
+  private clamp: boolean;
 
   /**
-   * @param {number} a1
-   * @param {number} a2
-   * @param {number} b1
-   * @param {number} b2
-   * @param {boolean} [clamp=false] - clamp the result to the provided ranges, false by default
-   * @constructor
+   * @param a1
+   * @param a2
+   * @param b1
+   * @param b2
+   * @param clamp - clamp the result to the provided ranges, false by default
    */
-  constructor( a1, a2, b1, b2, clamp = false ) {
+  constructor( a1: number, a2: number, b1: number, b2: number, clamp: boolean = false ) {
     this.a1 = a1;
     this.a2 = a2;
     this.b1 = b1;
@@ -36,23 +40,15 @@ class LinearFunction {
 
   /**
    * Maps from a to b.
-   * @public
-   *
-   * @param {number} a3
-   * @returns {number}
    */
-  evaluate( a3 ) {
+  evaluate( a3: number ): number {
     return map( this.a1, this.a2, this.b1, this.b2, a3, this.clamp );
   }
 
   /**
    * Maps from b to a
-   * @public
-   *
-   * @param {number} b3
-   * @returns {number}
    */
-  inverse( b3 ) {
+  inverse( b3: number ): number {
     return map( this.b1, this.b2, this.a1, this.a2, b3, this.clamp );
   }
 }
@@ -61,18 +57,8 @@ class LinearFunction {
  * Linearly interpolate two points and evaluate the line equation for a third point.
  * f( a1 ) = b1, f( a2 ) = b2, f( a3 ) = <linear mapped value>
  * Optionally clamp the result to the range [b1,b2].
- *
- * @private
- *
- * @param {number} a1
- * @param {number} a2
- * @param {number} b1
- * @param {number} b2
- * @param {number} a3
- * @param {boolean} clamp
- * @returns {number}
  */
-const map = ( a1, a2, b1, b2, a3, clamp ) => {
+const map = ( a1: number, a2: number, b1: number, b2: number, a3: number, clamp: boolean ): number => {
   let b3 = Utils.linear( a1, a2, b1, b2, a3 );
   if ( clamp ) {
     const max = Math.max( b1, b2 );
