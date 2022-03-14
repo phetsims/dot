@@ -20,7 +20,7 @@ type Vector3StateObject = {
   z: number;
 };
 
-class Vector3 implements IPoolable {
+export default class Vector3 implements IPoolable {
 
   // The X coordinate of the vector.
   x: number;
@@ -694,5 +694,4 @@ Vector3.Vector3IO = new IOType( 'Vector3IO', {
   }
 } );
 
-export default Vector3;
 export { v3 };

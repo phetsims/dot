@@ -23,14 +23,14 @@ import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 // Temporary instances to be used in the transform method.
 const scratchVector2 = new Vector2( 0, 0 );
 
-type Bounds2StateObject = {
+export type Bounds2StateObject = {
   minX: number;
   minY: number;
   maxX: number;
   maxY: number;
 };
 
-class Bounds2 implements IPoolable {
+export default class Bounds2 implements IPoolable {
 
   // The minimum X coordinate of the bounds.
   minX: number;
@@ -1211,6 +1211,3 @@ Bounds2.Bounds2IO = new IOType( 'Bounds2IO', {
     maxY: NumberIO
   }
 } );
-
-export default Bounds2;
-export type { Bounds2StateObject };

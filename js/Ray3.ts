@@ -10,7 +10,7 @@ import dot from './dot.js';
 import Plane3 from './Plane3.js';
 import Vector3 from './Vector3.js';
 
-class Ray3 {
+export default class Ray3 {
 
   position: Vector3;
   direction: Vector3;
@@ -59,4 +59,3 @@ class Ray3 {
 }
 
 dot.register( 'Ray3', Ray3 );
-export default Ray3;

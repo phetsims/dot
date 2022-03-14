@@ -16,7 +16,7 @@
 import Utils from './Utils.js';
 import dot from './dot.js';
 
-class LinearFunction {
+export default class LinearFunction {
   private a1: number;
   private a2: number;
   private b1: number;
@@ -69,4 +69,3 @@ const map = ( a1: number, a2: number, b1: number, b2: number, a3: number, clamp:
 };
 
 dot.register( 'LinearFunction', LinearFunction );
-export default LinearFunction;

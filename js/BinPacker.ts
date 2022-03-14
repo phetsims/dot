@@ -31,7 +31,7 @@
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 
-class BinPacker {
+export default class BinPacker {
 
   rootBin: Bin;
 
@@ -96,7 +96,7 @@ class BinPacker {
 
 dot.register( 'BinPacker', BinPacker );
 
-class Bin {
+export class Bin {
 
   // Our containing bounds
   bounds: Bounds2;
@@ -263,6 +263,3 @@ class Bin {
 }
 
 BinPacker.Bin = Bin;
-
-export default BinPacker;
-export { Bin };

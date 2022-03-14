@@ -11,7 +11,7 @@ import Ray3 from './Ray3.js';
 import Vector3 from './Vector3.js';
 import dot from './dot.js';
 
-class Plane3 {
+export default class Plane3 {
 
   normal: Vector3;
   distance: number;
@@ -61,5 +61,3 @@ dot.register( 'Plane3', Plane3 );
 Plane3.XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
 Plane3.XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
 Plane3.YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );
-
-export default Plane3;

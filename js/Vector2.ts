@@ -13,7 +13,7 @@ import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
 
-class Vector2 implements IPoolable {
+export default class Vector2 implements IPoolable {
 
   // The X coordinate of the vector.
   x: number;
@@ -783,5 +783,4 @@ Vector2.Vector2IO = IOType.fromCoreType( 'Vector2IO', Vector2, {
   documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
 } );
 
-export default Vector2;
 export { v2 };

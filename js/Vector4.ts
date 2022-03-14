@@ -11,7 +11,7 @@ import Vector3 from './Vector3.js';
 import dot from './dot.js';
 import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 
-class Vector4 implements IPoolable {
+export default class Vector4 implements IPoolable {
 
   // The X coordinate of the vector.
   x: number;
@@ -621,5 +621,4 @@ Vector4.Y_UNIT = assert ? new ImmutableVector4( 0, 1, 0, 0 ) : new Vector4( 0, 1
 Vector4.Z_UNIT = assert ? new ImmutableVector4( 0, 0, 1, 0 ) : new Vector4( 0, 0, 1, 0 );
 Vector4.W_UNIT = assert ? new ImmutableVector4( 0, 0, 0, 1 ) : new Vector4( 0, 0, 0, 1 );
 
-export default Vector4;
 export { v4 };
