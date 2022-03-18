@@ -214,7 +214,7 @@ class Random {
    * Choose a numeric index from the array of weights.  The array of weights does not need to be normalized.
    * See https://stackoverflow.com/questions/8877249/generate-random-integers-with-probabilities
    * See also ContinuousServer.weightedSampleTest which uses the same algorithm
-   * @param {number[]} weights
+   * @param {ReadonlyArray<number>} weights
    * @returns {number}
    * @public
    */
