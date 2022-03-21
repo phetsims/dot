@@ -13,6 +13,10 @@ import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
 
+const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
+  return vector.add( nextVector );
+};
+
 export default class Vector2 implements IPoolable {
 
   // The X coordinate of the vector.
@@ -420,6 +424,15 @@ export default class Vector2 implements IPoolable {
   average( vector: Vector2 ): Vector2 {
     return this.blend( vector, 0.5 );
   }
+
+  /**
+   * Take a component-based mean of all vectors provided.
+   */
+  static average( vectors: Vector2[] ): Vector2 {
+    const added = _.reduce( vectors, ADDING_ACCUMULATOR, new Vector2( 0, 0 ) );
+    return added.divideScalar( vectors.length );
+  }
+
 
   /**
    * Debugging string for the vector.

@@ -21,3 +21,18 @@ QUnit.test( 'distance', assert => {
   approximateEquals( assert, new Vector2( 4, 7 ).distance( new Vector2( 6, 9 ) ), 2 * Math.sqrt( 2 ) );
   approximateEquals( assert, new Vector2( 4, 7 ).distanceSquared( new Vector2( 6, 9 ) ), 8 );
 } );
+
+QUnit.test( 'component average', assert => {
+
+  const vector1 = new Vector2( 2, 2 );
+  const vector2 = new Vector2( 3, 3 );
+  const vectors = [ vector1, vector2 ];
+  let average = Vector2.average( vectors );
+  assert.ok( average.x === 2.5, 'x average' );
+  assert.ok( average.y === 2.5, 'y average' );
+
+  vectors.push( new Vector2( 7, 1 ) );
+  average = Vector2.average( vectors );
+  assert.ok( average.x === 4, 'x average again' );
+  assert.ok( average.y === 2, 'y average again' );
+} );

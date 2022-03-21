@@ -14,6 +14,10 @@ import Utils from './Utils.js';
 import Vector2, { v2 } from './Vector2.js';
 import Vector4, { v4 } from './Vector4.js';
 
+const ADDING_ACCUMULATOR = ( vector: Vector3, nextVector: Vector3 ) => {
+  return vector.add( nextVector );
+};
+
 type Vector3StateObject = {
   x: number;
   y: number;
@@ -361,6 +365,14 @@ export default class Vector3 implements IPoolable {
    */
   average( vector: Vector3 ): Vector3 {
     return this.blend( vector, 0.5 );
+  }
+
+  /**
+   * Take a component-based mean of all vectors provided.
+   */
+  static average( vectors: Vector3[] ): Vector3 {
+    const added = _.reduce( vectors, ADDING_ACCUMULATOR, new Vector3( 0, 0, 0 ) );
+    return added.divideScalar( vectors.length );
   }
 
   /**
