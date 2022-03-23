@@ -672,7 +672,7 @@ export default class Vector2 implements IPoolable {
    *
    * @returns - see stateSchema for schema
    */
-  toStateObject(): { x: number, y: number } {
+  toStateObject(): { x: number; y: number } {
     return {
       x: NumberIO.toStateObject( this.x ),
       y: NumberIO.toStateObject( this.y )
@@ -692,7 +692,7 @@ export default class Vector2 implements IPoolable {
   /**
    * Returns a map of state keys and their associated IOTypes, see IOType.fromCoreType for details.
    */
-  static get STATE_SCHEMA(): { x: IOType, y: IOType } {
+  static get STATE_SCHEMA(): { x: IOType; y: IOType } {
     return {
       x: NumberIO,
       y: NumberIO
@@ -714,7 +714,7 @@ export default class Vector2 implements IPoolable {
    *
    * @param stateObject - see stateSchema for schema
    */
-  static fromStateObject( stateObject: { x: number, y: number } ): Vector2 {
+  static fromStateObject( stateObject: { x: number; y: number } ): Vector2 {
     return v2(
       NumberIO.fromStateObject( stateObject.x ),
       NumberIO.fromStateObject( stateObject.y )
