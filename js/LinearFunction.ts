@@ -30,7 +30,7 @@ export default class LinearFunction {
    * @param b2
    * @param clamp - clamp the result to the provided ranges, false by default
    */
-  constructor( a1: number, a2: number, b1: number, b2: number, clamp: boolean = false ) {
+  constructor( a1: number, a2: number, b1: number, b2: number, clamp = false ) {
     this.a1 = a1;
     this.a2 = a2;
     this.b1 = b1;
