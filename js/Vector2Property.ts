@@ -1,4 +1,4 @@
-// Copyright 2019-2021, University of Colorado Boulder
+// Copyright 2019-2022, University of Colorado Boulder
 
 /**
  * Property whose value must be a Vector2.
@@ -6,51 +6,44 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Property from '../../axon/js/Property.js';
-import validate from '../../axon/js/validate.js';
-import merge from '../../phet-core/js/merge.js';
+import Property, { PropertyOptions } from '../../axon/js/Property.js';
 import Bounds2 from './Bounds2.js';
 import Vector2 from './Vector2.js';
 import dot from './dot.js';
+import optionize from '../../phet-core/js/optionize.js';
 
-const BOUNDS_VALIDATOR = { isValidValue: value => ( value instanceof Bounds2 || value === null ) };
+type SelfOptions = {
+  validBounds?: Bounds2 | null;
+};
 
-/**
- * @extends Property<Vector2>
- */
-class Vector2Property extends Property {
+type Vector2PropertyOptions = SelfOptions & Omit<PropertyOptions<Vector2>, 'phetioType' | 'valueType'>;
 
-  /**
-   * @param {Vector2} initialValue
-   * @param {Object} [options]
-   */
-  constructor( initialValue, options ) {
+class Vector2Property extends Property<Vector2> {
+  readonly validBounds: Bounds2 | null;
 
-    // client cannot specify superclass options that are controlled by Vector2Property
-    if ( options ) {
-      assert && assert( !options.hasOwnProperty( 'valueType' ), 'Vector2Property sets valueType' );
-      assert && assert( !options.hasOwnProperty( 'phetioType' ), 'Vector2Property sets phetioType' );
-    }
+  constructor( initialValue: Vector2, providedOptions?: Vector2PropertyOptions ) {
 
     // Fill in superclass options that are controlled by Vector2Property.
-    options = merge( {
+    const options = optionize<Vector2PropertyOptions, SelfOptions, PropertyOptions<Vector2>>()( {
       valueType: Vector2,
 
       // {Bounds2|null} - Confine the valid area of acceptable Vector2 values to within a Bounds2.
       validBounds: null,
 
+      validators: [],
+
       // phet-io
       phetioType: Property.PropertyIO( Vector2.Vector2IO )
-    }, options );
+    }, providedOptions );
+
+    options.validBounds && options.validators.push( {
+      validationMessage: 'Vector2 is not within validBounds',
+      isValidValue: v => options.validBounds!.containsPoint( v )
+    } );
 
     super( initialValue, options );
 
-    // @public (read-only) {Bounds2|null}
     this.validBounds = options.validBounds;
-
-    validate( this.validBounds, BOUNDS_VALIDATOR );
-
-    assert && this.validBounds && this.link( newValue => assert( this.validBounds.containsPoint( newValue ) ) );
   }
 }
 
