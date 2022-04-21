@@ -664,7 +664,7 @@ export default class Vector3 implements IPoolable {
   static Vector3IO: IOType;
 }
 
-// @public (read-only) - Helps to identify the dimension of the vector
+// (read-only) - Helps to identify the dimension of the vector
 Vector3.prototype.isVector3 = true;
 Vector3.prototype.dimension = 3;
 

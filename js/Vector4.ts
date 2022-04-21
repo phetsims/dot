@@ -589,7 +589,7 @@ export default class Vector4 implements IPoolable {
   static W_UNIT: Vector4;
 }
 
-// @public (read-only) - Helps to identify the dimension of the vector
+// (read-only) - Helps to identify the dimension of the vector
 Vector4.prototype.isVector4 = true;
 Vector4.prototype.dimension = 4;
 

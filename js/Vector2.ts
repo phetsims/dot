@@ -764,7 +764,7 @@ export default class Vector2 implements IPoolable {
   static Vector2IO: IOType;
 }
 
-// @public (read-only) - Helps to identify the dimension of the vector
+// (read-only) - Helps to identify the dimension of the vector
 Vector2.prototype.isVector2 = true;
 Vector2.prototype.dimension = 2;
 
