@@ -1169,7 +1169,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the transform of a Canvas 2D rendering context to the affine part of this matrix
    */
-  canvasSetTransform( context: CanvasRenderingContext2D ) {
+  canvasSetTransform( context: CanvasRenderingContext2D ): void {
     context.setTransform(
       // inlined array entries
       this.entries[ 0 ],
@@ -1184,7 +1184,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Appends to the affine part of this matrix to the Canvas 2D rendering context
    */
-  canvasAppendTransform( context: CanvasRenderingContext2D ) {
+  canvasAppendTransform( context: CanvasRenderingContext2D ): void {
     if ( this.type !== Matrix3Type.IDENTITY ) {
       context.transform(
         // inlined array entries
@@ -1214,7 +1214,7 @@ export default class Matrix3 implements IPoolable {
     return array;
   }
 
-  freeToPool() {
+  freeToPool(): void {
     Matrix3.pool.freeToPool( this );
   }
 

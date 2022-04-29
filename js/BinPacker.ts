@@ -70,7 +70,7 @@ export default class BinPacker {
    *
    * @param bin - The bin that was returned from allocate().
    */
-  deallocate( bin: Bin ) {
+  deallocate( bin: Bin ): void {
     bin.unuse();
   }
 
@@ -157,7 +157,7 @@ export class Bin {
   /**
    * Splits this bin into multiple child bins, and returns the child with the dimensions (width,height). (dot-internal)
    */
-  split( width: number, height: number ) {
+  split( width: number, height: number ): Bin {
     assert && assert( this.bounds.width >= width && this.bounds.height >= height,
       'Bin does not have space' );
     assert && assert( !this.isSplit, 'Bin should not be re-split' );
@@ -213,7 +213,7 @@ export class Bin {
   /**
    * Mark this bin as used. (dot-internal)
    */
-  use() {
+  use(): void {
     assert && assert( !this.isSplit, 'Should not mark a split bin as used' );
     assert && assert( !this.isUsed, 'Should not mark a used bin as used' );
 
@@ -223,7 +223,7 @@ export class Bin {
   /**
    * Mark this bin as not used, and attempt to collapse split parents if all children are unused. (dot-internal)
    */
-  unuse() {
+  unuse(): void {
     assert && assert( this.isUsed, 'Can only unuse a used instance' );
 
     this.isUsed = false;
@@ -236,7 +236,7 @@ export class Bin {
    * not split, and will remove our children. If successful, it will also call this on our parent, fully attempting
    * to clean up unused data structures.
    */
-  private attemptToCollapse() {
+  private attemptToCollapse(): void {
     assert && assert( this.isSplit, 'Should only attempt to collapse split bins' );
 
     // Bail out if a single child isn't able to be collapsed. If it is not split or used, it won't have any children

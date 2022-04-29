@@ -570,7 +570,7 @@ export default class Vector4 implements IPoolable {
     return this.setXYZW( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ), Utils.roundSymmetric( this.w ) );
   }
 
-  freeToPool() {
+  freeToPool(): void {
     Vector4.pool.freeToPool( this );
   }
 
@@ -602,7 +602,7 @@ class ImmutableVector4 extends Vector4 {
   /**
    * Throw errors whenever a mutable method is called on our immutable vector
    */
-  static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setZ' | 'setW' | 'setXYZW' ) {
+  static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setZ' | 'setW' | 'setXYZW' ): void {
     ImmutableVector4.prototype[ mutableFunctionName ] = () => {
       throw new Error( `Cannot call mutable method '${mutableFunctionName}' on immutable Vector3` );
     };

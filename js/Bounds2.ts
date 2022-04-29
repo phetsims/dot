@@ -1103,7 +1103,7 @@ export default class Bounds2 implements IPoolable {
     return result;
   }
 
-  freeToPool() {
+  freeToPool(): void {
     Bounds2.pool.freeToPool( this );
   }
 

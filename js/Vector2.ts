@@ -679,7 +679,7 @@ export default class Vector2 implements IPoolable {
     };
   }
 
-  freeToPool() {
+  freeToPool(): void {
     Vector2.pool.freeToPool( this );
   }
 
@@ -777,7 +777,7 @@ class ImmutableVector2 extends Vector2 {
   /**
    * Throw errors whenever a mutable method is called on our immutable vector
    */
-  static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setXY' ) {
+  static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setXY' ): void {
     ImmutableVector2.prototype[ mutableFunctionName ] = () => {
       throw new Error( `Cannot call mutable method '${mutableFunctionName}' on immutable Vector2` );
     };
