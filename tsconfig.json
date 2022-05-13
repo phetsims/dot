@@ -1,13 +1,9 @@
 {
-  "_comment": "This tsconfig file adds the tests, @author Sam Reid (PhET Interactive Simulations)",
   "extends": "../chipper/tsconfig-core.json",
-  "references": [
-    {
-      "path": "../joist/tsconfig-module.json"
-    }
-  ],
   "include": [
-    "js/**/*test*",
-    "js/**/*Test*"
+    "js/**/*",
+    "images/**/*",
+    "mipmaps/**/*",
+    "sounds/**/*"
   ]
 }
