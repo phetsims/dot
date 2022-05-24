@@ -19,6 +19,7 @@ import Vector2 from './Vector2.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
 import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
+import Orientation from '../../phet-core/js/Orientation.js';
 
 // Temporary instances to be used in the transform method.
 const scratchVector2 = new Vector2( 0, 0 );
@@ -1122,6 +1123,24 @@ export default class Bounds2 implements IPoolable {
    */
   static rect( x: number, y: number, width: number, height: number ): Bounds2 {
     return b2( x, y, x + width, y + height );
+  }
+
+  /**
+   * Returns a new Bounds2 object with a given orientation (min/max specified for both the given (primary) orientation,
+   * and also the secondary orientation).
+   */
+  static oriented( orientation: Orientation, minPrimary: number, minSecondary: number, maxPrimary: number, maxSecondary: number ): Bounds2 {
+    return orientation === Orientation.HORIZONTAL ? new Bounds2(
+      minPrimary,
+      minSecondary,
+      maxPrimary,
+      maxSecondary
+    ) : new Bounds2(
+      minSecondary,
+      minPrimary,
+      maxSecondary,
+      maxPrimary
+    );
   }
 
   /**
