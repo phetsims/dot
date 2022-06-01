@@ -7,7 +7,7 @@
  */
 
 import Property, { PropertyOptions } from '../../axon/js/Property.js';
-import OmitStrict from '../../phet-core/js/types/OmitStrict.js';
+import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Bounds2 from './Bounds2.js';
 import Vector2 from './Vector2.js';
 import dot from './dot.js';
@@ -17,7 +17,7 @@ type SelfOptions = {
   validBounds?: Bounds2 | null;
 };
 
-type Vector2PropertyOptions = SelfOptions & OmitStrict<PropertyOptions<Vector2>, 'phetioType' | 'valueType'>;
+type Vector2PropertyOptions = SelfOptions & StrictOmit<PropertyOptions<Vector2>, 'phetioType' | 'valueType'>;
 
 class Vector2Property extends Property<Vector2> {
   readonly validBounds: Bounds2 | null;
