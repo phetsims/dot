@@ -1148,8 +1148,8 @@ export default class Bounds2 implements IPoolable {
    * bounding box around a point. Note that the bounds will not be "empty" as it contains (x,y), but it will have
    * zero area. The x and y coordinates can be specified by numbers or with at Vector2
    *
-   * @param {number|Vector2} x
-   * @param {number} y
+   * @param x
+   * @param y
    */
   static point( x: number, y: number ): Bounds2;
   static point( v: Vector2 ): Bounds2; // eslint-disable-line

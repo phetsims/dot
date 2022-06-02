@@ -222,8 +222,6 @@ export default class Vector4 implements IPoolable {
    *
    * This is the immutable form of the function multiplyScalar(). This will return a new vector, and will not modify
    * this vector.
-   *
-   * @param {number} scalar
    */
   timesScalar( scalar: number ): Vector4 {
     return v4( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
