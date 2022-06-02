@@ -1150,7 +1150,6 @@ export default class Bounds2 implements IPoolable {
    *
    * @param {number|Vector2} x
    * @param {number} y
-   * @returns {Bounds2}
    */
   static point( x: number, y: number ): Bounds2;
   static point( v: Vector2 ): Bounds2; // eslint-disable-line
