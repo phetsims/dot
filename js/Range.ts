@@ -18,7 +18,7 @@ export type IRange = {
   max: number;
 }
 
-class Range {
+class Range implements IRange {
 
   // the minimum value of the range
   private _min: number;
