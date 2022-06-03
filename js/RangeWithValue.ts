@@ -9,68 +9,59 @@
 
 import Range from './Range.js';
 import dot from './dot.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 
 class RangeWithValue extends Range {
+
+  private readonly _defaultValue: number;
+
   /**
-   * @param {number} min - the minimum value of the range
-   * @param {number} max - the maximum value of the range
-   * @param {number} defaultValue - default value inside the range
+   * @param min - the minimum value of the range
+   * @param max - the maximum value of the range
+   * @param defaultValue - default value inside the range
    */
-  constructor( min, max, defaultValue ) {
+  constructor( min: number, max: number, defaultValue: number ) {
 
     super( min, max );
 
     assert && assert( defaultValue !== undefined, 'default value is required' );
     assert && assert( defaultValue >= min && defaultValue <= max, `defaultValue is out of range: ${defaultValue}` );
 
-    // @private
     this._defaultValue = defaultValue;
   }
 
 
   /**
    * Getter for defaultValue
-   * @returns {number}
-   * @public
    */
-  getDefaultValue() {
+  public getDefaultValue(): number {
     return this._defaultValue;
   }
 
-  get defaultValue() {
+  public override get defaultValue(): number {
     return this.getDefaultValue();
   }
 
   /**
    * Setter for min
-   * @param {number} min
-   * @public
-   * @override
    */
-  setMin( min ) {
+  public override setMin( min: number ): void {
     assert && assert( this._defaultValue >= min, `min must be <= defaultValue: ${min}` );
     super.setMin( min );
   }
 
   /**
    * Setter for max
-   * @param {number} max
-   * @public
-   * @override
    */
-  setMax( max ) {
+  public override setMax( max: number ): void {
     assert && assert( this._defaultValue <= max, `max must be >= defaultValue: ${max}` );
     super.setMax( max );
   }
 
   /**
    * Setter for min and max
-   * @param {number} min
-   * @param {number} max
-   * @public
-   * @override
    */
-  setMinMax( min, max ) {
+  override setMinMax( min: number, max: number ): void {
     assert && assert( this._defaultValue >= min, `min must be <= defaultValue: ${min}` );
     assert && assert( this._defaultValue <= max, `max must be >= defaultValue: ${max}` );
     super.setMinMax( min, max );
@@ -78,22 +69,15 @@ class RangeWithValue extends Range {
 
   /**
    * Converts the attributes of this range to a string
-   * @public
-   * @returns {string}
-   * @override
    */
-  toString() {
+  override toString(): string {
     return `[RangeWithValue (min:${this.min} max:${this.max} defaultValue:${this._defaultValue})]`;
   }
 
   /**
    * Determines if this RangeWithValue is equal to some object.
-   * @public
-   * @param {*} object
-   * @returns {boolean}
-   * @override
    */
-  equals( object ) {
+  public override equals( object: IntentionalAny ): boolean {
     return ( this.constructor === object.constructor ) &&
            ( this._defaultValue === object.defaultValue ) &&
            super.equals( object );
