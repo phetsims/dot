@@ -851,7 +851,7 @@ const Utils = {
         // e.g. '1e-21', '5.6e+34', etc.
         const split = string.split( 'e' );
         const mantissa = split[ 0 ]; // The left part, e.g. '1' or '5.6'
-        const exponent = parseInt( split[ 1 ], 10 ); // The right part, e.g. '-21' or '+34'
+        const exponent = Number( split[ 1 ] ); // The right part, e.g. '-21' or '+34'
 
         // How many decimal places are there in the left part
         const mantissaDecimalPlaces = mantissa.includes( '.' ) ? mantissa.split( '.' )[ 1 ].length : 0;
