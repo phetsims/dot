@@ -792,6 +792,8 @@ Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new Vector2( 0, 0 );
 Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
+export type Vector2State = { x: number; y: number };
+
 Vector2.Vector2IO = IOType.fromCoreType( 'Vector2IO', Vector2, {
   documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
 } );
