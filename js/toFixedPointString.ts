@@ -27,9 +27,9 @@ function toFixedPointString( value: number, decimalPlaces: number ): string {
   // Find the decimal point in the string.
   const decimalPointIndex = stringValue.indexOf( '.' );
 
+  // If there is a decimal point...
   if ( decimalPointIndex !== -1 ) {
 
-    // If there is a decimal point...
     const actualDecimalPlaces = stringValue.length - decimalPointIndex - 1;
     if ( actualDecimalPlaces < decimalPlaces ) {
 
@@ -41,19 +41,29 @@ function toFixedPointString( value: number, decimalPlaces: number ): string {
     else if ( actualDecimalPlaces > decimalPlaces ) {
 
       // There are too many decimal places, so round symmetric.
-      const digit = parseInt( stringValue[ decimalPointIndex + decimalPlaces + 1 ], 10 );
-      const delta = ( digit >= 5 ) ? 1 : 0;
+      
+      // Save the digit that is to the right of the last digit that we'll be saving.
+      // It determines whether we round up the last digit.
+      const nextDigit = parseInt( stringValue[ decimalPointIndex + decimalPlaces + 1 ], 10 );
+
+      // Chop off everything to the right of the last digit.
       stringValue = stringValue.substring( 0, stringValue.length - ( actualDecimalPlaces - decimalPlaces ) );
+
+      // If we chopped off all of the decimal places, remove the decimal point too.
       if ( stringValue[ stringValue.length - 1 ] === '.' ) {
         stringValue = stringValue.substring( 0, stringValue.length - 1 );
       }
-      const lastDecimal = parseInt( stringValue[ stringValue.length - 1 ], 10 ) + delta;
-      stringValue = stringValue.replace( /.$/, lastDecimal.toString() );
+
+      // Round up the last digit.
+      if ( nextDigit >= 5 ) {
+        const lastDecimal = parseInt( stringValue[ stringValue.length - 1 ], 10 ) + 1;
+        stringValue = stringValue.replace( /.$/, lastDecimal.toString() );
+      }
     }
   }
   else {
 
-    // There is no decimal point, so add a decimal point and pad with zeros.
+    // There is no decimal point, add it and pad with zeros.
     if ( decimalPlaces > 0 ) {
       stringValue += '.';
       for ( let i = 0; i < decimalPlaces; i++ ) {
