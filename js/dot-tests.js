@@ -6,6 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import './toFixedPointStringTests.js';
 import './BinPackerTests.js';
 import './Bounds2Tests.js';
 import './ComplexTests.js';
