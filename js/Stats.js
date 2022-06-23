@@ -24,7 +24,7 @@ const Stats = {
       return null;
     }
 
-    numbers.sort( ( a, b ) => a - b );
+    numbers.sort();
     const index = ( percentile / 100 ) * numbers.length;
     let result = null;
 
@@ -54,10 +54,7 @@ const Stats = {
   /**
    * see https://www.whatissixsigma.net/box-plot-diagram-to-identify-outliers/ for formulas
    * @param {Array.<number>} numbers
-   * @returns {Object} -
-   *                    q1: {number} -     first quartile
-   *                    q3: {number} -     third quartile
-   *                    median: {number} - median
+   * @returns {{q1:number, median:number, q3:number}} -
    */
   getBoxPlotValues( numbers ) {
     assert && assert( numbers.length >= 4, 'need at least 4 values to calculate quartiles' );
