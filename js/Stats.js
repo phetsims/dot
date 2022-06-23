@@ -24,7 +24,7 @@ const Stats = {
       return null;
     }
 
-    numbers.sort();
+    numbers.sort( ( a, b ) => a - b );
     const index = ( percentile / 100 ) * numbers.length;
     let result = null;
 
