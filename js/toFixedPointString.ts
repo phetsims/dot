@@ -73,7 +73,7 @@ function toFixedPointString( value: number, decimalPlaces: number ): string {
   }
 
   // Remove negative sign from -0 values.
-  if ( parseFloat( stringValue ) === 0 && stringValue[ 0 ] === '-' ) {
+  if ( Number( stringValue ) === 0 && stringValue[ 0 ] === '-' ) {
     stringValue = stringValue.substring( 1, stringValue.length );
   }
 
