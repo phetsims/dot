@@ -44,7 +44,7 @@ function toFixedPointString( value: number, decimalPlaces: number ): string {
       
       // Save the digit that is to the right of the last digit that we'll be saving.
       // It determines whether we round up the last digit.
-      const nextDigit = parseInt( stringValue[ decimalPointIndex + decimalPlaces + 1 ], 10 );
+      const nextDigit = Number( stringValue[ decimalPointIndex + decimalPlaces + 1 ] );
 
       // Chop off everything to the right of the last digit.
       stringValue = stringValue.substring( 0, stringValue.length - ( actualDecimalPlaces - decimalPlaces ) );
@@ -56,7 +56,7 @@ function toFixedPointString( value: number, decimalPlaces: number ): string {
 
       // Round up the last digit.
       if ( nextDigit >= 5 ) {
-        const lastDecimal = parseInt( stringValue[ stringValue.length - 1 ], 10 ) + 1;
+        const lastDecimal = Number( stringValue[ stringValue.length - 1 ] ) + 1;
         stringValue = stringValue.replace( /.$/, lastDecimal.toString() );
       }
     }
