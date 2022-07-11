@@ -105,7 +105,7 @@ export class Bin {
   private parent: Bin | null;
 
   // Whether our children are responsible for our area
-  private isSplit: boolean
+  private isSplit: boolean;
 
   // Whether we are marked as a bin that is used
   private isUsed: boolean;
