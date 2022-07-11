@@ -16,7 +16,7 @@ import dot from './dot.js';
 export type IRange = {
   min: number;
   max: number;
-}
+};
 
 class Range implements IRange {
 
