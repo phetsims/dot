@@ -35,7 +35,7 @@ type NineNumbers = [
   number, number, number
 ];
 
-type Matrix3StateObject = {
+export type Matrix3StateObject = {
   entries: NineNumbers;
   type: string;
 };
