@@ -10,12 +10,17 @@
 
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import NumberIO from '../../tandem/js/types/NumberIO.js';
+import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 
 export type IRange = {
   min: number;
   max: number;
+};
+
+export type RangeStateObject = {
+  min: NumberStateObject;
+  max: NumberStateObject;
 };
 
 class Range implements IRange {
@@ -195,16 +200,16 @@ class Range implements IRange {
     throw new Error( 'defaultValue is undefined, did you mean to use RangeWithValue?' );
   }
 
-  static RangeIO = new IOType( 'RangeIO', {
+  static RangeIO = new IOType<Range, RangeStateObject>( 'RangeIO', {
     valueType: Range,
     documentation: 'A range with "min" and a "max" members.',
-    toStateObject: ( range: Range ): IRange => ( {
+    toStateObject: ( range: Range ): RangeStateObject => ( {
       min: NumberIO.toStateObject( range.min ),
       max: NumberIO.toStateObject( range.max )
     } ),
 
     // eslint-disable-next-line no-html-constructors
-    fromStateObject: ( stateObject: IRange ) => new Range(
+    fromStateObject: ( stateObject: RangeStateObject ) => new Range(
       NumberIO.fromStateObject( stateObject.min ),
       NumberIO.fromStateObject( stateObject.max )
     ),

@@ -8,7 +8,7 @@
 
 import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import NumberIO from '../../tandem/js/types/NumberIO.js';
+import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector2, { v2 } from './Vector2.js';
@@ -19,9 +19,9 @@ const ADDING_ACCUMULATOR = ( vector: Vector3, nextVector: Vector3 ) => {
 };
 
 type Vector3StateObject = {
-  x: number;
-  y: number;
-  z: number;
+  x: NumberStateObject;
+  y: NumberStateObject;
+  z: NumberStateObject;
 };
 
 export default class Vector3 implements IPoolable {
