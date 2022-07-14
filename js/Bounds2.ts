@@ -1155,11 +1155,11 @@ export default class Bounds2 implements IPoolable {
   static point( v: Vector2 ): Bounds2; // eslint-disable-line
   static point( x: Vector2 | number, y?: number ) { // eslint-disable-line
     if ( x instanceof Vector2 ) {
-      const p = x as Vector2;
+      const p = x;
       return b2( p.x, p.y, p.x, p.y );
     }
     else {
-      return b2( x as number, y as number, x as number, y as number );
+      return b2( x, y as number, x, y as number );
     }
   }
 
@@ -1200,8 +1200,8 @@ dot.register( 'b2', b2 );
 Bounds2.prototype.isBounds = true;
 Bounds2.prototype.dimension = 2;
 
-Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ) as Bounds2;
-Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY ) as Bounds2;
+Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
+Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
 function catchImmutableSetterLowHangingFruit( bounds: Bounds2 ) {
   bounds.setMinMax = () => { throw new Error( 'Attempt to set "setMinMax" of an immutable Bounds2 object' ); };
