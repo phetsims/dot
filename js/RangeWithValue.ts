@@ -20,7 +20,7 @@ class RangeWithValue extends Range {
    * @param max - the maximum value of the range
    * @param defaultValue - default value inside the range
    */
-  constructor( min: number, max: number, defaultValue: number ) {
+  public constructor( min: number, max: number, defaultValue: number ) {
 
     super( min, max );
 
@@ -61,7 +61,7 @@ class RangeWithValue extends Range {
   /**
    * Setter for min and max
    */
-  override setMinMax( min: number, max: number ): void {
+  public override setMinMax( min: number, max: number ): void {
     assert && assert( this._defaultValue >= min, `min must be <= defaultValue: ${min}` );
     assert && assert( this._defaultValue <= max, `max must be >= defaultValue: ${max}` );
     super.setMinMax( min, max );
@@ -70,7 +70,7 @@ class RangeWithValue extends Range {
   /**
    * Converts the attributes of this range to a string
    */
-  override toString(): string {
+  public override toString(): string {
     return `[RangeWithValue (min:${this.min} max:${this.max} defaultValue:${this._defaultValue})]`;
   }
 

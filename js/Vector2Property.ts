@@ -20,9 +20,9 @@ type SelfOptions = {
 type Vector2PropertyOptions = SelfOptions & StrictOmit<PropertyOptions<Vector2>, 'phetioType' | 'valueType'>;
 
 class Vector2Property extends Property<Vector2> {
-  readonly validBounds: Bounds2 | null;
+  public readonly validBounds: Bounds2 | null;
 
-  constructor( initialValue: Vector2, providedOptions?: Vector2PropertyOptions ) {
+  public constructor( initialValue: Vector2, providedOptions?: Vector2PropertyOptions ) {
 
     // Fill in superclass options that are controlled by Vector2Property.
     const options = optionize<Vector2PropertyOptions, SelfOptions, PropertyOptions<Vector2>>()( {

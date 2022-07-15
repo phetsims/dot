@@ -34,16 +34,16 @@ export type Bounds2StateObject = {
 export default class Bounds2 implements IPoolable {
 
   // The minimum X coordinate of the bounds.
-  minX: number;
+  public minX: number;
 
   // The minimum Y coordinate of the bounds.
-  minY: number;
+  public minY: number;
 
   // The maximum X coordinate of the bounds.
-  maxX: number;
+  public maxX: number;
 
   // The maximum Y coordinate of the bounds.
-  maxY: number;
+  public maxY: number;
 
   /**
    * Creates a 2-dimensional bounds (bounding box).
@@ -53,7 +53,7 @@ export default class Bounds2 implements IPoolable {
    * @param maxX - The initial maximum X coordinate of the bounds.
    * @param maxY - The initial maximum Y coordinate of the bounds.
    */
-  constructor( minX: number, minY: number, maxX: number, maxY: number ) {
+  public constructor( minX: number, minY: number, maxX: number, maxY: number ) {
     assert && assert( maxY !== undefined, 'Bounds2 requires 4 parameters' );
 
     this.minX = minX;
@@ -70,16 +70,16 @@ export default class Bounds2 implements IPoolable {
   /**
    * The width of the bounds, defined as maxX - minX.
    */
-  getWidth(): number { return this.maxX - this.minX; }
+  public getWidth(): number { return this.maxX - this.minX; }
 
-  get width(): number { return this.getWidth(); }
+  public get width(): number { return this.getWidth(); }
 
   /**
    * The height of the bounds, defined as maxY - minY.
    */
-  getHeight(): number { return this.maxY - this.minY; }
+  public getHeight(): number { return this.maxY - this.minY; }
 
-  get height(): number { return this.getHeight(); }
+  public get height(): number { return this.getHeight(); }
 
   /*
    * Convenience positions
@@ -95,166 +95,166 @@ export default class Bounds2 implements IPoolable {
   /**
    * Alias for minX, when thinking of the bounds as an (x,y,width,height) rectangle.
    */
-  getX(): number { return this.minX; }
+  public getX(): number { return this.minX; }
 
-  get x(): number { return this.getX(); }
+  public get x(): number { return this.getX(); }
 
   /**
    * Alias for minY, when thinking of the bounds as an (x,y,width,height) rectangle.
    */
-  getY(): number { return this.minY; }
+  public getY(): number { return this.minY; }
 
-  get y(): number { return this.getY(); }
+  public get y(): number { return this.getY(); }
 
   /**
    * Alias for minX, supporting the explicit getter function style.
    */
-  getMinX(): number { return this.minX; }
+  public getMinX(): number { return this.minX; }
 
   /**
    * Alias for minY, supporting the explicit getter function style.
    */
-  getMinY(): number { return this.minY; }
+  public getMinY(): number { return this.minY; }
 
   /**
    * Alias for maxX, supporting the explicit getter function style.
    */
-  getMaxX(): number { return this.maxX; }
+  public getMaxX(): number { return this.maxX; }
 
   /**
    * Alias for maxY, supporting the explicit getter function style.
    */
-  getMaxY(): number { return this.maxY; }
+  public getMaxY(): number { return this.maxY; }
 
   /**
    * Alias for minX, when thinking in the UI-layout manner.
    */
-  getLeft(): number { return this.minX; }
+  public getLeft(): number { return this.minX; }
 
-  get left(): number { return this.minX; }
+  public get left(): number { return this.minX; }
 
   /**
    * Alias for minY, when thinking in the UI-layout manner.
    */
-  getTop(): number { return this.minY; }
+  public getTop(): number { return this.minY; }
 
-  get top(): number { return this.minY; }
+  public get top(): number { return this.minY; }
 
   /**
    * Alias for maxX, when thinking in the UI-layout manner.
    */
-  getRight(): number { return this.maxX; }
+  public getRight(): number { return this.maxX; }
 
-  get right(): number { return this.maxX; }
+  public get right(): number { return this.maxX; }
 
   /**
    * Alias for maxY, when thinking in the UI-layout manner.
    */
-  getBottom(): number { return this.maxY; }
+  public getBottom(): number { return this.maxY; }
 
-  get bottom(): number { return this.maxY; }
+  public get bottom(): number { return this.maxY; }
 
   /**
    * The horizontal (X-coordinate) center of the bounds, averaging the minX and maxX.
    */
-  getCenterX(): number { return ( this.maxX + this.minX ) / 2; }
+  public getCenterX(): number { return ( this.maxX + this.minX ) / 2; }
 
-  get centerX(): number { return this.getCenterX(); }
+  public get centerX(): number { return this.getCenterX(); }
 
   /**
    * The vertical (Y-coordinate) center of the bounds, averaging the minY and maxY.
    */
-  getCenterY(): number { return ( this.maxY + this.minY ) / 2; }
+  public getCenterY(): number { return ( this.maxY + this.minY ) / 2; }
 
-  get centerY(): number { return this.getCenterY(); }
+  public get centerY(): number { return this.getCenterY(); }
 
   /**
    * The point (minX, minY), in the UI-coordinate upper-left.
    */
-  getLeftTop(): Vector2 { return new Vector2( this.minX, this.minY ); }
+  public getLeftTop(): Vector2 { return new Vector2( this.minX, this.minY ); }
 
-  get leftTop(): Vector2 { return this.getLeftTop(); }
+  public get leftTop(): Vector2 { return this.getLeftTop(); }
 
   /**
    * The point (centerX, minY), in the UI-coordinate upper-center.
    */
-  getCenterTop(): Vector2 { return new Vector2( this.getCenterX(), this.minY ); }
+  public getCenterTop(): Vector2 { return new Vector2( this.getCenterX(), this.minY ); }
 
-  get centerTop(): Vector2 { return this.getCenterTop(); }
+  public get centerTop(): Vector2 { return this.getCenterTop(); }
 
   /**
    * The point (right, minY), in the UI-coordinate upper-right.
    */
-  getRightTop(): Vector2 { return new Vector2( this.maxX, this.minY ); }
+  public getRightTop(): Vector2 { return new Vector2( this.maxX, this.minY ); }
 
-  get rightTop(): Vector2 { return this.getRightTop(); }
+  public get rightTop(): Vector2 { return this.getRightTop(); }
 
   /**
    * The point (left, centerY), in the UI-coordinate center-left.
    */
-  getLeftCenter(): Vector2 { return new Vector2( this.minX, this.getCenterY() ); }
+  public getLeftCenter(): Vector2 { return new Vector2( this.minX, this.getCenterY() ); }
 
-  get leftCenter(): Vector2 { return this.getLeftCenter(); }
+  public get leftCenter(): Vector2 { return this.getLeftCenter(); }
 
   /**
    * The point (centerX, centerY), in the center of the bounds.
    */
-  getCenter(): Vector2 { return new Vector2( this.getCenterX(), this.getCenterY() ); }
+  public getCenter(): Vector2 { return new Vector2( this.getCenterX(), this.getCenterY() ); }
 
-  get center(): Vector2 { return this.getCenter(); }
+  public get center(): Vector2 { return this.getCenter(); }
 
   /**
    * The point (maxX, centerY), in the UI-coordinate center-right
    */
-  getRightCenter(): Vector2 { return new Vector2( this.maxX, this.getCenterY() ); }
+  public getRightCenter(): Vector2 { return new Vector2( this.maxX, this.getCenterY() ); }
 
-  get rightCenter(): Vector2 { return this.getRightCenter(); }
+  public get rightCenter(): Vector2 { return this.getRightCenter(); }
 
   /**
    * The point (minX, maxY), in the UI-coordinate lower-left
    */
-  getLeftBottom(): Vector2 { return new Vector2( this.minX, this.maxY ); }
+  public getLeftBottom(): Vector2 { return new Vector2( this.minX, this.maxY ); }
 
-  get leftBottom(): Vector2 { return this.getLeftBottom(); }
+  public get leftBottom(): Vector2 { return this.getLeftBottom(); }
 
   /**
    * The point (centerX, maxY), in the UI-coordinate lower-center
    */
-  getCenterBottom(): Vector2 { return new Vector2( this.getCenterX(), this.maxY ); }
+  public getCenterBottom(): Vector2 { return new Vector2( this.getCenterX(), this.maxY ); }
 
-  get centerBottom(): Vector2 { return this.getCenterBottom(); }
+  public get centerBottom(): Vector2 { return this.getCenterBottom(); }
 
   /**
    * The point (maxX, maxY), in the UI-coordinate lower-right
    */
-  getRightBottom(): Vector2 { return new Vector2( this.maxX, this.maxY ); }
+  public getRightBottom(): Vector2 { return new Vector2( this.maxX, this.maxY ); }
 
-  get rightBottom(): Vector2 { return this.getRightBottom(); }
+  public get rightBottom(): Vector2 { return this.getRightBottom(); }
 
   /**
    * Whether we have negative width or height. Bounds2.NOTHING is a prime example of an empty Bounds2.
    * Bounds with width = height = 0 are considered not empty, since they include the single (0,0) point.
    */
-  isEmpty(): boolean { return this.getWidth() < 0 || this.getHeight() < 0; }
+  public isEmpty(): boolean { return this.getWidth() < 0 || this.getHeight() < 0; }
 
   /**
    * Whether our minimums and maximums are all finite numbers. This will exclude Bounds2.NOTHING and Bounds2.EVERYTHING.
    */
-  isFinite(): boolean {
+  public isFinite(): boolean {
     return isFinite( this.minX ) && isFinite( this.minY ) && isFinite( this.maxX ) && isFinite( this.maxY );
   }
 
   /**
    * Whether this bounds has a non-zero area (non-zero positive width and height).
    */
-  hasNonzeroArea(): boolean {
+  public hasNonzeroArea(): boolean {
     return this.getWidth() > 0 && this.getHeight() > 0;
   }
 
   /**
    * Whether this bounds has a finite and non-negative width and height.
    */
-  isValid(): boolean {
+  public isValid(): boolean {
     return !this.isEmpty() && this.isFinite();
   }
 
@@ -262,7 +262,7 @@ export default class Bounds2 implements IPoolable {
    * If the position is inside the bounds, the position will be returned. Otherwise, this will return a new position
    * on the edge of the bounds that is the closest to the provided position.
    */
-  closestPointTo( position: Vector2 ): Vector2 {
+  public closestPointTo( position: Vector2 ): Vector2 {
     if ( this.containsCoordinates( position.x, position.y ) ) {
       return position;
     }
@@ -279,14 +279,14 @@ export default class Bounds2 implements IPoolable {
    * @param x - X coordinate of the point to check
    * @param y - Y coordinate of the point to check
    */
-  containsCoordinates( x: number, y: number ): boolean {
+  public containsCoordinates( x: number, y: number ): boolean {
     return this.minX <= x && x <= this.maxX && this.minY <= y && y <= this.maxY;
   }
 
   /**
    * Whether the point is contained inside the bounding box, or is on the boundary.
    */
-  containsPoint( point: Vector2 ): boolean {
+  public containsPoint( point: Vector2 ): boolean {
     return this.containsCoordinates( point.x, point.y );
   }
 
@@ -294,14 +294,14 @@ export default class Bounds2 implements IPoolable {
    * Whether this bounding box completely contains the bounding box passed as a parameter. The boundary of a box is
    * considered to be "contained".
    */
-  containsBounds( bounds: Bounds2 ): boolean {
+  public containsBounds( bounds: Bounds2 ): boolean {
     return this.minX <= bounds.minX && this.maxX >= bounds.maxX && this.minY <= bounds.minY && this.maxY >= bounds.maxY;
   }
 
   /**
    * Whether this and another bounding box have any points of intersection (including touching boundaries).
    */
-  intersectsBounds( bounds: Bounds2 ): boolean {
+  public intersectsBounds( bounds: Bounds2 ): boolean {
     const minX = Math.max( this.minX, bounds.minX );
     const minY = Math.max( this.minY, bounds.minY );
     const maxX = Math.min( this.maxX, bounds.maxX );
@@ -312,7 +312,7 @@ export default class Bounds2 implements IPoolable {
   /**
    * The squared distance from the input point to the point closest to it inside the bounding box.
    */
-  minimumDistanceToPointSquared( point: Vector2 ): number {
+  public minimumDistanceToPointSquared( point: Vector2 ): number {
     const closeX = point.x < this.minX ? this.minX : ( point.x > this.maxX ? this.maxX : null );
     const closeY = point.y < this.minY ? this.minY : ( point.y > this.maxY ? this.maxY : null );
     let d;
@@ -341,7 +341,7 @@ export default class Bounds2 implements IPoolable {
   /**
    * The squared distance from the input point to the point furthest from it inside the bounding box.
    */
-  maximumDistanceToPointSquared( point: Vector2 ): number {
+  public maximumDistanceToPointSquared( point: Vector2 ): number {
     let x = point.x > this.getCenterX() ? this.minX : this.maxX;
     let y = point.y > this.getCenterY() ? this.minY : this.maxY;
     x -= point.x;
@@ -352,7 +352,7 @@ export default class Bounds2 implements IPoolable {
   /**
    * Debugging string for the bounds.
    */
-  toString(): string {
+  public toString(): string {
     return `[x:(${this.minX},${this.maxX}),y:(${this.minY},${this.maxY})]`;
   }
 
@@ -361,7 +361,7 @@ export default class Bounds2 implements IPoolable {
    *
    * @returns - Whether the two bounds are equal
    */
-  equals( other: Bounds2 ): boolean {
+  public equals( other: Bounds2 ): boolean {
     return this.minX === other.minX && this.minY === other.minY && this.maxX === other.maxX && this.maxY === other.maxY;
   }
 
@@ -371,7 +371,7 @@ export default class Bounds2 implements IPoolable {
    * @returns - Whether difference between the two bounds has no min/max with an absolute value greater
    *            than epsilon.
    */
-  equalsEpsilon( other: Bounds2, epsilon: number ): boolean {
+  public equalsEpsilon( other: Bounds2, epsilon: number ): boolean {
     epsilon = epsilon !== undefined ? epsilon : 0;
     const thisFinite = this.isFinite();
     const otherFinite = other.isFinite();
@@ -410,7 +410,7 @@ export default class Bounds2 implements IPoolable {
    * @param [bounds] - If not provided, creates a new Bounds2 with filled in values. Otherwise, fills in the
    *                   values of the provided bounds so that it equals this bounds.
    */
-  copy( bounds?: Bounds2 ): Bounds2 {
+  public copy( bounds?: Bounds2 ): Bounds2 {
     if ( bounds ) {
       return bounds.set( this as unknown as Bounds2 );
     }
@@ -425,7 +425,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function includeBounds(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  union( bounds: Bounds2 ): Bounds2 {
+  public union( bounds: Bounds2 ): Bounds2 {
     return b2(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
@@ -440,7 +440,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function constrainBounds(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  intersection( bounds: Bounds2 ): Bounds2 {
+  public intersection( bounds: Bounds2 ): Bounds2 {
     return b2(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
@@ -457,7 +457,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function addCoordinates(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withCoordinates( x: number, y: number ): Bounds2 {
+  public withCoordinates( x: number, y: number ): Bounds2 {
     return b2(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
@@ -472,7 +472,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function addPoint(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withPoint( point: Vector2 ): Bounds2 {
+  public withPoint( point: Vector2 ): Bounds2 {
     return this.withCoordinates( point.x, point.y );
   }
 
@@ -482,7 +482,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function addX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withX( x: number ): Bounds2 {
+  public withX( x: number ): Bounds2 {
     return this.copy().addX( x );
   }
 
@@ -492,7 +492,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function addY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withY( y: number ): Bounds2 {
+  public withY( y: number ): Bounds2 {
     return this.copy().addY( y );
   }
 
@@ -502,7 +502,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function setMinX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMinX( minX: number ): Bounds2 {
+  public withMinX( minX: number ): Bounds2 {
     return b2( minX, this.minY, this.maxX, this.maxY );
   }
 
@@ -512,7 +512,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function setMinY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMinY( minY: number ): Bounds2 {
+  public withMinY( minY: number ): Bounds2 {
     return b2( this.minX, minY, this.maxX, this.maxY );
   }
 
@@ -522,7 +522,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function setMaxX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMaxX( maxX: number ): Bounds2 {
+  public withMaxX( maxX: number ): Bounds2 {
     return b2( this.minX, this.minY, maxX, this.maxY );
   }
 
@@ -532,7 +532,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function setMaxY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  withMaxY( maxY: number ): Bounds2 {
+  public withMaxY( maxY: number ): Bounds2 {
     return b2( this.minX, this.minY, this.maxX, maxY );
   }
 
@@ -544,7 +544,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function roundOut(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  roundedOut(): Bounds2 {
+  public roundedOut(): Bounds2 {
     return b2(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
@@ -561,7 +561,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function roundIn(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  roundedIn(): Bounds2 {
+  public roundedIn(): Bounds2 {
     return b2(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
@@ -581,7 +581,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function transform(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  transformed( matrix: Matrix3 ): Bounds2 {
+  public transformed( matrix: Matrix3 ): Bounds2 {
     return this.copy().transform( matrix );
   }
 
@@ -591,7 +591,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function dilate(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  dilated( d: number ): Bounds2 {
+  public dilated( d: number ): Bounds2 {
     return this.dilatedXY( d, d );
   }
 
@@ -601,7 +601,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function dilateX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  dilatedX( x: number ): Bounds2 {
+  public dilatedX( x: number ): Bounds2 {
     return b2( this.minX - x, this.minY, this.maxX + x, this.maxY );
   }
 
@@ -611,7 +611,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function dilateY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  dilatedY( y: number ): Bounds2 {
+  public dilatedY( y: number ): Bounds2 {
     return b2( this.minX, this.minY - y, this.maxX, this.maxY + y );
   }
 
@@ -625,7 +625,7 @@ export default class Bounds2 implements IPoolable {
    * @param x - Amount to dilate horizontally (for each side)
    * @param y - Amount to dilate vertically (for each side)
    */
-  dilatedXY( x: number, y: number ): Bounds2 {
+  public dilatedXY( x: number, y: number ): Bounds2 {
     return b2( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
   }
 
@@ -635,7 +635,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function erode(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  eroded( amount: number ): Bounds2 { return this.dilated( -amount ); }
+  public eroded( amount: number ): Bounds2 { return this.dilated( -amount ); }
 
   /**
    * A bounding box that is contracted horizontally (on the left and right) by the specified amount.
@@ -643,7 +643,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function erodeX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  erodedX( x: number ): Bounds2 { return this.dilatedX( -x ); }
+  public erodedX( x: number ): Bounds2 { return this.dilatedX( -x ); }
 
   /**
    * A bounding box that is contracted vertically (on the top and bottom) by the specified amount.
@@ -651,7 +651,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function erodeY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  erodedY( y: number ): Bounds2 { return this.dilatedY( -y ); }
+  public erodedY( y: number ): Bounds2 { return this.dilatedY( -y ); }
 
   /**
    * A bounding box that is contracted on all sides, with different amounts of contraction horizontally and vertically.
@@ -662,7 +662,7 @@ export default class Bounds2 implements IPoolable {
    * @param x - Amount to erode horizontally (for each side)
    * @param y - Amount to erode vertically (for each side)
    */
-  erodedXY( x: number, y: number ): Bounds2 { return this.dilatedXY( -x, -y ); }
+  public erodedXY( x: number, y: number ): Bounds2 { return this.dilatedXY( -x, -y ); }
 
   /**
    * A bounding box that is expanded by a specific amount on all sides (or if some offsets are negative, will contract
@@ -676,7 +676,7 @@ export default class Bounds2 implements IPoolable {
    * @param right - Amount to expand to the right (adds to maxX)
    * @param bottom - Amount to expand to the bottom (adds to maxY)
    */
-  withOffsets( left: number, top: number, right: number, bottom: number ): Bounds2 {
+  public withOffsets( left: number, top: number, right: number, bottom: number ): Bounds2 {
     return b2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
   }
 
@@ -686,7 +686,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function shiftX(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  shiftedX( x: number ): Bounds2 {
+  public shiftedX( x: number ): Bounds2 {
     return b2( this.minX + x, this.minY, this.maxX + x, this.maxY );
   }
 
@@ -696,7 +696,7 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function shiftY(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  shiftedY( y: number ): Bounds2 {
+  public shiftedY( y: number ): Bounds2 {
     return b2( this.minX, this.minY + y, this.maxX, this.maxY + y );
   }
 
@@ -706,14 +706,14 @@ export default class Bounds2 implements IPoolable {
    * This is the immutable form of the function shift(). This will return a new bounds, and will not modify
    * this bounds.
    */
-  shiftedXY( x: number, y: number ): Bounds2 {
+  public shiftedXY( x: number, y: number ): Bounds2 {
     return b2( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
   }
 
   /**
    * Returns our bounds, translated by a vector, returned as a copy.
    */
-  shifted( v: Vector2 ): Bounds2 {
+  public shifted( v: Vector2 ): Bounds2 {
     return this.shiftedXY( v.x, v.y );
   }
 
@@ -724,7 +724,7 @@ export default class Bounds2 implements IPoolable {
    * @param ratio - 0 will result in a copy of `this`, 1 will result in bounds, and in-between controls the
    *                         amount of each.
    */
-  blend( bounds: Bounds2, ratio: number ): Bounds2 {
+  public blend( bounds: Bounds2, ratio: number ): Bounds2 {
     const t = 1 - ratio;
     return b2(
       t * this.minX + ratio * bounds.minX,
@@ -744,7 +744,7 @@ export default class Bounds2 implements IPoolable {
   /**
    * Sets each value for this bounds, and returns itself.
    */
-  setMinMax( minX: number, minY: number, maxX: number, maxY: number ): Bounds2 {
+  public setMinMax( minX: number, minY: number, maxX: number, maxY: number ): Bounds2 {
     this.minX = minX;
     this.minY = minY;
     this.maxX = maxX;
@@ -758,7 +758,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withMinX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMinX( minX: number ): Bounds2 {
+  public setMinX( minX: number ): Bounds2 {
     this.minX = minX;
     return ( this as unknown as Bounds2 );
   }
@@ -769,7 +769,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withMinY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMinY( minY: number ): Bounds2 {
+  public setMinY( minY: number ): Bounds2 {
     this.minY = minY;
     return ( this as unknown as Bounds2 );
   }
@@ -780,7 +780,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withMaxX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMaxX( maxX: number ): Bounds2 {
+  public setMaxX( maxX: number ): Bounds2 {
     this.maxX = maxX;
     return ( this as unknown as Bounds2 );
   }
@@ -791,7 +791,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withMaxY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  setMaxY( maxY: number ): Bounds2 {
+  public setMaxY( maxY: number ): Bounds2 {
     this.maxY = maxY;
     return ( this as unknown as Bounds2 );
   }
@@ -802,7 +802,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function copy(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  set( bounds: Bounds2 ): Bounds2 {
+  public set( bounds: Bounds2 ): Bounds2 {
     return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
   }
 
@@ -812,7 +812,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function union(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  includeBounds( bounds: Bounds2 ): Bounds2 {
+  public includeBounds( bounds: Bounds2 ): Bounds2 {
     return this.setMinMax(
       Math.min( this.minX, bounds.minX ),
       Math.min( this.minY, bounds.minY ),
@@ -827,7 +827,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function intersection(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  constrainBounds( bounds: Bounds2 ): Bounds2 {
+  public constrainBounds( bounds: Bounds2 ): Bounds2 {
     return this.setMinMax(
       Math.max( this.minX, bounds.minX ),
       Math.max( this.minY, bounds.minY ),
@@ -842,7 +842,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withCoordinates(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addCoordinates( x: number, y: number ): Bounds2 {
+  public addCoordinates( x: number, y: number ): Bounds2 {
     return this.setMinMax(
       Math.min( this.minX, x ),
       Math.min( this.minY, y ),
@@ -857,7 +857,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withPoint(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addPoint( point: Vector2 ): Bounds2 {
+  public addPoint( point: Vector2 ): Bounds2 {
     return this.addCoordinates( point.x, point.y );
   }
 
@@ -868,7 +868,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addX( x: number ): Bounds2 {
+  public addX( x: number ): Bounds2 {
     this.minX = Math.min( x, this.minX );
     this.maxX = Math.max( x, this.maxX );
     return ( this as unknown as Bounds2 );
@@ -881,7 +881,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function withY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  addY( y: number ): Bounds2 {
+  public addY( y: number ): Bounds2 {
     this.minY = Math.min( y, this.minY );
     this.maxY = Math.max( y, this.maxY );
     return ( this as unknown as Bounds2 );
@@ -894,7 +894,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function roundedOut(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  roundOut(): Bounds2 {
+  public roundOut(): Bounds2 {
     return this.setMinMax(
       Math.floor( this.minX ),
       Math.floor( this.minY ),
@@ -910,7 +910,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function roundedIn(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  roundIn(): Bounds2 {
+  public roundIn(): Bounds2 {
     return this.setMinMax(
       Math.ceil( this.minX ),
       Math.ceil( this.minY ),
@@ -930,7 +930,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function transformed(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  transform( matrix: Matrix3 ): Bounds2 {
+  public transform( matrix: Matrix3 ): Bounds2 {
     // if we contain no area, no change is needed
     if ( this.isEmpty() ) {
       return ( this as unknown as Bounds2 );
@@ -963,7 +963,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function dilated(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilate( d: number ): Bounds2 {
+  public dilate( d: number ): Bounds2 {
     return this.dilateXY( d, d );
   }
 
@@ -973,7 +973,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function dilatedX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilateX( x: number ): Bounds2 {
+  public dilateX( x: number ): Bounds2 {
     return this.setMinMax( this.minX - x, this.minY, this.maxX + x, this.maxY );
   }
 
@@ -983,7 +983,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function dilatedY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilateY( y: number ): Bounds2 {
+  public dilateY( y: number ): Bounds2 {
     return this.setMinMax( this.minX, this.minY - y, this.maxX, this.maxY + y );
   }
 
@@ -994,7 +994,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function dilatedXY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  dilateXY( x: number, y: number ): Bounds2 {
+  public dilateXY( x: number, y: number ): Bounds2 {
     return this.setMinMax( this.minX - x, this.minY - y, this.maxX + x, this.maxY + y );
   }
 
@@ -1004,7 +1004,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function eroded(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erode( d: number ): Bounds2 { return this.dilate( -d ); }
+  public erode( d: number ): Bounds2 { return this.dilate( -d ); }
 
   /**
    * Contracts this bounds horizontally (left and right) by the specified amount.
@@ -1012,7 +1012,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function erodedX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erodeX( x: number ): Bounds2 { return this.dilateX( -x ); }
+  public erodeX( x: number ): Bounds2 { return this.dilateX( -x ); }
 
   /**
    * Contracts this bounds vertically (top and bottom) by the specified amount.
@@ -1020,7 +1020,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function erodedY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erodeY( y: number ): Bounds2 { return this.dilateY( -y ); }
+  public erodeY( y: number ): Bounds2 { return this.dilateY( -y ); }
 
   /**
    * Contracts this bounds independently in the horizontal and vertical directions. Will be equal to calling
@@ -1029,7 +1029,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function erodedXY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  erodeXY( x: number, y: number ): Bounds2 { return this.dilateXY( -x, -y ); }
+  public erodeXY( x: number, y: number ): Bounds2 { return this.dilateXY( -x, -y ); }
 
   /**
    * Expands this bounds independently for each side (or if some offsets are negative, will contract those sides).
@@ -1042,7 +1042,7 @@ export default class Bounds2 implements IPoolable {
    * @param right - Amount to expand to the right (adds to maxX)
    * @param bottom - Amount to expand to the bottom (adds to maxY)
    */
-  offset( left: number, top: number, right: number, bottom: number ): Bounds2 {
+  public offset( left: number, top: number, right: number, bottom: number ): Bounds2 {
     return b2( this.minX - left, this.minY - top, this.maxX + right, this.maxY + bottom );
   }
 
@@ -1052,7 +1052,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function shiftedX(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  shiftX( x: number ): Bounds2 {
+  public shiftX( x: number ): Bounds2 {
     return this.setMinMax( this.minX + x, this.minY, this.maxX + x, this.maxY );
   }
 
@@ -1062,7 +1062,7 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function shiftedY(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  shiftY( y: number ): Bounds2 {
+  public shiftY( y: number ): Bounds2 {
     return this.setMinMax( this.minX, this.minY + y, this.maxX, this.maxY + y );
   }
 
@@ -1072,14 +1072,14 @@ export default class Bounds2 implements IPoolable {
    * This is the mutable form of the function shifted(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  shiftXY( x: number, y: number ): Bounds2 {
+  public shiftXY( x: number, y: number ): Bounds2 {
     return this.setMinMax( this.minX + x, this.minY + y, this.maxX + x, this.maxY + y );
   }
 
   /**
    * Translates our bounds by the given vector.
    */
-  shift( v: Vector2 ): Bounds2 {
+  public shift( v: Vector2 ): Bounds2 {
     return this.shiftXY( v.x, v.y );
   }
 
@@ -1090,7 +1090,7 @@ export default class Bounds2 implements IPoolable {
    * @param y - Y coordinate of the point to test.
    * @param [result] - Vector2 that can store the return value to avoid allocations.
    */
-  getClosestPoint( x: number, y: number, result?: Vector2 ): Vector2 {
+  public getClosestPoint( x: number, y: number, result?: Vector2 ): Vector2 {
     if ( result ) {
       result.setXY( x, y );
     }
@@ -1104,11 +1104,11 @@ export default class Bounds2 implements IPoolable {
     return result;
   }
 
-  freeToPool(): void {
+  public freeToPool(): void {
     Bounds2.pool.freeToPool( this );
   }
 
-  static pool = new Pool( Bounds2, {
+  public static pool = new Pool( Bounds2, {
     initialize: Bounds2.prototype.setMinMax,
     defaultArguments: [ Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ]
   } );
@@ -1121,7 +1121,7 @@ export default class Bounds2 implements IPoolable {
    * @param width - The width (maxX - minX) of the bounds.
    * @param height - The height (maxY - minY) of the bounds.
    */
-  static rect( x: number, y: number, width: number, height: number ): Bounds2 {
+  public static rect( x: number, y: number, width: number, height: number ): Bounds2 {
     return b2( x, y, x + width, y + height );
   }
 
@@ -1129,7 +1129,7 @@ export default class Bounds2 implements IPoolable {
    * Returns a new Bounds2 object with a given orientation (min/max specified for both the given (primary) orientation,
    * and also the secondary orientation).
    */
-  static oriented( orientation: Orientation, minPrimary: number, minSecondary: number, maxPrimary: number, maxSecondary: number ): Bounds2 {
+  public static oriented( orientation: Orientation, minPrimary: number, minSecondary: number, maxPrimary: number, maxSecondary: number ): Bounds2 {
     return orientation === Orientation.HORIZONTAL ? new Bounds2(
       minPrimary,
       minSecondary,
@@ -1151,7 +1151,7 @@ export default class Bounds2 implements IPoolable {
    * @param x
    * @param y
    */
-  static point( x: number, y: number ): Bounds2;
+  public static point( x: number, y: number ): Bounds2;
   static point( v: Vector2 ): Bounds2; // eslint-disable-line
   static point( x: Vector2 | number, y?: number ) { // eslint-disable-line
     if ( x instanceof Vector2 ) {
@@ -1164,8 +1164,8 @@ export default class Bounds2 implements IPoolable {
   }
 
   // Helps to identify the dimension of the bounds
-  isBounds!: boolean;
-  dimension?: number;
+  public isBounds!: boolean;
+  public dimension?: number;
 
   /**
    * A contant Bounds2 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".
@@ -1176,7 +1176,7 @@ export default class Bounds2 implements IPoolable {
    *
    * Additionally, intersections with NOTHING will always return a Bounds2 equivalent to NOTHING.
    */
-  static NOTHING: Bounds2;
+  public static NOTHING: Bounds2;
 
   /**
    * A contant Bounds2 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
@@ -1187,9 +1187,9 @@ export default class Bounds2 implements IPoolable {
    *
    * Additionally, unions with EVERYTHING will always return a Bounds2 equivalent to EVERYTHING.
    */
-  static EVERYTHING: Bounds2;
+  public static EVERYTHING: Bounds2;
 
-  static Bounds2IO: IOType;
+  public static Bounds2IO: IOType;
 }
 
 dot.register( 'Bounds2', Bounds2 );

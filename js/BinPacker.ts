@@ -33,21 +33,21 @@ import dot from './dot.js';
 
 export default class BinPacker {
 
-  rootBin: Bin;
+  private readonly rootBin: Bin;
 
   /**
    * Creates a BinPacker with the specified containing bounds.
    *
    * @param bounds - The available bounds to pack bins inside.
    */
-  constructor( bounds: Bounds2 ) {
+  public constructor( bounds: Bounds2 ) {
     this.rootBin = new Bin( bounds, null );
   }
 
   /**
    * Allocates a bin with the specified width and height if possible (returning a {Bin}), otherwise returns null.
    */
-  allocate( width: number, height: number ): Bin | null {
+  public allocate( width: number, height: number ): Bin | null {
     // find a leaf bin that has available room (or null)
     const bin = this.rootBin.findAvailableBin( width, height );
 
@@ -70,11 +70,11 @@ export default class BinPacker {
    *
    * @param bin - The bin that was returned from allocate().
    */
-  deallocate( bin: Bin ): void {
+  public deallocate( bin: Bin ): void {
     bin.unuse();
   }
 
-  toString(): string {
+  public toString(): string {
     let result = '';
 
     let padding = '';
@@ -91,7 +91,7 @@ export default class BinPacker {
     return result;
   }
 
-  static Bin: typeof Bin;
+  public static Bin: typeof Bin;
 }
 
 dot.register( 'BinPacker', BinPacker );
@@ -99,7 +99,7 @@ dot.register( 'BinPacker', BinPacker );
 export class Bin {
 
   // Our containing bounds
-  bounds: Bounds2;
+  public bounds: Bounds2;
 
   // Parent bin, if applicable
   private parent: Bin | null;
@@ -110,12 +110,12 @@ export class Bin {
   // Whether we are marked as a bin that is used
   private isUsed: boolean;
 
-  children: Bin[]; // (dot-internal)
+  public children: Bin[]; // (dot-internal)
 
   /**
    * A rectangular bin that can be used itself or split into sub-bins.
    */
-  constructor( bounds: Bounds2, parent: Bin | null ) {
+  public constructor( bounds: Bounds2, parent: Bin | null ) {
     this.bounds = bounds;
     this.parent = parent;
     this.isSplit = false;
@@ -126,7 +126,7 @@ export class Bin {
   /**
    * Finds an unused bin with open area that is at least width-x-height in size. (dot-internal)
    */
-  findAvailableBin( width: number, height: number ): Bin | null {
+  public findAvailableBin( width: number, height: number ): Bin | null {
     assert && assert( width > 0 && height > 0, 'Empty bin requested?' );
 
     // If we are marked as used ourself, we can't be used
@@ -157,7 +157,7 @@ export class Bin {
   /**
    * Splits this bin into multiple child bins, and returns the child with the dimensions (width,height). (dot-internal)
    */
-  split( width: number, height: number ): Bin {
+  public split( width: number, height: number ): Bin {
     assert && assert( this.bounds.width >= width && this.bounds.height >= height,
       'Bin does not have space' );
     assert && assert( !this.isSplit, 'Bin should not be re-split' );
@@ -213,7 +213,7 @@ export class Bin {
   /**
    * Mark this bin as used. (dot-internal)
    */
-  use(): void {
+  public use(): void {
     assert && assert( !this.isSplit, 'Should not mark a split bin as used' );
     assert && assert( !this.isUsed, 'Should not mark a used bin as used' );
 
@@ -223,7 +223,7 @@ export class Bin {
   /**
    * Mark this bin as not used, and attempt to collapse split parents if all children are unused. (dot-internal)
    */
-  unuse(): void {
+  public unuse(): void {
     assert && assert( this.isUsed, 'Can only unuse a used instance' );
 
     this.isUsed = false;
@@ -257,7 +257,7 @@ export class Bin {
     this.parent && this.parent.attemptToCollapse();
   }
 
-  toString(): string {
+  public toString(): string {
     return this.bounds.toString() + ( this.isUsed ? ' used' : '' );
   }
 }

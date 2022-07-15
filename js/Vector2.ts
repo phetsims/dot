@@ -20,10 +20,10 @@ const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
 export default class Vector2 implements IPoolable {
 
   // The X coordinate of the vector.
-  x: number;
+  public x: number;
 
   // The Y coordinate of the vector.
-  y: number;
+  public y: number;
 
   /**
    * Creates a 2-dimensional vector with the specified X and Y values.
@@ -31,7 +31,7 @@ export default class Vector2 implements IPoolable {
    * @param x - X coordinate
    * @param y - Y coordinate
    */
-  constructor( x: number, y: number ) {
+  public constructor( x: number, y: number ) {
     assert && assert( typeof x === 'number', 'x needs to be a number' );
     assert && assert( typeof y === 'number', 'y needs to be a number' );
 
@@ -42,32 +42,32 @@ export default class Vector2 implements IPoolable {
   /**
    * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2}$.
    */
-  getMagnitude(): number {
+  public getMagnitude(): number {
     return Math.sqrt( this.magnitudeSquared );
   }
 
-  get magnitude(): number { return this.getMagnitude(); }
+  public get magnitude(): number { return this.getMagnitude(); }
 
   /**
    * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2$.
    */
-  getMagnitudeSquared(): number {
+  public getMagnitudeSquared(): number {
     return this.x * this.x + this.y * this.y;
   }
 
-  get magnitudeSquared(): number { return this.getMagnitudeSquared(); }
+  public get magnitudeSquared(): number { return this.getMagnitudeSquared(); }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point.
    */
-  distance( point: Vector2 ): number {
+  public distance( point: Vector2 ): number {
     return Math.sqrt( this.distanceSquared( point ) );
   }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point (x,y).
    */
-  distanceXY( x: number, y: number ): number {
+  public distanceXY( x: number, y: number ): number {
     const dx = this.x - x;
     const dy = this.y - y;
     return Math.sqrt( dx * dx + dy * dy );
@@ -76,7 +76,7 @@ export default class Vector2 implements IPoolable {
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point.
    */
-  distanceSquared( point: Vector2 ): number {
+  public distanceSquared( point: Vector2 ): number {
     const dx = this.x - point.x;
     const dy = this.y - point.y;
     return dx * dx + dy * dy;
@@ -85,7 +85,7 @@ export default class Vector2 implements IPoolable {
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point with coordinates (x,y).
    */
-  distanceSquaredXY( x: number, y: number ): number {
+  public distanceSquaredXY( x: number, y: number ): number {
     const dx = this.x - x;
     const dy = this.y - y;
     return dx * dx + dy * dy;
@@ -94,14 +94,14 @@ export default class Vector2 implements IPoolable {
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector v.
    */
-  dot( v: Vector2 ): number {
+  public dot( v: Vector2 ): number {
     return this.x * v.x + this.y * v.y;
   }
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector (x,y).
    */
-  dotXY( x: number, y: number ): number {
+  public dotXY( x: number, y: number ): number {
     return this.x * x + this.y * y;
   }
 
@@ -110,11 +110,11 @@ export default class Vector2 implements IPoolable {
    * $$ u = \begin{bmatrix} r\cos\theta \\ r\sin\theta \end{bmatrix} $$
    * for the magnitude $r \ge 0$ of the vector, with $\theta\in(-\pi,\pi]$
    */
-  getAngle(): number {
+  public getAngle(): number {
     return Math.atan2( this.y, this.x );
   }
 
-  get angle(): number {
+  public get angle(): number {
     return this.getAngle();
   }
 
@@ -124,7 +124,7 @@ export default class Vector2 implements IPoolable {
    * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
    * is the input vector (normalized).
    */
-  angleBetween( v: Vector2 ): number {
+  public angleBetween( v: Vector2 ): number {
     const thisMagnitude = this.magnitude;
     const vMagnitude = v.magnitude;
     // @ts-ignore TODO: import with circular protection
@@ -136,7 +136,7 @@ export default class Vector2 implements IPoolable {
 
    * @returns - Whether the two vectors have equal components
    */
-  equals( other: Vector2 ): boolean {
+  public equals( other: Vector2 ): boolean {
     return this.x === other.x && this.y === other.y;
   }
 
@@ -145,7 +145,7 @@ export default class Vector2 implements IPoolable {
    *
    * @returns - Whether difference between the two vectors has no component with an absolute value greater than epsilon.
    */
-  equalsEpsilon( other: Vector2, epsilon: number ): boolean {
+  public equalsEpsilon( other: Vector2, epsilon: number ): boolean {
     if ( !epsilon ) {
       epsilon = 0;
     }
@@ -155,7 +155,7 @@ export default class Vector2 implements IPoolable {
   /**
    * Returns false if either component is NaN, infinity, or -infinity. Otherwise returns true.
    */
-  isFinite(): boolean {
+  public isFinite(): boolean {
     return isFinite( this.x ) && isFinite( this.y );
   }
 
@@ -172,7 +172,7 @@ export default class Vector2 implements IPoolable {
    * @param [vector] - If not provided, creates a new Vector2 with filled in values. Otherwise, fills in the
    *                   values of the provided vector so that it equals this vector.
    */
-  copy( vector?: Vector2 ): Vector2 {
+  public copy( vector?: Vector2 ): Vector2 {
     if ( vector ) {
       return vector.set( this );
     }
@@ -185,7 +185,7 @@ export default class Vector2 implements IPoolable {
    * The scalar value of the z-component of the equivalent 3-dimensional cross product:
    * $$ f( u, v ) = \left( \begin{bmatrix} u_x \\ u_y \\ 0 \end{bmatrix} \times \begin{bmatrix} v_x \\ v_y \\ 0 \end{bmatrix} \right)_z = u_x v_y - u_y v_x $$
    */
-  crossScalar( v: Vector2 ): number {
+  public crossScalar( v: Vector2 ): number {
     return this.x * v.y - this.y * v.x;
   }
 
@@ -196,7 +196,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function normalize(). This will return a new vector, and will not modify this
    * vector.
    */
-  normalized(): Vector2 {
+  public normalized(): Vector2 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -212,7 +212,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
    * this vector.
    */
-  roundedSymmetric(): Vector2 {
+  public roundedSymmetric(): Vector2 {
     return this.copy().roundSymmetric();
   }
 
@@ -223,7 +223,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function setMagnitude(). This will return a new vector, and will not modify
    * this vector.
    */
-  withMagnitude( magnitude: number ): Vector2 {
+  public withMagnitude( magnitude: number ): Vector2 {
     return this.copy().setMagnitude( magnitude );
   }
 
@@ -233,7 +233,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function multiplyScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  timesScalar( scalar: number ): Vector2 {
+  public timesScalar( scalar: number ): Vector2 {
     return v2( this.x * scalar, this.y * scalar );
   }
 
@@ -243,7 +243,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function multiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  times( scalar: number ): Vector2 {
+  public times( scalar: number ): Vector2 {
     assert && assert( typeof scalar === 'number' );
 
     return this.timesScalar( scalar );
@@ -255,7 +255,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function componentMultiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  componentTimes( v: Vector2 ): Vector2 {
+  public componentTimes( v: Vector2 ): Vector2 {
     return v2( this.x * v.x, this.y * v.y );
   }
 
@@ -265,7 +265,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function add(). This will return a new vector, and will not modify
    * this vector.
    */
-  plus( v: Vector2 ): Vector2 {
+  public plus( v: Vector2 ): Vector2 {
     return v2( this.x + v.x, this.y + v.y );
   }
 
@@ -275,7 +275,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function addXY(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusXY( x: number, y: number ): Vector2 {
+  public plusXY( x: number, y: number ): Vector2 {
     return v2( this.x + x, this.y + y );
   }
 
@@ -285,7 +285,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function addScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusScalar( scalar: number ): Vector2 {
+  public plusScalar( scalar: number ): Vector2 {
     return v2( this.x + scalar, this.y + scalar );
   }
 
@@ -295,7 +295,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function subtract(). This will return a new vector, and will not modify
    * this vector.
    */
-  minus( v: Vector2 ): Vector2 {
+  public minus( v: Vector2 ): Vector2 {
     return v2( this.x - v.x, this.y - v.y );
   }
 
@@ -305,7 +305,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function subtractXY(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusXY( x: number, y: number ): Vector2 {
+  public minusXY( x: number, y: number ): Vector2 {
     return v2( this.x - x, this.y - y );
   }
 
@@ -315,7 +315,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function subtractScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusScalar( scalar: number ): Vector2 {
+  public minusScalar( scalar: number ): Vector2 {
     return v2( this.x - scalar, this.y - scalar );
   }
 
@@ -325,7 +325,7 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function divideScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  dividedScalar( scalar: number ): Vector2 {
+  public dividedScalar( scalar: number ): Vector2 {
     return v2( this.x / scalar, this.y / scalar );
   }
 
@@ -335,18 +335,18 @@ export default class Vector2 implements IPoolable {
    * This is the immutable form of the function negate(). This will return a new vector, and will not modify
    * this vector.
    */
-  negated(): Vector2 {
+  public negated(): Vector2 {
     return v2( -this.x, -this.y );
   }
 
   /**
    * Rotated by -pi/2 (perpendicular to this vector), returned as a copy.
    */
-  getPerpendicular(): Vector2 {
+  public getPerpendicular(): Vector2 {
     return v2( this.y, -this.x );
   }
 
-  get perpendicular(): Vector2 {
+  public get perpendicular(): Vector2 {
     return this.getPerpendicular();
   }
 
@@ -358,7 +358,7 @@ export default class Vector2 implements IPoolable {
    *
    * @param angle - In radians
    */
-  rotated( angle: number ): Vector2 {
+  public rotated( angle: number ): Vector2 {
     const newAngle = this.angle + angle;
     const mag = this.magnitude;
     return v2( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
@@ -372,7 +372,7 @@ export default class Vector2 implements IPoolable {
    * @param angle - radians to rotate
    * @returns this for chaining
    */
-  rotateAboutXY( x: number, y: number, angle: number ): Vector2 {
+  public rotateAboutXY( x: number, y: number, angle: number ): Vector2 {
     const dx = this.x - x;
     const dy = this.y - y;
     const cos = Math.cos( angle );
@@ -386,7 +386,7 @@ export default class Vector2 implements IPoolable {
   /**
    * Same as rotateAboutXY but with a point argument.
    */
-  rotateAboutPoint( point: Vector2, angle: number ): Vector2 {
+  public rotateAboutPoint( point: Vector2, angle: number ): Vector2 {
     return this.rotateAboutXY( point.x, point.y, angle );
   }
 
@@ -397,14 +397,14 @@ export default class Vector2 implements IPoolable {
    * @param y - origin for rotation in y
    * @param angle - radians to rotate
    */
-  rotatedAboutXY( x: number, y: number, angle: number ): Vector2 {
+  public rotatedAboutXY( x: number, y: number, angle: number ): Vector2 {
     return v2( this.x, this.y ).rotateAboutXY( x, y, angle );
   }
 
   /**
    * Immutable method that returns a new Vector2 rotated about the given point.
    */
-  rotatedAboutPoint( point: Vector2, angle: number ): Vector2 {
+  public rotatedAboutPoint( point: Vector2, angle: number ): Vector2 {
     return this.rotatedAboutXY( point.x, point.y, angle );
   }
 
@@ -414,21 +414,21 @@ export default class Vector2 implements IPoolable {
    * @param vector
    * @param ratio - Not necessarily constrained in [0, 1]
    */
-  blend( vector: Vector2, ratio: number ): Vector2 {
+  public blend( vector: Vector2, ratio: number ): Vector2 {
     return v2( this.x + ( vector.x - this.x ) * ratio, this.y + ( vector.y - this.y ) * ratio );
   }
 
   /**
    * The average (midpoint) between this vector and another vector.
    */
-  average( vector: Vector2 ): Vector2 {
+  public average( vector: Vector2 ): Vector2 {
     return this.blend( vector, 0.5 );
   }
 
   /**
    * Take a component-based mean of all vectors provided.
    */
-  static average( vectors: Vector2[] ): Vector2 {
+  public static average( vectors: Vector2[] ): Vector2 {
     const added = _.reduce( vectors, ADDING_ACCUMULATOR, new Vector2( 0, 0 ) );
     return added.divideScalar( vectors.length );
   }
@@ -437,14 +437,14 @@ export default class Vector2 implements IPoolable {
   /**
    * Debugging string for the vector.
    */
-  toString(): string {
+  public toString(): string {
     return `Vector2(${this.x}, ${this.y})`;
   }
 
   /**
    * Converts this to a 3-dimensional vector, with the z-component equal to 0.
    */
-  toVector3(): Vector3 {
+  public toVector3(): Vector3 {
     return new Vector3( this.x, this.y, 0 );
   }
 
@@ -456,7 +456,7 @@ export default class Vector2 implements IPoolable {
   /**
    * Sets all of the components of this vector, returning this.
    */
-  setXY( x: number, y: number ): Vector2 {
+  public setXY( x: number, y: number ): Vector2 {
     this.x = x;
     this.y = y;
     return this;
@@ -465,7 +465,7 @@ export default class Vector2 implements IPoolable {
   /**
    * Sets the x-component of this vector, returning this.
    */
-  setX( x: number ): Vector2 {
+  public setX( x: number ): Vector2 {
     this.x = x;
 
     return this;
@@ -474,7 +474,7 @@ export default class Vector2 implements IPoolable {
   /**
    * Sets the y-component of this vector, returning this.
    */
-  setY( y: number ): Vector2 {
+  public setY( y: number ): Vector2 {
     this.y = y;
     return this;
   }
@@ -485,7 +485,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function copy(). This will mutate (change) this vector, in addition to returning
    * this vector itself.
    */
-  set( v: Vector2 ): Vector2 {
+  public set( v: Vector2 ): Vector2 {
     return this.setXY( v.x, v.y );
   }
 
@@ -496,7 +496,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function withMagnitude(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  setMagnitude( magnitude: number ): Vector2 {
+  public setMagnitude( magnitude: number ): Vector2 {
     const scale = magnitude / this.magnitude;
 
     return this.multiplyScalar( scale );
@@ -508,7 +508,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function plus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  add( v: Vector2 ): Vector2 {
+  public add( v: Vector2 ): Vector2 {
     return this.setXY( this.x + v.x, this.y + v.y );
   }
 
@@ -518,7 +518,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function plusXY(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addXY( x: number, y: number ): Vector2 {
+  public addXY( x: number, y: number ): Vector2 {
     return this.setXY( this.x + x, this.y + y );
   }
 
@@ -528,7 +528,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function plusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addScalar( scalar: number ): Vector2 {
+  public addScalar( scalar: number ): Vector2 {
     return this.setXY( this.x + scalar, this.y + scalar );
   }
 
@@ -538,7 +538,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function minus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtract( v: Vector2 ): Vector2 {
+  public subtract( v: Vector2 ): Vector2 {
     return this.setXY( this.x - v.x, this.y - v.y );
   }
 
@@ -548,7 +548,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function minusXY(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractXY( x: number, y: number ): Vector2 {
+  public subtractXY( x: number, y: number ): Vector2 {
     return this.setXY( this.x - x, this.y - y );
   }
 
@@ -558,7 +558,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function minusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractScalar( scalar: number ): Vector2 {
+  public subtractScalar( scalar: number ): Vector2 {
     return this.setXY( this.x - scalar, this.y - scalar );
   }
 
@@ -568,7 +568,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function timesScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiplyScalar( scalar: number ): Vector2 {
+  public multiplyScalar( scalar: number ): Vector2 {
     return this.setXY( this.x * scalar, this.y * scalar );
   }
 
@@ -579,7 +579,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function times(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiply( scalar: number ): Vector2 {
+  public multiply( scalar: number ): Vector2 {
     assert && assert( typeof scalar === 'number' );
 
     return this.multiplyScalar( scalar );
@@ -591,7 +591,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function componentTimes(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  componentMultiply( v: Vector2 ): Vector2 {
+  public componentMultiply( v: Vector2 ): Vector2 {
     return this.setXY( this.x * v.x, this.y * v.y );
   }
 
@@ -601,7 +601,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function dividedScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  divideScalar( scalar: number ): Vector2 {
+  public divideScalar( scalar: number ): Vector2 {
     return this.setXY( this.x / scalar, this.y / scalar );
   }
 
@@ -611,7 +611,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function negated(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  negate(): Vector2 {
+  public negate(): Vector2 {
     return this.setXY( -this.x, -this.y );
   }
 
@@ -621,7 +621,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function normalized(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  normalize(): Vector2 {
+  public normalize(): Vector2 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -637,7 +637,7 @@ export default class Vector2 implements IPoolable {
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.
    */
-  roundSymmetric(): Vector2 {
+  public roundSymmetric(): Vector2 {
     return this.setXY( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ) );
   }
 
@@ -649,7 +649,7 @@ export default class Vector2 implements IPoolable {
    *
    * @param angle - In radians
    */
-  rotate( angle: number ): Vector2 {
+  public rotate( angle: number ): Vector2 {
     const newAngle = this.angle + angle;
     const mag = this.magnitude;
     return this.setXY( mag * Math.cos( newAngle ), mag * Math.sin( newAngle ) );
@@ -662,7 +662,7 @@ export default class Vector2 implements IPoolable {
    * @param magnitude
    * @param angle - In radians
    */
-  setPolar( magnitude: number, angle: number ): Vector2 {
+  public setPolar( magnitude: number, angle: number ): Vector2 {
     return this.setXY( magnitude * Math.cos( angle ), magnitude * Math.sin( angle ) );
   }
 
@@ -672,18 +672,18 @@ export default class Vector2 implements IPoolable {
    *
    * @returns - see stateSchema for schema
    */
-  toStateObject(): Vector2StateObject {
+  public toStateObject(): Vector2StateObject {
     return {
       x: NumberIO.toStateObject( this.x ),
       y: NumberIO.toStateObject( this.y )
     };
   }
 
-  freeToPool(): void {
+  public freeToPool(): void {
     Vector2.pool.freeToPool( this );
   }
 
-  static pool = new Pool( Vector2, {
+  public static pool = new Pool( Vector2, {
     maxSize: 1000,
     initialize: Vector2.prototype.setXY,
     defaultArguments: [ 0, 0 ]
@@ -692,7 +692,7 @@ export default class Vector2 implements IPoolable {
   /**
    * Returns a map of state keys and their associated IOTypes, see IOType.fromCoreType for details.
    */
-  static get STATE_SCHEMA(): { x: IOType; y: IOType } {
+  public static get STATE_SCHEMA(): { x: IOType; y: IOType } {
     return {
       x: NumberIO,
       y: NumberIO
@@ -705,7 +705,7 @@ export default class Vector2 implements IPoolable {
    * Returns a Vector2 with the specified magnitude $r$ and angle $\theta$ (in radians), with the formula:
    * $$ f( r, \theta ) = \begin{bmatrix} r\cos\theta \\ r\sin\theta \end{bmatrix} $$
    */
-  static createPolar( magnitude: number, angle: number ): Vector2 {
+  public static createPolar( magnitude: number, angle: number ): Vector2 {
     return new Vector2( 0, 0 ).setPolar( magnitude, angle );
   }
 
@@ -714,7 +714,7 @@ export default class Vector2 implements IPoolable {
    *
    * @param stateObject - see stateSchema for schema
    */
-  static fromStateObject( stateObject: Vector2StateObject ): Vector2 {
+  public static fromStateObject( stateObject: Vector2StateObject ): Vector2 {
     return v2(
       NumberIO.fromStateObject( stateObject.x ),
       NumberIO.fromStateObject( stateObject.y )
@@ -726,7 +726,7 @@ export default class Vector2 implements IPoolable {
    *
    * @returns the angle between the vectors
    */
-  static getAngleBetweenVectors( startVector: Vector2, endVector: Vector2 ): number {
+  public static getAngleBetweenVectors( startVector: Vector2, endVector: Vector2 ): number {
     const dx = endVector.x - startVector.x;
     const dy = endVector.y - startVector.y;
     return Math.atan2( dy, dx );
@@ -737,31 +737,31 @@ export default class Vector2 implements IPoolable {
    *
    * @returns the angle between the vectors
    */
-  static getDistanceBetweenVectors( startVector: Vector2, endVector: Vector2 ): number {
+  public static getDistanceBetweenVectors( startVector: Vector2, endVector: Vector2 ): number {
     const dx = endVector.x - startVector.x;
     const dy = endVector.y - startVector.y;
     return Math.sqrt( dx * dx + dy * dy );
   }
 
-  isVector2!: boolean;
-  dimension!: number;
+  public isVector2!: boolean;
+  public dimension!: number;
 
   /**
    * ImmutableVector2 zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
    */
-  static ZERO: Vector2;
+  public static ZERO: Vector2;
 
   /**
    * ImmutableVector2 vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
    */
-  static X_UNIT: Vector2;
+  public static X_UNIT: Vector2;
 
   /**
    * ImmutableVector2 vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
    */
-  static Y_UNIT: Vector2;
+  public static Y_UNIT: Vector2;
 
-  static Vector2IO: IOType;
+  public static Vector2IO: IOType;
 }
 
 // (read-only) - Helps to identify the dimension of the vector
@@ -777,7 +777,7 @@ class ImmutableVector2 extends Vector2 {
   /**
    * Throw errors whenever a mutable method is called on our immutable vector
    */
-  static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setXY' ): void {
+  public static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setXY' ): void {
     ImmutableVector2.prototype[ mutableFunctionName ] = () => {
       throw new Error( `Cannot call mutable method '${mutableFunctionName}' on immutable Vector2` );
     };

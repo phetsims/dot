@@ -12,8 +12,8 @@ import Vector3 from './Vector3.js';
 
 export default class Ray3 {
 
-  position: Vector3;
-  direction: Vector3;
+  public position: Vector3;
+  public direction: Vector3;
 
   /**
    * Constructs a 3D ray using the supplied origin position and unit length direction vector
@@ -21,7 +21,7 @@ export default class Ray3 {
    * @param position - the ray's point of origin
    * @param direction - the ray's unit direction vector
    */
-  constructor( position: Vector3, direction: Vector3 ) {
+  public constructor( position: Vector3, direction: Vector3 ) {
 
     this.position = position;
     this.direction = direction;
@@ -32,28 +32,28 @@ export default class Ray3 {
   /**
    * Returns a new Ray that has it origin shifted to a position given by an amount distance*this.direction.
    */
-  shifted( distance: number ): Ray3 {
+  public shifted( distance: number ): Ray3 {
     return new Ray3( this.pointAtDistance( distance ), this.direction );
   }
 
   /**
    * Returns a position that is a distance 'distance' along the ray.
    */
-  pointAtDistance( distance: number ): Vector3 {
+  public pointAtDistance( distance: number ): Vector3 {
     return this.position.plus( this.direction.timesScalar( distance ) );
   }
 
   /**
    * Returns the distance of this ray to a plane
    */
-  distanceToPlane( plane: Plane3 ): number {
+  public distanceToPlane( plane: Plane3 ): number {
     return ( plane.distance - this.position.dot( plane.normal ) ) / this.direction.dot( plane.normal );
   }
 
   /**
    * Returns the attributes of this ray into a string
    */
-  toString(): string {
+  public toString(): string {
     return `${this.position.toString()} => ${this.direction.toString()}`;
   }
 }

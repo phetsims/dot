@@ -14,16 +14,16 @@ import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 export default class Vector4 implements IPoolable {
 
   // The X coordinate of the vector.
-  x: number;
+  public x: number;
 
   // The Y coordinate of the vector.
-  y: number;
+  public y: number;
 
   // The Z coordinate of the vector.
-  z: number;
+  public z: number;
 
   // The W coordinate of the vector.
-  w: number;
+  public w: number;
 
   /**
    * Creates a 4-dimensional vector with the specified X, Y, Z and W values.
@@ -33,7 +33,7 @@ export default class Vector4 implements IPoolable {
    * @param z - Z coordinate
    * @param w - W coordinate
    */
-  constructor( x: number, y: number, z: number, w: number ) {
+  public constructor( x: number, y: number, z: number, w: number ) {
 
     assert && assert( typeof x === 'number', 'x needs to be a number' );
     assert && assert( typeof y === 'number', 'y needs to be a number' );
@@ -50,36 +50,36 @@ export default class Vector4 implements IPoolable {
   /**
    * The magnitude (Euclidean/L2 Norm) of this vector, i.e. $\sqrt{x^2+y^2+z^2+w^2}$.
    */
-  getMagnitude(): number {
+  public getMagnitude(): number {
     return Math.sqrt( this.magnitudeSquared );
   }
 
-  get magnitude(): number {
+  public get magnitude(): number {
     return this.getMagnitude();
   }
 
   /**
    * The squared magnitude (square of the Euclidean/L2 Norm) of this vector, i.e. $x^2+y^2+z^2+w^2$.
    */
-  getMagnitudeSquared(): number {
+  public getMagnitudeSquared(): number {
     return this.dot( this as unknown as Vector4 );
   }
 
-  get magnitudeSquared(): number {
+  public get magnitudeSquared(): number {
     return this.getMagnitudeSquared();
   }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point.
    */
-  distance( point: Vector4 ): number {
+  public distance( point: Vector4 ): number {
     return this.minus( point ).magnitude;
   }
 
   /**
    * The Euclidean distance between this vector (treated as a point) and another point (x,y,z,w).
    */
-  distanceXYZW( x: number, y: number, z: number, w: number ): number {
+  public distanceXYZW( x: number, y: number, z: number, w: number ): number {
     const dx = this.x - x;
     const dy = this.y - y;
     const dz = this.z - z;
@@ -90,14 +90,14 @@ export default class Vector4 implements IPoolable {
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point.
    */
-  distanceSquared( point: Vector4 ): number {
+  public distanceSquared( point: Vector4 ): number {
     return this.minus( point ).magnitudeSquared;
   }
 
   /**
    * The squared Euclidean distance between this vector (treated as a point) and another point (x,y,z,w).
    */
-  distanceSquaredXYZW( x: number, y: number, z: number, w: number ): number {
+  public distanceSquaredXYZW( x: number, y: number, z: number, w: number ): number {
     const dx = this.x - x;
     const dy = this.y - y;
     const dz = this.z - z;
@@ -108,14 +108,14 @@ export default class Vector4 implements IPoolable {
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector v.
    */
-  dot( v: Vector4 ): number {
+  public dot( v: Vector4 ): number {
     return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
   }
 
   /**
    * The dot-product (Euclidean inner product) between this vector and another vector (x,y,z,w).
    */
-  dotXYZW( x: number, y: number, z: number, w: number ): number {
+  public dotXYZW( x: number, y: number, z: number, w: number ): number {
     return this.x * x + this.y * y + this.z * z + this.w * w;
   }
 
@@ -125,7 +125,7 @@ export default class Vector4 implements IPoolable {
    * Equal to $\theta = \cos^{-1}( \hat{u} \cdot \hat{v} )$ where $\hat{u}$ is this vector (normalized) and $\hat{v}$
    * is the input vector (normalized).
    */
-  angleBetween( v: Vector4 ): number {
+  public angleBetween( v: Vector4 ): number {
     // @ts-ignore TODO: import with circular protection
     return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
   }
@@ -136,7 +136,7 @@ export default class Vector4 implements IPoolable {
    * @param other
    * @returns - Whether the two vectors have equal components
    */
-  equals( other: Vector4 ): boolean {
+  public equals( other: Vector4 ): boolean {
     return this.x === other.x && this.y === other.y && this.z === other.z && this.w === other.w;
   }
 
@@ -146,7 +146,7 @@ export default class Vector4 implements IPoolable {
    * @returns - Whether difference between the two vectors has no component with an absolute value greater
    *                      than epsilon.
    */
-  equalsEpsilon( other: Vector4, epsilon: number ): boolean {
+  public equalsEpsilon( other: Vector4, epsilon: number ): boolean {
     if ( !epsilon ) {
       epsilon = 0;
     }
@@ -156,7 +156,7 @@ export default class Vector4 implements IPoolable {
   /**
    * Returns false if any component is NaN, infinity, or -infinity. Otherwise returns true.
    */
-  isFinite(): boolean {
+  public isFinite(): boolean {
     return isFinite( this.x ) && isFinite( this.y ) && isFinite( this.z ) && isFinite( this.w );
   }
 
@@ -173,7 +173,7 @@ export default class Vector4 implements IPoolable {
    * @param  [vector] - If not provided, creates a v4 with filled in values. Otherwise, fills in the
    *                    values of the provided vector so that it equals this vector.
    */
-  copy( vector?: Vector4 ): Vector4 {
+  public copy( vector?: Vector4 ): Vector4 {
     if ( vector ) {
       return vector.set( this as unknown as Vector4 );
     }
@@ -189,7 +189,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function normalize(). This will return a new vector, and will not modify this
    * vector.
    */
-  normalized(): Vector4 {
+  public normalized(): Vector4 {
     const magnitude = this.magnitude;
     assert && assert( magnitude !== 0, 'Cannot normalize a zero-magnitude vector' );
     return this.dividedScalar( magnitude );
@@ -201,7 +201,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
    * this vector.
    */
-  roundedSymmetric(): Vector4 {
+  public roundedSymmetric(): Vector4 {
     return this.copy().roundSymmetric();
   }
 
@@ -213,7 +213,7 @@ export default class Vector4 implements IPoolable {
    * this vector.
    *
    */
-  withMagnitude( magnitude: number ): Vector4 {
+  public withMagnitude( magnitude: number ): Vector4 {
     return this.copy().setMagnitude( magnitude );
   }
 
@@ -223,7 +223,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function multiplyScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  timesScalar( scalar: number ): Vector4 {
+  public timesScalar( scalar: number ): Vector4 {
     return v4( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
   }
 
@@ -233,7 +233,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function multiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  times( scalar: number ): Vector4 {
+  public times( scalar: number ): Vector4 {
     // make sure it's not a vector!
     assert && assert( typeof scalar === 'number' );
     return this.timesScalar( scalar );
@@ -245,7 +245,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function componentMultiply(). This will return a new vector, and will not modify
    * this vector.
    */
-  componentTimes( v: Vector4 ): Vector4 {
+  public componentTimes( v: Vector4 ): Vector4 {
     return v4( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
   }
 
@@ -255,7 +255,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function add(). This will return a new vector, and will not modify
    * this vector.
    */
-  plus( v: Vector4 ): Vector4 {
+  public plus( v: Vector4 ): Vector4 {
     return v4( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
   }
 
@@ -265,7 +265,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function addXYZW(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusXYZW( x: number, y: number, z: number, w: number ): Vector4 {
+  public plusXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     return v4( this.x + x, this.y + y, this.z + z, this.w + w );
   }
 
@@ -275,7 +275,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function addScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  plusScalar( scalar: number ): Vector4 {
+  public plusScalar( scalar: number ): Vector4 {
     return v4( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
   }
 
@@ -285,7 +285,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function subtract(). This will return a new vector, and will not modify
    * this vector.
    */
-  minus( v: Vector4 ): Vector4 {
+  public minus( v: Vector4 ): Vector4 {
     return v4( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
   }
 
@@ -295,7 +295,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function subtractXYZW(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusXYZW( x: number, y: number, z: number, w: number ): Vector4 {
+  public minusXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     return v4( this.x - x, this.y - y, this.z - z, this.w - w );
   }
 
@@ -305,7 +305,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function subtractScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  minusScalar( scalar: number ): Vector4 {
+  public minusScalar( scalar: number ): Vector4 {
     return v4( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
   }
 
@@ -315,7 +315,7 @@ export default class Vector4 implements IPoolable {
    * This is the immutable form of the function divideScalar(). This will return a new vector, and will not modify
    * this vector.
    */
-  dividedScalar( scalar: number ): Vector4 {
+  public dividedScalar( scalar: number ): Vector4 {
     return v4( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
   }
 
@@ -326,7 +326,7 @@ export default class Vector4 implements IPoolable {
    * this vector.
    *
    */
-  negated(): Vector4 {
+  public negated(): Vector4 {
     return v4( -this.x, -this.y, -this.z, -this.w );
   }
 
@@ -336,28 +336,28 @@ export default class Vector4 implements IPoolable {
    * @param vector
    * @param ratio - Not necessarily constrained in [0, 1]
    */
-  blend( vector: Vector4, ratio: number ): Vector4 {
+  public blend( vector: Vector4, ratio: number ): Vector4 {
     return this.plus( vector.minus( this as unknown as Vector4 ).times( ratio ) );
   }
 
   /**
    * The average (midpoint) between this vector and another vector.
    */
-  average( vector: Vector4 ): Vector4 {
+  public average( vector: Vector4 ): Vector4 {
     return this.blend( vector, 0.5 );
   }
 
   /**
    * Debugging string for the vector.
    */
-  toString(): string {
+  public toString(): string {
     return `Vector4(${this.x}, ${this.y}, ${this.z}, ${this.w})`;
   }
 
   /**
    * Converts this to a 3-dimensional vector, discarding the w-component.
    */
-  toVector3(): Vector3 {
+  public toVector3(): Vector3 {
     return new Vector3( this.x, this.y, this.z );
   }
 
@@ -369,7 +369,7 @@ export default class Vector4 implements IPoolable {
   /**
    * Sets all of the components of this vector, returning this.
    */
-  setXYZW( x: number, y: number, z: number, w: number ): Vector4 {
+  public setXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -380,7 +380,7 @@ export default class Vector4 implements IPoolable {
   /**
    * Sets the x-component of this vector, returning this.
    */
-  setX( x: number ): Vector4 {
+  public setX( x: number ): Vector4 {
     this.x = x;
     return this as unknown as Vector4;
   }
@@ -388,7 +388,7 @@ export default class Vector4 implements IPoolable {
   /**
    * Sets the y-component of this vector, returning this.
    */
-  setY( y: number ): Vector4 {
+  public setY( y: number ): Vector4 {
     this.y = y;
     return this as unknown as Vector4;
   }
@@ -396,7 +396,7 @@ export default class Vector4 implements IPoolable {
   /**
    * Sets the z-component of this vector, returning this.
    */
-  setZ( z: number ): Vector4 {
+  public setZ( z: number ): Vector4 {
     this.z = z;
     return this as unknown as Vector4;
   }
@@ -404,7 +404,7 @@ export default class Vector4 implements IPoolable {
   /**
    * Sets the w-component of this vector, returning this.
    */
-  setW( w: number ): Vector4 {
+  public setW( w: number ): Vector4 {
     this.w = w;
     return this as unknown as Vector4;
   }
@@ -415,7 +415,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function copy(). This will mutate (change) this vector, in addition to returning
    * this vector itself.
    */
-  set( v: Vector4 ): Vector4 {
+  public set( v: Vector4 ): Vector4 {
     return this.setXYZW( v.x, v.y, v.z, v.w );
   }
 
@@ -426,7 +426,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function withMagnitude(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  setMagnitude( magnitude: number ): Vector4 {
+  public setMagnitude( magnitude: number ): Vector4 {
     const scale = magnitude / this.magnitude;
     return this.multiplyScalar( scale );
   }
@@ -437,7 +437,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function plus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  add( v: Vector4 ): Vector4 {
+  public add( v: Vector4 ): Vector4 {
     return this.setXYZW( this.x + v.x, this.y + v.y, this.z + v.z, this.w + v.w );
   }
 
@@ -447,7 +447,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function plusXYZW(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addXYZW( x: number, y: number, z: number, w: number ): Vector4 {
+  public addXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     return this.setXYZW( this.x + x, this.y + y, this.z + z, this.w + w );
   }
 
@@ -457,7 +457,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function plusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  addScalar( scalar: number ): Vector4 {
+  public addScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x + scalar, this.y + scalar, this.z + scalar, this.w + scalar );
   }
 
@@ -467,7 +467,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function minus(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtract( v: Vector4 ): Vector4 {
+  public subtract( v: Vector4 ): Vector4 {
     return this.setXYZW( this.x - v.x, this.y - v.y, this.z - v.z, this.w - v.w );
   }
 
@@ -477,7 +477,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function minusXYZW(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractXYZW( x: number, y: number, z: number, w: number ): Vector4 {
+  public subtractXYZW( x: number, y: number, z: number, w: number ): Vector4 {
     return this.setXYZW( this.x - x, this.y - y, this.z - z, this.w - w );
   }
 
@@ -487,7 +487,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function minusScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  subtractScalar( scalar: number ): Vector4 {
+  public subtractScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x - scalar, this.y - scalar, this.z - scalar, this.w - scalar );
   }
 
@@ -497,7 +497,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function timesScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiplyScalar( scalar: number ): Vector4 {
+  public multiplyScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x * scalar, this.y * scalar, this.z * scalar, this.w * scalar );
   }
 
@@ -508,7 +508,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function times(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  multiply( scalar: number ): Vector4 {
+  public multiply( scalar: number ): Vector4 {
     // make sure it's not a vector!
     assert && assert( typeof scalar === 'number' );
     return this.multiplyScalar( scalar );
@@ -520,7 +520,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function componentTimes(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  componentMultiply( v: Vector4 ): Vector4 {
+  public componentMultiply( v: Vector4 ): Vector4 {
     return this.setXYZW( this.x * v.x, this.y * v.y, this.z * v.z, this.w * v.w );
   }
 
@@ -530,7 +530,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function dividedScalar(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  divideScalar( scalar: number ): Vector4 {
+  public divideScalar( scalar: number ): Vector4 {
     return this.setXYZW( this.x / scalar, this.y / scalar, this.z / scalar, this.w / scalar );
   }
 
@@ -540,7 +540,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function negated(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  negate(): Vector4 {
+  public negate(): Vector4 {
     return this.setXYZW( -this.x, -this.y, -this.z, -this.w );
   }
 
@@ -550,7 +550,7 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function normalized(). This will mutate (change) this vector, in addition to
    * returning this vector itself.
    */
-  normalize(): Vector4 {
+  public normalize(): Vector4 {
     const mag = this.magnitude;
     if ( mag === 0 ) {
       throw new Error( 'Cannot normalize a zero-magnitude vector' );
@@ -564,27 +564,27 @@ export default class Vector4 implements IPoolable {
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.
    */
-  roundSymmetric(): Vector4 {
+  public roundSymmetric(): Vector4 {
     return this.setXYZW( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ), Utils.roundSymmetric( this.w ) );
   }
 
-  freeToPool(): void {
+  public freeToPool(): void {
     Vector4.pool.freeToPool( this );
   }
 
-  static pool = new Pool( Vector4, {
+  public static pool = new Pool( Vector4, {
     maxSize: 1000,
     initialize: Vector4.prototype.setXYZW,
     defaultArguments: [ 0, 0, 0, 0 ]
   } );
 
-  isVector4!: boolean;
-  dimension!: number;
-  static ZERO: Vector4;
-  static X_UNIT: Vector4;
-  static Y_UNIT: Vector4;
-  static Z_UNIT: Vector4;
-  static W_UNIT: Vector4;
+  public isVector4!: boolean;
+  public dimension!: number;
+  public static ZERO: Vector4;
+  public static X_UNIT: Vector4;
+  public static Y_UNIT: Vector4;
+  public static Z_UNIT: Vector4;
+  public static W_UNIT: Vector4;
 }
 
 // (read-only) - Helps to identify the dimension of the vector
@@ -600,7 +600,7 @@ class ImmutableVector4 extends Vector4 {
   /**
    * Throw errors whenever a mutable method is called on our immutable vector
    */
-  static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setZ' | 'setW' | 'setXYZW' ): void {
+  public static mutableOverrideHelper( mutableFunctionName: 'setX' | 'setY' | 'setZ' | 'setW' | 'setXYZW' ): void {
     ImmutableVector4.prototype[ mutableFunctionName ] = () => {
       throw new Error( `Cannot call mutable method '${mutableFunctionName}' on immutable Vector3` );
     };

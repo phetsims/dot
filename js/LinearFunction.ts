@@ -30,7 +30,7 @@ export default class LinearFunction {
    * @param b2
    * @param clamp - clamp the result to the provided ranges, false by default
    */
-  constructor( a1: number, a2: number, b1: number, b2: number, clamp = false ) {
+  public constructor( a1: number, a2: number, b1: number, b2: number, clamp = false ) {
     this.a1 = a1;
     this.a2 = a2;
     this.b1 = b1;
@@ -41,14 +41,14 @@ export default class LinearFunction {
   /**
    * Maps from a to b.
    */
-  evaluate( a3: number ): number {
+  public evaluate( a3: number ): number {
     return map( this.a1, this.a2, this.b1, this.b2, a3, this.clamp );
   }
 
   /**
    * Maps from b to a
    */
-  inverse( b3: number ): number {
+  public inverse( b3: number ): number {
     return map( this.b1, this.b2, this.a1, this.a2, b3, this.clamp );
   }
 }

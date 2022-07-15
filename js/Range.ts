@@ -35,7 +35,7 @@ class Range implements IRange {
    * @param min - the minimum value of the range
    * @param max - the maximum value of the range
    */
-  constructor( min: number, max: number ) {
+  public constructor( min: number, max: number ) {
 
     assert && assert( min <= max, `max must be >= min. min: ${min}, max: ${max}` );
 
@@ -200,7 +200,7 @@ class Range implements IRange {
     throw new Error( 'defaultValue is undefined, did you mean to use RangeWithValue?' );
   }
 
-  static RangeIO = new IOType<Range, RangeStateObject>( 'RangeIO', {
+  public static RangeIO = new IOType<Range, RangeStateObject>( 'RangeIO', {
     valueType: Range,
     documentation: 'A range with "min" and a "max" members.',
     toStateObject: ( range: Range ): RangeStateObject => ( {

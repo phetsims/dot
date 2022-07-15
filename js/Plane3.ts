@@ -13,22 +13,22 @@ import dot from './dot.js';
 
 export default class Plane3 {
 
-  normal: Vector3;
-  distance: number;
+  public normal: Vector3;
+  public distance: number;
 
   /**
    * @param normal - A normal vector (perpendicular) to the plane
    * @param distance - The signed distance to the plane from the origin, so that normal.times( distance )
    *                            will be a point on the plane.
    */
-  constructor( normal: Vector3, distance: number ) {
+  public constructor( normal: Vector3, distance: number ) {
     this.normal = normal;
     this.distance = distance;
 
     assert && assert( Math.abs( normal.magnitude - 1 ) < 0.01, 'the normal vector must be a unit vector' );
   }
 
-  intersectWithRay( ray: Ray3 ): Vector3 {
+  public intersectWithRay( ray: Ray3 ): Vector3 {
     return ray.pointAtDistance( ray.distanceToPlane( this ) );
   }
 
@@ -41,7 +41,7 @@ export default class Plane3 {
    * @param b - second point
    * @param c - third point
    */
-  static fromTriangle( a: Vector3, b: Vector3, c: Vector3 ): Plane3 | null {
+  public static fromTriangle( a: Vector3, b: Vector3, c: Vector3 ): Plane3 | null {
     const normal = ( c.minus( a ) ).cross( b.minus( a ) );
     if ( normal.magnitude === 0 ) {
       return null;
@@ -51,9 +51,9 @@ export default class Plane3 {
     return new Plane3( normal, normal.dot( a ) );
   }
 
-  static XY: Plane3;
-  static XZ: Plane3;
-  static YZ: Plane3;
+  public static XY: Plane3;
+  public static XZ: Plane3;
+  public static YZ: Plane3;
 }
 
 dot.register( 'Plane3', Plane3 );

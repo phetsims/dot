@@ -11,8 +11,8 @@ import Vector2 from './Vector2.js';
 
 export default class Ray2 {
 
-  position: Vector2;
-  direction: Vector2;
+  public position: Vector2;
+  public direction: Vector2;
 
   /**
    * Constructs a2D ray using the supplied origin position and unit length direction vector
@@ -20,7 +20,7 @@ export default class Ray2 {
    * @param position - the ray's point of origin
    * @param direction - the ray's unit direction vector
    */
-  constructor( position: Vector2, direction: Vector2 ) {
+  public constructor( position: Vector2, direction: Vector2 ) {
 
     this.position = position;
     this.direction = direction;
@@ -31,21 +31,21 @@ export default class Ray2 {
   /**
    * Returns a new Ray that has it origin shifted to a position given by an amount distance*this.direction.
    */
-  shifted( distance: number ): Ray2 {
+  public shifted( distance: number ): Ray2 {
     return new Ray2( this.pointAtDistance( distance ), this.direction );
   }
 
   /**
    * Returns a position that is a distance 'distance' along the ray.
    */
-  pointAtDistance( distance: number ): Vector2 {
+  public pointAtDistance( distance: number ): Vector2 {
     return this.position.plus( this.direction.timesScalar( distance ) );
   }
 
   /**
    * Returns the attributes of this ray into a string
    */
-  toString(): string {
+  public toString(): string {
     return `${this.position.toString()} => ${this.direction.toString()}`;
   }
 }

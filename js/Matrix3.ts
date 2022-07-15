@@ -20,13 +20,13 @@ import Enumeration from '../../phet-core/js/Enumeration.js';
 import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
 
 export class Matrix3Type extends EnumerationValue {
-  static OTHER = new Matrix3Type();
-  static IDENTITY = new Matrix3Type();
-  static TRANSLATION_2D = new Matrix3Type();
-  static SCALING = new Matrix3Type();
-  static AFFINE = new Matrix3Type();
+  public static OTHER = new Matrix3Type();
+  public static IDENTITY = new Matrix3Type();
+  public static TRANSLATION_2D = new Matrix3Type();
+  public static SCALING = new Matrix3Type();
+  public static AFFINE = new Matrix3Type();
 
-  static enumeration = new Enumeration( Matrix3Type );
+  public static enumeration = new Enumeration( Matrix3Type );
 }
 
 type NineNumbers = [
@@ -43,14 +43,14 @@ export type Matrix3StateObject = {
 export default class Matrix3 implements IPoolable {
 
   // Entries stored in column-major format
-  entries: NineNumbers;
+  public entries: NineNumbers;
 
-  type: Matrix3Type;
+  public type: Matrix3Type;
 
   /**
    * Creates an identity matrix, that can then be mutated into the proper form.
    */
-  constructor() {
+  public constructor() {
     //Make sure no clients are expecting to create a matrix with non-identity values
     assert && assert( arguments.length === 0, 'Matrix3 constructor should not be called with any arguments.  Use m3()/Matrix3.identity()/etc.' );
 
@@ -61,70 +61,70 @@ export default class Matrix3 implements IPoolable {
   /**
    * Convenience getter for the individual 0,0 entry of the matrix.
    */
-  m00(): number {
+  public m00(): number {
     return this.entries[ 0 ];
   }
 
   /**
    * Convenience getter for the individual 0,1 entry of the matrix.
    */
-  m01(): number {
+  public m01(): number {
     return this.entries[ 3 ];
   }
 
   /**
    * Convenience getter for the individual 0,2 entry of the matrix.
    */
-  m02(): number {
+  public m02(): number {
     return this.entries[ 6 ];
   }
 
   /**
    * Convenience getter for the individual 1,0 entry of the matrix.
    */
-  m10(): number {
+  public m10(): number {
     return this.entries[ 1 ];
   }
 
   /**
    * Convenience getter for the individual 1,1 entry of the matrix.
    */
-  m11(): number {
+  public m11(): number {
     return this.entries[ 4 ];
   }
 
   /**
    * Convenience getter for the individual 1,2 entry of the matrix.
    */
-  m12(): number {
+  public m12(): number {
     return this.entries[ 7 ];
   }
 
   /**
    * Convenience getter for the individual 2,0 entry of the matrix.
    */
-  m20(): number {
+  public m20(): number {
     return this.entries[ 2 ];
   }
 
   /**
    * Convenience getter for the individual 2,1 entry of the matrix.
    */
-  m21(): number {
+  public m21(): number {
     return this.entries[ 5 ];
   }
 
   /**
    * Convenience getter for the individual 2,2 entry of the matrix.
    */
-  m22(): number {
+  public m22(): number {
     return this.entries[ 8 ];
   }
 
   /**
    * Returns whether this matrix is an identity matrix.
    */
-  isIdentity(): boolean {
+  public isIdentity(): boolean {
     return this.type === Matrix3Type.IDENTITY || this.equals( Matrix3.IDENTITY );
   }
 
@@ -132,14 +132,14 @@ export default class Matrix3 implements IPoolable {
    * Returns whether this matrix is likely to be an identity matrix (returning false means "inconclusive, may be
    * identity or not"), but true is guaranteed to be an identity matrix.
    */
-  isFastIdentity(): boolean {
+  public isFastIdentity(): boolean {
     return this.type === Matrix3Type.IDENTITY;
   }
 
   /**
    * Returns whether this matrix is an affine matrix (e.g. no shear).
    */
-  isAffine(): boolean {
+  public isAffine(): boolean {
     return this.type === Matrix3Type.AFFINE || ( this.m20() === 0 && this.m21() === 0 && this.m22() === 1 );
   }
 
@@ -147,7 +147,7 @@ export default class Matrix3 implements IPoolable {
    * Returns whether it's an affine matrix where the components of transforms are independent, i.e. constructed from
    * arbitrary component scaling and translation.
    */
-  isAligned(): boolean {
+  public isAligned(): boolean {
     // non-diagonal non-translation entries should all be zero.
     return this.isAffine() && this.m01() === 0 && this.m10() === 0;
   }
@@ -161,14 +161,14 @@ export default class Matrix3 implements IPoolable {
    * 0 B      B  0
    * This means that moving a transformed point by (x,0) or (0,y) will result in a motion along one of the axes.
    */
-  isAxisAligned(): boolean {
+  public isAxisAligned(): boolean {
     return this.isAffine() && ( ( this.m01() === 0 && this.m10() === 0 ) || ( this.m00() === 0 && this.m11() === 0 ) );
   }
 
   /**
    * Returns whether every single entry in this matrix is a finite number (non-NaN, non-infinite).
    */
-  isFinite(): boolean {
+  public isFinite(): boolean {
     return isFinite( this.m00() ) &&
            isFinite( this.m01() ) &&
            isFinite( this.m02() ) &&
@@ -183,45 +183,45 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns the determinant of this matrix.
    */
-  getDeterminant(): number {
+  public getDeterminant(): number {
     return this.m00() * this.m11() * this.m22() + this.m01() * this.m12() * this.m20() + this.m02() * this.m10() * this.m21() - this.m02() * this.m11() * this.m20() - this.m01() * this.m10() * this.m22() - this.m00() * this.m12() * this.m21();
   }
 
-  get determinant(): number { return this.getDeterminant(); }
+  public get determinant(): number { return this.getDeterminant(); }
 
   /**
    * Returns the 2D translation, assuming multiplication with a homogeneous vector
    */
-  getTranslation(): Vector2 {
+  public getTranslation(): Vector2 {
     return new Vector2( this.m02(), this.m12() );
   }
 
-  get translation(): Vector2 { return this.getTranslation(); }
+  public get translation(): Vector2 { return this.getTranslation(); }
 
   /**
    * Returns a vector that is equivalent to ( T(1,0).magnitude(), T(0,1).magnitude() ) where T is a relative transform
    */
-  getScaleVector(): Vector2 {
+  public getScaleVector(): Vector2 {
     return new Vector2(
       Math.sqrt( this.m00() * this.m00() + this.m10() * this.m10() ),
       Math.sqrt( this.m01() * this.m01() + this.m11() * this.m11() ) );
   }
 
-  get scaleVector(): Vector2 { return this.getScaleVector(); }
+  public get scaleVector(): Vector2 { return this.getScaleVector(); }
 
   /**
    * Returns the angle in radians for the 2d rotation from this matrix, between pi, -pi
    */
-  getRotation(): number {
+  public getRotation(): number {
     return Math.atan2( this.m10(), this.m00() );
   }
 
-  get rotation(): number { return this.getRotation(); }
+  public get rotation(): number { return this.getRotation(); }
 
   /**
    * Returns an identity-padded copy of this matrix with an increased dimension.
    */
-  toMatrix4(): Matrix4 {
+  public toMatrix4(): Matrix4 {
     return new Matrix4(
       this.m00(), this.m01(), this.m02(), 0,
       this.m10(), this.m11(), this.m12(), 0,
@@ -233,7 +233,7 @@ export default class Matrix3 implements IPoolable {
    * Returns an identity-padded copy of this matrix with an increased dimension, treating this matrix's affine
    * components only.
    */
-  toAffineMatrix4(): Matrix4 {
+  public toAffineMatrix4(): Matrix4 {
     return new Matrix4(
       this.m00(), this.m01(), 0, this.m02(),
       this.m10(), this.m11(), 0, this.m12(),
@@ -244,7 +244,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns a string form of this object
    */
-  toString(): string {
+  public toString(): string {
     return `${this.m00()} ${this.m01()} ${this.m02()}\n${
       this.m10()} ${this.m11()} ${this.m12()}\n${
       this.m20()} ${this.m21()} ${this.m22()}`;
@@ -253,7 +253,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Creates an SVG form of this matrix, for high-performance processing in SVG output.
    */
-  toSVGMatrix(): SVGMatrix {
+  public toSVGMatrix(): SVGMatrix {
     const result = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' ).createSVGMatrix();
 
     // top two rows
@@ -270,7 +270,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns the CSS form (simplified if possible) for this transformation matrix.
    */
-  getCSSTransform(): string {
+  public getCSSTransform(): string {
     // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
 
     // We need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support that
@@ -282,12 +282,12 @@ export default class Matrix3 implements IPoolable {
     return `matrix(${this.entries[ 0 ].toFixed( 20 )},${this.entries[ 1 ].toFixed( 20 )},${this.entries[ 3 ].toFixed( 20 )},${this.entries[ 4 ].toFixed( 20 )},${this.entries[ 6 ].toFixed( 20 )},${this.entries[ 7 ].toFixed( 20 )})`; // eslint-disable-line bad-sim-text
   }
 
-  get cssTransform(): string { return this.getCSSTransform(); }
+  public get cssTransform(): string { return this.getCSSTransform(); }
 
   /**
    * Returns the CSS-like SVG matrix form for this transformation matrix.
    */
-  getSVGTransform(): string {
+  public getSVGTransform(): string {
     // SVG transform presentation attribute. See http://www.w3.org/TR/SVG/coords.html#TransformAttribute
     switch( this.type ) {
       case Matrix3Type.IDENTITY:
@@ -301,12 +301,12 @@ export default class Matrix3 implements IPoolable {
     }
   }
 
-  get svgTransform(): string { return this.getSVGTransform(); }
+  public get svgTransform(): string { return this.getSVGTransform(); }
 
   /**
    * Returns a parameter object suitable for use with jQuery's .css()
    */
-  getCSSTransformStyles(): any {
+  public getCSSTransformStyles(): any {
     const transformCSS = this.getCSSTransform();
 
     // notes on triggering hardware acceleration: http://creativejs.com/2011/12/day-2-gpu-accelerate-your-dom-elements/
@@ -325,12 +325,12 @@ export default class Matrix3 implements IPoolable {
     };
   }
 
-  get cssTransformStyles(): any { return this.getCSSTransformStyles(); }
+  public get cssTransformStyles(): any { return this.getCSSTransformStyles(); }
 
   /**
    * Returns exact equality with another matrix
    */
-  equals( matrix: Matrix3 ): boolean {
+  public equals( matrix: Matrix3 ): boolean {
     return this.m00() === matrix.m00() && this.m01() === matrix.m01() && this.m02() === matrix.m02() &&
            this.m10() === matrix.m10() && this.m11() === matrix.m11() && this.m12() === matrix.m12() &&
            this.m20() === matrix.m20() && this.m21() === matrix.m21() && this.m22() === matrix.m22();
@@ -339,7 +339,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns equality within a margin of error with another matrix
    */
-  equalsEpsilon( matrix: Matrix3, epsilon: number ): boolean {
+  public equalsEpsilon( matrix: Matrix3, epsilon: number ): boolean {
     return Math.abs( this.m00() - matrix.m00() ) < epsilon &&
            Math.abs( this.m01() - matrix.m01() ) < epsilon &&
            Math.abs( this.m02() - matrix.m02() ) < epsilon &&
@@ -358,7 +358,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns a copy of this matrix
    */
-  copy(): Matrix3 {
+  public copy(): Matrix3 {
     return m3(
       this.m00(), this.m01(), this.m02(),
       this.m10(), this.m11(), this.m12(),
@@ -370,7 +370,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns a new matrix, defined by this matrix plus the provided matrix
    */
-  plus( matrix: Matrix3 ): Matrix3 {
+  public plus( matrix: Matrix3 ): Matrix3 {
     return m3(
       this.m00() + matrix.m00(), this.m01() + matrix.m01(), this.m02() + matrix.m02(),
       this.m10() + matrix.m10(), this.m11() + matrix.m11(), this.m12() + matrix.m12(),
@@ -381,7 +381,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns a new matrix, defined by this matrix plus the provided matrix
    */
-  minus( matrix: Matrix3 ): Matrix3 {
+  public minus( matrix: Matrix3 ): Matrix3 {
     return m3(
       this.m00() - matrix.m00(), this.m01() - matrix.m01(), this.m02() - matrix.m02(),
       this.m10() - matrix.m10(), this.m11() - matrix.m11(), this.m12() - matrix.m12(),
@@ -392,7 +392,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns a transposed copy of this matrix
    */
-  transposed(): Matrix3 {
+  public transposed(): Matrix3 {
     return m3(
       this.m00(), this.m10(), this.m20(),
       this.m01(), this.m11(), this.m21(),
@@ -403,7 +403,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns a negated copy of this matrix
    */
-  negated(): Matrix3 {
+  public negated(): Matrix3 {
     return m3(
       -this.m00(), -this.m01(), -this.m02(),
       -this.m10(), -this.m11(), -this.m12(),
@@ -414,7 +414,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns an inverted copy of this matrix
    */
-  inverted(): Matrix3 {
+  public inverted(): Matrix3 {
     let det;
 
     switch( this.type ) {
@@ -476,7 +476,7 @@ export default class Matrix3 implements IPoolable {
    * @param matrix
    * @returns - NOTE: this may be the same matrix!
    */
-  timesMatrix( matrix: Matrix3 ): Matrix3 {
+  public timesMatrix( matrix: Matrix3 ): Matrix3 {
     // I * M === M * I === M (the identity)
     if ( this.type === Matrix3Type.IDENTITY || matrix.type === Matrix3Type.IDENTITY ) {
       return this.type === Matrix3Type.IDENTITY ? matrix : this;
@@ -535,7 +535,7 @@ export default class Matrix3 implements IPoolable {
    * Returns the multiplication of this matrix times the provided vector (treating this matrix as homogeneous, so that
    * it is the technical multiplication of (x,y,1)).
    */
-  timesVector2( vector2: Vector2 ): Vector2 {
+  public timesVector2( vector2: Vector2 ): Vector2 {
     const x = this.m00() * vector2.x + this.m01() * vector2.y + this.m02();
     const y = this.m10() * vector2.x + this.m11() * vector2.y + this.m12();
     return new Vector2( x, y );
@@ -544,7 +544,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns the multiplication of this matrix times the provided vector
    */
-  timesVector3( vector3: Vector3 ): Vector3 {
+  public timesVector3( vector3: Vector3 ): Vector3 {
     const x = this.m00() * vector3.x + this.m01() * vector3.y + this.m02() * vector3.z;
     const y = this.m10() * vector3.x + this.m11() * vector3.y + this.m12() * vector3.z;
     const z = this.m20() * vector3.x + this.m21() * vector3.y + this.m22() * vector3.z;
@@ -554,7 +554,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns the multiplication of the transpose of this matrix times the provided vector (assuming the 2x2 quadrant)
    */
-  timesTransposeVector2( vector2: Vector2 ): Vector2 {
+  public timesTransposeVector2( vector2: Vector2 ): Vector2 {
     const x = this.m00() * vector2.x + this.m10() * vector2.y;
     const y = this.m01() * vector2.x + this.m11() * vector2.y;
     return new Vector2( x, y );
@@ -563,7 +563,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * TODO: this operation seems to not work for transformDelta2, should be vetted
    */
-  timesRelativeVector2( vector2: Vector2 ): Vector2 {
+  public timesRelativeVector2( vector2: Vector2 ): Vector2 {
     const x = this.m00() * vector2.x + this.m01() * vector2.y;
     const y = this.m10() * vector2.y + this.m11() * vector2.y;
     return new Vector2( x, y );
@@ -578,7 +578,7 @@ export default class Matrix3 implements IPoolable {
    *
    * NOTE: Every mutable method goes through rowMajor
    */
-  rowMajor( v00: number, v01: number, v02: number, v10: number, v11: number, v12: number, v20: number, v21: number, v22: number, type?: Matrix3Type ): this {
+  public rowMajor( v00: number, v01: number, v02: number, v10: number, v11: number, v12: number, v20: number, v21: number, v22: number, type?: Matrix3Type ): this {
     this.entries[ 0 ] = v00;
     this.entries[ 1 ] = v10;
     this.entries[ 2 ] = v20;
@@ -597,7 +597,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to be a copy of another matrix.
    */
-  set( matrix: Matrix3 ): this {
+  public set( matrix: Matrix3 ): this {
     return this.rowMajor(
       matrix.m00(), matrix.m01(), matrix.m02(),
       matrix.m10(), matrix.m11(), matrix.m12(),
@@ -608,7 +608,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to be a copy of the column-major data stored in an array (e.g. WebGL).
    */
-  setArray( array: number[] | Float32Array | Float64Array ): this {
+  public setArray( array: number[] | Float32Array | Float64Array ): this {
     return this.rowMajor(
       array[ 0 ], array[ 3 ], array[ 6 ],
       array[ 1 ], array[ 4 ], array[ 7 ],
@@ -618,7 +618,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 0,0 component of this matrix.
    */
-  set00( value: number ): this {
+  public set00( value: number ): this {
     this.entries[ 0 ] = value;
     return this;
   }
@@ -626,7 +626,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 0,1 component of this matrix.
    */
-  set01( value: number ): this {
+  public set01( value: number ): this {
     this.entries[ 3 ] = value;
     return this;
   }
@@ -634,7 +634,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 0,2 component of this matrix.
    */
-  set02( value: number ): this {
+  public set02( value: number ): this {
     this.entries[ 6 ] = value;
     return this;
   }
@@ -642,7 +642,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 1,0 component of this matrix.
    */
-  set10( value: number ): this {
+  public set10( value: number ): this {
     this.entries[ 1 ] = value;
     return this;
   }
@@ -650,7 +650,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 1,1 component of this matrix.
    */
-  set11( value: number ): this {
+  public set11( value: number ): this {
     this.entries[ 4 ] = value;
     return this;
   }
@@ -658,7 +658,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 1,2 component of this matrix.
    */
-  set12( value: number ): this {
+  public set12( value: number ): this {
     this.entries[ 7 ] = value;
     return this;
   }
@@ -666,7 +666,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 2,0 component of this matrix.
    */
-  set20( value: number ): this {
+  public set20( value: number ): this {
     this.entries[ 2 ] = value;
     return this;
   }
@@ -674,7 +674,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 2,1 component of this matrix.
    */
-  set21( value: number ): this {
+  public set21( value: number ): this {
     this.entries[ 5 ] = value;
     return this;
   }
@@ -682,7 +682,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the individual 2,2 component of this matrix.
    */
-  set22( value: number ): this {
+  public set22( value: number ): this {
     this.entries[ 8 ] = value;
     return this;
   }
@@ -690,7 +690,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Makes this matrix effectively immutable to the normal methods (except direct setters?)
    */
-  makeImmutable(): this {
+  public makeImmutable(): this {
     if ( assert ) {
       this.rowMajor = () => {
         throw new Error( 'Cannot modify immutable matrix' );
@@ -702,14 +702,14 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the entire state of the matrix, in column-major order.
    */
-  columnMajor( v00: number, v10: number, v20: number, v01: number, v11: number, v21: number, v02: number, v12: number, v22: number, type: Matrix3Type ): this {
+  public columnMajor( v00: number, v10: number, v20: number, v01: number, v11: number, v21: number, v02: number, v12: number, v22: number, type: Matrix3Type ): this {
     return this.rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
   }
 
   /**
    * Sets this matrix to itself plus the given matrix.
    */
-  add( matrix: Matrix3 ): this {
+  public add( matrix: Matrix3 ): this {
     return this.rowMajor(
       this.m00() + matrix.m00(), this.m01() + matrix.m01(), this.m02() + matrix.m02(),
       this.m10() + matrix.m10(), this.m11() + matrix.m11(), this.m12() + matrix.m12(),
@@ -720,7 +720,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to itself minus the given matrix.
    */
-  subtract( m: Matrix3 ): this {
+  public subtract( m: Matrix3 ): this {
     return this.rowMajor(
       this.m00() - m.m00(), this.m01() - m.m01(), this.m02() - m.m02(),
       this.m10() - m.m10(), this.m11() - m.m11(), this.m12() - m.m12(),
@@ -731,7 +731,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to its own transpose.
    */
-  transpose(): this {
+  public transpose(): this {
     return this.rowMajor(
       this.m00(), this.m10(), this.m20(),
       this.m01(), this.m11(), this.m21(),
@@ -743,7 +743,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to its own negation.
    */
-  negate(): this {
+  public negate(): this {
     return this.rowMajor(
       -this.m00(), -this.m01(), -this.m02(),
       -this.m10(), -this.m11(), -this.m12(),
@@ -754,7 +754,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to its own inverse.
    */
-  invert(): this {
+  public invert(): this {
     let det;
 
     switch( this.type ) {
@@ -813,7 +813,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to the value of itself times the provided matrix
    */
-  multiplyMatrix( matrix: Matrix3 ): this {
+  public multiplyMatrix( matrix: Matrix3 ): this {
     // M * I === M (the identity)
     if ( matrix.type === Matrix3Type.IDENTITY ) {
       // no change needed
@@ -874,7 +874,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Mutates this matrix, equivalent to (translation * this).
    */
-  prependTranslation( x: number, y: number ): this {
+  public prependTranslation( x: number, y: number ): this {
     this.set02( this.m02() + x );
     this.set12( this.m12() + y );
 
@@ -893,7 +893,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to the 3x3 identity matrix.
    */
-  setToIdentity(): this {
+  public setToIdentity(): this {
     return this.rowMajor(
       1, 0, 0,
       0, 1, 0,
@@ -904,7 +904,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to the affine translation matrix.
    */
-  setToTranslation( x: number, y: number ): this {
+  public setToTranslation( x: number, y: number ): this {
     return this.rowMajor(
       1, 0, x,
       0, 1, y,
@@ -915,7 +915,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to the affine scaling matrix.
    */
-  setToScale( x: number, y?: number ): this {
+  public setToScale( x: number, y?: number ): this {
     // allow using one parameter to scale everything
     y = y === undefined ? x : y;
 
@@ -929,7 +929,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets this matrix to an affine matrix with the specified row-major values.
    */
-  setToAffine( m00: number, m01: number, m02: number, m10: number, m11: number, m12: number ): this {
+  public setToAffine( m00: number, m01: number, m02: number, m10: number, m11: number, m12: number ): this {
     return this.rowMajor( m00, m01, m02, m10, m11, m12, 0, 0, 1, Matrix3Type.AFFINE );
   }
 
@@ -939,7 +939,7 @@ export default class Matrix3 implements IPoolable {
    * @param axis - normalized
    * @param angle - in radians
    */
-  setToRotationAxisAngle( axis: Vector3, angle: number ): this {
+  public setToRotationAxisAngle( axis: Vector3, angle: number ): this {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
     const C = 1 - c;
@@ -956,7 +956,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  setToRotationX( angle: number ): this {
+  public setToRotationX( angle: number ): this {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -972,7 +972,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  setToRotationY( angle: number ): this {
+  public setToRotationY( angle: number ): this {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -988,7 +988,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  setToRotationZ( angle: number ): this {
+  public setToRotationZ( angle: number ): this {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -1007,7 +1007,7 @@ export default class Matrix3 implements IPoolable {
    * @param y
    * @param angle - in radians
    */
-  setToTranslationRotation( x: number, y: number, angle: number ): this {
+  public setToTranslationRotation( x: number, y: number, angle: number ): this {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -1025,14 +1025,14 @@ export default class Matrix3 implements IPoolable {
    * @param translation
    * @param angle - in radians
    */
-  setToTranslationRotationPoint( translation: Vector2, angle: number ): this {
+  public setToTranslationRotationPoint( translation: Vector2, angle: number ): this {
     return this.setToTranslationRotation( translation.x, translation.y, angle );
   }
 
   /**
    * Sets this matrix to the values contained in an SVGMatrix.
    */
-  setToSVGMatrix( svgMatrix: SVGMatrix ): this {
+  public setToSVGMatrix( svgMatrix: SVGMatrix ): this {
     return this.rowMajor(
       svgMatrix.a, svgMatrix.c, svgMatrix.e,
       svgMatrix.b, svgMatrix.d, svgMatrix.f,
@@ -1044,7 +1044,7 @@ export default class Matrix3 implements IPoolable {
    * Sets this matrix to a rotation matrix that rotates A to B (Vector3 instances), by rotating about the axis
    * A.cross( B ) -- Shortest path. ideally should be unit vectors.
    */
-  setRotationAToB( a: Vector3, b: Vector3 ): this {
+  public setRotationAToB( a: Vector3, b: Vector3 ): this {
     // see http://graphics.cs.brown.edu/~jfh/papers/Moller-EBA-1999/paper.pdf for information on this implementation
     const start = a;
     const end = b;
@@ -1125,7 +1125,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @returns - The vector that was mutated
    */
-  multiplyVector2( vector2: Vector2 ): Vector2 {
+  public multiplyVector2( vector2: Vector2 ): Vector2 {
     return vector2.setXY(
       this.m00() * vector2.x + this.m01() * vector2.y + this.m02(),
       this.m10() * vector2.x + this.m11() * vector2.y + this.m12() );
@@ -1136,7 +1136,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @returns - The vector that was mutated
    */
-  multiplyVector3( vector3: Vector3 ): Vector3 {
+  public multiplyVector3( vector3: Vector3 ): Vector3 {
     return vector3.setXYZ(
       this.m00() * vector3.x + this.m01() * vector3.y + this.m02() * vector3.z,
       this.m10() * vector3.x + this.m11() * vector3.y + this.m12() * vector3.z,
@@ -1148,7 +1148,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @returns - The vector that was mutated
    */
-  multiplyTransposeVector2( v: Vector2 ): Vector2 {
+  public multiplyTransposeVector2( v: Vector2 ): Vector2 {
     return v.setXY(
       this.m00() * v.x + this.m10() * v.y,
       this.m01() * v.x + this.m11() * v.y );
@@ -1160,7 +1160,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @returns - The vector that was mutated
    */
-  multiplyRelativeVector2( v: Vector2 ): Vector2 {
+  public multiplyRelativeVector2( v: Vector2 ): Vector2 {
     return v.setXY(
       this.m00() * v.x + this.m01() * v.y,
       this.m10() * v.y + this.m11() * v.y );
@@ -1169,7 +1169,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Sets the transform of a Canvas 2D rendering context to the affine part of this matrix
    */
-  canvasSetTransform( context: CanvasRenderingContext2D ): void {
+  public canvasSetTransform( context: CanvasRenderingContext2D ): void {
     context.setTransform(
       // inlined array entries
       this.entries[ 0 ],
@@ -1184,7 +1184,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Appends to the affine part of this matrix to the Canvas 2D rendering context
    */
-  canvasAppendTransform( context: CanvasRenderingContext2D ): void {
+  public canvasAppendTransform( context: CanvasRenderingContext2D ): void {
     if ( this.type !== Matrix3Type.IDENTITY ) {
       context.transform(
         // inlined array entries
@@ -1201,7 +1201,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Copies the entries of this matrix over to an arbitrary array (typed or normal).
    */
-  copyToArray( array: number[] | Float32Array | Float64Array ): number[] | Float32Array | Float64Array {
+  public copyToArray( array: number[] | Float32Array | Float64Array ): number[] | Float32Array | Float64Array {
     array[ 0 ] = this.m00();
     array[ 1 ] = this.m10();
     array[ 2 ] = this.m20();
@@ -1214,11 +1214,11 @@ export default class Matrix3 implements IPoolable {
     return array;
   }
 
-  freeToPool(): void {
+  public freeToPool(): void {
     Matrix3.pool.freeToPool( this );
   }
 
-  static pool = new Pool( Matrix3, {
+  public static pool = new Pool( Matrix3, {
     initialize: Matrix3.prototype.rowMajor,
     useDefaultConstruction: true,
     maxSize: 300
@@ -1227,49 +1227,49 @@ export default class Matrix3 implements IPoolable {
   /**
    * Returns an identity matrix.
    */
-  static identity(): Matrix3 {
+  public static identity(): Matrix3 {
     return fromPool().setToIdentity();
   }
 
   /**
    * Returns a translation matrix.
    */
-  static translation( x: number, y: number ): Matrix3 {
+  public static translation( x: number, y: number ): Matrix3 {
     return fromPool().setToTranslation( x, y );
   }
 
   /**
    * Returns a translation matrix computed from a vector.
    */
-  static translationFromVector( vector: Vector2 | Vector3 ): Matrix3 {
+  public static translationFromVector( vector: Vector2 | Vector3 ): Matrix3 {
     return Matrix3.translation( vector.x, vector.y );
   }
 
   /**
    * Returns a matrix that scales things in each dimension.
    */
-  static scaling( x: number, y?: number ): Matrix3 {
+  public static scaling( x: number, y?: number ): Matrix3 {
     return fromPool().setToScale( x, y );
   }
 
   /**
    * Returns a matrix that scales things in each dimension.
    */
-  static scale( x: number, y?: number ): Matrix3 {
+  public static scale( x: number, y?: number ): Matrix3 {
     return Matrix3.scaling( x, y );
   }
 
   /**
    * Returns an affine matrix with the given parameters.
    */
-  static affine( m00: number, m01: number, m02: number, m10: number, m11: number, m12: number ): Matrix3 {
+  public static affine( m00: number, m01: number, m02: number, m10: number, m11: number, m12: number ): Matrix3 {
     return fromPool().setToAffine( m00, m01, m02, m10, m11, m12 );
   }
 
   /**
    * Creates a new matrix with all entries determined in row-major order.
    */
-  static rowMajor( v00: number, v01: number, v02: number, v10: number, v11: number, v12: number, v20: number, v21: number, v22: number, type?: Matrix3Type ): Matrix3 {
+  public static rowMajor( v00: number, v01: number, v02: number, v10: number, v11: number, v12: number, v20: number, v21: number, v22: number, type?: Matrix3Type ): Matrix3 {
     return fromPool().rowMajor(
       v00, v01, v02,
       v10, v11, v12,
@@ -1284,7 +1284,7 @@ export default class Matrix3 implements IPoolable {
    * @param axis - normalized
    * @param angle - in radians
    */
-  static rotationAxisAngle( axis: Vector3, angle: number ): Matrix3 {
+  public static rotationAxisAngle( axis: Vector3, angle: number ): Matrix3 {
     return fromPool().setToRotationAxisAngle( axis, angle );
   }
 
@@ -1293,7 +1293,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  static rotationX( angle: number ): Matrix3 {
+  public static rotationX( angle: number ): Matrix3 {
     return fromPool().setToRotationX( angle );
   }
 
@@ -1302,7 +1302,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  static rotationY( angle: number ): Matrix3 {
+  public static rotationY( angle: number ): Matrix3 {
     return fromPool().setToRotationY( angle );
   }
 
@@ -1311,7 +1311,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  static rotationZ( angle: number ): Matrix3 {
+  public static rotationZ( angle: number ): Matrix3 {
     return fromPool().setToRotationZ( angle );
   }
 
@@ -1320,7 +1320,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  static translationRotation( x: number, y: number, angle: number ): Matrix3 {
+  public static translationRotation( x: number, y: number, angle: number ): Matrix3 {
     return fromPool().setToTranslationRotation( x, y, angle );
   }
 
@@ -1329,7 +1329,7 @@ export default class Matrix3 implements IPoolable {
    *
    * @param angle - in radians
    */
-  static rotation2( angle: number ): Matrix3 {
+  public static rotation2( angle: number ): Matrix3 {
     return fromPool().setToRotationZ( angle );
   }
 
@@ -1340,7 +1340,7 @@ export default class Matrix3 implements IPoolable {
    * @param x
    * @param y
    */
-  static rotationAround( angle: number, x: number, y: number ): Matrix3 {
+  public static rotationAround( angle: number, x: number, y: number ): Matrix3 {
     return Matrix3.translation( x, y ).timesMatrix( Matrix3.rotation2( angle ) ).timesMatrix( Matrix3.translation( -x, -y ) );
   }
 
@@ -1350,14 +1350,14 @@ export default class Matrix3 implements IPoolable {
    * @param angle - in radians
    * @param point
    */
-  static rotationAroundPoint( angle: number, point: Vector2 ): Matrix3 {
+  public static rotationAroundPoint( angle: number, point: Vector2 ): Matrix3 {
     return Matrix3.rotationAround( angle, point.x, point.y );
   }
 
   /**
    * Returns a matrix equivalent to a given SVGMatrix.
    */
-  static fromSVGMatrix( svgMatrix: SVGMatrix ): Matrix3 {
+  public static fromSVGMatrix( svgMatrix: SVGMatrix ): Matrix3 {
     return fromPool().setToSVGMatrix( svgMatrix );
   }
 
@@ -1365,14 +1365,14 @@ export default class Matrix3 implements IPoolable {
    * Returns a rotation matrix that rotates A to B, by rotating about the axis A.cross( B ) -- Shortest path. ideally
    * should be unit vectors.
    */
-  static rotateAToB( a: Vector3, b: Vector3 ): Matrix3 {
+  public static rotateAToB( a: Vector3, b: Vector3 ): Matrix3 {
     return fromPool().setRotationAToB( a, b );
   }
 
   /**
    * Shortcut for translation times a matrix (without allocating a translation matrix), see scenery#119
    */
-  static translationTimesMatrix( x: number, y: number, matrix: Matrix3 ): Matrix3 {
+  public static translationTimesMatrix( x: number, y: number, matrix: Matrix3 ): Matrix3 {
     let type;
     if ( matrix.type === Matrix3Type.IDENTITY || matrix.type === Matrix3Type.TRANSLATION_2D ) {
       return m3(
@@ -1397,7 +1397,7 @@ export default class Matrix3 implements IPoolable {
   /**
    * Serialize to an Object that can be handled by PhET-iO
    */
-  static toStateObject( matrix3: Matrix3 ): Matrix3StateObject {
+  public static toStateObject( matrix3: Matrix3 ): Matrix3StateObject {
     return {
       entries: matrix3.entries,
       type: matrix3.type.name
@@ -1407,17 +1407,17 @@ export default class Matrix3 implements IPoolable {
   /**
    * Convert back from a serialized Object to a Matrix3
    */
-  static fromStateObject( stateObject: Matrix3StateObject ): Matrix3 {
+  public static fromStateObject( stateObject: Matrix3StateObject ): Matrix3 {
     const matrix = Matrix3.identity();
     matrix.entries = stateObject.entries;
     matrix.type = Matrix3Type.enumeration.getValue( stateObject.type );
     return matrix;
   }
 
-  static IDENTITY: Matrix3;
-  static X_REFLECTION: Matrix3;
-  static Y_REFLECTION: Matrix3;
-  static Matrix3IO: IOType;
+  public static IDENTITY: Matrix3;
+  public static X_REFLECTION: Matrix3;
+  public static Y_REFLECTION: Matrix3;
+  public static Matrix3IO: IOType;
 }
 
 dot.register( 'Matrix3', Matrix3 );
