@@ -1159,7 +1159,7 @@ export default class Bounds2 implements IPoolable {
       return b2( p.x, p.y, p.x, p.y );
     }
     else {
-      return b2( x, y as number, x, y as number );
+      return b2( x, y!, x, y! );
     }
   }
 
