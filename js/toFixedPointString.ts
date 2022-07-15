@@ -50,7 +50,7 @@ function toFixedPointString( value: number, decimalPlaces: number ): string {
       stringValue = stringValue.substring( 0, stringValue.length - ( actualDecimalPlaces - decimalPlaces ) );
 
       // If we chopped off all of the decimal places, remove the decimal point too.
-      if ( stringValue[ stringValue.length - 1 ] === '.' ) {
+      if ( stringValue.endsWith( '.' ) ) {
         stringValue = stringValue.substring( 0, stringValue.length - 1 );
       }
 
@@ -73,7 +73,7 @@ function toFixedPointString( value: number, decimalPlaces: number ): string {
   }
 
   // Remove negative sign from -0 values.
-  if ( Number( stringValue ) === 0 && stringValue[ 0 ] === '-' ) {
+  if ( Number( stringValue ) === 0 && stringValue.startsWith( '-' ) ) {
     stringValue = stringValue.substring( 1, stringValue.length );
   }
 
