@@ -7,6 +7,7 @@
  */
 
 import isArray from '../../phet-core/js/isArray.js';
+import dot from './dot.js';
 import './EigenvalueDecomposition.js';
 import LUDecomposition from './LUDecomposition.js';
 import QRDecomposition from './QRDecomposition.js';
@@ -14,7 +15,6 @@ import SingularValueDecomposition from './SingularValueDecomposition.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
 import Vector4 from './Vector4.js';
-import dot from './dot.js';
 
 const ArrayType = window.Float64Array || Array;
 

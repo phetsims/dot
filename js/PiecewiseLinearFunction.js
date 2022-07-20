@@ -6,8 +6,8 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Utils from './Utils.js';
 import dot from './dot.js';
+import Utils from './Utils.js';
 
 class PiecewiseLinearFunction {
 

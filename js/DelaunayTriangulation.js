@@ -16,9 +16,9 @@
 import arrayRemove from '../../phet-core/js/arrayRemove.js';
 import merge from '../../phet-core/js/merge.js';
 import Bounds2 from './Bounds2.js';
+import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
-import dot from './dot.js';
 
 class DelaunayTriangulation {
   /**

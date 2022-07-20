@@ -21,8 +21,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Matrix from './Matrix.js';
 import dot from './dot.js';
+import Matrix from './Matrix.js';
 
 const ArrayType = window.Float64Array || Array;
 

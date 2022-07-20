@@ -6,8 +6,8 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Vector2 from './Vector2.js';
 import dot from './dot.js';
+import Vector2 from './Vector2.js';
 
 // constants
 const EPSILON = Number.MIN_VALUE;

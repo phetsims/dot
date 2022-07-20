@@ -7,8 +7,8 @@
  */
 
 import isArray from '../../phet-core/js/isArray.js';
-import './Utils.js';
 import dot from './dot.js';
+import './Utils.js';
 
 class Permutation {
   /**

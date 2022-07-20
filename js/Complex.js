@@ -8,8 +8,8 @@
  * @author Matt Pennington
  */
 
-import Utils from './Utils.js';
 import dot from './dot.js';
+import Utils from './Utils.js';
 
 class Complex {
   /**

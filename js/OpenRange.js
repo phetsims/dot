@@ -7,8 +7,8 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
-import Range from './Range.js';
 import dot from './dot.js';
+import Range from './Range.js';
 
 class OpenRange extends Range {
   /**

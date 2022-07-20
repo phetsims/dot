@@ -10,10 +10,10 @@
  */
 
 import TinyEmitter from '../../axon/js/TinyEmitter.js';
+import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
 import Ray2 from './Ray2.js';
 import Vector2 from './Vector2.js';
-import dot from './dot.js';
 
 const scratchMatrix = new Matrix3();
 

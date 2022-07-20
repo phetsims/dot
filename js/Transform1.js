@@ -8,8 +8,8 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
-import Range from './Range.js';
 import dot from './dot.js';
+import Range from './Range.js';
 
 // For assertions that the inverse is correct.
 const TOLERANCE = 1E-6;

@@ -7,9 +7,9 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
+import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
-import dot from './dot.js';
 
 QUnit.module( 'Utils' );
 
