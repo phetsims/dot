@@ -1,4 +1,4 @@
-// Copyright 2013-2021, University of Colorado Boulder
+// Copyright 2013-2022, University of Colorado Boulder
 
 /**
  * Forward and inverse transforms with 3x3 matrices. Methods starting with 'transform' will apply the transform from our
