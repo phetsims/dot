@@ -6,63 +6,52 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import isArray from '../../phet-core/js/isArray.js';
 import dot from './dot.js';
 import './Utils.js';
+import Utils from './Utils.js';
 
 class Permutation {
+
+  public readonly indices: number[];
+
   /**
    * Creates a permutation that will rearrange a list so that newList[i] = oldList[permutation[i]]
-   *
-   * @param {Array.<number>} indices
    */
-  constructor( indices ) {
-    // @public {Array.<number>}
+  public constructor( indices: number[] ) {
     this.indices = indices;
   }
 
-  /**
-   * @public
-   *
-   * @returns {number}
-   */
-  size() {
+  public size(): number {
     return this.indices.length;
   }
 
   /**
    * Applies the permutation, returning either a new array or number (whatever was provided).
-   * @public
-   *
-   * @param {Array.<number>|number} arrayOrInt
-   * @returns {Array.<number>|number}
    */
-  apply( arrayOrInt ) {
-    if ( isArray( arrayOrInt ) ) {
+  public apply<E, T extends E[] | number>( arrayOrInt: T ): T extends E[] ? number[] : number {
+    if ( typeof arrayOrInt === 'number' ) {
+      // @ts-ignore
+      return this.indices[ arrayOrInt ];
+    }
+    else {
       if ( arrayOrInt.length !== this.size() ) {
         throw new Error( `Permutation length ${this.size()} not equal to list length ${arrayOrInt.length}` );
       }
 
       // permute it as an array
-      const result = new Array( arrayOrInt.length );
+      const result: E[] = new Array( arrayOrInt.length );
       for ( let i = 0; i < arrayOrInt.length; i++ ) {
         result[ i ] = arrayOrInt[ this.indices[ i ] ];
       }
+      // @ts-ignore
       return result;
-    }
-    else {
-      // permute a single index
-      return this.indices[ arrayOrInt ];
     }
   }
 
   /**
    * Creates a new permutation that is the inverse of this.
-   * @public
-   *
-   * @returns {Permutation}
    */
-  inverted() {
+  public inverted(): Permutation {
     const newPermutation = new Array( this.size() );
     for ( let i = 0; i < this.size(); i++ ) {
       newPermutation[ this.indices[ i ] ] = i;
@@ -70,14 +59,8 @@ class Permutation {
     return new Permutation( newPermutation );
   }
 
-  /**
-   * @public
-   *
-   * @param {Array.<number>} indices
-   * @returns {Array.<Permutation>}
-   */
-  withIndicesPermuted( indices ) {
-    const result = [];
+  public withIndicesPermuted( indices: number[] ): Permutation[] {
+    const result: Permutation[] = [];
     Permutation.forEachPermutation( indices, integers => {
       const oldIndices = this.indices;
       const newPermutation = oldIndices.slice( 0 );
@@ -90,33 +73,18 @@ class Permutation {
     return result;
   }
 
-  /**
-   * @public
-   *
-   * @returns {string}
-   */
-  toString() {
+  public toString(): string {
     return `P[${this.indices.join( ', ' )}]`;
   }
 
-  /**
-   * @public
-   *
-   * @param {Permutation} permutation
-   * @returns {boolean}
-   */
-  equals( permutation ) {
+  public equals( permutation: Permutation ): boolean {
     return this.indices.length === permutation.indices.length && _.isEqual( this.indices, permutation.indices );
   }
 
   /**
    * Creates an identity permutation of a given size.
-   * @public
-   *
-   * @param {number} size
-   * @returns {Permutation}
    */
-  static identity( size ) {
+  public static identity( size: number ): Permutation {
     assert && assert( size >= 0 );
     const indices = new Array( size );
     for ( let i = 0; i < size; i++ ) {
@@ -127,28 +95,31 @@ class Permutation {
 
   /**
    * Lists all permutations that have a given size
-   * @public
-   *
-   * @param {number} size
-   * @returns {Array.<Permutation>}
    */
-  static permutations( size ) {
-    const result = [];
-    Permutation.forEachPermutation( dot.rangeInclusive( 0, size - 1 ), integers => {
-      result.push( new Permutation( integers ) );
+  public static permutations( size: number ): Permutation[] {
+    const result: Permutation[] = [];
+    Permutation.forEachPermutation( Utils.rangeInclusive( 0, size - 1 ), integers => {
+      result.push( new Permutation( integers.slice() ) );
     } );
     return result;
   }
 
   /**
    * Calls a callback on every single possible permutation of the given Array
-   * @public
    *
-   * @param {Array.<*>} array
-   * @param {function(Array.<*>)} callback - Called on each permuted version of the array possible
+   * @param array
+   * @param callback - Called on each permuted version of the array possible
    */
-  static forEachPermutation( array, callback ) {
+  public static forEachPermutation<T>( array: T[], callback: ( array: readonly T[] ) => void ): void {
     recursiveForEachPermutation( array, [], callback );
+  }
+
+  public static permutationsOf<T>( array: T[] ): T[][] {
+    const results: T[][] = [];
+    Permutation.forEachPermutation( array, result => {
+      results.push( result.slice() );
+    } );
+    return results;
   }
 }
 
@@ -161,7 +132,7 @@ dot.register( 'Permutation', Permutation );
  * @param prefix   Elements that should be inserted at the front of each list before each call
  * @param callback Function to call
  */
-function recursiveForEachPermutation( array, prefix, callback ) {
+function recursiveForEachPermutation<T>( array: T[], prefix: T[], callback: ( array: readonly T[] ) => void ) {
   if ( array.length === 0 ) {
     callback( prefix );
   }

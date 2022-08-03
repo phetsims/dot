@@ -4,6 +4,7 @@
 import './BinPacker.js';
 import './Bounds2.js';
 import './Bounds3.js';
+import './Combination.js';
 import './Complex.js';
 import './ConvexHull2.js';
 import './DampedHarmonic.js';
