@@ -54,7 +54,7 @@ class Range implements IRange {
     return this.getMin();
   }
 
-  public set min( min ) {
+  public set min( min: number ) {
     this.setMin( min );
   }
 
