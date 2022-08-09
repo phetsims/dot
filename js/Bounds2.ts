@@ -18,7 +18,7 @@ import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
 import Vector2 from './Vector2.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
-import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 
 // Temporary instances to be used in the transform method.
@@ -31,7 +31,7 @@ export type Bounds2StateObject = {
   maxY: NumberStateObject;
 };
 
-export default class Bounds2 implements IPoolable {
+export default class Bounds2 implements TPoolable {
 
   // The minimum X coordinate of the bounds.
   public minX: number;

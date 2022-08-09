@@ -9,9 +9,9 @@
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
 import dot from './dot.js';
-import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 
-export default class Vector4 implements IPoolable {
+export default class Vector4 implements TPoolable {
 
   // The X coordinate of the vector.
   public x: number;

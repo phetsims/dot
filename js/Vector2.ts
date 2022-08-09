@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
@@ -17,7 +17,7 @@ const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
   return vector.add( nextVector );
 };
 
-export default class Vector2 implements IPoolable {
+export default class Vector2 implements TPoolable {
 
   // The X coordinate of the vector.
   public x: number;

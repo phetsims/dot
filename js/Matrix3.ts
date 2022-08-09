@@ -17,7 +17,7 @@ import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
 import EnumerationValue from '../../phet-core/js/EnumerationValue.js';
 import Enumeration from '../../phet-core/js/Enumeration.js';
-import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 
 export class Matrix3Type extends EnumerationValue {
   public static OTHER = new Matrix3Type();
@@ -40,7 +40,7 @@ export type Matrix3StateObject = {
   type: string;
 };
 
-export default class Matrix3 implements IPoolable {
+export default class Matrix3 implements TPoolable {
 
   // Entries stored in column-major format
   public entries: NineNumbers;

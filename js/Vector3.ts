@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Pool, { IPoolable } from '../../phet-core/js/Pool.js';
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
@@ -24,7 +24,7 @@ type Vector3StateObject = {
   z: NumberStateObject;
 };
 
-export default class Vector3 implements IPoolable {
+export default class Vector3 implements TPoolable {
 
   // The X coordinate of the vector.
   public x: number;
