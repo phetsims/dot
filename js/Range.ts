@@ -13,7 +13,7 @@ import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 
-export type IRange = {
+export type TRange = {
   min: number;
   max: number;
 };
@@ -23,7 +23,7 @@ export type RangeStateObject = {
   max: NumberStateObject;
 };
 
-class Range implements IRange {
+class Range implements TRange {
 
   // the minimum value of the range
   private _min: number;
