@@ -17,7 +17,7 @@ type SelfOptions = {
   validBounds?: Bounds2 | null;
 };
 
-type Vector2PropertyOptions = SelfOptions & StrictOmit<PropertyOptions<Vector2>, 'phetioType' | 'valueType'>;
+type Vector2PropertyOptions = SelfOptions & StrictOmit<PropertyOptions<Vector2>, 'phetioValueType' | 'valueType'>;
 
 class Vector2Property extends Property<Vector2> {
   public readonly validBounds: Bounds2 | null;
@@ -34,7 +34,7 @@ class Vector2Property extends Property<Vector2> {
       validators: [],
 
       // phet-io
-      phetioType: Property.PropertyIO( Vector2.Vector2IO )
+      phetioValueType: Vector2.Vector2IO
     }, providedOptions );
 
     options.validBounds && options.validators.push( {
