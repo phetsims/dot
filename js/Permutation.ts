@@ -132,7 +132,7 @@ dot.register( 'Permutation', Permutation );
  * @param prefix   Elements that should be inserted at the front of each list before each call
  * @param callback Function to call
  */
-function recursiveForEachPermutation<T>( array: T[], prefix: T[], callback: ( array: readonly T[] ) => void ) {
+function recursiveForEachPermutation<T>( array: T[], prefix: T[], callback: ( array: readonly T[] ) => void ): void {
   if ( array.length === 0 ) {
     callback( prefix );
   }

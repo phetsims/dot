@@ -79,7 +79,7 @@ export default class BinPacker {
 
     let padding = '';
 
-    function binTree( bin: Bin ) {
+    function binTree( bin: Bin ): void {
       result += `${padding + bin.toString()}\n`;
       padding = `${padding}  `;
       _.each( bin.children, binTree );

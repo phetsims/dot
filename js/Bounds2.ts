@@ -1203,7 +1203,7 @@ Bounds2.prototype.dimension = 2;
 Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
 Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
-function catchImmutableSetterLowHangingFruit( bounds: Bounds2 ) {
+function catchImmutableSetterLowHangingFruit( bounds: Bounds2 ): void {
   bounds.setMinMax = () => { throw new Error( 'Attempt to set "setMinMax" of an immutable Bounds2 object' ); };
   bounds.set = () => { throw new Error( 'Attempt to set "set" of an immutable Bounds2 object' ); };
   bounds.includeBounds = () => { throw new Error( 'Attempt to set "includeBounds" of an immutable Bounds2 object' ); };
