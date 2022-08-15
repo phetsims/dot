@@ -176,7 +176,6 @@ class Range implements TRange {
    * the Range. If the value is not contained in Range, then the return value will not be between 0 and 1.
    */
   public getNormalizedValue( value: number ): number {
-    assert && assert( typeof value === 'number' );
     assert && assert( this.getLength() !== 0, 'cannot get normalized value without a range length' );
     return ( value - this.min ) / this.getLength();
   }
@@ -187,7 +186,6 @@ class Range implements TRange {
    * usage.
    */
   public expandNormalizedValue( normalizedValue: number ): number {
-    assert && assert( typeof normalizedValue === 'number' );
     assert && assert( this.getLength() !== 0, 'cannot get expand normalized value without a range length' );
     return normalizedValue * this.getLength() + this.min;
   }

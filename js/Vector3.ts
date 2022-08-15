@@ -254,8 +254,6 @@ export default class Vector3 implements TPoolable {
    * this vector.
    */
   public times( scalar: number ): Vector3 {
-    // make sure it's not a vector!
-    assert && assert( typeof scalar === 'number' );
     return this.timesScalar( scalar );
   }
 
@@ -535,8 +533,6 @@ export default class Vector3 implements TPoolable {
    * returning this vector itself.
    */
   public multiply( scalar: number ): Vector3 {
-    // make sure it's not a vector!
-    assert && assert( typeof scalar === 'number' );
     return this.multiplyScalar( scalar );
   }
 
