@@ -31,8 +31,7 @@
           "**/*.ts"
         ],
         "rules": {
-          "no-simple-type-checking-assertions": "off",
-          "@typescript-eslint/no-explicit-any": "error"
+          "no-simple-type-checking-assertions": "off"
         }
       }
     ]
