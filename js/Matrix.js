@@ -22,7 +22,7 @@ class Matrix {
   /**
    * @param {number} m - number of rows
    * @param {number} n - number of columns
-   * @param {number[]} [filler]
+   * @param {number[] | number} [filler]
    * @param {boolean} [fast]
    */
   constructor( m, n, filler, fast ) {
