@@ -137,6 +137,15 @@ export default class Matrix3 implements TPoolable {
   }
 
   /**
+   * Returns whether this matrix is a translation matrix.
+   * By this we mean it has no shear, rotation, or scaling
+   * It may be a translation of zero.
+   */
+  public isTranslation(): boolean {
+    return this.type === Matrix3Type.TRANSLATION_2D || ( this.m00() === 1 && this.m11() === 1 && this.m22() === 1 && this.m01() === 0 && this.m10() === 0 && this.m20() === 0 && this.m21() === 0 );
+  }
+
+  /**
    * Returns whether this matrix is an affine matrix (e.g. no shear).
    */
   public isAffine(): boolean {
@@ -910,10 +919,6 @@ export default class Matrix3 implements TPoolable {
       0, 1, y,
       0, 0, 1,
       Matrix3Type.TRANSLATION_2D );
-  }
-
-  public isTranslation(): boolean {
-    return this.type === Matrix3Type.TRANSLATION_2D || ( this.m00() === 1 && this.m11() === 1 && this.m22() === 1 && this.m01() === 0 && this.m10() === 0 && this.m20() === 0 && this.m21() === 0 );
   }
 
   /**
