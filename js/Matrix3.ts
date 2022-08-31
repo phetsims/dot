@@ -912,6 +912,10 @@ export default class Matrix3 implements TPoolable {
       Matrix3Type.TRANSLATION_2D );
   }
 
+  public isTranslation(): boolean {
+    return this.type === Matrix3Type.TRANSLATION_2D || ( this.m00() === 1 && this.m11() === 1 && this.m22() === 1 && this.m01() === 0 && this.m10() === 0 && this.m20() === 0 && this.m21() === 0 );
+  }
+
   /**
    * Sets this matrix to the affine scaling matrix.
    */
