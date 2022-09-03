@@ -17,7 +17,7 @@ type SelfOptions = {
   validBounds?: Bounds2 | null;
 };
 
-type Vector2PropertyOptions = SelfOptions & StrictOmit<PropertyOptions<Vector2>, 'phetioValueType' | 'valueType'>;
+export type Vector2PropertyOptions = SelfOptions & StrictOmit<PropertyOptions<Vector2>, 'phetioValueType' | 'valueType'>;
 
 class Vector2Property extends Property<Vector2> {
   public readonly validBounds: Bounds2 | null;
