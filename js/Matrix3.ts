@@ -161,7 +161,6 @@ export default class Matrix3 implements TPoolable {
     return this.isAffine() && this.m01() === 0 && this.m10() === 0;
   }
 
-
   /**
    * Returns if it's an affine matrix where the components of transforms are independent, but may be switched (unlike isAligned)
    *
@@ -949,8 +948,17 @@ export default class Matrix3 implements TPoolable {
    * @param angle - in radians
    */
   public setToRotationAxisAngle( axis: Vector3, angle: number ): this {
-    const c = Math.cos( angle );
-    const s = Math.sin( angle );
+    let c = Math.cos( angle );
+    let s = Math.sin( angle );
+
+    // Handle cases close to 0, since we want Math.PI/2 rotations (and the like) to be exact
+    if ( Math.abs( c ) < 1e-15 ) {
+      c = 0;
+    }
+    if ( Math.abs( s ) < 1e-15 ) {
+      s = 0;
+    }
+
     const C = 1 - c;
 
     return this.rowMajor(
@@ -966,8 +974,16 @@ export default class Matrix3 implements TPoolable {
    * @param angle - in radians
    */
   public setToRotationX( angle: number ): this {
-    const c = Math.cos( angle );
-    const s = Math.sin( angle );
+    let c = Math.cos( angle );
+    let s = Math.sin( angle );
+
+    // Handle cases close to 0, since we want Math.PI/2 rotations (and the like) to be exact
+    if ( Math.abs( c ) < 1e-15 ) {
+      c = 0;
+    }
+    if ( Math.abs( s ) < 1e-15 ) {
+      s = 0;
+    }
 
     return this.rowMajor(
       1, 0, 0,
@@ -982,8 +998,16 @@ export default class Matrix3 implements TPoolable {
    * @param angle - in radians
    */
   public setToRotationY( angle: number ): this {
-    const c = Math.cos( angle );
-    const s = Math.sin( angle );
+    let c = Math.cos( angle );
+    let s = Math.sin( angle );
+
+    // Handle cases close to 0, since we want Math.PI/2 rotations (and the like) to be exact
+    if ( Math.abs( c ) < 1e-15 ) {
+      c = 0;
+    }
+    if ( Math.abs( s ) < 1e-15 ) {
+      s = 0;
+    }
 
     return this.rowMajor(
       c, 0, s,
@@ -998,8 +1022,16 @@ export default class Matrix3 implements TPoolable {
    * @param angle - in radians
    */
   public setToRotationZ( angle: number ): this {
-    const c = Math.cos( angle );
-    const s = Math.sin( angle );
+    let c = Math.cos( angle );
+    let s = Math.sin( angle );
+
+    // Handle cases close to 0, since we want Math.PI/2 rotations (and the like) to be exact
+    if ( Math.abs( c ) < 1e-15 ) {
+      c = 0;
+    }
+    if ( Math.abs( s ) < 1e-15 ) {
+      s = 0;
+    }
 
     return this.rowMajor(
       c, -s, 0,
@@ -1017,8 +1049,16 @@ export default class Matrix3 implements TPoolable {
    * @param angle - in radians
    */
   public setToTranslationRotation( x: number, y: number, angle: number ): this {
-    const c = Math.cos( angle );
-    const s = Math.sin( angle );
+    let c = Math.cos( angle );
+    let s = Math.sin( angle );
+
+    // Handle cases close to 0, since we want Math.PI/2 rotations (and the like) to be exact
+    if ( Math.abs( c ) < 1e-15 ) {
+      c = 0;
+    }
+    if ( Math.abs( s ) < 1e-15 ) {
+      s = 0;
+    }
 
     return this.rowMajor(
       c, -s, x,
