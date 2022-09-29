@@ -685,16 +685,6 @@ export default class Vector2 implements TPoolable {
     defaultArguments: [ 0, 0 ]
   } );
 
-  /**
-   * Returns a map of state keys and their associated IOTypes, see IOType.fromCoreType for details.
-   */
-  public static get STATE_SCHEMA(): { x: IOType; y: IOType } {
-    return {
-      x: NumberIO,
-      y: NumberIO
-    };
-  }
-
   // static methods
 
   /**
@@ -790,7 +780,14 @@ Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
 export type Vector2StateObject = { x: NumberStateObject; y: NumberStateObject };
 
-Vector2.Vector2IO = IOType.fromCoreType( 'Vector2IO', Vector2, {
+Vector2.Vector2IO = new IOType<Vector2, Vector2StateObject>( 'Vector2IO', {
+  valueType: Vector2,
+  stateSchema: {
+    x: NumberIO,
+    y: NumberIO
+  },
+  toStateObject: ( t: Vector2 ) => t.toStateObject(),
+  fromStateObject: ( s: Vector2StateObject ) => Vector2.fromStateObject( s ),
   documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
 } );
 
