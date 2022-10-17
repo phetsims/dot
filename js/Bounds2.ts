@@ -1168,7 +1168,7 @@ export default class Bounds2 implements TPoolable {
   public dimension?: number;
 
   /**
-   * A contant Bounds2 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".
+   * A constant Bounds2 with minimums = $\infty$, maximums = $-\infty$, so that it represents "no bounds whatsoever".
    *
    * This allows us to take the union (union/includeBounds) of this and any other Bounds2 to get the other bounds back,
    * e.g. Bounds2.NOTHING.union( bounds ).equals( bounds ). This object naturally serves as the base case as a union of
@@ -1179,7 +1179,7 @@ export default class Bounds2 implements TPoolable {
   public static NOTHING: Bounds2;
 
   /**
-   * A contant Bounds2 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
+   * A constant Bounds2 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
    *
    * This allows us to take the intersection (intersection/constrainBounds) of this and any other Bounds2 to get the
    * other bounds back, e.g. Bounds2.EVERYTHING.intersection( bounds ).equals( bounds ). This object naturally serves as

@@ -1458,7 +1458,7 @@ Poolable.mixInto( Bounds3, {
 Bounds3.NOTHING = new Bounds3( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
 
 /**
- * A contant Bounds3 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
+ * A constant Bounds3 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
  * @public
  *
  * This allows us to take the intersection (intersection/constrainBounds) of this and any other Bounds3 to get the
