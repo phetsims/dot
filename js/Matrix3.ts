@@ -1170,7 +1170,7 @@ export default class Matrix3 implements TPoolable {
    *----------------------------------------------------------------------------*/
 
   /**
-   * Sets the vector to the result of (matrix * vector), as a homogeneous multiplicatino.
+   * Sets the vector to the result of (matrix * vector), as a homogeneous multiplication.
    *
    * @returns - The vector that was mutated
    */
