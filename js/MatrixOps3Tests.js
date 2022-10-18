@@ -21,7 +21,7 @@ function approxEqualArray( assert, arr, barr, msg ) {
   }
 }
 
-/* eslint-disable no-undef */
+ 
 QUnit.test( '3x3 mults', assert => {
   const a = new MatrixOps3.Array( [ 1, 2, 7, 5, 2, 6, -1, -5, 4 ] ); // a:= {{1, 2, 7}, {5, 2, 6}, {-1, -5, 4}}
   const b = new MatrixOps3.Array( [ 4, 3, 1, -7, 2, -1, -1, 0, -2 ] ); // b:= {{4, 3, 1}, {-7, 2, -1}, {-1, 0, -2}}

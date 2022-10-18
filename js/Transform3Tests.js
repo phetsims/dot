@@ -50,10 +50,10 @@ QUnit.test( 'Transform x/y', assert => {
   assert.equal( t.inverseY( 16 ), 5 );
 
   const t2 = new Transform3( Matrix3.rotation2( Math.PI / 6 ) );
-  window.assert && assert.throws( () => { // eslint-disable-line no-undef
+  window.assert && assert.throws( () => {
     t2.transformX( 5 );
   } );
-  window.assert && assert.throws( () => { // eslint-disable-line no-undef
+  window.assert && assert.throws( () => {
     t2.transformY( 5 );
   } );
 } );

@@ -46,7 +46,7 @@ QUnit.test( 'Square root', assert => {
   approximateComplexEquals( assert, c.sqrtOf().times( c.sqrtOf() ), c );
 
   const cc = c.plus( c );
-  new Complex( cc.x, cc.y ).sqrtOf(); // eslint-disable-line
+  new Complex( cc.x, cc.y ).sqrtOf();
 } );
 
 QUnit.test( 'Exponentiation', assert => {
