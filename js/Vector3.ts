@@ -43,11 +43,6 @@ export default class Vector3 implements TPoolable {
    * @param z - Z coordinate
    */
   public constructor( x: number, y: number, z: number ) {
-
-    assert && assert( typeof x === 'number', 'x needs to be a number' );
-    assert && assert( typeof y === 'number', 'y needs to be a number' );
-    assert && assert( typeof z === 'number', 'z needs to be a number' );
-
     this.x = x;
     this.y = y;
     this.z = z;

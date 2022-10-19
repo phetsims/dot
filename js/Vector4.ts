@@ -34,12 +34,6 @@ export default class Vector4 implements TPoolable {
    * @param w - W coordinate
    */
   public constructor( x: number, y: number, z: number, w: number ) {
-
-    assert && assert( typeof x === 'number', 'x needs to be a number' );
-    assert && assert( typeof y === 'number', 'y needs to be a number' );
-    assert && assert( typeof z === 'number', 'z needs to be a number' );
-    assert && assert( typeof w === 'number', 'w needs to be a number' );
-
     this.x = x;
     this.y = y;
     this.z = z;

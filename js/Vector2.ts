@@ -32,9 +32,6 @@ export default class Vector2 implements TPoolable {
    * @param y - Y coordinate
    */
   public constructor( x: number, y: number ) {
-    assert && assert( typeof x === 'number', 'x needs to be a number' );
-    assert && assert( typeof y === 'number', 'y needs to be a number' );
-
     this.x = x;
     this.y = y;
   }
