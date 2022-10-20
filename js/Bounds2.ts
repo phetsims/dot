@@ -18,6 +18,7 @@ import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
 import Vector2 from './Vector2.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
+import Range from './Range.js';
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import Orientation from '../../phet-core/js/Orientation.js';
 
@@ -1082,6 +1083,42 @@ export default class Bounds2 implements TPoolable {
   public shift( v: Vector2 ): Bounds2 {
     return this.shiftXY( v.x, v.y );
   }
+
+  /**
+   * Returns the range of the x-values of this bounds.
+   */
+  public getXRange(): Range {
+    return new Range( this.minX, this.maxX );
+  }
+
+  /**
+   * Sets the x-range of this bounds.
+   */
+  public setXRange( range: Range ): Bounds2 {
+    return this.setMinMax( range.min, this.minY, range.max, this.maxY );
+  }
+
+  public get xRange(): Range { return this.getXRange(); }
+
+  public set xRange( range: Range ) { this.setXRange( range ); }
+
+  /**
+   * Returns the range of the y-values of this bounds.
+   */
+  public getYRange(): Range {
+    return new Range( this.minY, this.maxY );
+  }
+
+  /**
+   * Sets the y-range of this bounds.
+   */
+  public setYRange( range: Range ): Bounds2 {
+    return this.setMinMax( this.minX, range.min, this.maxX, range.max );
+  }
+
+  public get yRange(): Range { return this.getYRange(); }
+
+  public set yRange( range: Range ) { this.setYRange( range ); }
 
   /**
    * Find a point in the bounds closest to the specified point.

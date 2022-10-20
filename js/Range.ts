@@ -92,10 +92,12 @@ class Range implements TRange {
   /**
    * Sets the minimum and maximum value of the range
    */
-  public setMinMax( min: number, max: number ): void {
+  public setMinMax( min: number, max: number ): this {
     assert && assert( min <= max, `max must be >= to min. min: ${min}, max: ${max}` );
     this._min = min;
     this._max = max;
+
+    return this;
   }
 
   /**
@@ -146,6 +148,65 @@ class Range implements TRange {
    */
   public intersectsExclusive( range: Range ): boolean {
     return ( this._max > range.min ) && ( range.max > this._min );
+  }
+
+  /**
+   * The smallest range that contains both this range and the input range, returned as a copy.
+   *
+   * This is the immutable form of the function includeRange(). This will return a new range, and will not modify
+   * this range.
+   */
+  public union( range: Range ): Range {
+    return new Range( // eslint-disable-line no-html-constructors
+      Math.min( this.min, range.min ),
+      Math.max( this.max, range.max )
+    );
+  }
+
+  /**
+   * The smallest range that is contained by both this range and the input range, returned as a copy.
+   *
+   * This is the immutable form of the function constrainRange(). This will return a new range, and will not modify
+   * this range.
+   */
+  public intersection( range: Range ): Range {
+    return new Range( // eslint-disable-line no-html-constructors
+      Math.max( this.min, range.min ),
+      Math.min( this.max, range.max )
+    );
+  }
+
+  /**
+   * Modifies this range so that it contains both its original range and the input range.
+   *
+   * This is the mutable form of the function union(). This will mutate (change) this range, in addition to returning
+   * this range itself.
+   */
+  public includeRange( range: Range ): Range {
+    return this.setMinMax(
+      Math.min( this.min, range.min ),
+      Math.max( this.max, range.max )
+    );
+  }
+
+  /**
+   * Modifies this range so that it is the largest range contained both in its original range and in the input range.
+   *
+   * This is the mutable form of the function intersection(). This will mutate (change) this range, in addition to returning
+   * this range itself.
+   */
+  public constrainRange( range: Range ): Range {
+    return this.setMinMax(
+      Math.max( this.min, range.min ),
+      Math.min( this.max, range.max )
+    );
+  }
+
+  /**
+   * Returns a new range that is the same as this range, but shifted by the specified amount.
+   */
+  public shifted( n: number ): Range {
+    return new Range( this.min + n, this.max + n ); // eslint-disable-line no-html-constructors
   }
 
   /**

@@ -61,10 +61,10 @@ class RangeWithValue extends Range {
   /**
    * Setter for min and max
    */
-  public override setMinMax( min: number, max: number ): void {
+  public override setMinMax( min: number, max: number ): this {
     assert && assert( this._defaultValue >= min, `min must be <= defaultValue: ${min}` );
     assert && assert( this._defaultValue <= max, `max must be >= defaultValue: ${max}` );
-    super.setMinMax( min, max );
+    return super.setMinMax( min, max );
   }
 
   /**
