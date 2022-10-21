@@ -9,6 +9,10 @@
  *
  * If a single point is provided, it represents a constant function.
  *
+ * REVIEW: The usage of "this" and "other" is confusing throughout this documentation. Would recommend finding a better way to distinct
+ * between the two. It's a big leap each time to remind myself what "this" and "other" are pointing to.
+ * perhaps "this" = working || base function, "other" = passed in || argument function?
+ *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
@@ -86,7 +90,7 @@ class CompletePiecewiseLinearFunction {
   }
 
   /**
-   * Returns the sorted unique x-values included in either this function or the other function.
+   * Returns an array that combines sorted unique x-values provided by this function and/or the other function.
    */
   private getCombinedXValues( other: CompletePiecewiseLinearFunction ): number[] {
     return CompletePiecewiseLinearFunction.sortedUniqueEpsilon(
@@ -95,8 +99,8 @@ class CompletePiecewiseLinearFunction {
   }
 
   /**
-   * Returns the sorted unique x-values either included in either this function or the other function, OR that result
-   * from the intersection of the two functions.
+   * Returns an array that combines the sorted unique x-values included in this function and/or the other function, OR the unique x-values
+   * that result from the intersection of the two functions.
    */
   private getIntersectedXValues( other: CompletePiecewiseLinearFunction ): number[] {
     const xValues = this.getCombinedXValues( other );
@@ -106,11 +110,12 @@ class CompletePiecewiseLinearFunction {
       const leftX = xValues[ i ];
       const rightX = xValues[ i + 1 ];
       const intersectionPoint = Utils.lineLineIntersection(
-        // Our line
+
+        // The linear function defined in this
         new Vector2( leftX, this.evaluate( leftX ) ),
         new Vector2( rightX, this.evaluate( rightX ) ),
 
-        // Other line
+        // The passed in argument linear function
         new Vector2( leftX, other.evaluate( leftX ) ),
         new Vector2( rightX, other.evaluate( rightX ) )
       );

@@ -97,6 +97,7 @@ class Range implements TRange {
     this._min = min;
     this._max = max;
 
+    // REVIEW: It seems strange to have a return value in a setter...
     return this;
   }
 
@@ -151,6 +152,12 @@ class Range implements TRange {
   }
 
   /**
+   * REVIEW: I think I'm not a fan of using "this" as a class instance reference in documentation in general. The documentation
+   * for this function provides a good example of that. "This" is used both to refer to 'this' class instance, as well
+   * as being used to refer to the union function.
+   *
+   * REVIEW: The naming is not helping me understand that this function is just the immutable version of includeRange().
+   *
    * The smallest range that contains both this range and the input range, returned as a copy.
    *
    * This is the immutable form of the function includeRange(). This will return a new range, and will not modify
@@ -164,6 +171,8 @@ class Range implements TRange {
   }
 
   /**
+   * REVIEW: The naming is not helping me understand that this function is just the immutable version of constrainRange().
+   *
    * The smallest range that is contained by both this range and the input range, returned as a copy.
    *
    * This is the immutable form of the function constrainRange(). This will return a new range, and will not modify
@@ -203,6 +212,8 @@ class Range implements TRange {
   }
 
   /**
+   * REVIEW: do we also need a mutable form of shifted?
+   *
    * Returns a new range that is the same as this range, but shifted by the specified amount.
    */
   public shifted( n: number ): Range {

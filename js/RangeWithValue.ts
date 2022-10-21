@@ -64,6 +64,8 @@ class RangeWithValue extends Range {
   public override setMinMax( min: number, max: number ): this {
     assert && assert( this._defaultValue >= min, `min must be <= defaultValue: ${min}` );
     assert && assert( this._defaultValue <= max, `max must be >= defaultValue: ${max}` );
+
+    // REVIEW: Same as setMinMax in Range.ts, returning a value in a setter seems odd...
     return super.setMinMax( min, max );
   }
 
