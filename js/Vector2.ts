@@ -775,7 +775,10 @@ Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new Vector2( 0, 0 );
 Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
-export type Vector2StateObject = { x: NumberStateObject; y: NumberStateObject };
+export type Vector2StateObject = {
+  x: NumberStateObject;
+  y: NumberStateObject;
+};
 
 Vector2.Vector2IO = new IOType<Vector2, Vector2StateObject>( 'Vector2IO', {
   valueType: Vector2,
