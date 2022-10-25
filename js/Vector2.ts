@@ -8,7 +8,7 @@
 
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
+import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
@@ -667,8 +667,8 @@ export default class Vector2 implements TPoolable {
    */
   public toStateObject(): Vector2StateObject {
     return {
-      x: NumberIO.toStateObject( this.x ),
-      y: NumberIO.toStateObject( this.y )
+      x: this.x,
+      y: this.y
     };
   }
 
@@ -699,8 +699,8 @@ export default class Vector2 implements TPoolable {
    */
   public static fromStateObject( stateObject: Vector2StateObject ): Vector2 {
     return v2(
-      NumberIO.fromStateObject( stateObject.x ),
-      NumberIO.fromStateObject( stateObject.y )
+      stateObject.x,
+      stateObject.y
     );
   }
 
@@ -776,8 +776,8 @@ Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
 export type Vector2StateObject = {
-  x: NumberStateObject;
-  y: NumberStateObject;
+  x: number;
+  y: number;
 };
 
 Vector2.Vector2IO = new IOType<Vector2, Vector2StateObject>( 'Vector2IO', {

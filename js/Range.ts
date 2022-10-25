@@ -10,7 +10,7 @@
 
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
+import InfiniteNumberIO, { InfiniteNumberStateObject } from '../../tandem/js/types/InfiniteNumberIO.js';
 import dot from './dot.js';
 
 export type TRange = {
@@ -19,8 +19,8 @@ export type TRange = {
 };
 
 export type RangeStateObject = {
-  min: NumberStateObject;
-  max: NumberStateObject;
+  min: InfiniteNumberStateObject;
+  max: InfiniteNumberStateObject;
 };
 
 class Range implements TRange {
@@ -274,18 +274,18 @@ class Range implements TRange {
     valueType: Range,
     documentation: 'A range with "min" and a "max" members.',
     toStateObject: ( range: Range ): RangeStateObject => ( {
-      min: NumberIO.toStateObject( range.min ),
-      max: NumberIO.toStateObject( range.max )
+      min: InfiniteNumberIO.toStateObject( range.min ),
+      max: InfiniteNumberIO.toStateObject( range.max )
     } ),
 
     // eslint-disable-next-line no-html-constructors
     fromStateObject: ( stateObject: RangeStateObject ) => new Range(
-      NumberIO.fromStateObject( stateObject.min ),
-      NumberIO.fromStateObject( stateObject.max )
+      InfiniteNumberIO.fromStateObject( stateObject.min ),
+      InfiniteNumberIO.fromStateObject( stateObject.max )
     ),
     stateSchema: {
-      min: NumberIO,
-      max: NumberIO
+      min: InfiniteNumberIO,
+      max: InfiniteNumberIO
     }
   } );
 }

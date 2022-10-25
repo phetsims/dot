@@ -14,7 +14,7 @@
  */
 
 import IOType from '../../tandem/js/types/IOType.js';
-import NumberIO, { NumberStateObject } from '../../tandem/js/types/NumberIO.js';
+import InfiniteNumberIO, { InfiniteNumberStateObject } from '../../tandem/js/types/InfiniteNumberIO.js';
 import Vector2 from './Vector2.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
@@ -26,10 +26,10 @@ import Orientation from '../../phet-core/js/Orientation.js';
 const scratchVector2 = new Vector2( 0, 0 );
 
 export type Bounds2StateObject = {
-  minX: NumberStateObject;
-  minY: NumberStateObject;
-  maxX: NumberStateObject;
-  maxY: NumberStateObject;
+  minX: InfiniteNumberStateObject;
+  minY: InfiniteNumberStateObject;
+  maxX: InfiniteNumberStateObject;
+  maxY: InfiniteNumberStateObject;
 };
 
 export default class Bounds2 implements TPoolable {
@@ -1260,16 +1260,16 @@ Bounds2.Bounds2IO = new IOType( 'Bounds2IO', {
   toStateObject: ( bounds2: Bounds2 ) => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
   fromStateObject: ( stateObject: Bounds2StateObject ) => {
     return new Bounds2(
-      NumberIO.fromStateObject( stateObject.minX ),
-      NumberIO.fromStateObject( stateObject.minY ),
-      NumberIO.fromStateObject( stateObject.maxX ),
-      NumberIO.fromStateObject( stateObject.maxY )
+      InfiniteNumberIO.fromStateObject( stateObject.minX ),
+      InfiniteNumberIO.fromStateObject( stateObject.minY ),
+      InfiniteNumberIO.fromStateObject( stateObject.maxX ),
+      InfiniteNumberIO.fromStateObject( stateObject.maxY )
     );
   },
   stateSchema: {
-    minX: NumberIO,
-    maxX: NumberIO,
-    minY: NumberIO,
-    maxY: NumberIO
+    minX: InfiniteNumberIO,
+    maxX: InfiniteNumberIO,
+    minY: InfiniteNumberIO,
+    maxY: InfiniteNumberIO
   }
 } );
