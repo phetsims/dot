@@ -59,6 +59,7 @@ class Range implements TRange {
   }
 
   /**
+   * TODO: Allow chaining, https://github.com/phetsims/sun/issues/792
    * Setter for min
    */
   public setMin( min: number ): void {
@@ -97,7 +98,6 @@ class Range implements TRange {
     this._min = min;
     this._max = max;
 
-    // REVIEW: It seems strange to have a return value in a setter...
     return this;
   }
 
@@ -152,15 +152,12 @@ class Range implements TRange {
   }
 
   /**
-   * REVIEW: I think I'm not a fan of using "this" as a class instance reference in documentation in general. The documentation
-   * for this function provides a good example of that. "This" is used both to refer to 'this' class instance, as well
-   * as being used to refer to the union function.
    *
    * REVIEW: The naming is not helping me understand that this function is just the immutable version of includeRange().
    *
    * The smallest range that contains both this range and the input range, returned as a copy.
    *
-   * This is the immutable form of the function includeRange(). This will return a new range, and will not modify
+   * The method below is the immutable form of the function includeRange(). The method will return a new range, and will not modify
    * this range.
    */
   public union( range: Range ): Range {
@@ -175,7 +172,7 @@ class Range implements TRange {
    *
    * The smallest range that is contained by both this range and the input range, returned as a copy.
    *
-   * This is the immutable form of the function constrainRange(). This will return a new range, and will not modify
+   * The method below the immutable form of the function constrainRange(). The method below will return a new range, and will not modify
    * this range.
    */
   public intersection( range: Range ): Range {

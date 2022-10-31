@@ -9,9 +9,6 @@
  *
  * If a single point is provided, it represents a constant function.
  *
- * REVIEW: The usage of "this" and "other" is confusing throughout this documentation. Would recommend finding a better way to distinct
- * between the two. It's a big leap each time to remind myself what "this" and "other" are pointing to.
- * perhaps "this" = working || base function, "other" = passed in || argument function?
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
