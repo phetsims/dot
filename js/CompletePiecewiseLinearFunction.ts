@@ -89,9 +89,9 @@ class CompletePiecewiseLinearFunction {
   /**
    * Returns an array that combines sorted unique x-values provided by this function and/or the other function.
    */
-  private getCombinedXValues( other: CompletePiecewiseLinearFunction ): number[] {
+  private getCombinedXValues( linearFunction: CompletePiecewiseLinearFunction ): number[] {
     return CompletePiecewiseLinearFunction.sortedUniqueEpsilon(
-      this.points.map( point => point.x ).concat( other.points.map( point => point.x ) )
+      this.points.map( point => point.x ).concat( linearFunction.points.map( point => point.x ) )
     );
   }
 
@@ -99,8 +99,8 @@ class CompletePiecewiseLinearFunction {
    * Returns an array that combines the sorted unique x-values included in this function and/or the other function, OR the unique x-values
    * that result from the intersection of the two functions.
    */
-  private getIntersectedXValues( other: CompletePiecewiseLinearFunction ): number[] {
-    const xValues = this.getCombinedXValues( other );
+  private getIntersectedXValues( linearFunction: CompletePiecewiseLinearFunction ): number[] {
+    const xValues = this.getCombinedXValues( linearFunction );
     const newXValues: number[] = [];
 
     for ( let i = 0; i < xValues.length - 1; i++ ) {
@@ -113,8 +113,8 @@ class CompletePiecewiseLinearFunction {
         new Vector2( rightX, this.evaluate( rightX ) ),
 
         // The passed in argument linear function
-        new Vector2( leftX, other.evaluate( leftX ) ),
-        new Vector2( rightX, other.evaluate( rightX ) )
+        new Vector2( leftX, linearFunction.evaluate( leftX ) ),
+        new Vector2( rightX, linearFunction.evaluate( rightX ) )
       );
       if ( intersectionPoint &&
            // If it's our first pair of points, don't filter out points that are on the left side of the left point
@@ -144,9 +144,9 @@ class CompletePiecewiseLinearFunction {
   /**
    * Returns a new function that's the result of applying the binary operation at the given x values.
    */
-  private binaryXOperation( other: CompletePiecewiseLinearFunction, operation: ( a: number, b: number ) => number, xValues: number[] ): CompletePiecewiseLinearFunction {
+  private binaryXOperation( linearFunction: CompletePiecewiseLinearFunction, operation: ( a: number, b: number ) => number, xValues: number[] ): CompletePiecewiseLinearFunction {
     return new CompletePiecewiseLinearFunction( xValues.map( x => {
-      return new Vector2( x, operation( this.evaluate( x ), other.evaluate( x ) ) );
+      return new Vector2( x, operation( this.evaluate( x ), linearFunction.evaluate( x ) ) );
     } ) );
   }
 
@@ -154,44 +154,44 @@ class CompletePiecewiseLinearFunction {
    * Returns a new function that's the result of applying the binary operation at the x values that already occur
    * in each function.
    */
-  private binaryPointwiseOperation( other: CompletePiecewiseLinearFunction, operation: ( a: number, b: number ) => number ): CompletePiecewiseLinearFunction {
-    return this.binaryXOperation( other, operation, this.getCombinedXValues( other ) );
+  private binaryPointwiseOperation( linearFunction: CompletePiecewiseLinearFunction, operation: ( a: number, b: number ) => number ): CompletePiecewiseLinearFunction {
+    return this.binaryXOperation( linearFunction, operation, this.getCombinedXValues( linearFunction ) );
   }
 
   /**
    * Returns a new function that's the result of applying the binary operation at the x values that either occur in
    * each function OR at the intersection of the two functions.
    */
-  private binaryIntersectingOperation( other: CompletePiecewiseLinearFunction, operation: ( a: number, b: number ) => number ): CompletePiecewiseLinearFunction {
-    return this.binaryXOperation( other, operation, this.getIntersectedXValues( other ) );
+  private binaryIntersectingOperation( linearFunction: CompletePiecewiseLinearFunction, operation: ( a: number, b: number ) => number ): CompletePiecewiseLinearFunction {
+    return this.binaryXOperation( linearFunction, operation, this.getIntersectedXValues( linearFunction ) );
   }
 
   /**
    * Returns a CompletePiecewiseLinearFunction that's the result of adding the two functions.
    */
-  public plus( other: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
-    return this.binaryPointwiseOperation( other, ( a, b ) => a + b );
+  public plus( linearFunction: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
+    return this.binaryPointwiseOperation( linearFunction, ( a, b ) => a + b );
   }
 
   /**
    * Returns a CompletePiecewiseLinearFunction that's the result of subtracting the two functions.
    */
-  public minus( other: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
-    return this.binaryPointwiseOperation( other, ( a, b ) => a - b );
+  public minus( linearFunction: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
+    return this.binaryPointwiseOperation( linearFunction, ( a, b ) => a - b );
   }
 
   /**
    * Returns a CompletePiecewiseLinearFunction that's the result of taking the minimum of the two functions
    */
-  public min( other: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
-    return this.binaryIntersectingOperation( other, Math.min );
+  public min( linearFunction: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
+    return this.binaryIntersectingOperation( linearFunction, Math.min );
   }
 
   /**
    * Returns a CompletePiecewiseLinearFunction that's the result of taking the maximum of the two functions
    */
-  public max( other: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
-    return this.binaryIntersectingOperation( other, Math.max );
+  public max( linearFunction: CompletePiecewiseLinearFunction ): CompletePiecewiseLinearFunction {
+    return this.binaryIntersectingOperation( linearFunction, Math.max );
   }
 
   /**
