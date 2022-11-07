@@ -417,7 +417,7 @@ const Utils = {
   },
 
   /**
-   * Returns an array of the real roots of the quadratic equation $ax^3 + bx^2 + cx + d=0$, or null if every value is a
+   * Returns an array of the real roots of the cubic equation $ax^3 + bx^2 + cx + d=0$, or null if every value is a
    * solution. If a is nonzero, there should be between 0 and 3 (inclusive) values returned.
    * @public
    *
