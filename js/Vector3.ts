@@ -18,7 +18,7 @@ const ADDING_ACCUMULATOR = ( vector: Vector3, nextVector: Vector3 ) => {
   return vector.add( nextVector );
 };
 
-type Vector3StateObject = {
+export type Vector3StateObject = {
   x: number;
   y: number;
   z: number;
