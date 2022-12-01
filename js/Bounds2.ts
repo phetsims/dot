@@ -63,7 +63,6 @@ export default class Bounds2 implements TPoolable {
     this.maxY = maxY;
   }
 
-
   /*---------------------------------------------------------------------------*
    * Properties
    *---------------------------------------------------------------------------*/
@@ -1213,7 +1212,7 @@ export default class Bounds2 implements TPoolable {
    *
    * Additionally, intersections with NOTHING will always return a Bounds2 equivalent to NOTHING.
    */
-  public static NOTHING: Bounds2;
+  public static readonly NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
 
   /**
    * A constant Bounds2 with minimums = $-\infty$, maximums = $\infty$, so that it represents "all bounds".
@@ -1224,9 +1223,27 @@ export default class Bounds2 implements TPoolable {
    *
    * Additionally, unions with EVERYTHING will always return a Bounds2 equivalent to EVERYTHING.
    */
-  public static EVERYTHING: Bounds2;
+  public static readonly EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
-  public static Bounds2IO: IOType;
+  public static readonly Bounds2IO = new IOType( 'Bounds2IO', {
+    valueType: Bounds2,
+    documentation: 'a 2-dimensional bounds rectangle',
+    toStateObject: ( bounds2: Bounds2 ) => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
+    fromStateObject: ( stateObject: Bounds2StateObject ) => {
+      return new Bounds2(
+        InfiniteNumberIO.fromStateObject( stateObject.minX ),
+        InfiniteNumberIO.fromStateObject( stateObject.minY ),
+        InfiniteNumberIO.fromStateObject( stateObject.maxX ),
+        InfiniteNumberIO.fromStateObject( stateObject.maxY )
+      );
+    },
+    stateSchema: {
+      minX: InfiniteNumberIO,
+      maxX: InfiniteNumberIO,
+      minY: InfiniteNumberIO,
+      maxY: InfiniteNumberIO
+    }
+  } );
 }
 
 dot.register( 'Bounds2', Bounds2 );
@@ -1236,9 +1253,6 @@ dot.register( 'b2', b2 );
 
 Bounds2.prototype.isBounds = true;
 Bounds2.prototype.dimension = 2;
-
-Bounds2.NOTHING = new Bounds2( Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY );
-Bounds2.EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
 function catchImmutableSetterLowHangingFruit( bounds: Bounds2 ): void {
   bounds.setMinMax = () => { throw new Error( 'Attempt to set "setMinMax" of an immutable Bounds2 object' ); };
@@ -1253,23 +1267,3 @@ if ( assert ) {
   catchImmutableSetterLowHangingFruit( Bounds2.EVERYTHING );
   catchImmutableSetterLowHangingFruit( Bounds2.NOTHING );
 }
-
-Bounds2.Bounds2IO = new IOType( 'Bounds2IO', {
-  valueType: Bounds2,
-  documentation: 'a 2-dimensional bounds rectangle',
-  toStateObject: ( bounds2: Bounds2 ) => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
-  fromStateObject: ( stateObject: Bounds2StateObject ) => {
-    return new Bounds2(
-      InfiniteNumberIO.fromStateObject( stateObject.minX ),
-      InfiniteNumberIO.fromStateObject( stateObject.minY ),
-      InfiniteNumberIO.fromStateObject( stateObject.maxX ),
-      InfiniteNumberIO.fromStateObject( stateObject.maxY )
-    );
-  },
-  stateSchema: {
-    minX: InfiniteNumberIO,
-    maxX: InfiniteNumberIO,
-    minY: InfiniteNumberIO,
-    maxY: InfiniteNumberIO
-  }
-} );
