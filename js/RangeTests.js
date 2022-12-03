@@ -13,9 +13,6 @@ QUnit.module( 'Range' );
 QUnit.test( 'constructor', assert => {
   assert.ok( new Range( 1, 10 ), 'valid range' );
   assert.ok( new Range( 10, 10 ), 'valid range' );
-  window.assert && assert.throws( () => {
-    new Range( 10, 1 ); // eslint-disable-line
-  }, 'invalid range, max < min' );
 } );
 
 QUnit.test( 'methods', assert => {

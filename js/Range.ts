@@ -36,9 +36,6 @@ class Range implements TRange {
    * @param max - the maximum value of the range
    */
   public constructor( min: number, max: number ) {
-
-    assert && assert( min <= max, `max must be >= min. min: ${min}, max: ${max}` );
-
     this._min = min;
     this._max = max;
   }
@@ -285,9 +282,11 @@ class Range implements TRange {
       max: InfiniteNumberIO
     }
   } );
+
+  public static EVERYTHING = new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY ); // eslint-disable-line no-html-constructors
+  public static NOTHING = new Range( Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY ); // eslint-disable-line no-html-constructors
 }
 
 dot.register( 'Range', Range );
-
 
 export default Range;
