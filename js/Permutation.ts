@@ -30,7 +30,7 @@ class Permutation {
    */
   public apply<E, T extends E[] | number>( arrayOrInt: T ): T extends E[] ? number[] : number {
     if ( typeof arrayOrInt === 'number' ) {
-      // @ts-ignore
+      // @ts-expect-error
       return this.indices[ arrayOrInt ];
     }
     else {
@@ -43,7 +43,7 @@ class Permutation {
       for ( let i = 0; i < arrayOrInt.length; i++ ) {
         result[ i ] = arrayOrInt[ this.indices[ i ] ];
       }
-      // @ts-ignore
+      // @ts-expect-error
       return result;
     }
   }

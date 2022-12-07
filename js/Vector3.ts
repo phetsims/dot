@@ -129,7 +129,7 @@ export default class Vector3 implements TPoolable {
    * is the input vector (normalized).
    */
   public angleBetween( v: Vector3 ): number {
-    // @ts-ignore TODO: import with circular protection
+    // @ts-expect-error TODO: import with circular protection
     return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
   }
 
@@ -631,7 +631,7 @@ export default class Vector3 implements TPoolable {
    */
   public static slerp( start: Vector3, end: Vector3, ratio: number ): Vector3 {
     // NOTE: we can't create a require() loop here
-    // @ts-ignore TODO: import with circular protection
+    // @ts-expect-error TODO: import with circular protection
     return dot.Quaternion.slerp( new dot.Quaternion(), dot.Quaternion.getRotationQuaternion( start, end ), ratio ).timesVector3( start );
   }
 

@@ -124,7 +124,7 @@ export default class Vector2 implements TPoolable {
   public angleBetween( v: Vector2 ): number {
     const thisMagnitude = this.magnitude;
     const vMagnitude = v.magnitude;
-    // @ts-ignore TODO: import with circular protection
+    // @ts-expect-error TODO: import with circular protection
     return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
   }
 
