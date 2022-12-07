@@ -1188,8 +1188,8 @@ export default class Bounds2 implements TPoolable {
    * @param y
    */
   public static point( x: number, y: number ): Bounds2;
-  static point( v: Vector2 ): Bounds2; // eslint-disable-line
-  static point( x: Vector2 | number, y?: number ) { // eslint-disable-line
+  static point( v: Vector2 ): Bounds2; // eslint-disable-line @typescript-eslint/explicit-member-accessibility
+  static point( x: Vector2 | number, y?: number ): Bounds2 { // eslint-disable-line @typescript-eslint/explicit-member-accessibility
     if ( x instanceof Vector2 ) {
       const p = x;
       return b2( p.x, p.y, p.x, p.y );

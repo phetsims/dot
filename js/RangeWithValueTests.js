@@ -16,10 +16,10 @@ QUnit.test( 'constructor', assert => {
   assert.ok( new RangeWithValue( 1, 10, 10 ), 'valid range with value' );
   assert.ok( new RangeWithValue( 10, 10, 10 ), 'valid range with value' );
   window.assert && assert.throws( () => {
-    new RangeWithValue( 1, 10, 11 ); // eslint-disable-line
+    new RangeWithValue( 1, 10, 11 ); // eslint-disable-line no-new
   }, 'invalid range with value, default value is out of range' );
   window.assert && assert.throws( () => {
-    new RangeWithValue( 1, 10 ); // eslint-disable-line
+    new RangeWithValue( 1, 10 ); // eslint-disable-line no-new
   }, 'invalid range with value, default value is required' );
 } );
 
