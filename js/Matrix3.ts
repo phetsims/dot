@@ -20,13 +20,13 @@ import Enumeration from '../../phet-core/js/Enumeration.js';
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 
 export class Matrix3Type extends EnumerationValue {
-  public static OTHER = new Matrix3Type();
-  public static IDENTITY = new Matrix3Type();
-  public static TRANSLATION_2D = new Matrix3Type();
-  public static SCALING = new Matrix3Type();
-  public static AFFINE = new Matrix3Type();
+  public static readonly OTHER = new Matrix3Type();
+  public static readonly IDENTITY = new Matrix3Type();
+  public static readonly TRANSLATION_2D = new Matrix3Type();
+  public static readonly SCALING = new Matrix3Type();
+  public static readonly AFFINE = new Matrix3Type();
 
-  public static enumeration = new Enumeration( Matrix3Type );
+  public static readonly enumeration = new Enumeration( Matrix3Type );
 }
 
 type NineNumbers = [

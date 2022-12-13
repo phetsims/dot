@@ -51,13 +51,9 @@ export default class Plane3 {
     return new Plane3( normal, normal.dot( a ) );
   }
 
-  public static XY: Plane3;
-  public static XZ: Plane3;
-  public static YZ: Plane3;
+  public static readonly XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
+  public static readonly XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
+  public static readonly YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );
 }
 
 dot.register( 'Plane3', Plane3 );
-
-Plane3.XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
-Plane3.XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
-Plane3.YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );

@@ -283,8 +283,8 @@ class Range implements TRange {
     }
   } );
 
-  public static EVERYTHING = new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY ); // eslint-disable-line no-html-constructors
-  public static NOTHING = new Range( Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY ); // eslint-disable-line no-html-constructors
+  public static readonly EVERYTHING = new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY ); // eslint-disable-line no-html-constructors
+  public static readonly NOTHING = new Range( Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY ); // eslint-disable-line no-html-constructors
 }
 
 dot.register( 'Range', Range );
