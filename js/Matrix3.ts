@@ -1463,9 +1463,9 @@ export default class Matrix3 implements TPoolable {
     return matrix;
   }
 
-  public static IDENTITY: Matrix3;
-  public static X_REFLECTION: Matrix3;
-  public static Y_REFLECTION: Matrix3;
+  public static IDENTITY: Matrix3; // eslint-disable-line statics-should-be-readonly
+  public static X_REFLECTION: Matrix3; // eslint-disable-line statics-should-be-readonly
+  public static Y_REFLECTION: Matrix3; // eslint-disable-line statics-should-be-readonly
   public static Matrix3IO: IOType;
 }
 

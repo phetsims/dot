@@ -732,17 +732,17 @@ export default class Vector2 implements TPoolable {
   /**
    * ImmutableVector2 zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
    */
-  public static ZERO: Vector2;
+  public static ZERO: Vector2; // eslint-disable-line statics-should-be-readonly
 
   /**
    * ImmutableVector2 vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
    */
-  public static X_UNIT: Vector2;
+  public static X_UNIT: Vector2; // eslint-disable-line statics-should-be-readonly
 
   /**
    * ImmutableVector2 vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
    */
-  public static Y_UNIT: Vector2;
+  public static Y_UNIT: Vector2; // eslint-disable-line statics-should-be-readonly
 
   public static Vector2IO: IOType;
 }
