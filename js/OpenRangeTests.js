@@ -40,7 +40,7 @@ QUnit.test( 'fully open range', assert => {
   assert.notOk( openRange.contains( 10 ), '(1, 10) does not contain 10' );
   assert.notOk( openRange.intersects( new Range( 0, 1 ) ), '(1, 10) does not intersect [0, 1]' );
   assert.notOk( openRange.intersects( new Range( 10, 11 ) ), '(1, 10) does not intersect [10,11]' );
-  assert.notOk( openRange.containsRange( new Range( 9, 10 ), '(1, 10) does not contiain [9, 10]' ) );
+  assert.notOk( openRange.containsRange( new Range( 9, 10 ), '(1, 10) does not contain [9, 10]' ) );
   assert.notOk( openRange.containsRange( new Range( 1, 2 ), '(1, 10) does not contain [1, 2]' ) );
   assert.ok( openRange.contains( 1.000000001 ), '(1, 10) contains 1.000000001' );
   assert.ok( openRange.contains( 9.999999999 ), '(1, 10) contains 9.999999999' );
