@@ -28,7 +28,7 @@ QUnit.test( 'half open max', assert => {
   const maxOpenRange = new OpenRange( 1, 10, maxHalfOpenOptions );
   assert.notOk( maxOpenRange.contains( 10 ), '[1, 10) does not contain 10' );
   assert.notOk( maxOpenRange.intersects( new Range( 10, 11 ) ), '[1, 10) does not intersect [10,11]' );
-  assert.notOk( maxOpenRange.containsRange( new Range( 9, 10 ), '[1, 10) does not contiain [9, 10]' ) );
+  assert.notOk( maxOpenRange.containsRange( new Range( 9, 10 ), '[1, 10) does not contain [9, 10]' ) );
   assert.ok( maxOpenRange.contains( 9.999999999 ), '[1, 10) contains 9.999999999' );
   assert.ok( maxOpenRange.intersects( new Range( 9.999999999, 11 ) ), '[1, 10) intersects [9.999999999, 11]' );
   assert.ok( maxOpenRange.containsRange( new Range( 9, 9.999999999 ) ), '[1, 10) contains [9, 9.999999999]' );
