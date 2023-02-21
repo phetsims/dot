@@ -20,11 +20,6 @@
     "requirejsNamespace": "DOT",
     "buildStandalone": true,
     "requiresLodash": true,
-    "assignGlobals": {
-      "dot": "DOT/main",
-      "axon": "AXON/main",
-      "phetCore": "PHET_CORE/main"
-    },
     "supportsOutputJS": true
   },
   "eslintConfig": {
