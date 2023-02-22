@@ -80,11 +80,11 @@ QUnit.test( 'lineLineIntersection', assert => {
 QUnit.test( 'lineSegmentIntersection', assert => {
   const h = Utils.lineSegmentIntersection;
 
-  const p1 = dot.Vector2.ZERO;
-  const p2 = new dot.Vector2( 1, 1 );
-  const p3 = new dot.Vector2( -10, 8 );
-  const p4 = new dot.Vector2( -3, -3 );
-  const p5 = new dot.Vector2( 8, -10 );
+  const p1 = Vector2.ZERO;
+  const p2 = new Vector2( 1, 1 );
+  const p3 = new Vector2( -10, 8 );
+  const p4 = new Vector2( -3, -3 );
+  const p5 = new Vector2( 8, -10 );
 
   const f = ( p1, p2, p3, p4 ) => h( p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y );
 

@@ -8,6 +8,7 @@
 
 import dot from './dot.js';
 import Vector2 from './Vector2.js';
+import Vector3 from './Vector3.js';
 
 // constants
 const EPSILON = Number.MIN_VALUE;
@@ -304,7 +305,7 @@ const Utils = {
     epsilon = epsilon === undefined ? 1e-5 : epsilon;
 
     // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
-    const center = new dot.Vector3( 0, 0, 0 );
+    const center = new Vector3( 0, 0, 0 );
 
     const rayDir = ray.direction;
     const pos = ray.position;

@@ -7,7 +7,6 @@
  */
 
 import dot from './dot.js';
-import './Utils.js';
 import Utils from './Utils.js';
 
 class Permutation {
