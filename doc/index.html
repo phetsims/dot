@@ -841,14 +841,14 @@
     </p>
 
     <pre class="brush: js">
-var rotation = dot.Matrix3.rotationZ( Math.PI / 4 );
+var rotation = phet.dot.Matrix3.rotationZ( Math.PI / 4 );
 
 console.log( rotation.toString() );
 // 0.7071067811865476 -0.7071067811865475 0
 // 0.7071067811865475 0.7071067811865476 0
 // 0 0 1
 
-var vector = new dot.Vector2( 10, 0 );
+var vector = new phet.dot.Vector2( 10, 0 );
 var rotatedVector = rotation.timesVector2( vector );
 
 console.log( rotatedVector.x, rotatedVector.y );
@@ -903,7 +903,7 @@ grunt</pre>
         canvas.width = 256;
         canvas.height = 256;
         var context = canvas.getContext( "2d" );
-        var binPacker = new dot.BinPacker( new dot.Bounds2( 0, 0, 256, 256 ) );
+        var binPacker = new phet.dot.BinPacker( new phet.dot.Bounds2( 0, 0, 256, 256 ) );
         var bins = [];
         for ( var i = 0; i < 100; i++ ) {
           var bin = binPacker.allocate( Math.random() * 64, Math.random() * 64 );
@@ -920,7 +920,7 @@ grunt</pre>
       } )();
     </script>
     <pre class="brush: js">
-var binPacker = new dot.BinPacker( new dot.Bounds2( 0, 0, 256, 256 ) );
+var binPacker = new phet.dot.BinPacker( new phet.dot.Bounds2( 0, 0, 256, 256 ) );
 var bins = [];
 for ( var i = 0; i < 100; i++ ) {
   var bin = binPacker.allocate( Math.random() * 64, Math.random() * 64 );
@@ -3325,9 +3325,9 @@ for ( var i = 0; i < 100; i++ ) {
         canvas.height = 128;
         var context = canvas.getContext( "2d" );
         var points = _.range( 50 ).map( function() {
-          return new dot.Vector2( 5 + ( 256 - 10 ) * Math.random(), 5 + ( 128 - 10 ) * Math.random() );
+          return new phet.dot.Vector2( 5 + ( 256 - 10 ) * Math.random(), 5 + ( 128 - 10 ) * Math.random() );
         } );
-        var hullPoints = dot.ConvexHull2.grahamScan( points, false );
+        var hullPoints = phet.dot.ConvexHull2.grahamScan( points, false );
         context.beginPath();
         hullPoints.forEach( function( point ) {
           context.lineTo( point.x, point.y );
@@ -3349,9 +3349,9 @@ for ( var i = 0; i < 100; i++ ) {
     </script>
     <pre class="brush: js">
 var points = _.range( 50 ).map( function() {
-  return new dot.Vector2( 5 + ( 256 - 10 ) * Math.random(), 5 + ( 128 - 10 ) * Math.random() );
+  return new phet.dot.Vector2( 5 + ( 256 - 10 ) * Math.random(), 5 + ( 128 - 10 ) * Math.random() );
 } );
-var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
+var hullPoints = phet.dot.ConvexHull2.grahamScan( points, false );</pre>
     <h5 id="convexHull2-grahamScan" class="section"><span class="entryName">ConvexHull2.grahamScan</span>( <span
         class="args"> <span class="type">Array.&lt;Vector2&gt;</span> points</span>, <span class="args"> <span
         class="type">boolean</span> includeCollinear</span> ) :<span class="return"> <span class="type">Array.&lt;Vector2&gt;</span></span>
@@ -3612,7 +3612,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
         href="../../kite/doc#shape" class="type">Shape</a> shape</span> ) :<span class="return"> <a
         href="../../kite/doc#shape" class="type">Shape</a></span></h5>
     <p>
-      Returns an inverse-transformed kite.Shape.
+      Returns an inverse-transformed phet.kite.Shape.
     </p>
     <p>
       This is the inverse of transformShape()
@@ -3756,7 +3756,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
         class="args"> <a href="../../kite/doc#shape" class="type">Shape</a> shape</span> ) :<span class="return"> <a
         href="../../kite/doc#shape" class="type">Shape</a></span></h5>
     <p>
-      Returns a transformed kite.Shape.
+      Returns a transformed phet.kite.Shape.
     </p>
     <h5 id="transform3-transformX" class="section"><span class="entryName">transformX</span>( <span class="args"> <span
         class="type">number</span> x</span> ) :<span class="return"> <span class="type">number</span></span></h5>
@@ -3986,7 +3986,7 @@ var hullPoints = dot.ConvexHull2.grahamScan( points, false );</pre>
     </p>
     <h3 id="util" class="section">Utils</h3>
     <p>
-      Utility functions for Dot, placed into the dot.X namespace.
+      Utility functions for Dot, placed into the phet.dot.X namespace.
     </p>
     <h5 id="util-arePointsCollinear" class="section"><span class="entryName">Utils.arePointsCollinear</span>( <span
         class="args"> <a href="#vector2" class="type">Vector2</a> a</span>, <span class="args"> <a href="#vector2"

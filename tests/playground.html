@@ -9,6 +9,10 @@
 
   <title>Dot Playground</title>
 
+  <script>
+    window.phet = window.phet || {};
+  </script>
+
   <!-- Before loading other things (that might error), create hooks to report errors/loads for continuous testing -->
   <script src="../../chipper/js/sim-tests/pageload-connector.js"></script>
 
@@ -35,17 +39,17 @@
 
   window.triTest = function() {
     setTimeout( function() {
-      // window.points = [ dot.v2( 0, 0 ), dot.v2( 20, 0 ), dot.v2( 10, 10 ), dot.v2( 4, 11 ), dot.v2( 15, 13 ), dot.v2( 11, 2 ), dot.v2( -3, 4 ), dot.v2( 22, 8 ), dot.v2( 8, 17 ), dot.v2( 5, 20 ), dot.v2( 1, 4 ), dot.v2( -8, 3 ), dot.v2( -13, -5 ), dot.v2( -15, 0 ) ];
-      // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 4 ), dot.v2( 6, 4.1 ) ];
-      // window.points = [ dot.v2( 0, 0 ), dot.v2( 5, 5 ), dot.v2( -5, 5 ), dot.v2( 0, 10 ) ];
-      // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, -10 ), dot.v2( -10, -10 ) ];
-      // window.points = [ dot.v2( 0, 0 ), dot.v2( 10, 10 ), dot.v2( 10, 0 ), dot.v2( 0, 10 ) ];
-      // window.points = []; for ( var i = 0; i < 100; i++ ) { points.push( dot.v2( Math.random(), Math.random() ) ); }
+      // window.points = [ phet.dot.v2( 0, 0 ), phet.dot.v2( 20, 0 ), phet.dot.v2( 10, 10 ), phet.dot.v2( 4, 11 ), phet.dot.v2( 15, 13 ), phet.dot.v2( 11, 2 ), phet.dot.v2( -3, 4 ), phet.dot.v2( 22, 8 ), phet.dot.v2( 8, 17 ), phet.dot.v2( 5, 20 ), phet.dot.v2( 1, 4 ), phet.dot.v2( -8, 3 ), phet.dot.v2( -13, -5 ), phet.dot.v2( -15, 0 ) ];
+      // window.points = [ phet.dot.v2( 0, 0 ), phet.dot.v2( 10, 4 ), phet.dot.v2( 6, 4.1 ) ];
+      // window.points = [ phet.dot.v2( 0, 0 ), phet.dot.v2( 5, 5 ), phet.dot.v2( -5, 5 ), phet.dot.v2( 0, 10 ) ];
+      // window.points = [ phet.dot.v2( 0, 0 ), phet.dot.v2( 10, -10 ), phet.dot.v2( -10, -10 ) ];
+      // window.points = [ phet.dot.v2( 0, 0 ), phet.dot.v2( 10, 10 ), phet.dot.v2( 10, 0 ), phet.dot.v2( 0, 10 ) ];
+      // window.points = []; for ( var i = 0; i < 100; i++ ) { points.push( phet.dot.v2( Math.random(), Math.random() ) ); }
       window.points = [];
-      for ( var i = 0; i < 10; i++ ) { for ( var j = 0; j < 10; j++ ) { points.push( dot.v2( i, j ) ); } }
+      for ( var i = 0; i < 10; i++ ) { for ( var j = 0; j < 10; j++ ) { points.push( phet.dot.v2( i, j ) ); } }
       window.constraints = [ [ 10, 45 ], [ 46, 51 ] ];
       // window.constraints = [ [ 10, 45 ] ];
-      window.triangulation = new dot.DelaunayTriangulation( points, constraints );
+      window.triangulation = new phet.dot.DelaunayTriangulation( points, constraints );
       triDebug( triangulation );
       while ( triangulation.remainingVertices.length ) {
         triangulation.step();
@@ -57,7 +61,7 @@
   };
 
   window.triDebug = function( triangulation ) {
-    var bounds = dot.Bounds2.NOTHING.copy();
+    var bounds = phet.dot.Bounds2.NOTHING.copy();
     for ( var i = 0; i < triangulation.vertices.length; i++ ) {
       bounds.addPoint( triangulation.vertices[ i ].point );
     }
@@ -114,7 +118,7 @@
 
     function drawCircle( context, triangle, vertices ) {
       context.beginPath();
-      var center = dot.Utils.circleCenterFromPoints( triangle.aVertex.point, triangle.bVertex.point, triangle.cVertex.point );
+      var center = phet.dot.Utils.circleCenterFromPoints( triangle.aVertex.point, triangle.bVertex.point, triangle.cVertex.point );
       var radius = ( triangle.aVertex.point.distance( center ) + triangle.bVertex.point.distance( center ) + triangle.cVertex.point.distance( center ) ) / 3;
       var ok = true;
       for ( var i = 0; i < vertices.length; i++ ) {

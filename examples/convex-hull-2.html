@@ -33,7 +33,7 @@
 
   var context = canvas.getContext( '2d' );
 
-  var p = function( x, y ) { return new dot.Vector2( x, y ); }
+  var p = function( x, y ) { return new phet.dot.Vector2( x, y ); }
   var points = [];
 
   function drawLabel() {
@@ -52,7 +52,7 @@
       context.fillStyle = '#000';
       context.fill();
     } );
-    var hull = dot.ConvexHull2.grahamScan( points );
+    var hull = phet.dot.ConvexHull2.grahamScan( points );
     context.beginPath();
     _.each( hull, function( point ) {
       context.lineTo( point.x, point.y );

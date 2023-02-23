@@ -7,9 +7,9 @@
  * #begin canvasExample grahamScan 256x128
  * #on
  * var points = _.range( 50 ).map( function() {
- *   return new dot.Vector2( 5 + ( 256 - 10 ) * Math.random(), 5 + ( 128 - 10 ) * Math.random() );
+ *   return new phet.dot.Vector2( 5 + ( 256 - 10 ) * Math.random(), 5 + ( 128 - 10 ) * Math.random() );
  * } );
- * var hullPoints = dot.ConvexHull2.grahamScan( points, false );
+ * var hullPoints = phet.dot.ConvexHull2.grahamScan( points, false );
  * #off
  * context.beginPath();
  * hullPoints.forEach( function( point ) {

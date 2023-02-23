@@ -258,14 +258,14 @@
     </p>
 
     <pre class="brush: js">
-var rotation = dot.Matrix3.rotationZ( Math.PI / 4 );
+var rotation = phet.dot.Matrix3.rotationZ( Math.PI / 4 );
 
 console.log( rotation.toString() );
 // 0.7071067811865476 -0.7071067811865475 0
 // 0.7071067811865475 0.7071067811865476 0
 // 0 0 1
 
-var vector = new dot.Vector2( 10, 0 );
+var vector = new phet.dot.Vector2( 10, 0 );
 var rotatedVector = rotation.timesVector2( vector );
 
 console.log( rotatedVector.x, rotatedVector.y );

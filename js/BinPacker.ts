@@ -7,7 +7,7 @@
  * For example:
  * #begin canvasExample binPacker 256x256
  * #on
- * var binPacker = new dot.BinPacker( new dot.Bounds2( 0, 0, 256, 256 ) );
+ * var binPacker = new phet.dot.BinPacker( new dot.Bounds2( 0, 0, 256, 256 ) );
  * var bins = [];
  * for ( var i = 0; i < 100; i++ ) {
  *   var bin = binPacker.allocate( Math.random() * 64, Math.random() * 64 );

@@ -2,7 +2,7 @@
 
 /**
  * toFixedPointString is a version of Number.toFixed that avoids rounding problems and floating-point errors that exist
- * in Number.toFixed and dot.Utils.toFixed. It converts a number of a string, then modifies that string based on the
+ * in Number.toFixed and phet.dot.Utils.toFixed. It converts a number of a string, then modifies that string based on the
  * number of decimal places desired. It performs symmetric rounding based on only the 2 specific digits that should be
  * considered when rounding. Values that are not finite are converted using Number.toFixed.
  *
