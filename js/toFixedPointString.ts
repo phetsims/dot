@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * toFixedPointString is a version of Number.toFixed that avoids rounding problems and floating-point errors that exist

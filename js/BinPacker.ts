@@ -1,4 +1,4 @@
-// Copyright 2015-2022, University of Colorado Boulder
+// Copyright 2015-2023, University of Colorado Boulder
 
 /**
  * Given a rectangular containing area, takes care of allocating and deallocating smaller rectangular "bins" that fit
