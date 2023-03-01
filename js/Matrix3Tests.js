@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Matrix3, { Matrix3Type } from './Matrix3.js';
+import Matrix3, { Matrix3Type, m3 } from './Matrix3.js';
 import Vector2 from './Vector2.js';
 
 QUnit.module( 'Matrix3' );
@@ -28,7 +28,7 @@ function approximateMatrixEqual( assert, a, b, msg ) {
 
 // test matrices, randomly generated
 function A() {
-  return Matrix3.pool.create(
+  return m3(
     0.216673, -0.455249, -0.0897734,
     -0.261922, -0.208968, -0.0790977,
     -0.0689069, -0.620147, 0.275399
@@ -36,7 +36,7 @@ function A() {
 }
 
 function B() {
-  return Matrix3.pool.create(
+  return m3(
     0.366511, -0.872824, 0.490591,
     0.0543773, 0.610759, 0.961396,
     0.880586, 0.991026, -0.358927
@@ -44,7 +44,7 @@ function B() {
 }
 
 function C() {
-  return Matrix3.pool.create(
+  return m3(
     0.521806, 0.523286, -0.275077,
     0.270099, 0.135544, 0.614202,
     0, 0, 1
@@ -63,7 +63,7 @@ QUnit.test( 'Affine detection', assert => {
 } );
 
 QUnit.test( 'Row-major', assert => {
-  const m = Matrix3.pool.create( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
+  const m = m3( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
   assert.equal( m.m00(), 1, 'm00' );
   assert.equal( m.m01(), 2, 'm01' );
   assert.equal( m.m02(), 3, 'm02' );
@@ -76,7 +76,7 @@ QUnit.test( 'Row-major', assert => {
 } );
 
 QUnit.test( 'Column-major', assert => {
-  const m = Matrix3.pool.create();
+  const m = m3();
   m.columnMajor( 1, 4, 7, 2, 5, 8, 3, 6, 9 );
   assert.equal( m.m00(), 1, 'm00' );
   assert.equal( m.m01(), 2, 'm01' );
@@ -102,7 +102,7 @@ QUnit.test( 'Rotation', assert => {
 QUnit.test( 'plus / add', assert => {
   const a = A();
   const b = B();
-  const result = Matrix3.pool.create( 0.583184, -1.32807, 0.400818, -0.207545, 0.401791, 0.882298, 0.81168, 0.370878, -0.0835274 );
+  const result = m3( 0.583184, -1.32807, 0.400818, -0.207545, 0.401791, 0.882298, 0.81168, 0.370878, -0.0835274 );
 
   approximateMatrixEqual( assert, a.plus( b ), result, 'plus' );
   approximateMatrixEqual( assert, a, A(), 'verifying immutability' );
@@ -114,7 +114,7 @@ QUnit.test( 'plus / add', assert => {
 QUnit.test( 'minus / subtract', assert => {
   const a = A();
   const b = B();
-  const result = Matrix3.pool.create( -0.149837, 0.417574, -0.580365, -0.3163, -0.819726, -1.04049, -0.949493, -1.61117, 0.634326 );
+  const result = m3( -0.149837, 0.417574, -0.580365, -0.3163, -0.819726, -1.04049, -0.949493, -1.61117, 0.634326 );
 
   approximateMatrixEqual( assert, a.minus( b ), result, 'minus' );
   approximateMatrixEqual( assert, a, A(), 'verifying immutability' );
@@ -125,7 +125,7 @@ QUnit.test( 'minus / subtract', assert => {
 
 QUnit.test( 'transposed / transpose', assert => {
   const a = A();
-  const result = Matrix3.pool.create( 0.216673, -0.261922, -0.0689069, -0.455249, -0.208968, -0.620147, -0.0897734, -0.0790977, 0.275399 );
+  const result = m3( 0.216673, -0.261922, -0.0689069, -0.455249, -0.208968, -0.620147, -0.0897734, -0.0790977, 0.275399 );
 
   approximateMatrixEqual( assert, a.transposed(), result, 'transposed' );
   approximateMatrixEqual( assert, a, A(), 'verifying immutability' );
@@ -136,7 +136,7 @@ QUnit.test( 'transposed / transpose', assert => {
 
 QUnit.test( 'negated / negate', assert => {
   const a = A();
-  const result = Matrix3.pool.create( -0.216673, 0.455249, 0.0897734, 0.261922, 0.208968, 0.0790977, 0.0689069, 0.620147, -0.275399 );
+  const result = m3( -0.216673, 0.455249, 0.0897734, 0.261922, 0.208968, 0.0790977, 0.0689069, 0.620147, -0.275399 );
 
   approximateMatrixEqual( assert, a.negated(), result, 'negated' );
   approximateMatrixEqual( assert, a, A(), 'verifying immutability' );
@@ -147,7 +147,7 @@ QUnit.test( 'negated / negate', assert => {
 
 QUnit.test( 'inverted / invert', assert => {
   const a = A();
-  const result = Matrix3.pool.create( 1.48663, -2.52483, -0.240555, -1.08195, -0.745893, -0.566919, -2.06439, -2.31134, 2.29431 );
+  const result = m3( 1.48663, -2.52483, -0.240555, -1.08195, -0.745893, -0.566919, -2.06439, -2.31134, 2.29431 );
 
   approximateMatrixEqual( assert, a.inverted(), result, 'inverted' );
   approximateMatrixEqual( assert, a, A(), 'verifying immutability' );
@@ -159,7 +159,7 @@ QUnit.test( 'inverted / invert', assert => {
 QUnit.test( 'timesMatrix / multiplyMatrix', assert => {
   const a = A();
   const b = B();
-  const result = Matrix3.pool.create( -0.0243954, -0.556133, -0.299155, -0.177013, 0.0225954, -0.301007, 0.183536, -0.0456892, -0.72886 );
+  const result = m3( -0.0243954, -0.556133, -0.299155, -0.177013, 0.0225954, -0.301007, 0.183536, -0.0456892, -0.72886 );
 
   approximateMatrixEqual( assert, a.timesMatrix( b ), result, 'timesMatrix' );
   approximateMatrixEqual( assert, a, A(), 'verifying immutability' );

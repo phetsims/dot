@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Matrix3 from './Matrix3.js';
+import Matrix3, { m3 } from './Matrix3.js';
 import Ray2 from './Ray2.js';
 import Transform3 from './Transform3.js';
 import Vector2 from './Vector2.js';
@@ -25,7 +25,7 @@ function approximateRayEqual( assert, a, b, msg ) {
 }
 
 QUnit.test( 'Ray2 transforms', assert => {
-  const transform = new Transform3( Matrix3.pool.create( 0, -2, 5, 3, 0, 8, 0, 0, 1 ) );
+  const transform = new Transform3( m3( 0, -2, 5, 3, 0, 8, 0, 0, 1 ) );
   const ray = new Ray2( new Vector2( 2, 7 ), new Vector2( -5, 2 ).normalized() );
 
   const tray = transform.transformRay2( ray );
@@ -43,7 +43,7 @@ QUnit.test( 'Ray2 transforms', assert => {
 } );
 
 QUnit.test( 'Transform x/y', assert => {
-  const t = new Transform3( Matrix3.pool.create( 2, 0, 10, 0, 3, 1, 0, 0, 1 ) );
+  const t = new Transform3( m3( 2, 0, 10, 0, 3, 1, 0, 0, 1 ) );
   assert.equal( t.transformX( 5 ), 20 );
   assert.equal( t.transformY( 5 ), 16 );
   assert.equal( t.inverseX( 20 ), 5 );
@@ -59,8 +59,8 @@ QUnit.test( 'Transform x/y', assert => {
 } );
 
 QUnit.test( 'Transform delta', assert => {
-  const t1 = new Transform3( Matrix3.pool.create( 2, 1, 0, -2, 5, 0, 0, 0, 1 ) );
-  const t2 = new Transform3( Matrix3.pool.create( 2, 1, 52, -2, 5, -61, 0, 0, 1 ) );
+  const t1 = new Transform3( m3( 2, 1, 0, -2, 5, 0, 0, 0, 1 ) );
+  const t2 = new Transform3( m3( 2, 1, 52, -2, 5, -61, 0, 0, 1 ) );
 
   assert.ok( t1.transformDelta2( Vector2.ZERO ).equalsEpsilon( Vector2.ZERO, 1e-7 ), 'ensuring linearity at 0, no translation' );
   assert.ok( t2.transformDelta2( Vector2.ZERO ).equalsEpsilon( Vector2.ZERO, 1e-7 ), 'ensuring linearity at 0, with translation' );
@@ -74,7 +74,7 @@ QUnit.test( 'Transform delta', assert => {
 } );
 
 QUnit.test( 'Transform delta x/y', assert => {
-  const t = new Transform3( Matrix3.pool.create( 2, 0, 52, 0, 5, -61, 0, 0, 1 ) );
+  const t = new Transform3( m3( 2, 0, 52, 0, 5, -61, 0, 0, 1 ) );
 
   approximateEqual( assert, t.transformDeltaX( 1 ), 2, 'deltaX' );
   approximateEqual( assert, t.transformDeltaY( 1 ), 5, 'deltaY' );
@@ -92,11 +92,11 @@ QUnit.test( 'Transform setMatrix ensuring matrix instance equivalence', assert =
 
   const m = t.getMatrix();
 
-  t.setMatrix( Matrix3.pool.create( 1, 2, 3, 4, 5, 6, 7, 8, 9 ) );
+  t.setMatrix( m3( 1, 2, 3, 4, 5, 6, 7, 8, 9 ) );
   assert.equal( t.getMatrix(), m );
   assert.equal( t.getMatrix().m00(), 1 );
   assert.equal( t.getMatrix().m01(), 2 );
-  t.setMatrix( Matrix3.pool.create( 9, 8, 7, 6, 5, 4, 3, 2, 1 ) );
+  t.setMatrix( m3( 9, 8, 7, 6, 5, 4, 3, 2, 1 ) );
   assert.equal( t.getMatrix(), m );
   assert.equal( t.getMatrix().m00(), 9 );
   assert.equal( t.getMatrix().m01(), 8 );

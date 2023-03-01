@@ -58,6 +58,10 @@ export default class Matrix3 implements TPoolable {
     this.type = Matrix3Type.IDENTITY;
   }
 
+  public initialize(): this {
+    return this;
+  }
+
   /**
    * Convenience getter for the individual 0,0 entry of the matrix.
    */
@@ -1268,7 +1272,7 @@ export default class Matrix3 implements TPoolable {
   }
 
   public static pool = new Pool( Matrix3, {
-    initialize: Matrix3.prototype.rowMajor,
+    initialize: Matrix3.prototype.initialize,
     useDefaultConstruction: true,
     maxSize: 300
   } );
@@ -1471,10 +1475,13 @@ export default class Matrix3 implements TPoolable {
 
 dot.register( 'Matrix3', Matrix3 );
 
-const m3 = Matrix3.pool.create.bind( Matrix3.pool );
-dot.register( 'm3', m3 );
-
 const fromPool = Matrix3.pool.fetch.bind( Matrix3.pool );
+
+const m3 = ( v00: number, v01: number, v02: number, v10: number, v11: number, v12: number, v20: number, v21: number, v22: number, type?: Matrix3Type ): Matrix3 => {
+  return fromPool().rowMajor( v00, v01, v02, v10, v11, v12, v20, v21, v22, type );
+};
+export { m3 };
+dot.register( 'm3', m3 );
 
 Matrix3.IDENTITY = Matrix3.identity().makeImmutable();
 Matrix3.X_REFLECTION = m3(
