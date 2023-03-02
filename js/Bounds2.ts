@@ -1146,7 +1146,7 @@ export default class Bounds2 implements TPoolable {
     Bounds2.pool.freeToPool( this );
   }
 
-  public static pool = new Pool( Bounds2, {
+  public static readonly pool = new Pool( Bounds2, {
     initialize: Bounds2.prototype.setMinMax,
     defaultArguments: [ Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY ]
   } );

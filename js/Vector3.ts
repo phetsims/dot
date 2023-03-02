@@ -612,7 +612,7 @@ export default class Vector3 implements TPoolable {
     Vector3.pool.freeToPool( this );
   }
 
-  public static pool = new Pool( Vector3, {
+  public static readonly pool = new Pool( Vector3, {
     maxSize: 1000,
     initialize: Vector3.prototype.setXYZ,
     defaultArguments: [ 0, 0, 0 ]

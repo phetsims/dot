@@ -676,7 +676,7 @@ export default class Vector2 implements TPoolable {
     Vector2.pool.freeToPool( this );
   }
 
-  public static pool = new Pool( Vector2, {
+  public static readonly pool = new Pool( Vector2, {
     maxSize: 1000,
     initialize: Vector2.prototype.setXY,
     defaultArguments: [ 0, 0 ]

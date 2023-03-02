@@ -1271,7 +1271,7 @@ export default class Matrix3 implements TPoolable {
     Matrix3.pool.freeToPool( this );
   }
 
-  public static pool = new Pool( Matrix3, {
+  public static readonly pool = new Pool( Matrix3, {
     initialize: Matrix3.prototype.initialize,
     useDefaultConstruction: true,
     maxSize: 300
