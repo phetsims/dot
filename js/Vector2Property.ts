@@ -13,6 +13,8 @@ import Vector2 from './Vector2.js';
 import dot from './dot.js';
 import optionize from '../../phet-core/js/optionize.js';
 
+const VALID_NON_NAN = { isValidValue: ( v: Vector2 ) => !isNaN( v.x ) && !isNaN( v.y ), validationMessage: 'Vector2 x/y should not be NaN' };
+
 type SelfOptions = {
   validBounds?: Bounds2 | null;
 };
@@ -36,6 +38,8 @@ class Vector2Property extends Property<Vector2> {
       // phet-io
       phetioValueType: Vector2.Vector2IO
     }, providedOptions );
+
+    options.validators.push( VALID_NON_NAN );
 
     options.validBounds && options.validators.push( {
       validationMessage: 'Vector2 is not within validBounds',
