@@ -42,3 +42,6 @@ Ensure you're in the dot directory and run `grunt --lint=false --report-media=fa
 ### License
 
 MIT license, see [LICENSE](LICENSE)
+
+### Contributing
+If you would like to contribute to this repo, please read our [contributing guidelines](https://github.com/phetsims/community/blob/master/CONTRIBUTING.md).
