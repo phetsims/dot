@@ -16,7 +16,7 @@ QUnit.module( 'Bounds2' );
 
 const epsilon = 0.00000001;
 
-function approximateBoundsEquals( assert, a, b, msg ) {
+function approximateBoundsEquals( assert: Assert, a: Bounds2, b: Bounds2, msg: string ): void {
   assert.ok( Math.abs( a.minX - b.minX ) < epsilon, `${msg} minX: expected: ${b.minX}, result: ${a.minX}` );
   assert.ok( Math.abs( a.minY - b.minY ) < epsilon, `${msg} minY: expected: ${b.minY}, result: ${a.minY}` );
   assert.ok( Math.abs( a.maxX - b.maxX ) < epsilon, `${msg} maxX: expected: ${b.maxX}, result: ${a.maxX}` );
@@ -65,11 +65,11 @@ QUnit.test( 'Coordinates', assert => {
   assert.ok( !Bounds2.EVERYTHING.isEmpty(), '!Bounds2.EVERYTHING.isEmpty()' );
 } );
 
-function A() { return new Bounds2( 0, 0, 2, 3 ); }
+function A(): Bounds2 { return new Bounds2( 0, 0, 2, 3 ); }
 
-function B() { return new Bounds2( 1, 1, 5, 4 ); }
+function B(): Bounds2 { return new Bounds2( 1, 1, 5, 4 ); }
 
-function C() { return new Bounds2( 1.5, 1.2, 5.7, 4.8 ); }
+function C(): Bounds2 { return new Bounds2( 1.5, 1.2, 5.7, 4.8 ); }
 
 QUnit.test( 'Mutable / immutable versions', assert => {
   approximateBoundsEquals( assert, A().union( B() ), A().includeBounds( B() ), 'union / includeBounds' );
