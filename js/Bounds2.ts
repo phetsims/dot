@@ -261,16 +261,16 @@ export default class Bounds2 implements TPoolable {
   }
 
   /**
-   * If the position is inside the bounds, the position will be returned. Otherwise, this will return a new position
-   * on the edge of the bounds that is the closest to the provided position.
+   * If the point is inside the bounds, the point will be returned. Otherwise, this will return a new point
+   * on the edge of the bounds that is the closest to the provided point.
    */
-  public closestPointTo( position: Vector2 ): Vector2 {
-    if ( this.containsCoordinates( position.x, position.y ) ) {
-      return position;
+  public closestPointTo( point: Vector2 ): Vector2 {
+    if ( this.containsCoordinates( point.x, point.y ) ) {
+      return point;
     }
     else {
-      const xConstrained = Math.max( Math.min( position.x, this.maxX ), this.x );
-      const yConstrained = Math.max( Math.min( position.y, this.maxY ), this.y );
+      const xConstrained = Math.max( Math.min( point.x, this.maxX ), this.x );
+      const yConstrained = Math.max( Math.min( point.y, this.maxY ), this.y );
       return new Vector2( xConstrained, yConstrained );
     }
   }
