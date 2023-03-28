@@ -269,10 +269,38 @@ export default class Bounds2 implements TPoolable {
       return point;
     }
     else {
-      const xConstrained = Math.max( Math.min( point.x, this.maxX ), this.x );
-      const yConstrained = Math.max( Math.min( point.y, this.maxY ), this.y );
-      return new Vector2( xConstrained, yConstrained );
+      return this.getConstrainedPoint( point );
     }
+  }
+
+  /**
+   * Find the point on the boundary of the Bounds2 that is closest to the provided point.
+   */
+  public closestBoundaryPointTo( point: Vector2 ): Vector2 {
+    if ( this.containsCoordinates( point.x, point.y ) ) {
+      const closestXEdge = point.x < this.centerX ? this.minX : this.maxX;
+      const closestYEdge = point.y < this.centerY ? this.minY : this.maxY;
+
+      // Decide which cardinal direction to go based on simple distance.
+      if ( Math.abs( closestXEdge - point.x ) < Math.abs( closestYEdge - point.y ) ) {
+        return new Vector2( closestXEdge, point.y );
+      }
+      else {
+        return new Vector2( point.x, closestYEdge );
+      }
+    }
+    else {
+      return this.getConstrainedPoint( point );
+    }
+  }
+
+  /**
+   * Give a point outside of this Bounds2, constrain it to a point on the boundary of this Bounds2.
+   */
+  public getConstrainedPoint( point: Vector2 ): Vector2 {
+    const xConstrained = Math.max( Math.min( point.x, this.maxX ), this.x );
+    const yConstrained = Math.max( Math.min( point.y, this.maxY ), this.y );
+    return new Vector2( xConstrained, yConstrained );
   }
 
   /**

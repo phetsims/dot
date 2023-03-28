@@ -123,3 +123,11 @@ QUnit.test( 'Equality', assert => {
   assert.ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equals( new Bounds2( 0, 0, 6, Number.POSITIVE_INFINITY ) ), 'Without epsilon: Mixed finite-ness - different finite number' );
   assert.ok( !new Bounds2( 0, 0, 5, Number.POSITIVE_INFINITY ).equalsEpsilon( new Bounds2( 0, 0, 6, Number.POSITIVE_INFINITY ), epsilon ), 'With epsilon: Mixed finite-ness - different finite number' );
 } );
+
+QUnit.test( 'closestBoundaryPointTo', assert => {
+  const simpleBounds = new Bounds2( 0, 0, 1, 1 );
+  assert.ok( simpleBounds.closestBoundaryPointTo( new Vector2( 0.9, 0.95 ) ).equals( new Vector2( 0.9, 1 ) ), 'inside case' );
+  assert.ok( simpleBounds.closestBoundaryPointTo( new Vector2( 0, 0.5 ) ).equals( new Vector2( 0, 0.5 ) ), 'already on boundary case' );
+  assert.ok( simpleBounds.closestBoundaryPointTo( new Vector2( 0.5, 0 ) ).equals( new Vector2( 0.5, 0 ) ), 'already on boundary case 2' );
+  assert.ok( simpleBounds.closestBoundaryPointTo( new Vector2( 10, 0.5 ) ).equals( new Vector2( 1, 0.5 ) ), 'constrained from outside' );
+} );
