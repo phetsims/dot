@@ -191,7 +191,7 @@ class Random {
   }
 
   /**
-   * Gets a random point within the provided Bounds2
+   * Gets a random point within the provided Bounds2, [min,max)
    * @param {Bounds2} bounds
    * @returns {Vector2}
    * @public
