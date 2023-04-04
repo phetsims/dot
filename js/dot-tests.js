@@ -17,6 +17,7 @@ import './MatrixOps3Tests.js';
 import './OpenRangeTests.js';
 import './PiecewiseLinearFunctionTests.js';
 import './RangeTests.js';
+import './RandomTests.js';
 import './RangeWithValueTests.js';
 import './RunningAverageTests.js';
 import './StatsTests.js';

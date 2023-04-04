@@ -14,9 +14,11 @@
  */
 
 import merge from '../../phet-core/js/merge.js';
+import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 import Range from './Range.js';
 import Utils from './Utils.js';
+import Vector2 from './Vector2.js';
 
 class Random {
 
@@ -186,6 +188,20 @@ class Random {
       // because random.nextDoubleBetween requires min < max
       return range.min;
     }
+  }
+
+  /**
+   * Gets a random point within the provided Bounds2
+   * @param {Bounds2} bounds
+   * @returns {Vector2}
+   * @public
+   */
+  nextPointInBounds( bounds ) {
+    assert && assert( bounds instanceof Bounds2, 'invalid Bounds2' );
+    return new Vector2(
+      this.nextDoubleBetween( bounds.minX, bounds.maxX ),
+      this.nextDoubleBetween( bounds.minY, bounds.maxY )
+    );
   }
 
   /**
