@@ -12,6 +12,7 @@ import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
+import { StateObject } from '../../tandem/js/types/StateSchema.js';
 
 const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
   return vector.add( nextVector );
@@ -775,17 +776,15 @@ Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new Vector2( 0, 0 );
 Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
-export type Vector2StateObject = {
-  x: number;
-  y: number;
+const stateSchema = {
+  x: NumberIO,
+  y: NumberIO
 };
+export type Vector2StateObject = StateObject<typeof stateSchema>;
 
 Vector2.Vector2IO = new IOType<Vector2, Vector2StateObject>( 'Vector2IO', {
   valueType: Vector2,
-  stateSchema: {
-    x: NumberIO,
-    y: NumberIO
-  },
+  stateSchema: stateSchema,
   toStateObject: ( vector2: Vector2 ) => vector2.toStateObject(),
   fromStateObject: ( stateObject: Vector2StateObject ) => Vector2.fromStateObject( stateObject ),
   documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
