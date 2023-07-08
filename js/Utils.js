@@ -553,15 +553,7 @@ const Utils = {
   toFixed( value, decimalPlaces ) {
     const multiplier = Math.pow( 10, decimalPlaces );
     const newValue = Utils.roundSymmetric( value * multiplier ) / multiplier;
-    let fixedValue;
-    try {
-      fixedValue = newValue.toFixed( decimalPlaces ); // eslint-disable-line bad-sim-text
-    }
-    catch( error ) {
-      //TODO https://github.com/phetsims/ph-scale/issues/286 This is temporary, for debugging with CT.
-      throw new Error( `Number.toFixed failed: message=${error.message}, fractionDigits=${decimalPlaces}` );
-    }
-    return fixedValue;
+    return newValue.toFixed( decimalPlaces ); // eslint-disable-line bad-sim-text
   },
 
   /**
