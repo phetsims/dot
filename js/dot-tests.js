@@ -23,6 +23,7 @@ import './RunningAverageTests.js';
 import './StatsTests.js';
 import './toFixedPointStringTests.js';
 import './Transform3Tests.js';
+import './UnivariatePolynomialTests.js';
 import './UtilsTests.js';
 import './Vector2PropertyTests.js';
 import './Vector2Tests.js';

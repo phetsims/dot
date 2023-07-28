@@ -32,6 +32,7 @@ import './SingularValueDecomposition.js';
 import './Sphere3.js';
 import './Transform3.js';
 import './Transform4.js';
+import './UnivariatePolynomial.js';
 import './Utils.js';
 import './Vector2.js';
 import './Vector3.js';
