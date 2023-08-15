@@ -928,7 +928,7 @@ js_phetCore.register('merge', merge);
  * For up-to-date examples on how to use this file, see WILDER/WilderOptionsPatterns.ts
  *
  * This pattern is still being solidified. Although the long term location of PhET's options pattern documentation
- * can be found at https://github.com/phetsims/phet-info/blob/master/doc/phet-software-design-patterns.md#options-and-config,
+ * can be found at https://github.com/phetsims/phet-info/blob/main/doc/phet-software-design-patterns.md#options-and-config,
  * that document is currently out of date. Please see https://github.com/phetsims/chipper/issues/1128 for current
  * progress on this pattern.
  *
@@ -2325,7 +2325,7 @@ js_phetCore.register('arrayRemove', arrayRemove);
 
 /**
  * EnumerationValue is the base class for enumeration value instances.
- * See https://github.com/phetsims/phet-info/blob/master/doc/phet-software-design-patterns.md#enumeration
+ * See https://github.com/phetsims/phet-info/blob/main/doc/phet-software-design-patterns.md#enumeration
  *
  * PhET's Enumeration pattern is:
  *
@@ -2426,7 +2426,7 @@ js_phetCore.register('inheritance', inheritance);
  * This implementation auto-detects the enumeration values by Object.keys and instanceof. Every property that has a
  * type matching the enumeration type is marked as a value.  See sample usage in Orientation.ts.
  *
- * For general pattern see https://github.com/phetsims/phet-info/blob/master/doc/phet-software-design-patterns.md#enumeration
+ * For general pattern see https://github.com/phetsims/phet-info/blob/main/doc/phet-software-design-patterns.md#enumeration
  *
  * This creates 2-way maps (key-to-value and value-to-key) for ease of use and to enable phet-io serialization.
  *
