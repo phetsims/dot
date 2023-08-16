@@ -11,7 +11,8 @@
 
 /* eslint-disable bad-sim-text */
 
-import EnumerationDeprecated from '../../phet-core/js/EnumerationDeprecated.js';
+import Enumeration from '../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../phet-core/js/EnumerationValue.js';
 import dot from './dot.js';
 import Vector3 from './Vector3.js';
 import Vector4 from './Vector4.js';
@@ -975,15 +976,16 @@ class Matrix4 {
 
 dot.register( 'Matrix4', Matrix4 );
 
-const Types = EnumerationDeprecated.byKeys( [
-  'OTHER',
-  'IDENTITY',
-  'TRANSLATION_3D',
-  'SCALING',
-  'AFFINE'
-] );
+class Types extends EnumerationValue {
+    static OTHER = new Types();
+    static IDENTITY = new Types();
+    static TRANSLATION_3D = new Types();
+    static SCALING = new Types();
+    static AFFINE = new Types();
+    static enumeration = new Enumeration( Types );
+}
 
-// @public {EnumerationDeprecated}
+// @public {Enumeration}
 Matrix4.Types = Types;
 
 // @public {Matrix4}
