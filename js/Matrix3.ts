@@ -222,6 +222,15 @@ export default class Matrix3 implements TPoolable {
   public get scaleVector(): Vector2 { return this.getScaleVector(); }
 
   /**
+   * Returns the total "amount" of scaled area in this matrix (which will be negative if it flips the coordinate system).
+   * For instance, Matrix3.scaling( 2 ) will return 4, since it scales the area by 4.
+   */
+  public getSignedScale(): number {
+    // It's the cross product of untranslated-transformed-(1,0) and untranslated-transformed-(0,1)
+    return this.m00() * this.m11() - this.m10() * this.m01();
+  }
+
+  /**
    * Returns the angle in radians for the 2d rotation from this matrix, between pi, -pi
    */
   public getRotation(): number {
