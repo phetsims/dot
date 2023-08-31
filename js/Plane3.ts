@@ -51,6 +51,26 @@ export default class Plane3 {
     return new Plane3( normal, normal.dot( a ) );
   }
 
+  public getIntersection( plane: Plane3 ): Ray3 | null {
+    // see https://en.wikipedia.org/wiki/Plane%E2%80%93plane_intersection
+
+    const dot = this.normal.dot( plane.normal );
+    const det = 1 - dot * dot;
+
+    // parallel planes
+    if ( Math.abs( det ) < 1e-10 ) {
+      return null;
+    }
+
+    const c1 = ( this.distance - plane.distance * dot ) / det;
+    const c2 = ( plane.distance - this.distance * dot ) / det;
+
+    return new Ray3(
+      this.normal.timesScalar( c1 ).plus( plane.normal.timesScalar( c2 ) ),
+      this.normal.cross( plane.normal ).normalized()
+    );
+  }
+
   public static readonly XY = new Plane3( new Vector3( 0, 0, 1 ), 0 );
   public static readonly XZ = new Plane3( new Vector3( 0, 1, 0 ), 0 );
   public static readonly YZ = new Plane3( new Vector3( 1, 0, 0 ), 0 );
