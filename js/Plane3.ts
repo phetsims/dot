@@ -58,7 +58,7 @@ export default class Plane3 {
     const det = 1 - dot * dot;
 
     // parallel planes
-    if ( Math.abs( det ) < 1e-10 ) {
+    if ( det === 0 ) {
       return null;
     }
 
