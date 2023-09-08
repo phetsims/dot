@@ -388,6 +388,13 @@ export default class Vector3 implements TPoolable {
     return v4( this.x, this.y, this.z, 1 );
   }
 
+  /**
+   * Converts this to a 4-dimensional vector, with the w-component equal to 0
+   */
+  public toVector4Zero(): Vector4 {
+    return v4( this.x, this.y, this.z, 0 );
+  }
+
   /*---------------------------------------------------------------------------*
    * Mutables
    * - all mutation should go through setXYZ / setX / setY / setZ
