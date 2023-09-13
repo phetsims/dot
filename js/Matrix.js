@@ -112,7 +112,7 @@ class Matrix {
   }
 
   /**
-   * TODO: inline this places if we aren't using an inlining compiler! (check performance)
+   * TODO: inline this places if we aren't using an inlining compiler! (check performance) https://github.com/phetsims/tasks/issues/1129
    * @public
    *
    * @param {number} i

@@ -360,7 +360,7 @@ class Bounds3 {
    * @returns {boolean}
    */
   intersectsBounds( bounds ) {
-    // TODO: more efficient way of doing this?
+    // TODO: more efficient way of doing this? https://github.com/phetsims/tasks/issues/1129
     return !this.intersection( bounds ).isEmpty();
   }
 
@@ -495,7 +495,7 @@ class Bounds3 {
     );
   }
 
-  // TODO: difference should be well-defined, but more logic is needed to compute
+  // TODO: difference should be well-defined, but more logic is needed to compute https://github.com/phetsims/tasks/issues/1129
 
   /**
    * The smallest bounds that contains this bounds and the point (x,y,z), returned as a copy.

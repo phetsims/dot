@@ -47,7 +47,7 @@ function ccw( p1, p2, p3 ) {
 }
 
 const ConvexHull2 = {
-  // TODO testing: all collinear, multiple ways of having same angle, etc.
+  // TODO testing: all collinear, multiple ways of having same angle, etc. https://github.com/phetsims/tasks/issues/1129
 
   /**
    * Given multiple points, this performs a Graham Scan (http://en.wikipedia.org/wiki/Graham_scan) to identify an

@@ -81,7 +81,7 @@ class Quaternion {
    * @returns {Quaternion}
    */
   timesQuaternion( quat ) {
-    // TODO: note why this is the case? product noted everywhere is the other one mentioned!
+    // TODO: note why this is the case? product noted everywhere is the other one mentioned! https://github.com/phetsims/tasks/issues/1129
     // mathematica-style
     //        return new Quaternion(
     //                this.x * quat.x - this.y * quat.y - this.z * quat.z - this.w * quat.w,
@@ -123,7 +123,7 @@ class Quaternion {
       return new Vector3( 0, 0, 0 );
     }
 
-    // TODO: optimization?
+    // TODO: optimization? https://github.com/phetsims/tasks/issues/1129
     return new Vector3(
       this.w * this.w * v.x + 2 * this.y * this.w * v.z - 2 * this.z * this.w * v.y + this.x * this.x * v.x + 2 * this.y * this.x * v.y + 2 * this.z * this.x * v.z - this.z * this.z * v.x - this.y * this.y * v.x,
       2 * this.x * this.y * v.x + this.y * this.y * v.y + 2 * this.z * this.y * v.z + 2 * this.w * this.z * v.x - this.z * this.z * v.y + this.w * this.w * v.y - 2 * this.x * this.w * v.z - this.x * this.x * v.y,

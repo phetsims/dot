@@ -45,7 +45,7 @@ module.exports = function( grunt ) {
       Range: 'range',
       Ray2: 'ray2',
       Ray3: 'ray3',
-      Rectangle: 'rectangle', // TODO: How to not have a namespace conflict?
+      Rectangle: 'rectangle', // TODO: How to not have a namespace conflict? https://github.com/phetsims/tasks/issues/1129
       SingularValueDecomposition: 'singularValueDecomposition',
       Sphere3: 'sphere3',
       Transform3: 'transform3',

@@ -26,7 +26,7 @@ class LUDecompositionDecimal {
 
     this.matrix = matrix;
 
-    // TODO: size!
+    // TODO: size! https://github.com/phetsims/tasks/issues/1129
     this.LU = [];
     matrix.entries.forEach( entry => {
       this.LU.push( new Decimal( entry ) );

@@ -116,7 +116,7 @@ class Transform4 {
     assert && assert( checkMatrix( matrix ), 'Matrix has NaNs, non-finite values, or isn\'t a matrix!' );
 
     // In the absence of a prepend-multiply function in Matrix4, copy over to a scratch matrix instead
-    // TODO: implement a prepend-multiply directly in Matrix4 for a performance increase
+    // TODO: implement a prepend-multiply directly in Matrix4 for a performance increase https://github.com/phetsims/tasks/issues/1129
     scratchMatrix.set( this.matrix );
     this.matrix.set( matrix );
     this.matrix.multiplyMatrix( scratchMatrix );

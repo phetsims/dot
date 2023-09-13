@@ -333,7 +333,7 @@ export default class Matrix3 implements TPoolable {
       '-o-transform': transformCSS,
       transform: transformCSS,
       'transform-origin': 'top left', // at the origin of the component. consider 0px 0px instead. Critical, since otherwise this defaults to 50% 50%!!! see https://developer.mozilla.org/en-US/docs/CSS/transform-origin
-      '-ms-transform-origin': 'top left' // TODO: do we need other platform-specific transform-origin styles?
+      '-ms-transform-origin': 'top left' // TODO: do we need other platform-specific transform-origin styles? https://github.com/phetsims/tasks/issues/1129
     };
   }
 
@@ -573,7 +573,7 @@ export default class Matrix3 implements TPoolable {
   }
 
   /**
-   * TODO: this operation seems to not work for transformDelta2, should be vetted
+   * TODO: this operation seems to not work for transformDelta2, should be vetted https://github.com/phetsims/tasks/issues/1129
    */
   public timesRelativeVector2( vector2: Vector2 ): Vector2 {
     const x = this.m00() * vector2.x + this.m01() * vector2.y;
@@ -601,7 +601,7 @@ export default class Matrix3 implements TPoolable {
     this.entries[ 7 ] = v12;
     this.entries[ 8 ] = v22;
 
-    // TODO: consider performance of the affine check here
+    // TODO: consider performance of the affine check here https://github.com/phetsims/tasks/issues/1129
     this.type = type === undefined ? ( ( v20 === 0 && v21 === 0 && v22 === 1 ) ? Matrix3Type.AFFINE : Matrix3Type.OTHER ) : type;
     return this;
   }

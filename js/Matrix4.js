@@ -3,7 +3,7 @@
 /**
  * 4-dimensional Matrix
  *
- * TODO: consider adding affine flag if it will help performance (a la Matrix3)
+ * TODO: consider adding affine flag if it will help performance (a la Matrix3) https://github.com/phetsims/tasks/issues/1129
  * TODO: get rotation angles
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
@@ -96,7 +96,7 @@ class Matrix4 {
     this.entries[ 14 ] = v23;
     this.entries[ 15 ] = v33;
 
-    // TODO: consider performance of the affine check here
+    // TODO: consider performance of the affine check here https://github.com/phetsims/tasks/issues/1129
     this.type = type === undefined ? ( ( v30 === 0 && v31 === 0 && v32 === 0 && v33 === 1 ) ? Types.AFFINE : Types.OTHER ) : type;
     return this;
   }
@@ -893,7 +893,7 @@ class Matrix4 {
       Types.AFFINE );
   }
 
-  // TODO: add in rotation from quaternion, and from quat + translation
+  // TODO: add in rotation from quaternion, and from quat + translation https://github.com/phetsims/tasks/issues/1129
 
 
   /**

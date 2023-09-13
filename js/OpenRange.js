@@ -116,7 +116,7 @@ class OpenRange extends Range {
   }
 
   /**
-   * TODO: how will this function in an open range scenario?
+   * TODO: how will this function in an open range scenario? https://github.com/phetsims/tasks/issues/1129
    * Constrains a value to the range.
    * @public
    * @param {number} value

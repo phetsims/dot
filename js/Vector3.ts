@@ -629,7 +629,7 @@ export default class Vector3 implements TPoolable {
    * @returns Spherical linear interpolation between the start and end
    */
   public static slerp( start: Vector3, end: Vector3, ratio: number ): Vector3 {
-    // @ts-expect-error TODO: import with circular protection
+    // @ts-expect-error TODO: import with circular protection https://github.com/phetsims/tasks/issues/1129
     return dot.Quaternion.slerp( new dot.Quaternion(), dot.Quaternion.getRotationQuaternion( start, end ), ratio ).timesVector3( start );
   }
 

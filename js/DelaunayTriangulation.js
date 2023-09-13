@@ -5,7 +5,7 @@
  * by Domiter and Zalik (2008), with some details provided by "An efficient sweep-line Delaunay triangulation
  * algorithm" by Zalik (2005).
  *
- * TODO: Second (basin) heuristic not yet implemented.
+ * TODO: Second (basin) heuristic not yet implemented. https://github.com/phetsims/tasks/issues/1129
  * TODO: Constraints not yet implemented.
  * TODO: Check number of triangles/edges/vertices with Euler's Formula
  * TODO: Handle "outside" cases (and changing the front edges) for constrained edges
@@ -126,14 +126,14 @@ class DelaunayTriangulation {
    * @private
    */
   step() {
-    // TODO: reverse the array prior to this?
+    // TODO: reverse the array prior to this? https://github.com/phetsims/tasks/issues/1129
     const vertex = this.remainingVertices.shift();
 
     const x = vertex.point.x;
 
     let frontEdge = this.firstFrontEdge;
     while ( frontEdge ) {
-      // TODO: epsilon needed here?
+      // TODO: epsilon needed here? https://github.com/phetsims/tasks/issues/1129
       if ( x > frontEdge.endVertex.point.x ) {
         const edge1 = new Edge( frontEdge.startVertex, vertex );
         const edge2 = new Edge( vertex, frontEdge.endVertex );
@@ -334,7 +334,7 @@ class DelaunayTriangulation {
         let lastVertex = rightFrontEdge.startVertex;
         let nextVertex;
         currentTriangle = rightFrontEdge.triangles[ 0 ];
-        // TODO: Triangle operations to make this more readable
+        // TODO: Triangle operations to make this more readable https://github.com/phetsims/tasks/issues/1129
         while ( DelaunayTriangulation.vertexProduct( vertex, nextVertex = currentTriangle.getEdgeOppositeFromVertex( vertex ).getOtherVertex( lastVertex ), bottomVertex ) < 0 ) {
           currentTriangle = currentTriangle.getEdgeOppositeFromVertex( lastVertex ).getOtherTriangle( currentTriangle );
           lastVertex = nextVertex;
@@ -356,11 +356,11 @@ class DelaunayTriangulation {
 
       while ( true ) { // eslint-disable-line no-constant-condition
         if ( outsideRight ) {
-          // TODO: implement
+          // TODO: implement https://github.com/phetsims/tasks/issues/1129
           break;
         }
         else if ( outsideLeft ) {
-          // TODO: implement
+          // TODO: implement https://github.com/phetsims/tasks/issues/1129
           break;
         }
         else {
@@ -368,7 +368,7 @@ class DelaunayTriangulation {
             const nextTriangle = currentEdge.getOtherTriangle( currentTriangle );
             if ( nextTriangle.hasVertex( bottomVertex ) ) {
 
-              // TODO: do things!
+              // TODO: do things! https://github.com/phetsims/tasks/issues/1129
               trianglesToRemove.push( nextTriangle );
               leftEdges.push( nextTriangle.getNextEdge( currentEdge ) );
               rightEdges.push( nextTriangle.getPreviousEdge( currentEdge ) );
@@ -431,7 +431,7 @@ class DelaunayTriangulation {
       rightEdges.push( constraintEdge );
       rightEdges.reverse(); // Put edges in counterclockwise order
 
-      // TODO: remove this!
+      // TODO: remove this! https://github.com/phetsims/tasks/issues/1129
       window.triDebug && window.triDebug( this );
 
       this.triangulatePolygon( leftEdges );
@@ -446,7 +446,7 @@ class DelaunayTriangulation {
    * @param {Array.<Edge>} edges - Should be in counterclockwise order
    */
   triangulatePolygon( edges ) {
-    // TODO: Something more efficient than ear clipping method below
+    // TODO: Something more efficient than ear clipping method below https://github.com/phetsims/tasks/issues/1129
     while ( edges.length > 3 ) {
       for ( let k = 0; k < edges.length; k++ ) {
         const kx = k < edges.length - 1 ? k + 1 : 0;
@@ -516,7 +516,7 @@ class DelaunayTriangulation {
             edges.splice( ix, 1 );
           }
 
-          // TODO: remove this!
+          // TODO: remove this! https://github.com/phetsims/tasks/issues/1129
           window.triDebug && window.triDebug( this );
         }
       }
@@ -527,7 +527,7 @@ class DelaunayTriangulation {
       this.triangles.push( new Triangle( edges[ 0 ].getSharedVertex( edges[ 1 ] ), edges[ 1 ].getSharedVertex( edges[ 2 ] ), edges[ 0 ].getSharedVertex( edges[ 2 ] ),
         edges[ 2 ], edges[ 0 ], edges[ 1 ] ) );
 
-      // TODO: remove this!
+      // TODO: remove this! https://github.com/phetsims/tasks/issues/1129
       window.triDebug && window.triDebug( this );
     }
   }
@@ -559,7 +559,7 @@ class DelaunayTriangulation {
         frontEdges.splice( i, 2, newEdge );
         // start scanning from behind where we were previously (if possible)
         i = Math.max( i - 2, -1 );
-        // TODO: remove this!
+        // TODO: remove this! https://github.com/phetsims/tasks/issues/1129
         window.triDebug && window.triDebug( this );
       }
     }
@@ -599,7 +599,7 @@ class DelaunayTriangulation {
       arrayRemove( this.edges, artificialEdges[ i ] );
     }
 
-    // TODO: remove this!
+    // TODO: remove this! https://github.com/phetsims/tasks/issues/1129
     window.triDebug && window.triDebug( this );
 
     // Handle adding any triangles not in the convex hull (on the back edge)
@@ -615,7 +615,7 @@ class DelaunayTriangulation {
         backEdges.splice( i, 2, newEdge );
         // start scanning from behind where we were previously (if possible)
         i = Math.max( i - 2, -1 );
-        // TODO: remove this!
+        // TODO: remove this! https://github.com/phetsims/tasks/issues/1129
         window.triDebug && window.triDebug( this );
       }
     }
@@ -652,7 +652,7 @@ class DelaunayTriangulation {
 
     if ( Utils.pointInCircleFromPoints( triangle1.aVertex.point, triangle1.bVertex.point, triangle1.cVertex.point, farVertex2.point ) ||
          Utils.pointInCircleFromPoints( triangle2.aVertex.point, triangle2.bVertex.point, triangle2.cVertex.point, farVertex1.point ) ) {
-      // TODO: better helper functions for adding/removing triangles (takes care of the edge stuff)
+      // TODO: better helper functions for adding/removing triangles (takes care of the edge stuff) https://github.com/phetsims/tasks/issues/1129
       triangle1.remove();
       triangle2.remove();
       arrayRemove( this.triangles, triangle1 );
@@ -684,7 +684,7 @@ class DelaunayTriangulation {
    * Comparison for sorting points by y, then by x.
    * @private
    *
-   * TODO: Do we need to reverse the x sort? "If our edge is horizontal, the ending point with smaller x coordinate
+   * TODO: Do we need to reverse the x sort? "If our edge is horizontal, the ending point with smaller x coordinate https://github.com/phetsims/tasks/issues/1129
    *       is considered as the upper point"?
    *
    * @param {Vertex} a
