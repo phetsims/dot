@@ -247,6 +247,15 @@ class Range implements TRange {
   }
 
   /**
+   * Determines if this Range is approximately equal to some object.
+   */
+  public equalsEpsilon( object: IntentionalAny, epsilon: number ): boolean {
+    return ( this.constructor === object.constructor ) &&
+           ( Math.abs( this._min - object.min ) <= epsilon ) &&
+           ( Math.abs( this._max - object.max ) <= epsilon );
+  }
+
+  /**
    * Given a value, normalize it to this Range's length, returning a value between 0 and 1 for values contained in
    * the Range. If the value is not contained in Range, then the return value will not be between 0 and 1.
    */
