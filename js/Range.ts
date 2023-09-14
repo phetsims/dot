@@ -98,6 +98,15 @@ class Range implements TRange {
     return this;
   }
 
+  public addValue( n: number ): void {
+    this._min = Math.min( this._min, n );
+    this._max = Math.max( this._max, n );
+  }
+
+  public withValue( n: number ): Range {
+    return new Range( Math.min( this._min, n ), Math.max( this._max, n ) ); // eslint-disable-line no-html-constructors
+  }
+
   /**
    * Makes a copy of this range
    */
