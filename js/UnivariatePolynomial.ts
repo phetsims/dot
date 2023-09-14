@@ -131,7 +131,7 @@ class UnivariatePolynomial {
 
   public getRoots(): Complex[] {
     if ( this.isZero() || this.degree === 0 ) {
-      // TODO: how to handle?
+      // TODO: how to handle? https://github.com/phetsims/kite/issues/97
       return [];
     }
     else if ( this.degree === 1 ) {
@@ -176,7 +176,7 @@ class UnivariatePolynomial {
       let matrix = companionMatrix;
       const epsilon = 1e-13;
 
-      // TODO: custom number of steps?
+      // TODO: custom number of steps? https://github.com/phetsims/kite/issues/97
       for ( let i = 0; i < 500; i++ ) {
         const qr = new QRDecomposition( matrix );
         matrix = qr.getR().times( qr.getQ() );
@@ -188,7 +188,7 @@ class UnivariatePolynomial {
               maxLowerTriangular = Math.max( maxLowerTriangular, Math.abs( matrix.get( i, j ) ) );
             }
           }
-          // TODO: 1000 seems excessive OR not enough, depending on the polynomial?
+          // TODO: 1000 seems excessive OR not enough, depending on the polynomial? https://github.com/phetsims/kite/issues/97
           if ( maxLowerTriangular < epsilon || i > 1000 ) {
             break;
           }
@@ -204,7 +204,7 @@ class UnivariatePolynomial {
       const imaginaryValues: Float64Array = decomp.getImagEigenvalues();
       const decompValues = _.range( 0, this.degree ).map( i => new Complex( realValues[ i ], imaginaryValues[ i ] ) );
 
-      // TODO: complex values! We seem to be failing here
+      // TODO: complex values! We seem to be failing here https://github.com/phetsims/kite/issues/97
       return qrValues ? qrValues : decompValues;
     }
   }
