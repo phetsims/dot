@@ -1,4 +1,4 @@
-// Copyright 2013-2022, University of Colorado Boulder
+// Copyright 2023, University of Colorado Boulder
 
 /**
  * Handles a univariate polynomial (a polynomial with one variable), like 2x^2 + 6x + 4.
