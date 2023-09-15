@@ -234,7 +234,7 @@ const Utils = {
    * @returns {Vector2|null}
    */
   circleCenterFromPoints( p1, p2, p3 ) {
-    // TODO: Can we make scratch vectors here, avoiding the circular reference? https://github.com/phetsims/tasks/issues/1129
+    // TODO: Can we make scratch vectors here, avoiding the circular reference? https://github.com/phetsims/dot/issues/120
 
     // midpoints between p1-p2 and p2-p3
     const p12 = new Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
@@ -409,8 +409,8 @@ const Utils = {
       return [];
     }
     const sqrt = Math.sqrt( discriminant );
-    // TODO: how to handle if discriminant is 0? give unique root or double it? https://github.com/phetsims/tasks/issues/1129
-    // TODO: probably just use Complex for the future https://github.com/phetsims/tasks/issues/1129
+    // TODO: how to handle if discriminant is 0? give unique root or double it? https://github.com/phetsims/dot/issues/120
+    // TODO: probably just use Complex for the future https://github.com/phetsims/dot/issues/120
     return [
       ( -b - sqrt ) / ( 2 * a ),
       ( -b + sqrt ) / ( 2 * a )
@@ -434,7 +434,7 @@ const Utils = {
 
     let roots;
 
-    // TODO: a Complex type! https://github.com/phetsims/tasks/issues/1129
+    // TODO: a Complex type! https://github.com/phetsims/dot/issues/120
 
     // Check for a degenerate case where we don't have a cubic
     if ( a === 0 ) {

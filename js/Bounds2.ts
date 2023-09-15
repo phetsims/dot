@@ -479,7 +479,7 @@ export default class Bounds2 implements TPoolable {
     );
   }
 
-  // TODO: difference should be well-defined, but more logic is needed to compute https://github.com/phetsims/tasks/issues/1129
+  // TODO: difference should be well-defined, but more logic is needed to compute https://github.com/phetsims/dot/issues/120
 
   /**
    * The smallest bounds that contains this bounds and the point (x,y), returned as a copy.

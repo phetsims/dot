@@ -120,7 +120,7 @@ export default class Vector4 implements TPoolable {
    * is the input vector (normalized).
    */
   public angleBetween( v: Vector4 ): number {
-    // @ts-expect-error TODO: import with circular protection https://github.com/phetsims/tasks/issues/1129
+    // @ts-expect-error TODO: import with circular protection https://github.com/phetsims/dot/issues/120
     return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
   }
 
