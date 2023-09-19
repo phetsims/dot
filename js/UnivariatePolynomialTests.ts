@@ -43,6 +43,8 @@ QUnit.test( 'x^3 + 10x^2 + 169x', assert => {
   const polynomial = new UnivariatePolynomial( [ 0, 169, 10, 1 ] );
 
   const roots = polynomial.getRoots();
-  assert.ok( roots.some( root => root.equals( Complex.real( -1 ) ) ), 'first root' );
-  assert.ok( roots.some( root => root.equals( Complex.real( -2 ) ) ), 'second root' );
+  assert.ok( roots.length === 3, 'There should be 3 roots' );
+  assert.ok( roots.some( root => root.equals( new Complex( -5, 12 ) ) ), 'first root' );
+  assert.ok( roots.some( root => root.equals( new Complex( -5, -12 ) ) ), 'second root' );
+  assert.ok( roots.some( root => root.equals( new Complex( 0, 0 ) ) ), 'third root' );
 } );

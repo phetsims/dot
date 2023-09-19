@@ -17,7 +17,7 @@ class UnivariatePolynomial {
   public readonly coefficients: number[];
 
   // coefficients indexed by degree, so e.g. 2x^2 + 6x + 4 would be input as [ 4, 6, 2 ], because
-  // coeffieients[ 2 ] would be the coefficient of x^2, etc.
+  // coefficients[ 2 ] would be the coefficient of x^2, etc.
   public constructor( coefficients: number[] ) {
 
     // Get rid of "leading" zero coefficients
