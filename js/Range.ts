@@ -56,7 +56,7 @@ class Range implements TRange {
   }
 
   /**
-   * TODO: Allow chaining, https://github.com/phetsims/sun/issues/792
+   * TODO: Allow chaining, https://github.com/phetsims/dot/issues/122
    * Setter for min
    */
   public setMin( min: number ): void {
