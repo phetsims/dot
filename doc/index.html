@@ -897,6 +897,8 @@ grunt</pre>
       For example:
     </p>
     <canvas id="example-binPacker" class="exampleScene"></canvas>
+    <!-- eslint-disable --> <!--TODO: fix lint https://github.com/phetsims/chipper/issues/1405-->
+
     <script type="text/javascript">
       ( function() {
         var canvas = document.getElementById( "example-binPacker" );
@@ -5878,7 +5880,7 @@ var hullPoints = phet.dot.ConvexHull2.grahamScan( points, false );</pre>
 </div>
 
 <script type="text/javascript">
-  SyntaxHighlighter.all();
+  window.SyntaxHighlighter.all();
 
   function updatePositions() {
     var codeIndex = document.getElementById( 'codeIndex' );

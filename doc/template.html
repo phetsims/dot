@@ -310,11 +310,11 @@ grunt</pre>
 </div>
 
 <script type="text/javascript">
-  SyntaxHighlighter.all();
+  window.SyntaxHighlighter.all();
 
   function updatePositions() {
-    var codeIndex = document.getElementById( 'codeIndex' );
-    var top = Math.max( 0, document.getElementsByClassName( 'navbar' )[ 0 ].getBoundingClientRect().bottom );
+    const codeIndex = document.getElementById( 'codeIndex' );
+    const top = Math.max( 0, document.getElementsByClassName( 'navbar' )[ 0 ].getBoundingClientRect().bottom );
     codeIndex.style.top = top + 'px';
   }
 

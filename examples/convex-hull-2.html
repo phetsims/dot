@@ -27,14 +27,14 @@
 <body>
 <canvas id="canvas"></canvas>
 <script type="text/javascript">
-  var canvas = document.getElementById( 'canvas' );
+  const canvas = document.getElementById( 'canvas' );
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  var context = canvas.getContext( '2d' );
+  const context = canvas.getContext( '2d' );
 
-  var p = function( x, y ) { return new phet.dot.Vector2( x, y ); }
-  var points = [];
+  const p = function( x, y ) { return new phet.dot.Vector2( x, y ); };
+  const points = [];
 
   function drawLabel() {
     context.fillStyle = '#000';
@@ -43,18 +43,18 @@
   }
   drawLabel();
 
-  document.addEventListener( 'mousemove', function( evt ) {
+  document.addEventListener( 'mousemove', evt => {
     context.clearRect( 0, 0, canvas.width, canvas.height );
     points.push( p( evt.clientX, evt.clientY ) );
-    _.each( points, function( point ) {
+    _.each( points, point => {
       context.beginPath();
       context.arc( point.x, point.y, 2, 0, Math.PI * 2, false );
       context.fillStyle = '#000';
       context.fill();
     } );
-    var hull = phet.dot.ConvexHull2.grahamScan( points );
+    const hull = phet.dot.ConvexHull2.grahamScan( points );
     context.beginPath();
-    _.each( hull, function( point ) {
+    _.each( hull, point => {
       context.lineTo( point.x, point.y );
     } );
     context.closePath();
@@ -68,7 +68,7 @@
     drawLabel();
   } );
 
-  document.addEventListener( 'mousedown', function( evt ) {
+  document.addEventListener( 'mousedown', evt => {
     points.push( p( evt.clientX, evt.clientY ) );
   } );
 </script>
