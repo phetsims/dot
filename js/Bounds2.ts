@@ -32,8 +32,6 @@ export type Bounds2StateObject = {
   maxY: InfiniteNumberStateObject;
 };
 
-// TODO: Why does freeToPool get promoted, but nothing else? https://github.com/phetsims/phet-core/issues/103
-// TODO: Do we need TPoolable? Can classes just have a static pool method? https://github.com/phetsims/phet-core/issues/103
 export default class Bounds2 implements TPoolable {
 
   // The minimum X coordinate of the bounds.
