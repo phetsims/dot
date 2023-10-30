@@ -623,7 +623,7 @@ class Complex {
     const c3 = c2.times( c );
     const abc = a.times( b ).times( c );
 
-    // TODO: factor out constant numeric values https://github.com/phetsims/dot/issues/120
+    // TODO: factor out constant numeric values https://github.com/phetsims/dot/issues/96
 
     const D0_1 = b2;
     const D0_2 = a.times( c ).times( Complex.real( 3 ) );

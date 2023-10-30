@@ -20,7 +20,7 @@ class LUDecomposition {
 
     this.matrix = matrix;
 
-    // TODO: size! https://github.com/phetsims/dot/issues/120
+    // TODO: size! https://github.com/phetsims/dot/issues/96
     this.LU = matrix.getArrayCopy();
     const LU = this.LU;
     this.m = matrix.getRowDimension();

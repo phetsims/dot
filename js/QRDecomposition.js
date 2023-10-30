@@ -18,7 +18,7 @@ class QRDecomposition {
   constructor( matrix ) {
     this.matrix = matrix;
 
-    // TODO: size! https://github.com/phetsims/dot/issues/120
+    // TODO: size! https://github.com/phetsims/dot/issues/96
     this.QR = matrix.getArrayCopy();
     const QR = this.QR;
     this.m = matrix.getRowDimension();
