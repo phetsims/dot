@@ -776,15 +776,15 @@ Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new Vector2( 0, 0 );
 Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
 Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
 
-const stateSchema = {
+const STATE_SCHEMA = {
   x: NumberIO,
   y: NumberIO
 };
-export type Vector2StateObject = StateObject<typeof stateSchema>;
+export type Vector2StateObject = StateObject<typeof STATE_SCHEMA>;
 
 Vector2.Vector2IO = new IOType<Vector2, Vector2StateObject>( 'Vector2IO', {
   valueType: Vector2,
-  stateSchema: stateSchema,
+  stateSchema: STATE_SCHEMA,
   toStateObject: ( vector2: Vector2 ) => vector2.toStateObject(),
   fromStateObject: ( stateObject: Vector2StateObject ) => Vector2.fromStateObject( stateObject ),
   documentation: 'A numerical object with x and y properties, like {x:3,y:4}'
