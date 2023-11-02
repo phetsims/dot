@@ -10,18 +10,20 @@
 
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../tandem/js/types/IOType.js';
-import InfiniteNumberIO, { InfiniteNumberStateObject } from '../../tandem/js/types/InfiniteNumberIO.js';
+import InfiniteNumberIO from '../../tandem/js/types/InfiniteNumberIO.js';
 import dot from './dot.js';
+import { StateObject } from '../../tandem/js/types/StateSchema.js';
 
 export type TRange = {
   min: number;
   max: number;
 };
 
-export type RangeStateObject = {
-  min: InfiniteNumberStateObject;
-  max: InfiniteNumberStateObject;
+const STATE_SCHEMA = {
+  min: InfiniteNumberIO,
+  max: InfiniteNumberIO
 };
+export type RangeStateObject = StateObject<typeof STATE_SCHEMA>;
 
 class Range implements TRange {
 
@@ -282,23 +284,27 @@ class Range implements TRange {
     throw new Error( 'defaultValue is undefined, did you mean to use RangeWithValue?' );
   }
 
+  public toStateObject(): RangeStateObject {
+    return {
+      min: InfiniteNumberIO.toStateObject( this.min ),
+      max: InfiniteNumberIO.toStateObject( this.max )
+    };
+  }
+
+  public static fromStateObject( stateObject: RangeStateObject ): Range {
+    // eslint-disable-next-line no-html-constructors
+    return new Range(
+      InfiniteNumberIO.fromStateObject( stateObject.min ),
+      InfiniteNumberIO.fromStateObject( stateObject.max )
+    );
+  }
+
   public static RangeIO = new IOType<Range, RangeStateObject>( 'RangeIO', {
     valueType: Range,
     documentation: 'A range with "min" and a "max" members.',
-    toStateObject: ( range: Range ): RangeStateObject => ( {
-      min: InfiniteNumberIO.toStateObject( range.min ),
-      max: InfiniteNumberIO.toStateObject( range.max )
-    } ),
-
-    // eslint-disable-next-line no-html-constructors
-    fromStateObject: ( stateObject: RangeStateObject ) => new Range(
-      InfiniteNumberIO.fromStateObject( stateObject.min ),
-      InfiniteNumberIO.fromStateObject( stateObject.max )
-    ),
-    stateSchema: {
-      min: InfiniteNumberIO,
-      max: InfiniteNumberIO
-    }
+    stateSchema: STATE_SCHEMA,
+    toStateObject: ( range: Range ) => range.toStateObject(),
+    fromStateObject: ( stateObject: RangeStateObject ) => Range.fromStateObject( stateObject )
   } );
 
   public static readonly EVERYTHING = new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY ); // eslint-disable-line no-html-constructors
