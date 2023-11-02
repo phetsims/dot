@@ -301,7 +301,7 @@ class Range implements TRange {
 
   public static RangeIO = new IOType<Range, RangeStateObject>( 'RangeIO', {
     valueType: Range,
-    documentation: 'A range with "min" and a "max" members.',
+    documentation: 'A range with "min" and "max" members.',
     stateSchema: STATE_SCHEMA,
     toStateObject: ( range: Range ) => range.toStateObject(),
     fromStateObject: ( stateObject: RangeStateObject ) => Range.fromStateObject( stateObject )
