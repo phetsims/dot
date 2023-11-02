@@ -123,7 +123,7 @@ export default class Dimension2 {
 
   public static Dimension2IO = new IOType<Dimension2, Dimension2StateObject>( 'Dimension2IO', {
     valueType: Dimension2,
-    documentation: 'A dimension with "width" and a "height" members.',
+    documentation: 'A dimension with "width" and "height" members.',
     stateSchema: STATE_SCHEMA,
     toStateObject: ( range: Dimension2 ) => range.toStateObject(),
     fromStateObject: ( stateObject: Dimension2StateObject ) => Dimension2.fromStateObject( stateObject )
