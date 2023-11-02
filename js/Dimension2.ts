@@ -8,6 +8,15 @@
 
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
+import InfiniteNumberIO from '../../tandem/js/types/InfiniteNumberIO.js';
+import { StateObject } from '../../tandem/js/types/StateSchema.js';
+import IOType from '../../tandem/js/types/IOType.js';
+
+const STATE_SCHEMA = {
+  width: InfiniteNumberIO,
+  height: InfiniteNumberIO
+};
+export type Dimension2StateObject = StateObject<typeof STATE_SCHEMA>;
 
 export default class Dimension2 {
 
@@ -97,6 +106,28 @@ export default class Dimension2 {
   public equals( that: Dimension2 ): boolean {
     return this.width === that.width && this.height === that.height;
   }
+
+  public toStateObject(): Dimension2StateObject {
+    return {
+      width: InfiniteNumberIO.toStateObject( this.width ),
+      height: InfiniteNumberIO.toStateObject( this.height )
+    };
+  }
+
+  public static fromStateObject( stateObject: Dimension2StateObject ): Dimension2 {
+    return new Dimension2(
+      InfiniteNumberIO.fromStateObject( stateObject.width ),
+      InfiniteNumberIO.fromStateObject( stateObject.height )
+    );
+  }
+
+  public static Dimension2IO = new IOType<Dimension2, Dimension2StateObject>( 'Dimension2IO', {
+    valueType: Dimension2,
+    documentation: 'A dimension with "width" and a "height" members.',
+    stateSchema: STATE_SCHEMA,
+    toStateObject: ( range: Dimension2 ) => range.toStateObject(),
+    fromStateObject: ( stateObject: Dimension2StateObject ) => Dimension2.fromStateObject( stateObject )
+  } );
 }
 
 dot.register( 'Dimension2', Dimension2 );
