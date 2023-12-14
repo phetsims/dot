@@ -60,6 +60,9 @@ QUnit.test( 'roundSymmetric', assert => {
   const result = original.roundSymmetric();
   assert.equal( result, original, 'reflexive' );
   assert.ok( original.equals( rounded ), 'both rounded now' );
+
+  assert.equal( Utils.roundSymmetric( Number.POSITIVE_INFINITY ), Number.POSITIVE_INFINITY, 'infinity' );
+  assert.equal( Utils.roundSymmetric( Number.NEGATIVE_INFINITY ), Number.NEGATIVE_INFINITY, 'negative infinity' );
 } );
 
 QUnit.test( 'lineLineIntersection', assert => {
