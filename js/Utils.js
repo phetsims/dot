@@ -551,6 +551,8 @@ const Utils = {
    * @returns {string}
    */
   toFixed( value, decimalPlaces ) {
+    assert && assert( typeof value === 'number' );
+
     const multiplier = Math.pow( 10, decimalPlaces );
     const newValue = Utils.roundSymmetric( value * multiplier ) / multiplier;
     return newValue.toFixed( decimalPlaces ); // eslint-disable-line bad-sim-text
