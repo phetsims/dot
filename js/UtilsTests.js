@@ -258,3 +258,102 @@ QUnit.test( 'solveCubicRootsReal', assert => {
   arrayApproximateEquals( assert, Utils.solveCubicRootsReal( 1, 0, -25, 0 ), [ -5, 0, 5 ], 'three solutions' );
   arrayApproximateEquals( assert, Utils.solveCubicRootsReal( 1, -18, 107, -210 ), [ 5, 6, 7 ], 'three solutions' );
 } );
+
+
+QUnit.test( 'toFixed', assert => {
+
+  assert.equal( Utils.toFixed( Number.POSITIVE_INFINITY, 0 ), 'Infinity' );
+  assert.equal( Utils.toFixed( Number.POSITIVE_INFINITY, 1 ), 'Infinity' );
+  assert.equal( Utils.toFixed( Number.POSITIVE_INFINITY, 5 ), 'Infinity' );
+  assert.equal( Utils.toFixed( Number.NEGATIVE_INFINITY, 0 ), '-Infinity' );
+  assert.equal( Utils.toFixed( Number.NEGATIVE_INFINITY, 1 ), '-Infinity' );
+  assert.equal( Utils.toFixed( Number.NEGATIVE_INFINITY, 5 ), '-Infinity' );
+  assert.equal( Utils.toFixed( NaN, 0 ), 'NaN' );
+  assert.equal( Utils.toFixed( NaN, 1 ), 'NaN' );
+
+  assert.equal( Utils.toFixed( 35.855, 0 ), '36' );
+  assert.equal( Utils.toFixed( 35.855, 3 ), '35.855' );
+
+  assert.equal( Utils.toFixed( 35.855, 2 ), '35.86' );
+  assert.equal( Utils.toFixed( 35.854, 2 ), '35.85' );
+  assert.equal( Utils.toFixed( -35.855, 2 ), '-35.86' );
+  assert.equal( Utils.toFixed( -35.854, 2 ), '-35.85' );
+
+  assert.equal( Utils.toFixed( 0.005, 2 ), '0.01' );
+  assert.equal( Utils.toFixed( 0.004, 2 ), '0.00' );
+  assert.equal( Utils.toFixed( -0.005, 2 ), '-0.01' );
+  assert.equal( Utils.toFixed( -0.004, 2 ), '0.00' );
+
+  assert.equal( Utils.toFixed( -0.005, 2 ), '-0.01' );
+
+  assert.equal( Utils.toFixed( 1.5, 0 ), '2' );
+  assert.equal( Utils.toFixed( 1.56, 0 ), '2' );
+  assert.equal( Utils.toFixed( 1.56, 1 ), '1.6' );
+  assert.equal( Utils.toFixed( 1.54, 1 ), '1.5' );
+
+  assert.equal( Utils.toFixed( 1.4, 0 ), '1' );
+  assert.equal( Utils.toFixed( 1.46, 0 ), '1' );
+  assert.equal( Utils.toFixed( 1.46, 1 ), '1.5' );
+  assert.equal( Utils.toFixed( 1.44, 1 ), '1.4' );
+
+  assert.equal( Utils.toFixed( 4.577999999999999, 7 ), '4.5780000' );
+  assert.equal( Utils.toFixed( 0.07957747154594767, 3 ), '0.080' );
+  assert.equal( Utils.toFixed( 1e-7, 10 ), '0.0000001000' );
+  assert.equal( Utils.toFixed( 2.7439999999999998, 7 ), '2.7440000' );
+  assert.equal( Utils.toFixed( 0.396704, 2 ), '0.40' );
+  assert.equal( Utils.toFixed( 1.0002929999999999, 7 ), '1.0002930' );
+  assert.equal( Utils.toFixed( 0.4996160344827586, 3 ), '0.500' );
+  assert.equal( Utils.toFixed( 99.99999999999999, 2 ), '100.00' );
+  assert.equal( Utils.toFixed( 2.169880191815152, 3 ), '2.170' );
+  assert.equal( Utils.toFixed( 1.0999999999999999e-7, 1 ), '0.0' );
+  assert.equal( Utils.toFixed( 3.2303029999999997, 7 ), '3.2303030' );
+  assert.equal( Utils.toFixed( 0.497625, 2 ), '0.50' );
+  assert.equal( Utils.toFixed( 2e-12, 12 ), '0.000000000002' );
+  assert.equal( Utils.toFixed( 6.98910467173495, 1 ), '7.0' );
+  assert.equal( Utils.toFixed( 8.976212933741225, 1 ), '9.0' );
+  assert.equal( Utils.toFixed( 2.9985632338511543, 1 ), '3.0' );
+  assert.equal( Utils.toFixed( -8.951633986928105, 1 ), -'9.0' );
+  assert.equal( Utils.toFixed( 99.99999999999999, 2 ), '100.00' );
+  assert.equal( Utils.toFixed( -4.547473508864641e-13, 10 ), '0.0000000000' );
+  assert.equal( Utils.toFixed( 0.98, 1 ), '1.0' );
+  assert.equal( Utils.toFixed( 0.2953388796149264, 2 ), '0.30' );
+  assert.equal( Utils.toFixed( 1.1119839827800002, 4 ), '1.1120' );
+  assert.equal( Utils.toFixed( 1.0099982756502124, 4 ), '1.0100' );
+  assert.equal( Utils.toFixed( -1.5, 2 ), '-1.50' );
+
+  assert.equal( Utils.toFixed( 1.113774420948007e+25, 9 ), '11137744209480070000000000.000000000' );
+
+  assert.equal( Utils.toFixed( 29495969594939.1, 3 ), '29495969594939.100' );
+  assert.equal( Utils.toFixed( 29495969594939.0, 3 ), '29495969594939.000' );
+
+  // eslint-disable-next-line no-floating-decimal
+  assert.equal( Utils.toFixed( 29495969594939., 3 ), '29495969594939.000' );
+  assert.equal( Utils.toFixed( 29495969594939, 3 ), '29495969594939.000' );
+  assert.equal( Utils.toFixed( 29495969594939, 0 ), '29495969594939' );
+  assert.equal( Utils.toFixed( 294959695949390000000, 3 ), '294959695949390000000.000' );
+  assert.equal( Utils.toFixed( 294959695949390000000, 0 ), '294959695949390000000' );
+
+  window.assert && assert.throws( () => {
+    Utils.toFixed( 0, 1.3010299956639813 );
+  }, 'integer for decimalPlaces' );
+
+  assert.equal( Utils.toFixed( 0, 0 ), '0' );
+  assert.equal( Utils.toFixed( 0, 1 ), '0.0' );
+  assert.equal( Utils.toFixed( -0, 0 ), '0' );
+  assert.equal( Utils.toFixed( -0, 1 ), '0.0' );
+  assert.equal( Utils.toFixed( -0, 4 ), '0.0000' );
+} );
+
+QUnit.test( 'toFixedNumber', assert => {
+  assert.equal( Utils.toFixedNumber( Number.POSITIVE_INFINITY, 0 ), Number.POSITIVE_INFINITY );
+  assert.equal( Utils.toFixedNumber( Number.POSITIVE_INFINITY, 1 ), Number.POSITIVE_INFINITY );
+  assert.equal( Utils.toFixedNumber( Number.POSITIVE_INFINITY, 5 ), Number.POSITIVE_INFINITY );
+  assert.equal( Utils.toFixedNumber( Number.NEGATIVE_INFINITY, 0 ), Number.NEGATIVE_INFINITY );
+  assert.equal( Utils.toFixedNumber( Number.NEGATIVE_INFINITY, 1 ), Number.NEGATIVE_INFINITY );
+  assert.equal( Utils.toFixedNumber( Number.NEGATIVE_INFINITY, 5 ), Number.NEGATIVE_INFINITY );
+  assert.equal( Utils.toFixedNumber( 1000.100, 0 ).toString(), '1000' );
+  assert.equal( Utils.toFixedNumber( 1000.100, 0 ), 1000 );
+  assert.equal( Utils.toFixedNumber( 1000.100, 1 ).toString(), '1000.1' );
+  assert.equal( Utils.toFixedNumber( 1000.100, 1 ), 1000.1 );
+  assert.equal( Utils.toFixedNumber( -0, 1 ).toString(), '0' );
+} );

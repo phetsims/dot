@@ -6,6 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Big from '../../sherpa/lib/big-6.2.1.mjs'; // eslint-disable-line default-import-match-filename
 import dot from './dot.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
@@ -552,10 +553,27 @@ const Utils = {
    */
   toFixed( value, decimalPlaces ) {
     assert && assert( typeof value === 'number' );
+    assert && assert( Number.isInteger( decimalPlaces ), `decimal places must be an integer: ${decimalPlaces}` );
+    if ( isNaN( value ) ) {
+      return 'NaN';
+    }
+    else if ( value === Number.POSITIVE_INFINITY ) {
+      return 'Infinity';
+    }
+    else if ( value === Number.NEGATIVE_INFINITY ) {
+      return '-Infinity';
+    }
 
-    const multiplier = Math.pow( 10, decimalPlaces );
-    const newValue = Utils.roundSymmetric( value * multiplier ) / multiplier;
-    return newValue.toFixed( decimalPlaces ); // eslint-disable-line bad-sim-text
+    // eslint-disable-next-line bad-sim-text
+    const result = new Big( value ).toFixed( decimalPlaces );
+
+    // Avoid reporting -0.000
+    if ( result.startsWith( '-0.' ) && Number.parseFloat( result ) === 0 ) {
+      return '0' + result.slice( 2 );
+    }
+    else {
+      return result;
+    }
   },
 
   /**
