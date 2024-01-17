@@ -94,3 +94,15 @@ QUnit.test( 'expandNormalizedValue', assert => {
   assert.ok( range.expandNormalizedValue( 0.5 ) === 6, 'half' );
   assert.ok( range.expandNormalizedValue( 0.75 ) === 8, 'random weird number' );
 } );
+
+QUnit.test( 'clampDelta', assert => {
+  assert.equal( new Range( 0, 20 ).clampDelta( 10, 21 ), 10, 'clamped1' );
+  assert.equal( new Range( 0, 20 ).clampDelta( 10, -21 ), -10, 'clamped2' );
+  assert.equal( new Range( 0, 20 ).clampDelta( 10, 2 ), 2, 'clamped2' );
+  assert.equal( new Range( 0, 1 ).clampDelta( 0, 2 ), 1, 'clamped2' );
+  assert.equal( new Range( 0, 1 ).clampDelta( 0, -2 ), 0, 'clamped2' );
+  assert.equal( new Range( 0, 1 ).clampDelta( 0, -0 ), 0, 'clamped2' );
+  assert.equal( new Range( 0, 1 ).clampDelta( 1, -0 ), 0, 'clamped2' );
+  assert.equal( new Range( 0, 1 ).clampDelta( 1, 10 ), 0, 'clamped2' );
+  assert.equal( new Range( 0, 1 ).clampDelta( 0.5, 10 ), 0.5, 'clamped2' );
+} );

@@ -291,6 +291,14 @@ class Range implements TRange {
     };
   }
 
+  // Given a value and a delta to change that value, clamp the delta to make sure the value stays within range.
+  public clampDelta( value: number, delta: number ): number {
+    assert && assert( this.contains( value ) );
+    return value + delta < this.min ? this.min - value :
+           value + delta > this.max ? this.max - value :
+           delta;
+  }
+
   public static fromStateObject( stateObject: RangeStateObject ): Range {
     // eslint-disable-next-line no-html-constructors
     return new Range(
