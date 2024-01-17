@@ -50,7 +50,7 @@ QUnit.test( 'methods', assert => {
 } );
 
 QUnit.test( 'getNormalizedValue', assert => {
-  const testSameRange = value => {
+  const testSameRange = ( value: number ) => {
     assert.ok( value === new Range( 0, 1 ).getNormalizedValue( value ),
       `normalized value in range from 0 to 1 is the same as value: ${value}|` );
   };
@@ -76,7 +76,7 @@ QUnit.test( 'getNormalizedValue', assert => {
 } );
 
 QUnit.test( 'expandNormalizedValue', assert => {
-  const testSameRange = normalizedValue => {
+  const testSameRange = ( normalizedValue: number ) => {
     assert.ok( normalizedValue === new Range( 0, 1 ).expandNormalizedValue( normalizedValue ),
       `normalized normalized in range from 0 to 1 is the same as value: ${normalizedValue}` );
   };
