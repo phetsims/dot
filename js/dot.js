@@ -1,5 +1,6 @@
 // Copyright 2013-2023, University of Colorado Boulder
 
+// @author Jonathan Olson <jonathan.olson@colorado.edu>
 
 import Namespace from '../../phet-core/js/Namespace.js';
 

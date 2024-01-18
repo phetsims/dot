@@ -1,5 +1,7 @@
 // Copyright 2016-2023, University of Colorado Boulder
 
+// @author Jonathan Olson <jonathan.olson@colorado.edu>
+
 import '../../axon/js/main.js';
 import '../../phet-core/js/main.js';
 import './main.js';
