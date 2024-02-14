@@ -100,6 +100,14 @@ class Range implements TRange {
     return this;
   }
 
+  /**
+   * Sets the minimum and maximum value of this range from the provided Range.
+   */
+  public set( range: Range ): this {
+    this.setMinMax( range.min, range.max );
+    return this;
+  }
+
   public addValue( n: number ): void {
     this._min = Math.min( this._min, n );
     this._max = Math.max( this._max, n );
