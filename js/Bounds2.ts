@@ -25,11 +25,20 @@ import Orientation from '../../phet-core/js/Orientation.js';
 // Temporary instances to be used in the transform method.
 const scratchVector2 = new Vector2( 0, 0 );
 
+// For PhET-iO serialization
 export type Bounds2StateObject = {
   minX: InfiniteNumberStateObject;
   minY: InfiniteNumberStateObject;
   maxX: InfiniteNumberStateObject;
   maxY: InfiniteNumberStateObject;
+};
+
+// Duck typed for when creating a Bounds2 with support for Bounds3 or other structurally similar object.
+type Bounds2Like = {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
 };
 
 export default class Bounds2 implements TPoolable {
@@ -448,6 +457,13 @@ export default class Bounds2 implements TPoolable {
   }
 
   /**
+   * Static factory method
+   */
+  public static create( bounds: Bounds2Like ): Bounds2 {
+    return b2( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
+  }
+
+  /**
    * The smallest bounds that contains both this bounds and the input bounds, returned as a copy.
    *
    * This is the immutable form of the function includeBounds(). This will return a new bounds, and will not modify
@@ -830,7 +846,7 @@ export default class Bounds2 implements TPoolable {
    * This is the mutable form of the function copy(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
    */
-  public set( bounds: Bounds2 ): Bounds2 {
+  public set( bounds: Bounds2Like ): Bounds2 {
     return this.setMinMax( bounds.minX, bounds.minY, bounds.maxX, bounds.maxY );
   }
 
