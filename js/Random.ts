@@ -13,89 +13,79 @@
  * @author Mohamed Safi
  */
 
-import merge from '../../phet-core/js/merge.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 import Range from './Range.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
+import optionize from '../../phet-core/js/optionize.js';
 
-class Random {
+type RandomOptions = {
 
-  /**
-   * @param {Object} [options]
-   */
-  constructor( options ) {
+  // {number|null} seed for the random number generator.  When seed is null, Math.random() is used.
+  seed?: number | null;
+};
 
-    options = merge( {
+export default class Random {
+  private seed: number | null = null;
 
-      // {number|null} seed for the random number generator.  When seed is null, Math.random() is used.
+  // If seed is provided, create a local random number generator without altering Math.random.
+  // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
+  private seedrandom: ( () => number ) | null = null;
+
+  // the number of times `nextDouble` is called. Clients should not write to this value.
+  public numberOfCalls = 0;
+
+  public constructor( providedOptions?: RandomOptions ) {
+
+    const options = optionize<RandomOptions>()( {
       seed: null
-    }, options );
+    }, providedOptions );
 
-    // @private {number|null} initialized via setSeed below
-    this.seed = null;
-
-    // If seed is provided, create a local random number generator without altering Math.random.
-    // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
-    // @private {function:number|null} initialized via setSeed below
-    this.seedrandom = null;
     this.setSeed( options.seed );
-
-    // @public (read-only) - the number of times `nextDouble` is called
-    this.numberOfCalls = 0;
 
     Random.allRandomInstances.add( this );
   }
 
   /**
-   * Clears out this instance from all of the Random instances.
-   * @public
+   * Clears out this instance from all the Random instances.
    */
-  dispose() {
+  public dispose(): void {
     Random.allRandomInstances.delete( this );
   }
 
   /**
    * Gets the seed.
-   * @public
-   * @returns {number|null}
    */
-  getSeed() {
+  public getSeed(): number | null {
     return this.seed;
   }
 
   /**
    * Returns the next pseudo-random boolean
-   * @public
-   * @returns {boolean}
    */
-  nextBoolean() {
+  public nextBoolean(): boolean {
     return this.nextDouble() >= 0.5;
   }
 
   /**
    * Returns the next pseudo random number from this random number generator sequence.
    * The random number is an integer ranging from 0 to n-1.
-   * @public
-   * @param {number} n
-   * @returns {number} - an integer
+   * @returns an integer
    */
-  nextInt( n ) {
+  public nextInt( n: number ): number {
     const value = this.nextDouble() * n;
     return Math.floor( value );
   }
 
   /**
    * Randomly select a random integer between min and max (inclusive).
-   * @public
-   * @param {number} min - must be an integer
-   * @param {number} max - must be an integer
-   * @returns {number} an integer between min and max, inclusive
+   * @param min - must be an integer
+   * @param max - must be an integer
+   * @returns an integer between min and max, inclusive
    */
-  nextIntBetween( min, max ) {
+  public nextIntBetween( min: number, max: number ): number {
 
-    assert && assert( arguments.length === 2, 'nextIntBetween must have exactly 2 arguments' );
     assert && assert( Number.isInteger( min ), `min must be an integer: ${min}` );
     assert && assert( Number.isInteger( max ), `max must be an integer: ${max}` );
 
@@ -105,12 +95,10 @@ class Random {
 
   /**
    * Randomly select one element from the given array.
-   * @public
-   * @param {T[]} array - the array from which one element will be selected, must have at least one element
-   * @returns {T} - the selected element from the array
-   * @template T
+   * @param array - from which one element will be selected, must have at least one element
+   * @returns the selected element from the array
    */
-  sample( array ) {
+  public sample<T>( array: T[] ): T {
     assert && assert( array.length > 0, 'Array should have at least 1 item.' );
     const index = this.nextIntBetween( 0, array.length - 1 );
     return array[ index ];
@@ -119,12 +107,10 @@ class Random {
   /**
    * Creates an array of shuffled values, using a version of the Fisher-Yates shuffle.  Adapted from lodash-2.4.1 by
    * Sam Reid on Aug 16, 2016, See http://en.wikipedia.org/wiki/Fisher-Yates_shuffle.
-   * @public
-   * @param {Array} array - the array which will be shuffled
-   * @returns {Array} a new array with all the same elements in the passed-in array, in randomized order.
+   * @param array - the array which will be shuffled
+   * @returns a new array with all the same elements in the passed-in array, in randomized order.
    */
-  shuffle( array ) {
-    assert && assert( array, 'Array should exist' );
+  public shuffle<T>( array: T[] ): T[] {
     let index = -1;
     const result = new Array( array.length );
 
@@ -139,22 +125,17 @@ class Random {
   /**
    * Returns the next pseudo random number from this random number generator sequence in the range [0, 1)
    * The distribution of the random numbers is uniformly distributed across the interval
-   * @public
-   * @returns {number} - the random number
+   * @returns the random number
    */
-  nextDouble() {
+  public nextDouble(): number {
     this.numberOfCalls++;
-    return this.seedrandom();
+    return this.seedrandom!();
   }
 
   /**
    * Randomly selects a double in the range [min,max).
-   * @public
-   * @param {number} min
-   * @param {number} max
-   * @returns {number}
    */
-  nextDoubleBetween( min, max ) {
+  public nextDoubleBetween( min: number, max: number ): number {
     assert && assert( min < max, 'min must be < max' );
     const value = min + this.nextDouble() * ( max - min );
     assert && assert( value >= min && value < max, `value out of range: ${value}` );
@@ -164,10 +145,8 @@ class Random {
   /**
    * Returns the next gaussian-distributed random number from this random number generator sequence.
    * The distribution of the random numbers is gaussian, with a mean = 0 and standard deviation = 1
-   * @public
-   * @returns {number}
    */
-  nextGaussian() {
+  public nextGaussian(): number {
     return Utils.boxMullerTransform( 0, 1, this );
   }
 
@@ -175,12 +154,8 @@ class Random {
    * Gets the next random double in a Range.
    * For min < max, the return value is [min,max), between min (inclusive) and max (exclusive).
    * For min === max, the return value is min.
-   * @public
-   * @param {Range} range
-   * @returns {number}
    */
-  nextDoubleInRange( range ) {
-    assert && assert( range instanceof Range, 'invalid range' );
+  public nextDoubleInRange( range: Range ): number {
     if ( range.min < range.max ) {
       return this.nextDoubleBetween( range.min, range.max );
     }
@@ -192,12 +167,8 @@ class Random {
 
   /**
    * Gets a random point within the provided Bounds2, [min,max)
-   * @param {Bounds2} bounds
-   * @returns {Vector2}
-   * @public
    */
-  nextPointInBounds( bounds ) {
-    assert && assert( bounds instanceof Bounds2, 'invalid Bounds2' );
+  public nextPointInBounds( bounds: Bounds2 ): Vector2 {
     return new Vector2(
       this.nextDoubleBetween( bounds.minX, bounds.maxX ),
       this.nextDoubleBetween( bounds.minY, bounds.maxY )
@@ -205,14 +176,14 @@ class Random {
   }
 
   /**
-   * @public
-   * @param {number|null} seed - if null, Math.random will be used to create the seed.
+   * @param seed - if null, Math.random will be used to create the seed.
    */
-  setSeed( seed ) {
-    assert && assert( seed === null || typeof seed === 'number' );
+  public setSeed( seed: number | null ): void {
 
     if ( typeof seed === 'number' ) {
-      assert && assert( Math.seedrandom, 'cannot set seed with 3rd party library "Math.seedrandom".' );
+
+      // @ts-expect-error
+      assert && assert( Math.seedrandom, 'If a seed is specified, then we must also have Math.seedrandom to use the seed.' );
     }
     else {
       seed = Math.random(); // eslint-disable-line bad-sim-text
@@ -222,7 +193,7 @@ class Random {
 
     // If seed is provided, create a local random number generator without altering Math.random.
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
-    // @private {function:number|null}
+    // @ts-expect-error
     this.seedrandom = Math.seedrandom ? new Math.seedrandom( `${seed}` ) : () => Math.random(); // eslint-disable-line bad-sim-text
   }
 
@@ -230,11 +201,8 @@ class Random {
    * Choose a numeric index from the array of weights.  The array of weights does not need to be normalized.
    * See https://stackoverflow.com/questions/8877249/generate-random-integers-with-probabilities
    * See also ContinuousServer.weightedSampleTest which uses the same algorithm
-   * @param {ReadonlyArray<number>} weights
-   * @returns {number}
-   * @public
    */
-  sampleProbabilities( weights ) {
+  public sampleProbabilities( weights: readonly number[] ): number {
     const totalWeight = _.sum( weights );
 
     const cutoffWeight = totalWeight * this.nextDouble();
@@ -248,16 +216,11 @@ class Random {
     }
 
     // The fallback is the last test
-    assert && assert( !weights[ weights.length - 1 ] === 0, 'if last weight is zero, should have selected something beforehand' );
+    assert && assert( weights[ weights.length - 1 ] !== 0, 'if last weight is zero, should have selected something beforehand' );
     return weights.length - 1;
   }
+
+  public static allRandomInstances = new Set<Random>();
 }
 
-Random.allRandomInstances = new Set();
-Random.isNormalized = array => {
-  assert && assert( _.sum( array ) === 1 );
-};
-
 dot.register( 'Random', Random );
-
-export default Random;
