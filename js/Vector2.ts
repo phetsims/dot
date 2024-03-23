@@ -1,4 +1,4 @@
-// Copyright 2013-2023, University of Colorado Boulder
+// Copyright 2013-2024, University of Colorado Boulder
 
 /**
  * Basic 2-dimensional vector, represented as (x,y).  Values can be numeric, or NaN or infinite.

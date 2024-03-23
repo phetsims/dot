@@ -1,4 +1,4 @@
-// Copyright 2013-2022, University of Colorado Boulder
+// Copyright 2013-2024, University of Colorado Boulder
 
 /**
  * 3-dimensional ray consisting of an origin point and a unit direction vector.
