@@ -1092,6 +1092,48 @@ export default class Matrix3 implements TPoolable {
   }
 
   /**
+   * Sets this matrix to the combined scale+translation+rotation.
+   *
+   * The order of operations is scale, then rotate, then translate.
+   *
+   * @param x
+   * @param y
+   * @param angle - in radians
+   */
+  public setToScaleTranslationRotation( scale: number, x: number, y: number, angle: number ): this {
+    let c = Math.cos( angle );
+    let s = Math.sin( angle );
+
+    // Handle cases close to 0, since we want Math.PI/2 rotations (and the like) to be exact
+    if ( Math.abs( c ) < 1e-15 ) {
+      c = 0;
+    }
+    if ( Math.abs( s ) < 1e-15 ) {
+      s = 0;
+    }
+
+    c *= scale;
+    s *= scale;
+
+    return this.rowMajor(
+      c, -s, x,
+      s, c, y,
+      0, 0, 1,
+      Matrix3Type.AFFINE );
+  }
+
+  /**
+   * Sets this matrix to the combined translation+rotation (where the rotation logically would happen first, THEN it
+   * would be translated).
+   *
+   * @param translation
+   * @param angle - in radians
+   */
+  public setToScaleTranslationRotationPoint( scale: number, translation: Vector2, angle: number ): this {
+    return this.setToScaleTranslationRotation( scale, translation.x, translation.y, angle );
+  }
+
+  /**
    * Sets this matrix to the values contained in an SVGMatrix.
    */
   public setToSVGMatrix( svgMatrix: SVGMatrix ): this {
