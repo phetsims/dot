@@ -1,4 +1,4 @@
-// Copyright 2013-2023, University of Colorado Boulder
+// Copyright 2013-2024, University of Colorado Boulder
 
 /**
  * Dimension3 is a basic width, height, and depth, like a Bounds3 but without the position defined.
