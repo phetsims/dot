@@ -248,6 +248,14 @@ class Range implements TRange {
   }
 
   /**
+   * Multiply the min and max by the provided value
+   */
+  public times( value: number ): this {
+    this.setMinMax( this._min * value, this._max * value );
+    return this;
+  }
+
+  /**
    * Determines if this Range is equal to some object.
    */
   public equals( object: IntentionalAny ): boolean {
