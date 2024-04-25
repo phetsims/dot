@@ -182,7 +182,7 @@ const Utils = {
   },
 
   /**
-   * Intersection point between the lines defined by the line segments p1-2 and p3-p4. If the
+   * Intersection point between the lines defined by the line segments p1-p2 and p3-p4. If the
    * lines are not properly defined, null is returned. If there are no intersections or infinitely many,
    * e.g. parallel lines, null is returned.
    * @public
