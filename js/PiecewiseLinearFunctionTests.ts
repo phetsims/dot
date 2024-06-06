@@ -10,8 +10,8 @@ import PiecewiseLinearFunction from './PiecewiseLinearFunction.js';
 
 QUnit.module( 'PiecewiseLinearFunction' );
 
-function approximateEquals( assert, a, b, msg ) {
-  assert.ok( Math.abs( a - b ) < 0.00000001, `${msg} expected: ${b}, result: ${a}` );
+function approximateEquals( assert: Assert, a: number, b: number ):void {
+  assert.ok( Math.abs( a - b ) < 0.00000001, `expected: ${b}, result: ${a}` );
 }
 
 QUnit.test( 'PiecewiseLinearFunction', assert => {

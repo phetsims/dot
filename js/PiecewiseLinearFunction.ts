@@ -12,29 +12,26 @@ import Utils from './Utils.js';
 class PiecewiseLinearFunction {
 
   /**
-   * @param {number[]} array - in the form x0,y0, x1,y1, x2,y2, etc.  Points do not have to be in order.
-   *                         - points cannot have a different y value for the same x value (not checked)
+   * @param array - in the form x0,y0, x1,y1, x2,y2, etc.  Points do not have to be in order.
+   *              - points cannot have a different y value for the same x value (not checked)
    */
-  constructor( array ) {
+  public constructor( private readonly array: number[] ) {
     assert && assert( array.length % 2 === 0, 'array length should be even' );
     assert && assert( array.length > 0, 'array must have elements' );
     assert && assert( Array.isArray( array ), 'array should be an array' );
-    this.array = array;
   }
 
-  // @public
-  evaluate( x ) {
+  public evaluate( x: number ): number {
     return PiecewiseLinearFunction.evaluate( this.array, x );
   }
 
   /**
    * This algorithm generates no garbage
-   * @param {number[]} array - in the form x0,y0, x1,y1, x2,y2, etc.  Points do not have to be ordered from low to high x
+   * @param array - in the form x0,y0, x1,y1, x2,y2, etc.  Points do not have to be ordered from low to high x
    *                         - points cannot have a different y value for the same x value (not checked)
-   * @param {number} x
-   * @public
+   * @param x
    */
-  static evaluate( array, x ) {
+  public static evaluate( array: number[], x: number ): number {
 
     // Find the points in the range by a single pass through the anchors
     let lowerIndex = -1;
