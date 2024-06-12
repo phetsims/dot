@@ -201,6 +201,11 @@ class Bounds3 {
   public get center(): Vector3 { return this.getCenter(); }
 
   /**
+   * Get the volume of the Bounds3 as if it were a cube.
+   */
+  public get volume(): number { return this.width * this.height * this.depth;}
+
+  /**
    * Whether we have negative width, height or depth. Bounds3.NOTHING is a prime example of an empty Bounds3.
    * Bounds with width = height = depth = 0 are considered not empty, since they include the single (0,0,0) point.
    */
@@ -214,9 +219,9 @@ class Bounds3 {
   }
 
   /**
-   * Whether this bounds has a non-zero area (non-zero positive width, height and depth).
+   * Whether this bounds has a non-zero volume (non-zero positive width, height and depth).
    */
-  public hasNonzeroArea(): boolean {
+  public hasNonzeroVolume(): boolean {
     return this.getWidth() > 0 && this.getHeight() > 0 && this.getDepth() > 0;
   }
 
