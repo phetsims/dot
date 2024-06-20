@@ -107,6 +107,18 @@ export default class Dimension2 {
     return this.width === that.width && this.height === that.height;
   }
 
+  /**
+   * Exact equality comparison between this dimension and another dimension.
+   *
+   * Whether difference between the two dimensions has no component with an absolute value greater than epsilon.
+   */
+  public equalsEpsilon( that: Dimension2, epsilon = 0 ): boolean {
+    return Math.max(
+      Math.abs( this.width - that.width ),
+      Math.abs( this.height - that.height )
+    ) <= epsilon;
+  }
+
   public toStateObject(): Dimension2StateObject {
     return {
       width: InfiniteNumberIO.toStateObject( this.width ),
