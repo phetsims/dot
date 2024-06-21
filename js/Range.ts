@@ -248,9 +248,16 @@ class Range implements TRange {
   }
 
   /**
-   * Multiply the min and max by the provided value
+   * Multiply the min and max by the provided value, immutable
    */
-  public times( value: number ): this {
+  public times( value: number ): Range {
+    return new Range( this._min * value, this._max * value ); // eslint-disable-line no-html-constructors
+  }
+
+  /**
+   * Multiply the min and max by the provided value, mutable
+   */
+  public multiply( value: number ): this {
     this.setMinMax( this._min * value, this._max * value );
     return this;
   }

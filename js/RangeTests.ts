@@ -106,3 +106,18 @@ QUnit.test( 'clampDelta', assert => {
   assert.equal( new Range( 0, 1 ).clampDelta( 1, 10 ), 0, 'clamped2' );
   assert.equal( new Range( 0, 1 ).clampDelta( 0.5, 10 ), 0.5, 'clamped2' );
 } );
+
+QUnit.test( 'times/multiply', assert => {
+
+  assert.equal( new Range( 0, 1 ).times( 3 ).min, 0, 'times1' );
+  assert.equal( new Range( 0, 1 ).times( 3 ).max, 3, 'times2' );
+  assert.equal( new Range( -30, 10 ).times( 3 ).min, -90, 'times3' );
+  assert.equal( new Range( -30, 10 ).times( 3 ).max, 30, 'times4' );
+  const range1 = new Range( 0, 10 );
+  assert.ok( range1 !== range1.times( 0 ), 'times5' );
+  assert.ok( range1 === range1.multiply( 0 ), 'multiply1' );
+  assert.equal( new Range( 0, 1 ).multiply( 3 ).min, 0, 'multiply1' );
+  assert.equal( new Range( 0, 1 ).multiply( 3 ).max, 3, 'multiply2' );
+  assert.equal( new Range( -30, 10 ).multiply( 3 ).min, -90, 'multiply3' );
+  assert.equal( new Range( -30, 10 ).multiply( 3 ).max, 30, 'multiply4' );
+} );
