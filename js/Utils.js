@@ -197,7 +197,7 @@ const Utils = {
     const epsilon = 1e-10;
 
     // If the endpoints are the same, they don't properly define a line
-    if ( p1.equals( p2 ) || p3.equals( p4 ) ) {
+    if ( p1.equalsEpsilon( p2, epsilon ) || p3.equalsEpsilon( p4, epsilon ) ) {
       return null;
     }
 
