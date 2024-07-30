@@ -18,7 +18,7 @@ import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Vector3 from './Vector3.js';
-import Matrix3 from './Matrix3.js';
+import Matrix4 from './Matrix4.js';
 
 class Bounds3 {
 
@@ -511,9 +511,8 @@ class Bounds3 {
    *
    * This is the immutable form of the function transform(). This will return a new bounds, and will not modify
    * this bounds.
-   * // TODO: Should be Matrix4 type, https://github.com/phetsims/dot/issues/125
    */
-  public transformed( matrix: Matrix3 ): Bounds3 {
+  public transformed( matrix: Matrix4 ): Bounds3 {
     return this.copy().transform( matrix );
   }
 
@@ -874,9 +873,8 @@ class Bounds3 {
    *
    * This is the mutable form of the function transformed(). This will mutate (change) this bounds, in addition to returning
    * this bounds itself.
-   * // TODO: should be Matrix4 type, https://github.com/phetsims/dot/issues/125
    */
-  public transform( matrix: Matrix3 ): Bounds3 {
+  public transform( matrix: Matrix4 ): Bounds3 {
     // do nothing
     if ( this.isEmpty() ) {
       return this;
@@ -907,14 +905,14 @@ class Bounds3 {
       maxZ = Math.max( maxZ, vector.z );
     }
 
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.minY, this.minZ ) ) );
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.maxY, this.minZ ) ) );
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.minY, this.minZ ) ) );
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.maxY, this.minZ ) ) );
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.minY, this.maxZ ) ) );
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.minX, this.maxY, this.maxZ ) ) );
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.minY, this.maxZ ) ) );
-    withIt( matrix.multiplyVector3( vector.setXYZ( this.maxX, this.maxY, this.maxZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.minX, this.minY, this.minZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.minX, this.maxY, this.minZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.maxX, this.minY, this.minZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.maxX, this.maxY, this.minZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.minX, this.minY, this.maxZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.minX, this.maxY, this.maxZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.maxX, this.minY, this.maxZ ) ) );
+    withIt( matrix.timesVector3( vector.setXYZ( this.maxX, this.maxY, this.maxZ ) ) );
     return this.setMinMax( minX, minY, minZ, maxX, maxY, maxZ );
   }
 

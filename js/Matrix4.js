@@ -305,6 +305,16 @@ class Matrix4 {
   }
 
   /**
+   * Returns whether this matrix is an identity matrix.
+   * @public
+   *
+   * @returns {boolean}
+   */
+  isIdentity() {
+    return this.type === Types.IDENTITY || this.equals( Matrix4.IDENTITY );
+  }
+
+  /**
    * Returns whether all of this matrix's entries are finite (non-infinite and non-NaN).
    * @public
    *
