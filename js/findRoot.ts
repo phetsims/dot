@@ -1,4 +1,4 @@
-// Copyright 2020-2024, University of Colorado Boulder
+// Copyright 2024, University of Colorado Boulder
 /**
  * Hybrid root-finding given our constraints (guaranteed interval, value/derivative). Combines Newton's and bisection.
  *
