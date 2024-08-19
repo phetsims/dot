@@ -114,14 +114,14 @@ class Range implements TRange {
   }
 
   public withValue( n: number ): Range {
-    return new Range( Math.min( this._min, n ), Math.max( this._max, n ) ); // eslint-disable-line no-html-constructors
+    return new Range( Math.min( this._min, n ), Math.max( this._max, n ) );
   }
 
   /**
    * Makes a copy of this range
    */
   public copy(): Range {
-    return new Range( this._min, this._max ); // eslint-disable-line no-html-constructors
+    return new Range( this._min, this._max );
   }
 
   /**
@@ -177,7 +177,7 @@ class Range implements TRange {
    * this range.
    */
   public union( range: Range ): Range {
-    return new Range( // eslint-disable-line no-html-constructors
+    return new Range(
       Math.min( this.min, range.min ),
       Math.max( this.max, range.max )
     );
@@ -192,7 +192,7 @@ class Range implements TRange {
    * this range.
    */
   public intersection( range: Range ): Range {
-    return new Range( // eslint-disable-line no-html-constructors
+    return new Range(
       Math.max( this.min, range.min ),
       Math.min( this.max, range.max )
     );
@@ -230,7 +230,7 @@ class Range implements TRange {
    * Returns a new range that is the same as this range, but shifted by the specified amount.
    */
   public shifted( n: number ): Range {
-    return new Range( this.min + n, this.max + n ); // eslint-disable-line no-html-constructors
+    return new Range( this.min + n, this.max + n );
   }
 
   /**
@@ -251,7 +251,7 @@ class Range implements TRange {
    * Multiply the min and max by the provided value, immutable
    */
   public times( value: number ): Range {
-    return new Range( this._min * value, this._max * value ); // eslint-disable-line no-html-constructors
+    return new Range( this._min * value, this._max * value );
   }
 
   /**
@@ -338,8 +338,8 @@ class Range implements TRange {
     fromStateObject: ( stateObject: RangeStateObject ) => Range.fromStateObject( stateObject )
   } );
 
-  public static readonly EVERYTHING = new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY ); // eslint-disable-line no-html-constructors
-  public static readonly NOTHING = new Range( Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY ); // eslint-disable-line no-html-constructors
+  public static readonly EVERYTHING = new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY );
+  public static readonly NOTHING = new Range( Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY );
 }
 
 dot.register( 'Range', Range );
