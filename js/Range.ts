@@ -323,7 +323,6 @@ class Range implements TRange {
   }
 
   public static fromStateObject( stateObject: RangeStateObject ): Range {
-    // eslint-disable-next-line no-html-constructors
     return new Range(
       InfiniteNumberIO.fromStateObject( stateObject.min ),
       InfiniteNumberIO.fromStateObject( stateObject.max )
