@@ -694,7 +694,7 @@ Vector3.Vector3IO = new IOType( 'Vector3IO', {
   valueType: Vector3,
   documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
   toStateObject: ( vector3: Vector3 ) => vector3.toStateObject(),
-  fromStateObject: Vector3.fromStateObject,
+  fromStateObject: x => Vector3.fromStateObject( x ),
   stateSchema: {
     x: NumberIO,
     y: NumberIO,

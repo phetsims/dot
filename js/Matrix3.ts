@@ -6,8 +6,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import EnumerationIO from '../../tandem/js/types/EnumerationIO.js';
+import Enumeration from '../../phet-core/js/Enumeration.js';
+import EnumerationValue from '../../phet-core/js/EnumerationValue.js';
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import ArrayIO from '../../tandem/js/types/ArrayIO.js';
+import EnumerationIO from '../../tandem/js/types/EnumerationIO.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
@@ -15,9 +18,6 @@ import Matrix4 from './Matrix4.js';
 import toSVGNumber from './toSVGNumber.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
-import EnumerationValue from '../../phet-core/js/EnumerationValue.js';
-import Enumeration from '../../phet-core/js/Enumeration.js';
-import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 
 export class Matrix3Type extends EnumerationValue {
   public static readonly OTHER = new Matrix3Type();
@@ -1552,7 +1552,7 @@ Matrix3.Matrix3IO = new IOType( 'Matrix3IO', {
   valueType: Matrix3,
   documentation: 'A 3x3 matrix often used for holding transform data.',
   toStateObject: ( matrix3: Matrix3 ) => Matrix3.toStateObject( matrix3 ),
-  fromStateObject: Matrix3.fromStateObject,
+  fromStateObject: x => Matrix3.fromStateObject( x ),
   stateSchema: {
     entries: ArrayIO( NumberIO ),
     type: EnumerationIO( Matrix3Type )
