@@ -7,11 +7,11 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import dot from './dot.js';
 import InfiniteNumberIO from '../../tandem/js/types/InfiniteNumberIO.js';
-import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import IOType from '../../tandem/js/types/IOType.js';
+import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import Bounds3 from './Bounds3.js';
+import dot from './dot.js';
 
 const STATE_SCHEMA = {
   width: InfiniteNumberIO,

@@ -9,10 +9,10 @@
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
+import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
-import { StateObject } from '../../tandem/js/types/StateSchema.js';
 
 const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
   return vector.add( nextVector );

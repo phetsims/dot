@@ -9,10 +9,10 @@
  */
 
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
-import IOType from '../../tandem/js/types/IOType.js';
 import InfiniteNumberIO from '../../tandem/js/types/InfiniteNumberIO.js';
-import dot from './dot.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import { StateObject } from '../../tandem/js/types/StateSchema.js';
+import dot from './dot.js';
 
 export type TRange = {
   min: number;

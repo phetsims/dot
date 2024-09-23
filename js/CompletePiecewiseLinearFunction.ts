@@ -107,7 +107,6 @@ class CompletePiecewiseLinearFunction {
       const leftX = xValues[ i ];
       const rightX = xValues[ i + 1 ];
       const intersectionPoint = Utils.lineLineIntersection(
-
         // The linear function defined in this
         new Vector2( leftX, this.evaluate( leftX ) ),
         new Vector2( rightX, this.evaluate( rightX ) ),

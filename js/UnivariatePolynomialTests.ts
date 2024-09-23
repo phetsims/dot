@@ -6,8 +6,8 @@
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
-import UnivariatePolynomial from './UnivariatePolynomial.js';
 import Complex from './Complex.js';
+import UnivariatePolynomial from './UnivariatePolynomial.js';
 
 QUnit.module( 'UnivariatePolynomial' );
 

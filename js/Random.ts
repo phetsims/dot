@@ -13,12 +13,12 @@
  * @author Mohamed Safi
  */
 
+import optionize from '../../phet-core/js/optionize.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 import Range from './Range.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
-import optionize from '../../phet-core/js/optionize.js';
 
 type RandomOptions = {
 

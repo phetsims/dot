@@ -7,9 +7,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import dot from './dot.js';
 import Ray3 from './Ray3.js';
 import Vector3 from './Vector3.js';
-import dot from './dot.js';
 
 export default class Plane3 {
 

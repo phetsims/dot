@@ -17,8 +17,8 @@ import Poolable from '../../phet-core/js/Poolable.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
-import Vector3 from './Vector3.js';
 import Matrix4 from './Matrix4.js';
+import Vector3 from './Vector3.js';
 
 class Bounds3 {
 

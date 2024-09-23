@@ -6,11 +6,11 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import InfiniteNumberIO from '../../tandem/js/types/InfiniteNumberIO.js';
+import IOType from '../../tandem/js/types/IOType.js';
+import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
-import InfiniteNumberIO from '../../tandem/js/types/InfiniteNumberIO.js';
-import { StateObject } from '../../tandem/js/types/StateSchema.js';
-import IOType from '../../tandem/js/types/IOType.js';
 
 const STATE_SCHEMA = {
   width: InfiniteNumberIO,

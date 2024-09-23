@@ -6,10 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import dot from './dot.js';
 import Complex from './Complex.js';
-import Matrix from './Matrix.js';
+import dot from './dot.js';
 import EigenvalueDecomposition from './EigenvalueDecomposition.js';
+import Matrix from './Matrix.js';
 import QRDecomposition from './QRDecomposition.js';
 
 class UnivariatePolynomial {

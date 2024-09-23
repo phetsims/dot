@@ -7,9 +7,9 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import Range from './Range.js';
-import dot from './dot.js';
 import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
+import dot from './dot.js';
+import Range from './Range.js';
 
 class RangeWithValue extends Range {
 

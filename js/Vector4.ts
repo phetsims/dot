@@ -6,10 +6,10 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
+import dot from './dot.js';
 import Utils from './Utils.js';
 import Vector3 from './Vector3.js';
-import dot from './dot.js';
-import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 
 export default class Vector4 implements TPoolable {
 

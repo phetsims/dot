@@ -7,11 +7,11 @@
  */
 
 import Property, { PropertyOptions } from '../../axon/js/Property.js';
+import optionize from '../../phet-core/js/optionize.js';
 import StrictOmit from '../../phet-core/js/types/StrictOmit.js';
 import Bounds2 from './Bounds2.js';
-import Vector2 from './Vector2.js';
 import dot from './dot.js';
-import optionize from '../../phet-core/js/optionize.js';
+import Vector2 from './Vector2.js';
 
 const VALID_NON_NAN = { isValidValue: ( v: Vector2 ) => !isNaN( v.x ) && !isNaN( v.y ), validationMessage: 'Vector2 x/y should not be NaN' };
 

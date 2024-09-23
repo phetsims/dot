@@ -13,14 +13,14 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import IOType from '../../tandem/js/types/IOType.js';
+import Orientation from '../../phet-core/js/Orientation.js';
+import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import InfiniteNumberIO, { InfiniteNumberStateObject } from '../../tandem/js/types/InfiniteNumberIO.js';
-import Vector2 from './Vector2.js';
+import IOType from '../../tandem/js/types/IOType.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
 import Range from './Range.js';
-import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
-import Orientation from '../../phet-core/js/Orientation.js';
+import Vector2 from './Vector2.js';
 
 // Temporary instances to be used in the transform method.
 const scratchVector2 = new Vector2( 0, 0 );
