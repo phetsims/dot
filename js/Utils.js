@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Big from '../../sherpa/lib/big-6.2.1.mjs'; // eslint-disable-line default-import-match-filename
+import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line default-import-match-filename
 import dot from './dot.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
