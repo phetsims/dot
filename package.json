@@ -23,18 +23,6 @@
     "supportsOutputJS": true
   },
   "eslintConfig": {
-    "extends": "../chipper/eslint/phet-library_eslintrc.js",
-    "overrides": [
-      {
-        "files": [
-          "**/*.ts"
-        ],
-        "parserOptions": {
-          "project": [
-            "../chipper/tsconfig/eslint-all/tsconfig.json"
-          ]
-        }
-      }
-    ]
+    "extends": "../chipper/eslint/phet-library_eslintrc.js"
   }
 }
