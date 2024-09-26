@@ -354,7 +354,8 @@ class DelaunayTriangulation {
         assert && assert( leftEdges[ 0 ].getOtherVertex( vertex ).point.x < rightEdges[ 0 ].getOtherVertex( vertex ).point.x );
       }
 
-      while ( true ) { // eslint-disable-line no-constant-condition
+      // TODO: What happened to no-constant-condition? See https://github.com/phetsims/chipper/issues/1451
+      while ( true ) {
         if ( outsideRight ) {
           // TODO: implement https://github.com/phetsims/dot/issues/96
           break;

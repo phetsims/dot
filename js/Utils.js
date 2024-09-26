@@ -6,7 +6,7 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line default-import-match-filename
+import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line phet/default-import-match-filename
 import dot from './dot.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
@@ -536,7 +536,7 @@ const Utils = {
    * @returns {number}
    */
   roundSymmetric( value ) {
-    return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) ); // eslint-disable-line bad-sim-text
+    return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) ); // eslint-disable-line phet/bad-sim-text
   },
 
   /**
@@ -564,7 +564,7 @@ const Utils = {
       return '-Infinity';
     }
 
-    // eslint-disable-next-line bad-sim-text
+    // eslint-disable-next-line phet/bad-sim-text
     const result = new Big( value ).toFixed( decimalPlaces );
 
     // Avoid reporting -0.000

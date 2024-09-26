@@ -300,7 +300,7 @@ export default class Matrix3 implements TPoolable {
 
     // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
     // NOTE: the toFixed calls are inlined for performance reasons
-    return `matrix(${this.entries[ 0 ].toFixed( 20 )},${this.entries[ 1 ].toFixed( 20 )},${this.entries[ 3 ].toFixed( 20 )},${this.entries[ 4 ].toFixed( 20 )},${this.entries[ 6 ].toFixed( 20 )},${this.entries[ 7 ].toFixed( 20 )})`; // eslint-disable-line bad-sim-text
+    return `matrix(${this.entries[ 0 ].toFixed( 20 )},${this.entries[ 1 ].toFixed( 20 )},${this.entries[ 3 ].toFixed( 20 )},${this.entries[ 4 ].toFixed( 20 )},${this.entries[ 6 ].toFixed( 20 )},${this.entries[ 7 ].toFixed( 20 )})`; // eslint-disable-line phet/bad-sim-text
   }
 
   public get cssTransform(): string { return this.getCSSTransform(); }
@@ -1518,9 +1518,9 @@ export default class Matrix3 implements TPoolable {
     return matrix;
   }
 
-  public static IDENTITY: Matrix3; // eslint-disable-line uppercase-statics-should-be-readonly
-  public static X_REFLECTION: Matrix3; // eslint-disable-line uppercase-statics-should-be-readonly
-  public static Y_REFLECTION: Matrix3; // eslint-disable-line uppercase-statics-should-be-readonly
+  public static IDENTITY: Matrix3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static X_REFLECTION: Matrix3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Y_REFLECTION: Matrix3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static Matrix3IO: IOType;
 }
 

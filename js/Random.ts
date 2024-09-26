@@ -186,7 +186,7 @@ export default class Random {
       assert && assert( Math.seedrandom, 'If a seed is specified, then we must also have Math.seedrandom to use the seed.' );
     }
     else {
-      seed = Math.random(); // eslint-disable-line bad-sim-text
+      seed = Math.random(); // eslint-disable-line phet/bad-sim-text
     }
 
     this.seed = seed;
@@ -194,7 +194,7 @@ export default class Random {
     // If seed is provided, create a local random number generator without altering Math.random.
     // Math.seedrandom is provided by seedrandom.js, see https://github.com/davidbau/seedrandom.
     // @ts-expect-error
-    this.seedrandom = Math.seedrandom ? new Math.seedrandom( `${seed}` ) : () => Math.random(); // eslint-disable-line bad-sim-text
+    this.seedrandom = Math.seedrandom ? new Math.seedrandom( `${seed}` ) : () => Math.random(); // eslint-disable-line phet/bad-sim-text
   }
 
   /**

@@ -570,11 +570,11 @@ export default class Vector4 implements TPoolable {
 
   public isVector4!: boolean;
   public dimension!: number;
-  public static ZERO: Vector4; // eslint-disable-line uppercase-statics-should-be-readonly
-  public static X_UNIT: Vector4; // eslint-disable-line uppercase-statics-should-be-readonly
-  public static Y_UNIT: Vector4; // eslint-disable-line uppercase-statics-should-be-readonly
-  public static Z_UNIT: Vector4; // eslint-disable-line uppercase-statics-should-be-readonly
-  public static W_UNIT: Vector4; // eslint-disable-line uppercase-statics-should-be-readonly
+  public static ZERO: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static X_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Y_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Z_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static W_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
 }
 
 // (read-only) - Helps to identify the dimension of the vector
