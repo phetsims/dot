@@ -10,5 +10,10 @@
 import phetLibraryEslintConfig from '../chipper/eslint/phet-library.eslint.config.mjs';
 
 export default [
-  ...phetLibraryEslintConfig
+  ...phetLibraryEslintConfig,
+  {
+    ignores: [
+      'js/grunt/**/*' // TODO: https://github.com/phetsims/chipper/issues/1464
+    ]
+  }
 ];

@@ -6,6 +6,11 @@
     "mipmaps/**/*",
     "sounds/**/*"
   ],
+  "exclude": [
+    // TODO: https://github.com/phetsims/chipper/issues/1464
+    "../dot/js/grunt/**/*",
+    "./*"
+  ],
   "references": [
     {
       "path": "../chipper/tsconfig/buildjson"
