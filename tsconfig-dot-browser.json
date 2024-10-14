@@ -1,0 +1,18 @@
+{
+  "extends": "../chipper/tsconfig/shared/tsconfig-browser.json",
+  "include": [
+    "js/**/*",
+    "images/**/*",
+    "mipmaps/**/*",
+    "sounds/**/*"
+  ],
+  "exclude": [
+    "js/grunt/**/*",
+    "*"
+  ],
+  "references": [
+    {
+      "path": "../chipper/tsconfig/buildjson/tsconfig.json"
+    }
+  ]
+}

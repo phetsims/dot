@@ -6,8 +6,8 @@
  */
 const esprima = require( 'esprima' );
 const jsBeautify = require( 'js-beautify' ); // eslint-disable-line phet/require-statement-match
-const extractDocumentation = require( '../../../chipper/js/common/extractDocumentation' );
-const documentationToHTML = require( '../../../chipper/js/common/documentationToHTML' );
+const extractDocumentation = require( '../../../../chipper/js/common/extractDocumentation' );
+const documentationToHTML = require( '../../../../chipper/js/common/documentationToHTML' );
 const fs = require( 'fs' );
 
 // constants
