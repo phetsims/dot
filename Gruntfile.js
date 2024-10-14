@@ -1,6 +1,5 @@
 // Copyright 2013-2016, University of Colorado Boulder
 
-// use chipper's gruntfile
 const Gruntfile = require( '../chipper/Gruntfile' );
 const registerTasks = require( '../perennial-alias/js/grunt/util/registerTasks' );
 
