@@ -12,9 +12,10 @@ import { getPhetLibraryConfiguration } from '../chipper/eslint/phet-library.esli
 import rootEslintConfig from '../chipper/eslint/root.eslint.config.mjs';
 
 const nodeFiles = [
-  'js/grunt/**/*',
-  '*'
+  'js/grunt/**/*'
 ];
+
+process.env;
 
 export default [
   ...rootEslintConfig,
