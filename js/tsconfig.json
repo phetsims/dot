@@ -2,7 +2,7 @@
   "extends": "../tsconfig-dot-browser.json",
   "references": [
     {
-      "path": "../../chipper/tsconfig/buildjson/tsconfig.json"
+      "path": "../../perennial-alias/tsconfig/buildjson/tsconfig.json"
     }
   ]
 }
