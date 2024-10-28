@@ -5,9 +5,9 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 const esprima = require( 'esprima' );
-const jsBeautify = require( 'js-beautify' ); // eslint-disable-line phet/require-statement-match
-const extractDocumentation = require( '../../../../chipper/js/common/extractDocumentation' );
-const documentationToHTML = require( '../../../../chipper/js/common/documentationToHTML' );
+const jsBeautify = require( 'js-beautify' );
+const extractDocumentation = require( '../../../../chipper/js/common/extractDocumentation.js' );
+const documentationToHTML = require( '../../../../chipper/js/common/documentationToHTML.js' );
 const fs = require( 'fs' );
 
 // constants
