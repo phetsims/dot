@@ -7,7 +7,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import Matrix3, { Matrix3Type, m3 } from './Matrix3.js';
+import Matrix3, { m3, Matrix3Type } from './Matrix3.js';
 import Vector2 from './Vector2.js';
 
 QUnit.module( 'Matrix3' );
