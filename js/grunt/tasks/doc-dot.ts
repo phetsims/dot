@@ -4,11 +4,13 @@
  * Generates Documentation for dot
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
+
+import fs from 'fs';
+import documentationToHTML from '../../../../chipper/js/common/documentationToHTML.js';
+import extractDocumentation from '../../../../chipper/js/common/extractDocumentation.js';
+
 const esprima = require( 'esprima' );
 const jsBeautify = require( 'js-beautify' );
-const extractDocumentation = require( '../../../../chipper/js/common/extractDocumentation.js' );
-const documentationToHTML = require( '../../../../chipper/js/common/documentationToHTML.js' );
-const fs = require( 'fs' );
 
 // constants
 const beautify_html = jsBeautify.html;
