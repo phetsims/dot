@@ -6,7 +6,7 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import qunitStart from '../../chipper/js/sim-tests/qunitStart.js';
+import qunitStart from '../../chipper/js/browser/sim-tests/qunitStart.js';
 import './BinPackerTests.js';
 import './Bounds2Tests.js';
 import './ComplexTests.js';
