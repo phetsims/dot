@@ -2,10 +2,10 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig-dot-node.json"
+      "path": "./js/grunt/tsconfig.json"
     },
     {
-      "path": "./tsconfig-dot-browser.json"
+      "path": "./js/tsconfig.json"
     }
   ]
 }
