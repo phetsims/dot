@@ -1,14 +1,14 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * ESLint configuration for dot.
+ * ESLint configuration for dot grunt.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  * @author Michael Kauzmann (PhET Interactive Simulations)
  */
 
-import phetLibraryEslintConfig from '../perennial-alias/js/eslint/config/phet-library.eslint.config.mjs';
+import nodeEslintConfig from '../../../perennial-alias/js/eslint/config/node.eslint.config.mjs';
 
 export default [
-  ...phetLibraryEslintConfig
+  ...nodeEslintConfig
 ];
