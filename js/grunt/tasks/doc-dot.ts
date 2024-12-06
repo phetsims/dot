@@ -93,5 +93,5 @@ html = beautify_html( html, { indent_size: 2 } );
 
 fs.writeFileSync( 'doc/index.html', html );
 
-// TODO: Why does this not fail lint in Webstorm? Rename grunt/tasks/eslint.config.mjs and it fails correctly. https://github.com/phetsims/chipper/issues/1483
+// TODO: Why does this not fail lint in Webstorm? Rename grunt/tasks/eslint.config.mjs and it fails correctly. https://github.com/phetsims/chipper/issues/1541
 // (async()=>{})();
