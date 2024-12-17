@@ -8,9 +8,7 @@
 
 import Complex from './Complex.js';
 import dot from './dot.js';
-import EigenvalueDecomposition from './EigenvalueDecomposition.js';
-import Matrix from './Matrix.js';
-import QRDecomposition from './QRDecomposition.js';
+import Matrix, { EigenvalueDecomposition, QRDecomposition } from './Matrix.js';
 
 class UnivariatePolynomial {
 
