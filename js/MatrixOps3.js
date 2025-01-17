@@ -24,7 +24,7 @@ const SQRT_HALF = Math.sqrt( 0.5 );
 
 const MatrixOps3 = {
   // use typed arrays if possible
-  Array: dot.FastArray,
+  Array: window.Float64Array ? window.Float64Array : window.Array,
 
   /*---------------------------------------------------------------------------*
    * 3x3 matrix math
