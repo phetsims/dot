@@ -98,7 +98,7 @@ export default class Random {
    * @param array - from which one element will be selected, must have at least one element
    * @returns the selected element from the array
    */
-  public sample<T>( array: T[] ): T {
+  public sample<T>( array: readonly T[] ): T {
     assert && assert( array.length > 0, 'Array should have at least 1 item.' );
     const index = this.nextIntBetween( 0, array.length - 1 );
     return array[ index ];
