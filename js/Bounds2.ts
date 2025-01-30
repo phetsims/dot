@@ -1270,7 +1270,7 @@ export default class Bounds2 implements TPoolable {
    */
   public static readonly EVERYTHING = new Bounds2( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
-  public static readonly Bounds2IO = new IOType( 'Bounds2IO', {
+  public static readonly Bounds2IO = new IOType<Bounds2, Bounds2StateObject>( 'Bounds2IO', {
     valueType: Bounds2,
     documentation: 'a 2-dimensional bounds rectangle',
     toStateObject: ( bounds2: Bounds2 ) => ( { minX: bounds2.minX, minY: bounds2.minY, maxX: bounds2.maxX, maxY: bounds2.maxY } ),
