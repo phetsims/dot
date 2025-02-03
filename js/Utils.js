@@ -8,6 +8,7 @@
 
 import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line phet/default-import-match-filename
 import dot from './dot.js';
+import roundSymmetric from './util/roundSymmetric.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
 
@@ -523,20 +524,13 @@ const Utils = {
 
   /**
    * Rounds using "Round half away from zero" algorithm. See dot#35.
-   * @public
-   *
-   * JavaScript's Math.round is not symmetric for positive and negative numbers, it uses IEEE 754 "Round half up".
-   * See https://en.wikipedia.org/wiki/Rounding#Round_half_up.
-   * For sims, we want to treat positive and negative values symmetrically, which is IEEE 754 "Round half away from zero",
-   * See https://en.wikipedia.org/wiki/Rounding#Round_half_away_from_zero
-   *
-   * Note that -0 is rounded to 0, since we typically do not want to display -0 in sims.
-   *
+
    * @param {number} value                               `
    * @returns {number}
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/roundSymmetric.ts
    */
   roundSymmetric( value ) {
-    return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) ); // eslint-disable-line phet/bad-sim-text
+    return roundSymmetric( value );
   },
 
   /**

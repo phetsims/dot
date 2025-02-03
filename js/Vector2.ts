@@ -11,7 +11,7 @@ import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import dot from './dot.js';
-import Utils from './Utils.js';
+import roundSymmetric from './util/roundSymmetric.js';
 import Vector3 from './Vector3.js';
 
 const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
@@ -636,7 +636,7 @@ export default class Vector2 implements TPoolable {
    * to returning the vector itself.
    */
   public roundSymmetric(): Vector2 {
-    return this.setXY( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ) );
+    return this.setXY( roundSymmetric( this.x ), roundSymmetric( this.y ) );
   }
 
   /**
