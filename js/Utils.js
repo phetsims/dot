@@ -8,6 +8,7 @@
 
 import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line phet/default-import-match-filename
 import dot from './dot.js';
+import clamp from './util/clamp.js';
 import roundSymmetric from './util/roundSymmetric.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
@@ -31,17 +32,11 @@ const Utils = {
    * @param {number} min
    * @param {number} max
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/clamp.ts
    */
   clamp( value, min, max ) {
-    if ( value < min ) {
-      return min;
-    }
-    else if ( value > max ) {
-      return max;
-    }
-    else {
-      return value;
-    }
+    return clamp( value, min, max );
   },
 
   /**

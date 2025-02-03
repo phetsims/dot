@@ -10,8 +10,8 @@ import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
+import clamp from './util/clamp.js';
 import roundSymmetric from './util/roundSymmetric.js';
-import Utils from './Utils.js';
 import Vector2, { v2 } from './Vector2.js';
 import Vector4, { v4 } from './Vector4.js';
 
@@ -130,7 +130,7 @@ export default class Vector3 implements TPoolable {
    * is the input vector (normalized).
    */
   public angleBetween( v: Vector3 ): number {
-    return Math.acos( Utils.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+    return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
   }
 
   /**
