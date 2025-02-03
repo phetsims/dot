@@ -683,7 +683,7 @@ class Matrix4 {
    * @returns {Vector3}
    */
   timesVector3( vector3 ) {
-    return this.timesVector4( vector3.toVector4() ).toVector3();
+    return Vector3.from( this.timesVector4( Vector4.from( vector3 ) ) );
   }
 
   /**
@@ -709,7 +709,7 @@ class Matrix4 {
    * @returns {Vector3}
    */
   timesTransposeVector3( vector3 ) {
-    return this.timesTransposeVector4( vector3.toVector4() ).toVector3();
+    return Vector3.from( this.timesTransposeVector4( Vector4.from( vector3 ) ) );
   }
 
   /**
@@ -987,12 +987,12 @@ class Matrix4 {
 dot.register( 'Matrix4', Matrix4 );
 
 class Types extends EnumerationValue {
-    static OTHER = new Types();
-    static IDENTITY = new Types();
-    static TRANSLATION_3D = new Types();
-    static SCALING = new Types();
-    static AFFINE = new Types();
-    static enumeration = new Enumeration( Types );
+  static OTHER = new Types();
+  static IDENTITY = new Types();
+  static TRANSLATION_3D = new Types();
+  static SCALING = new Types();
+  static AFFINE = new Types();
+  static enumeration = new Enumeration( Types );
 }
 
 // @public {Enumeration}

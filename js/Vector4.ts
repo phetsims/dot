@@ -9,7 +9,16 @@
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import dot from './dot.js';
 import roundSymmetric from './util/roundSymmetric.js';
-import Vector3 from './Vector3.js';
+
+export type Vector4StateObject = {
+  x: number;
+  y: number;
+  z: number;
+  w: number;
+};
+
+type PartialVector4State = Partial<Vector4StateObject>;
+
 
 export default class Vector4 implements TPoolable {
 
@@ -346,13 +355,6 @@ export default class Vector4 implements TPoolable {
     return `Vector4(${this.x}, ${this.y}, ${this.z}, ${this.w})`;
   }
 
-  /**
-   * Converts this to a 3-dimensional vector, discarding the w-component.
-   */
-  public toVector3(): Vector3 {
-    return new Vector3( this.x, this.y, this.z );
-  }
-
   /*---------------------------------------------------------------------------*
    * Mutables
    * - all mutation should go through setXYZW / setX / setY / setZ / setW
@@ -558,6 +560,18 @@ export default class Vector4 implements TPoolable {
     return this.setXYZW( roundSymmetric( this.x ), roundSymmetric( this.y ), roundSymmetric( this.z ), roundSymmetric( this.w ) );
   }
 
+  /**
+   * Returns a duck-typed object meant for use with tandem/phet-io serialization.
+   */
+  public toStateObject(): Vector4StateObject {
+    return {
+      x: this.x,
+      y: this.y,
+      z: this.z,
+      w: this.w
+    };
+  }
+
   public freeToPool(): void {
     Vector4.pool.freeToPool( this );
   }
@@ -567,6 +581,25 @@ export default class Vector4 implements TPoolable {
     initialize: Vector4.prototype.setXYZW,
     defaultArguments: [ 0, 0, 0, 0 ]
   } );
+
+  /**
+   * Constructs a Vector3 from a duck-typed object, for use with tandem/phet-io deserialization.
+   */
+  public static fromStateObject( stateObject: Vector4StateObject ): Vector4 {
+    return Vector4.from( stateObject );
+  }
+
+  /**
+   * Constructs a Vector4 from any object as best as it can, if a component of the v4 is not provided, it will default to 0 (except w).
+   */
+  public static from( vector4Like: PartialVector4State, defaultW = 1 ): Vector4 {
+    return v4(
+      vector4Like.x || 0,
+      vector4Like.y || 0,
+      vector4Like.z || 0,
+      vector4Like.w || defaultW
+    );
+  }
 
   public isVector4!: boolean;
   public dimension!: number;

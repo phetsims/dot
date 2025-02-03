@@ -12,8 +12,6 @@ import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import clamp from './util/clamp.js';
 import roundSymmetric from './util/roundSymmetric.js';
-import Vector2, { v2 } from './Vector2.js';
-import Vector4, { v4 } from './Vector4.js';
 
 const ADDING_ACCUMULATOR = ( vector: Vector3, nextVector: Vector3 ) => {
   return vector.add( nextVector );
@@ -24,6 +22,8 @@ export type Vector3StateObject = {
   y: number;
   z: number;
 };
+
+type PartialVector3State = Partial<Vector3StateObject>;
 
 export default class Vector3 implements TPoolable {
 
@@ -375,27 +375,6 @@ export default class Vector3 implements TPoolable {
     return `Vector3(${this.x}, ${this.y}, ${this.z})`;
   }
 
-  /**
-   * Converts this to a 2-dimensional vector, discarding the z-component.
-   */
-  public toVector2(): Vector2 {
-    return v2( this.x, this.y );
-  }
-
-  /**
-   * Converts this to a 4-dimensional vector, with the w-component equal to 1 (useful for homogeneous coordinates).
-   */
-  public toVector4(): Vector4 {
-    return v4( this.x, this.y, this.z, 1 );
-  }
-
-  /**
-   * Converts this to a 4-dimensional vector, with the w-component equal to 0
-   */
-  public toVector4Zero(): Vector4 {
-    return v4( this.x, this.y, this.z, 0 );
-  }
-
   /*---------------------------------------------------------------------------*
    * Mutables
    * - all mutation should go through setXYZ / setX / setY / setZ
@@ -645,10 +624,17 @@ export default class Vector3 implements TPoolable {
    * Constructs a Vector3 from a duck-typed object, for use with tandem/phet-io deserialization.
    */
   public static fromStateObject( stateObject: Vector3StateObject ): Vector3 {
+    return Vector3.from( stateObject );
+  }
+
+  /**
+   * Constructs a Vector3 from any object as best as it can, if a component of the v3 is not provided, it will default to 0.
+   */
+  public static from( vector3Like: PartialVector3State ): Vector3 {
     return v3(
-      stateObject.x,
-      stateObject.y,
-      stateObject.z
+      vector3Like.x || 0,
+      vector3Like.y || 0,
+      vector3Like.z || 0
     );
   }
 

@@ -12,7 +12,6 @@ import NumberIO from '../../tandem/js/types/NumberIO.js';
 import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import dot from './dot.js';
 import roundSymmetric from './util/roundSymmetric.js';
-import Vector3 from './Vector3.js';
 
 const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
   return vector.add( nextVector );
@@ -441,13 +440,6 @@ export default class Vector2 implements TPoolable {
     return `Vector2(${this.x}, ${this.y})`;
   }
 
-  /**
-   * Converts this to a 3-dimensional vector, with the z-component equal to 0.
-   */
-  public toVector3(): Vector3 {
-    return new Vector3( this.x, this.y, 0 );
-  }
-
   /*---------------------------------------------------------------------------*
    * Mutables
    * - all mutation should go through setXY / setX / setY
@@ -701,13 +693,18 @@ export default class Vector2 implements TPoolable {
 
   /**
    * Constructs a Vector2 from a duck-typed object, for use with tandem/phet-io deserialization.
-   *
-   * @param stateObject - see stateSchema for schema
    */
   public static fromStateObject( stateObject: Vector2StateObject ): Vector2 {
+    return Vector2.from( stateObject );
+  }
+
+  /**
+   * Constructs a Vector2 from any object as best as it can, if a component of the v2 is not provided, it will default to 0.
+   */
+  public static from( vector2Like: PartialVector2State ): Vector2 {
     return v2(
-      stateObject.x,
-      stateObject.y
+      vector2Like.x || 0,
+      vector2Like.y || 0
     );
   }
 
@@ -787,6 +784,7 @@ const STATE_SCHEMA = {
   y: NumberIO
 };
 export type Vector2StateObject = StateObject<typeof STATE_SCHEMA>;
+type PartialVector2State = Partial<Vector2StateObject>;
 
 Vector2.Vector2IO = new IOType<Vector2, Vector2StateObject>( 'Vector2IO', {
   valueType: Vector2,

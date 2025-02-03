@@ -26,6 +26,8 @@ import './UnivariatePolynomialTests.js';
 import './UtilsTests.js';
 import './Vector2PropertyTests.js';
 import './Vector2Tests.js';
+import './Vector3Tests.js';
+import './Vector4Tests.js';
 
 // Since our tests are loaded asynchronously, we must direct QUnit to begin the tests
 qunitStart();
