@@ -179,7 +179,7 @@ const Utils = {
    * @returns {number} lcm, an integer
    */
   lcm( a, b ) {
-    return Utils.roundSymmetric( Math.abs( a * b ) / Utils.gcd( a, b ) );
+    return roundSymmetric( Math.abs( a * b ) / Utils.gcd( a, b ) );
   },
 
   /**
@@ -539,7 +539,7 @@ const Utils = {
    *
    * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
    * because the spec doesn't specify whether to round or floor.
-   * Rounding is symmetric for positive and negative values, see Utils.roundSymmetric.
+   * Rounding is symmetric for positive and negative values, see roundSymmetric.
    *
    * @param {number} value
    * @param {number} decimalPlaces
@@ -576,7 +576,7 @@ const Utils = {
    *
    * JavaScript's toFixed is notoriously buggy, behavior differs depending on browser,
    * because the spec doesn't specify whether to round or floor.
-   * Rounding is symmetric for positive and negative values, see Utils.roundSymmetric.
+   * Rounding is symmetric for positive and negative values, see roundSymmetric.
    *
    * @param {number} value
    * @param {number} decimalPlaces
@@ -893,7 +893,7 @@ const Utils = {
    * @returns {number}
    */
   roundToInterval( value, interval ) {
-    return Utils.toFixedNumber( Utils.roundSymmetric( value / interval ) * interval,
+    return Utils.toFixedNumber( roundSymmetric( value / interval ) * interval,
       Utils.numberOfDecimalPlaces( interval ) );
   }
 };

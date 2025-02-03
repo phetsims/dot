@@ -8,7 +8,7 @@
 
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import dot from './dot.js';
-import Utils from './Utils.js';
+import roundSymmetric from './util/roundSymmetric.js';
 import Vector3 from './Vector3.js';
 
 export default class Vector4 implements TPoolable {
@@ -190,7 +190,7 @@ export default class Vector4 implements TPoolable {
   }
 
   /**
-   * Returns a copy of this vector with each component rounded by Utils.roundSymmetric.
+   * Returns a copy of this vector with each component rounded by roundSymmetric.
    *
    * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
    * this vector.
@@ -549,13 +549,13 @@ export default class Vector4 implements TPoolable {
   }
 
   /**
-   * Rounds each component of this vector with Utils.roundSymmetric.
+   * Rounds each component of this vector with roundSymmetric.
    *
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.
    */
   public roundSymmetric(): Vector4 {
-    return this.setXYZW( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ), Utils.roundSymmetric( this.w ) );
+    return this.setXYZW( roundSymmetric( this.x ), roundSymmetric( this.y ), roundSymmetric( this.z ), roundSymmetric( this.w ) );
   }
 
   public freeToPool(): void {

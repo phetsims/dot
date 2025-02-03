@@ -209,7 +209,7 @@ export default class Vector2 implements TPoolable {
   }
 
   /**
-   * Returns a copy of this vector with each component rounded by Utils.roundSymmetric.
+   * Returns a copy of this vector with each component rounded by roundSymmetric.
    *
    * This is the immutable form of the function roundSymmetric(). This will return a new vector, and will not modify
    * this vector.
@@ -630,7 +630,7 @@ export default class Vector2 implements TPoolable {
   }
 
   /**
-   * Rounds each component of this vector with Utils.roundSymmetric.
+   * Rounds each component of this vector with roundSymmetric.
    *
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.

@@ -10,6 +10,7 @@ import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
+import roundSymmetric from './util/roundSymmetric.js';
 import Utils from './Utils.js';
 import Vector2, { v2 } from './Vector2.js';
 import Vector4, { v4 } from './Vector4.js';
@@ -595,13 +596,13 @@ export default class Vector3 implements TPoolable {
   }
 
   /**
-   * Rounds each component of this vector with Utils.roundSymmetric.
+   * Rounds each component of this vector with roundSymmetric.
    *
    * This is the mutable form of the function roundedSymmetric(). This will mutate (change) this vector, in addition
    * to returning the vector itself.
    */
   public roundSymmetric(): Vector3 {
-    return this.setXYZ( Utils.roundSymmetric( this.x ), Utils.roundSymmetric( this.y ), Utils.roundSymmetric( this.z ) );
+    return this.setXYZ( roundSymmetric( this.x ), roundSymmetric( this.y ), roundSymmetric( this.z ) );
   }
 
   /**
