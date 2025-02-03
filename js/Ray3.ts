@@ -7,7 +7,7 @@
  */
 
 import dot from './dot.js';
-import Plane3 from './Plane3.js';
+import type Plane3 from './Plane3.js';
 import Vector3 from './Vector3.js';
 
 export default class Ray3 {
