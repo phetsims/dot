@@ -1,4 +1,4 @@
-// Copyright 2017-2022, University of Colorado Boulder
+// Copyright 2025, University of Colorado Boulder
 
 /**
  * Vector3 tests
