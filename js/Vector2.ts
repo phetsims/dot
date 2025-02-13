@@ -11,7 +11,8 @@ import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import dot from './dot.js';
-import roundSymmetric from './util/roundSymmetric.js';
+import { roundSymmetric } from './util/roundSymmetric.js';
+import { clamp } from './util/clamp.js';
 
 const ADDING_ACCUMULATOR = ( vector: Vector2, nextVector: Vector2 ) => {
   return vector.add( nextVector );
@@ -126,8 +127,7 @@ export default class Vector2 implements TPoolable {
   public angleBetween( v: Vector2 ): number {
     const thisMagnitude = this.magnitude;
     const vMagnitude = v.magnitude;
-    // @ts-expect-error TODO: import with circular protection https://github.com/phetsims/dot/issues/96
-    return Math.acos( dot.clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
+    return Math.acos( clamp( ( this.x * v.x + this.y * v.y ) / ( thisMagnitude * vMagnitude ), -1, 1 ) );
   }
 
   /**

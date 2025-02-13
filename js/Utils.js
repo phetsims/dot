@@ -8,8 +8,14 @@
 
 import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line phet/default-import-match-filename
 import dot from './dot.js';
-import clamp from './util/clamp.js';
-import roundSymmetric from './util/roundSymmetric.js';
+import { clamp } from './util/clamp.js';
+import { moduloBetweenDown } from './util/moduloBetweenDown.js';
+import { moduloBetweenUp } from './util/moduloBetweenUp.js';
+import { rangeExclusive } from './util/rangeExclusive.js';
+import { rangeInclusive } from './util/rangeInclusive.js';
+import { roundSymmetric } from './util/roundSymmetric.js';
+import { toDegrees } from './util/toDegrees.js';
+import { toRadians } from './util/toRadians.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
 
@@ -50,20 +56,11 @@ const Utils = {
    * @param {number} min
    * @param {number} max
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/moduloBetweenDown.ts
    */
   moduloBetweenDown( value, min, max ) {
-    assert && assert( max > min, 'max > min required for moduloBetween' );
-
-    const divisor = max - min;
-
-    // get a partial result of value-min between [0,divisor)
-    let partial = ( value - min ) % divisor;
-    if ( partial < 0 ) {
-      // since if value-min < 0, the remainder will give us a negative number
-      partial += divisor;
-    }
-
-    return partial + min; // add back in the minimum value
+    return moduloBetweenDown( value, min, max );
   },
 
   /**
@@ -77,9 +74,11 @@ const Utils = {
    * @param {number} min
    * @param {number} max
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/moduloBetweenUp.ts
    */
   moduloBetweenUp( value, min, max ) {
-    return -Utils.moduloBetweenDown( -value, -max, -min );
+    return moduloBetweenUp( value, min, max );
   },
 
   /**
@@ -89,16 +88,11 @@ const Utils = {
    * @param {number} a
    * @param {number} b
    * @returns {Array.<number>}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/rangeInclusive.ts
    */
   rangeInclusive( a, b ) {
-    if ( b < a ) {
-      return [];
-    }
-    const result = new Array( b - a + 1 );
-    for ( let i = a; i <= b; i++ ) {
-      result[ i - a ] = i;
-    }
-    return result;
+    return rangeInclusive( a, b );
   },
 
   /**
@@ -108,9 +102,11 @@ const Utils = {
    * @param {number} a
    * @param {number} b
    * @returns {Array.<number>}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/rangeExclusive.ts
    */
   rangeExclusive( a, b ) {
-    return Utils.rangeInclusive( a + 1, b - 1 );
+    return rangeExclusive( a, b );
   },
 
   /**
@@ -119,9 +115,11 @@ const Utils = {
    *
    * @param {number} degrees
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toRadians.ts
    */
   toRadians( degrees ) {
-    return Math.PI * degrees / 180;
+    return toRadians( degrees );
   },
 
   /**
@@ -130,9 +128,11 @@ const Utils = {
    *
    * @param {number} radians
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toDegrees.ts
    */
   toDegrees( radians ) {
-    return 180 * radians / Math.PI;
+    return toDegrees( radians );
   },
 
   /**
@@ -895,13 +895,6 @@ const Utils = {
 dot.register( 'Utils', Utils );
 
 // make these available in the main namespace directly (for now)
-dot.clamp = Utils.clamp;
-dot.moduloBetweenDown = Utils.moduloBetweenDown;
-dot.moduloBetweenUp = Utils.moduloBetweenUp;
-dot.rangeInclusive = Utils.rangeInclusive;
-dot.rangeExclusive = Utils.rangeExclusive;
-dot.toRadians = Utils.toRadians;
-dot.toDegrees = Utils.toDegrees;
 dot.lineLineIntersection = Utils.lineLineIntersection;
 dot.lineSegmentIntersection = Utils.lineSegmentIntersection;
 dot.sphereRayIntersection = Utils.sphereRayIntersection;

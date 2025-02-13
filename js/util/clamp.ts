@@ -6,7 +6,10 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-export default function clamp( value: number, min: number, max: number ): number {
+
+import dot from '../dot.js';
+
+export function clamp( value: number, min: number, max: number ): number {
   if ( value < min ) {
     return min;
   }
@@ -17,3 +20,4 @@ export default function clamp( value: number, min: number, max: number ): number
     return value;
   }
 }
+dot.register( 'clamp', clamp );

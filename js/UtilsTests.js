@@ -8,6 +8,7 @@
  */
 
 import dot from './dot.js';
+import { clamp } from './util/clamp.js';
 import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
 
@@ -126,9 +127,9 @@ QUnit.test( 'linear map', assert => {
 } );
 
 QUnit.test( 'clamp', assert => {
-  assert.equal( Utils.clamp( 5, 1, 4 ), 4 );
-  assert.equal( Utils.clamp( 3, 1, 4 ), 3 );
-  assert.equal( Utils.clamp( 0, 1, 4 ), 1 );
+  assert.equal( clamp( 5, 1, 4 ), 4 );
+  assert.equal( clamp( 3, 1, 4 ), 3 );
+  assert.equal( clamp( 0, 1, 4 ), 1 );
 } );
 
 QUnit.test( 'rangeInclusive', assert => {

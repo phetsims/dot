@@ -8,7 +8,8 @@
 
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import dot from './dot.js';
-import roundSymmetric from './util/roundSymmetric.js';
+import { clamp } from './util/clamp.js';
+import { roundSymmetric } from './util/roundSymmetric.js';
 
 export type Vector4StateObject = {
   x: number;
@@ -129,8 +130,7 @@ export default class Vector4 implements TPoolable {
    * is the input vector (normalized).
    */
   public angleBetween( v: Vector4 ): number {
-    // @ts-expect-error TODO: import with circular protection https://github.com/phetsims/dot/issues/96
-    return Math.acos( dot.clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
+    return Math.acos( clamp( this.normalized().dot( v.normalized() ), -1, 1 ) );
   }
 
   /**

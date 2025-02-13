@@ -12,6 +12,10 @@
  *
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
-export default function roundSymmetric( value: number ): number {
+
+import dot from '../dot.js';
+
+export function roundSymmetric( value: number ): number {
   return ( ( value < 0 ) ? -1 : 1 ) * Math.round( Math.abs( value ) ); // eslint-disable-line phet/bad-sim-text
 }
+dot.register( 'roundSymmetric', roundSymmetric );

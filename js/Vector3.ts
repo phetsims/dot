@@ -10,8 +10,8 @@ import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
-import clamp from './util/clamp.js';
-import roundSymmetric from './util/roundSymmetric.js';
+import { clamp } from './util/clamp.js';
+import { roundSymmetric } from './util/roundSymmetric.js';
 
 const ADDING_ACCUMULATOR = ( vector: Vector3, nextVector: Vector3 ) => {
   return vector.add( nextVector );
