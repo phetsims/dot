@@ -6,18 +6,15 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import dot from './dot.js';
+import dot from '../dot.js';
 
 /**
  * Outputs a number for use in SVG's style/transform/path strings.
  *
  * We need to prevent the numbers from being in an exponential toString form, since the CSS transform does not support
  * that.
- *
- * @param {number} number
- * @returns {string}
  */
-function toSVGNumber( number ) {
+function toSVGNumber( number: number ): string {
   // Largest guaranteed number of digits according to https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Number/toFixed
   // See https://github.com/phetsims/dot/issues/36
   return number.toFixed( 20 ); // eslint-disable-line phet/bad-sim-text

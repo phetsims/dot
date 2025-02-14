@@ -1,9 +1,13 @@
 // Copyright 2024, University of Colorado Boulder
+
 /**
  * Hybrid root-finding given our constraints (guaranteed interval, value/derivative). Combines Newton's and bisection.
  *
  * @author Jonathan Olson (PhET Interactive Simulations)
  */
+
+import dot from '../dot.js';
+
 export function findRoot( minX: number, maxX: number, tolerance: number, valueFunction: ( n: number ) => number, derivativeFunction: ( n: number ) => number ): number {
   let x = ( minX + maxX ) / 2;
 
@@ -36,3 +40,4 @@ export function findRoot( minX: number, maxX: number, tolerance: number, valueFu
 
   return x;
 }
+dot.register( 'findRoot', findRoot );

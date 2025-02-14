@@ -15,7 +15,7 @@ import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Matrix4 from './Matrix4.js';
-import toSVGNumber from './toSVGNumber.js';
+import toSVGNumber from './util/toSVGNumber.js';
 import Vector2 from './Vector2.js';
 import Vector3 from './Vector3.js';
 
