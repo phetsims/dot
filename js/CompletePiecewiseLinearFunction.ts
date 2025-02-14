@@ -1,4 +1,4 @@
-// Copyright 2022-2024, University of Colorado Boulder
+// Copyright 2022-2025, University of Colorado Boulder
 
 /**
  * Describes a 1d complete (fully defined for any number) function, where values are extrapolated given the final end
