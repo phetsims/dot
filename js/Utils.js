@@ -6,39 +6,43 @@
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
  */
 
-import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line phet/default-import-match-filename
 import dot from './dot.js';
+import { arePointsCollinear } from './util/arePointsCollinear.js';
+import { boxMullerTransform } from './util/boxMullerTransform.js';
+import { centroidOfPolygon } from './util/centroidOfPolygon.js';
 import { circleCenterFromPoints } from './util/circleCenterFromPoints.js';
 import { clamp } from './util/clamp.js';
+import { cosh } from './util/cosh.js';
 import { cubeRoot } from './util/cubeRoot.js';
+import { distToSegment } from './util/distToSegment.js';
+import { distToSegmentSquared } from './util/distToSegmentSquared.js';
+import { equalsEpsilon } from './util/equalsEpsilon.js';
 import { gcd } from './util/gcd.js';
 import { lcm } from './util/lcm.js';
+import { linear } from './util/linear.js';
 import { lineLineIntersection } from './util/lineLineIntersection.js';
+import { lineSegmentIntersection } from './util/lineSegmentIntersection.js';
+import { log10 } from './util/log10.js';
 import { mod } from './util/mod.js';
 import { moduloBetweenDown } from './util/moduloBetweenDown.js';
 import { moduloBetweenUp } from './util/moduloBetweenUp.js';
+import { numberOfDecimalPlaces } from './util/numberOfDecimalPlaces.js';
 import { pointInCircleFromPoints } from './util/pointInCircleFromPoints.js';
 import { rangeExclusive } from './util/rangeExclusive.js';
 import { rangeInclusive } from './util/rangeInclusive.js';
 import { roundSymmetric } from './util/roundSymmetric.js';
+import { roundToInterval } from './util/roundToInterval.js';
+import { sinh } from './util/sinh.js';
 import { solveCubicRootsReal } from './util/solveCubicRootsReal.js';
 import { solveLinearRootsReal } from './util/solveLinearRootsReal.js';
 import { solveQuadraticRootsReal } from './util/solveQuadraticRootsReal.js';
 import { sphereRayIntersection } from './util/sphereRayIntersection.js';
 import { toDegrees } from './util/toDegrees.js';
+import { toFixed } from './util/toFixed.js';
+import { toFixedNumber } from './util/toFixedNumber.js';
 import { toRadians } from './util/toRadians.js';
 import { triangleArea } from './util/triangleArea.js';
 import { triangleAreaSigned } from './util/triangleAreaSigned.js';
-import Vector2 from './Vector2.js';
-
-// constants
-const EPSILON = Number.MIN_VALUE;
-const TWO_PI = 2 * Math.PI;
-
-// "static" variables used in boxMullerTransform
-let generate;
-let z0;
-let z1;
 
 const Utils = {
   /**
@@ -346,17 +350,19 @@ const Utils = {
    * @param {number} b2
    * @param {number} a3
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/linear.ts
    */
   linear( a1, a2, b1, b2, a3 ) {
-    assert && assert( typeof a3 === 'number', 'linear requires a number to evaluate' );
-    return ( b2 - b1 ) / ( a2 - a1 ) * ( a3 - a1 ) + b1;
+    return linear( a1, a2, b1, b2, a3 );
   },
 
   /**
    * Rounds using "Round half away from zero" algorithm. See dot#35.
-
+   *
    * @param {number} value                               `
    * @returns {number}
+   *
    * NOTE: this function is deprecated - please use the separate file function directly, js/util/roundSymmetric.ts
    */
   roundSymmetric( value ) {
@@ -374,30 +380,11 @@ const Utils = {
    * @param {number} value
    * @param {number} decimalPlaces
    * @returns {string}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toFixed.ts
    */
   toFixed( value, decimalPlaces ) {
-    assert && assert( typeof value === 'number' );
-    assert && assert( Number.isInteger( decimalPlaces ), `decimal places must be an integer: ${decimalPlaces}` );
-    if ( isNaN( value ) ) {
-      return 'NaN';
-    }
-    else if ( value === Number.POSITIVE_INFINITY ) {
-      return 'Infinity';
-    }
-    else if ( value === Number.NEGATIVE_INFINITY ) {
-      return '-Infinity';
-    }
-
-    // eslint-disable-next-line phet/bad-sim-text
-    const result = new Big( value ).toFixed( decimalPlaces );
-
-    // Avoid reporting -0.000
-    if ( result.startsWith( '-0.' ) && Number.parseFloat( result ) === 0 ) {
-      return '0' + result.slice( 2 );
-    }
-    else {
-      return result;
-    }
+    return toFixed( value, decimalPlaces );
   },
 
   /**
@@ -411,9 +398,11 @@ const Utils = {
    * @param {number} value
    * @param {number} decimalPlaces
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toFixed.ts
    */
   toFixedNumber( value, decimalPlaces ) {
-    return parseFloat( Utils.toFixed( value, decimalPlaces ) );
+    return toFixedNumber( value, decimalPlaces );
   },
 
   /**
@@ -423,9 +412,11 @@ const Utils = {
    * @param {number} b
    * @param {number} epsilon
    * @returns {boolean}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/equalsEpsilon.ts
    */
   equalsEpsilon( a, b, epsilon ) {
-    return Math.abs( a - b ) <= epsilon;
+    return equalsEpsilon( a, b, epsilon );
   },
 
   /**
@@ -442,43 +433,11 @@ const Utils = {
    * @param {number} x4
    * @param {number} y4
    * @returns {Vector2|null}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/lineSegmentIntersection.ts
    */
   lineSegmentIntersection( x1, y1, x2, y2, x3, y3, x4, y4 ) {
-
-    // @private
-    // Determines counterclockwiseness. Positive if counterclockwise, negative if clockwise, zero if straight line
-    // Point1(a,b), Point2(c,d), Point3(e,f)
-    // See http://jeffe.cs.illinois.edu/teaching/373/notes/x05-convexhull.pdf
-    // @returns {number}
-    const ccw = ( a, b, c, d, e, f ) => ( f - b ) * ( c - a ) - ( d - b ) * ( e - a );
-
-    // Check if intersection doesn't exist. See http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
-    // If point1 and point2 are on opposite sides of line 3 4, exactly one of the two triples 1, 3, 4 and 2, 3, 4
-    // is in counterclockwise order.
-    if ( ccw( x1, y1, x3, y3, x4, y4 ) * ccw( x2, y2, x3, y3, x4, y4 ) > 0 ||
-         ccw( x3, y3, x1, y1, x2, y2 ) * ccw( x4, y4, x1, y1, x2, y2 ) > 0
-    ) {
-      return null;
-    }
-
-    const denom = ( x1 - x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 - x4 );
-    // If denominator is 0, the lines are parallel or coincident
-    if ( Math.abs( denom ) < 1e-10 ) {
-      return null;
-    }
-
-    // Check if there is an exact endpoint overlap (and then return an exact answer).
-    if ( ( x1 === x3 && y1 === y3 ) || ( x1 === x4 && y1 === y4 ) ) {
-      return new Vector2( x1, y1 );
-    }
-    else if ( ( x2 === x3 && y2 === y3 ) || ( x2 === x4 && y2 === y4 ) ) {
-      return new Vector2( x2, y2 );
-    }
-
-    // Use determinants to calculate intersection, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-    const intersectionX = ( ( x1 * y2 - y1 * x2 ) * ( x3 - x4 ) - ( x1 - x2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
-    const intersectionY = ( ( x1 * y2 - y1 * x2 ) * ( y3 - y4 ) - ( y1 - y2 ) * ( x3 * y4 - y3 * x4 ) ) / denom;
-    return new Vector2( intersectionX, intersectionY );
+    return lineSegmentIntersection( x1, y1, x2, y2, x3, y3, x4, y4 );
   },
 
 
@@ -491,34 +450,11 @@ const Utils = {
    * @param {Vector2} a - Starting point of the line segment
    * @param {Vector2} b - Ending point of the line segment
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/distToSegmentSquared.ts
    */
   distToSegmentSquared( point, a, b ) {
-    // the square of the distance between a and b,
-    const segmentSquaredLength = a.distanceSquared( b );
-
-    // if the segment length is zero, the a and b point are coincident. return the squared distance between a and point
-    if ( segmentSquaredLength === 0 ) { return point.distanceSquared( a ); }
-
-    // the t value parametrize the projection of the point onto the a b line
-    const t = ( ( point.x - a.x ) * ( b.x - a.x ) + ( point.y - a.y ) * ( b.y - a.y ) ) / segmentSquaredLength;
-
-    let distanceSquared;
-
-    if ( t < 0 ) {
-      // if t<0, the projection point is outside the ab line, beyond a
-      distanceSquared = point.distanceSquared( a );
-    }
-    else if ( t > 1 ) {
-      // if t>1, the projection past is outside the ab segment, beyond b,
-      distanceSquared = point.distanceSquared( b );
-    }
-    else {
-      // if 0<t<1, the projection point lies along the line joining a and b.
-      distanceSquared = point.distanceSquared( new Vector2( a.x + t * ( b.x - a.x ), a.y + t * ( b.y - a.y ) ) );
-    }
-
-    return distanceSquared;
-
+    return distToSegmentSquared( point, a, b );
   },
 
   /**
@@ -529,9 +465,11 @@ const Utils = {
    * @param {Vector2} a - Starting point of the line segment
    * @param {Vector2} b - Ending point of the line segment
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/distToSegmentSquared.ts
    */
   distToSegment( point, a, b ) {
-    return Math.sqrt( this.distToSegmentSquared( point, a, b ) );
+    return distToSegment( point, a, b );
   },
 
   /**
@@ -543,12 +481,11 @@ const Utils = {
    * @param {Vector2} c
    * @param {number} [epsilon]
    * @returns {boolean}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/arePointsCollinear.ts
    */
   arePointsCollinear( a, b, c, epsilon ) {
-    if ( epsilon === undefined ) {
-      epsilon = 0;
-    }
-    return Utils.triangleArea( a, b, c ) <= epsilon;
+    return arePointsCollinear( a, b, c, epsilon );
   },
 
   /**
@@ -592,26 +529,11 @@ const Utils = {
    *
    * @param {Array.<Vector2>} vertices
    * @returns {Vector2}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/centroidOfPolygon.ts
    */
   centroidOfPolygon( vertices ) {
-    const centroid = new Vector2( 0, 0 );
-
-    let area = 0;
-    vertices.forEach( ( v0, i ) => {
-      const v1 = vertices[ ( i + 1 ) % vertices.length ];
-      const doubleShoelace = v0.x * v1.y - v1.x * v0.y;
-
-      area += doubleShoelace / 2;
-
-      // Compute the centroid of the flat intersection with https://en.wikipedia.org/wiki/Centroid#Of_a_polygon
-      centroid.addXY(
-        ( v0.x + v1.x ) * doubleShoelace,
-        ( v0.y + v1.y ) * doubleShoelace
-      );
-    } );
-    centroid.divideScalar( 6 * area );
-
-    return centroid;
+    return centroidOfPolygon( vertices );
   },
 
   /**
@@ -620,9 +542,11 @@ const Utils = {
    *
    * @param {number} value
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/cosh.ts
    */
   cosh( value ) {
-    return ( Math.exp( value ) + Math.exp( -value ) ) / 2;
+    return cosh( value );
   },
 
   /**
@@ -631,9 +555,11 @@ const Utils = {
    *
    * @param {number} value
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/sinh.ts
    */
   sinh( value ) {
-    return ( Math.exp( value ) - Math.exp( -value ) ) / 2;
+    return sinh( value );
   },
 
   /**
@@ -642,9 +568,11 @@ const Utils = {
    *
    * @param {number} val
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/log10.ts
    */
   log10( val ) {
-    return Math.log( val ) / Math.LN10;
+    return log10( val );
   },
 
   /**
@@ -659,25 +587,11 @@ const Utils = {
    * @param {number} sigma - The standard deviation of the Gaussian
    * @param {Random} random - the source of randomness
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/boxMullerTransform.ts
    */
   boxMullerTransform( mu, sigma, random ) {
-    generate = !generate;
-
-    if ( !generate ) {
-      return z1 * sigma + mu;
-    }
-
-    let u1;
-    let u2;
-    do {
-      u1 = random.nextDouble();
-      u2 = random.nextDouble();
-    }
-    while ( u1 <= EPSILON );
-
-    z0 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.cos( TWO_PI * u2 );
-    z1 = Math.sqrt( -2.0 * Math.log( u1 ) ) * Math.sin( TWO_PI * u2 );
-    return z0 * sigma + mu;
+    return boxMullerTransform( mu, sigma, random );
   },
 
   /**
@@ -686,33 +600,11 @@ const Utils = {
    *
    * @param {number} value - a finite number, scientific notation is not supported for decimal numbers
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/numberOfDecimalPlaces.ts
    */
   numberOfDecimalPlaces( value ) {
-    assert && assert( typeof value === 'number' && isFinite( value ), `value must be a finite number ${value}` );
-    if ( Math.floor( value ) === value ) {
-      return 0;
-    }
-    else {
-      const string = value.toString();
-
-      // Handle scientific notation
-      if ( string.includes( 'e' ) ) {
-        // e.g. '1e-21', '5.6e+34', etc.
-        const split = string.split( 'e' );
-        const mantissa = split[ 0 ]; // The left part, e.g. '1' or '5.6'
-        const exponent = Number( split[ 1 ] ); // The right part, e.g. '-21' or '+34'
-
-        // How many decimal places are there in the left part
-        const mantissaDecimalPlaces = mantissa.includes( '.' ) ? mantissa.split( '.' )[ 1 ].length : 0;
-
-        // We adjust the number of decimal places by the exponent, e.g. '1.5e1' has zero decimal places, and
-        // '1.5e-2' has three.
-        return Math.max( mantissaDecimalPlaces - exponent, 0 );
-      }
-      else { // Handle decimal notation. Since we're not an integer, we should be guaranteed to have a decimal
-        return string.split( '.' )[ 1 ].length;
-      }
-    }
+    return numberOfDecimalPlaces( value );
   },
 
   /**
@@ -725,22 +617,13 @@ const Utils = {
    * @param {number} value
    * @param {number} interval
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/roundToInterval.ts
    */
   roundToInterval( value, interval ) {
-    return Utils.toFixedNumber( roundSymmetric( value / interval ) * interval,
-      Utils.numberOfDecimalPlaces( interval ) );
+    return roundToInterval( value, interval );
   }
 };
 dot.register( 'Utils', Utils );
-
-// make these available in the main namespace directly (for now)
-dot.lineLineIntersection = Utils.lineLineIntersection;
-dot.lineSegmentIntersection = Utils.lineSegmentIntersection;
-dot.sphereRayIntersection = Utils.sphereRayIntersection;
-dot.solveQuadraticRootsReal = Utils.solveQuadraticRootsReal;
-dot.solveCubicRootsReal = Utils.solveCubicRootsReal;
-dot.cubeRoot = Utils.cubeRoot;
-dot.linear = Utils.linear;
-dot.boxMullerTransform = Utils.boxMullerTransform;
 
 export default Utils;

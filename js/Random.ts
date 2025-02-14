@@ -17,8 +17,8 @@ import optionize from '../../phet-core/js/optionize.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 import Range from './Range.js';
-import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
+import { boxMullerTransform } from './util/boxMullerTransform.js';
 
 type RandomOptions = {
 
@@ -147,7 +147,7 @@ export default class Random {
    * The distribution of the random numbers is gaussian, with a mean = 0 and standard deviation = 1
    */
   public nextGaussian(): number {
-    return Utils.boxMullerTransform( 0, 1, this );
+    return boxMullerTransform( 0, 1, this );
   }
 
   /**
