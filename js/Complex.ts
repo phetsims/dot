@@ -10,7 +10,8 @@
  */
 
 import dot from './dot.js';
-import Utils from './Utils.js';
+import { cosh } from './util/cosh.js';
+import { sinh } from './util/sinh.js';
 
 export default class Complex {
 
@@ -186,8 +187,8 @@ export default class Complex {
    */
   public sinOf(): Complex {
     return new Complex(
-      Math.sin( this.real ) * Utils.cosh( this.imaginary ),
-      Math.cos( this.real ) * Utils.sinh( this.imaginary )
+      Math.sin( this.real ) * cosh( this.imaginary ),
+      Math.cos( this.real ) * sinh( this.imaginary )
     );
   }
 
@@ -198,8 +199,8 @@ export default class Complex {
    */
   public cosOf(): Complex {
     return new Complex(
-      Math.cos( this.real ) * Utils.cosh( this.imaginary ),
-      -Math.sin( this.real ) * Utils.sinh( this.imaginary )
+      Math.cos( this.real ) * cosh( this.imaginary ),
+      -Math.sin( this.real ) * sinh( this.imaginary )
     );
   }
 
@@ -362,8 +363,8 @@ export default class Complex {
    */
   public sin(): Complex {
     return this.setRealImaginary(
-      Math.sin( this.real ) * Utils.cosh( this.imaginary ),
-      Math.cos( this.real ) * Utils.sinh( this.imaginary )
+      Math.sin( this.real ) * cosh( this.imaginary ),
+      Math.cos( this.real ) * sinh( this.imaginary )
     );
   }
 
@@ -374,8 +375,8 @@ export default class Complex {
    */
   public cos(): Complex {
     return this.setRealImaginary(
-      Math.cos( this.real ) * Utils.cosh( this.imaginary ),
-      -Math.sin( this.real ) * Utils.sinh( this.imaginary )
+      Math.cos( this.real ) * cosh( this.imaginary ),
+      -Math.sin( this.real ) * sinh( this.imaginary )
     );
   }
 

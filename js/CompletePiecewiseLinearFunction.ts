@@ -14,8 +14,10 @@
  */
 
 import dot from './dot.js';
-import Utils from './Utils.js';
 import Vector2 from './Vector2.js';
+import { arePointsCollinear } from './util/arePointsCollinear.js';
+import { linear } from './util/linear.js';
+import { lineLineIntersection } from './util/lineLineIntersection.js';
 
 class CompletePiecewiseLinearFunction {
 
@@ -41,7 +43,7 @@ class CompletePiecewiseLinearFunction {
       const b = this.points[ i + 1 ];
       const c = this.points[ i + 2 ];
 
-      if ( Utils.arePointsCollinear( a, b, c ) ) {
+      if ( arePointsCollinear( a, b, c ) ) {
         this.points.splice( i + 1, 1 );
         i--;
       }
@@ -81,7 +83,7 @@ class CompletePiecewiseLinearFunction {
         return rightPoint.y;
       }
       else {
-        return Utils.linear( leftPoint.x, rightPoint.x, leftPoint.y, rightPoint.y, x );
+        return linear( leftPoint.x, rightPoint.x, leftPoint.y, rightPoint.y, x );
       }
     }
   }
@@ -106,7 +108,7 @@ class CompletePiecewiseLinearFunction {
     for ( let i = 0; i < xValues.length - 1; i++ ) {
       const leftX = xValues[ i ];
       const rightX = xValues[ i + 1 ];
-      const intersectionPoint = Utils.lineLineIntersection(
+      const intersectionPoint = lineLineIntersection(
         // The linear function defined in this
         new Vector2( leftX, this.evaluate( leftX ) ),
         new Vector2( rightX, this.evaluate( rightX ) ),

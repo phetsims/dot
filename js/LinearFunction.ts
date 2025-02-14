@@ -14,8 +14,8 @@
  */
 
 import dot from './dot.js';
-import Utils from './Utils.js';
 import { clamp } from './util/clamp.js';
+import { linear } from './util/linear.js';
 
 export default class LinearFunction {
   private a1: number;
@@ -60,7 +60,7 @@ export default class LinearFunction {
  * Optionally clamp the result to the range [b1,b2].
  */
 const map = ( a1: number, a2: number, b1: number, b2: number, a3: number, clampValue: boolean ): number => {
-  let b3 = Utils.linear( a1, a2, b1, b2, a3 );
+  let b3 = linear( a1, a2, b1, b2, a3 );
   if ( clampValue ) {
     const max = Math.max( b1, b2 );
     const min = Math.min( b1, b2 );

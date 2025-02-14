@@ -7,7 +7,7 @@
  */
 
 import dot from './dot.js';
-import Utils from './Utils.js';
+import { linear } from './util/linear.js';
 
 class PiecewiseLinearFunction {
 
@@ -64,7 +64,7 @@ class PiecewiseLinearFunction {
     const anchor1Y = array[ lowerIndex + 1 ];
     const anchor2X = array[ upperIndex ];
     const anchor2Y = array[ upperIndex + 1 ];
-    return Utils.linear( anchor1X, anchor2X, anchor1Y, anchor2Y, x );
+    return linear( anchor1X, anchor2X, anchor1Y, anchor2Y, x );
   }
 }
 

@@ -11,7 +11,6 @@
 import Poolable from '../../phet-core/js/Poolable.js';
 import dot from './dot.js';
 import Matrix3 from './Matrix3.js';
-import './Utils.js';
 import Vector3 from './Vector3.js';
 
 class Quaternion {

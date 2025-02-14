@@ -7,7 +7,7 @@
  */
 
 import dot from './dot.js';
-import Utils from './Utils.js';
+import { rangeInclusive } from './util/rangeInclusive.js';
 
 class Permutation {
 
@@ -97,7 +97,7 @@ class Permutation {
    */
   public static permutations( size: number ): Permutation[] {
     const result: Permutation[] = [];
-    Permutation.forEachPermutation( Utils.rangeInclusive( 0, size - 1 ), integers => {
+    Permutation.forEachPermutation( rangeInclusive( 0, size - 1 ), integers => {
       result.push( new Permutation( integers.slice() ) );
     } );
     return result;

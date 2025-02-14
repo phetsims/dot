@@ -17,7 +17,9 @@ import arrayRemove from '../../phet-core/js/arrayRemove.js';
 import merge from '../../phet-core/js/merge.js';
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
-import Utils from './Utils.js';
+import { lineSegmentIntersection } from './util/lineSegmentIntersection.js';
+import { pointInCircleFromPoints } from './util/pointInCircleFromPoints.js';
+import { triangleAreaSigned } from './util/triangleAreaSigned.js';
 import Vector2 from './Vector2.js';
 
 class DelaunayTriangulation {
@@ -262,7 +264,7 @@ class DelaunayTriangulation {
     const middleVertex = rightFrontEdge.endVertex;
 
     while ( rightFrontEdge.previousEdge &&
-            Utils.triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 &&
+            triangleAreaSigned( middleVertex.point, rightFrontEdge.startVertex.point, rightFrontEdge.previousEdge.startVertex.point ) > 0 &&
             ( middleVertex.point.minus( rightFrontEdge.startVertex.point ) ).angleBetween( rightFrontEdge.previousEdge.startVertex.point.minus( rightFrontEdge.startVertex.point ) ) < Math.PI / 2 ) {
       const previousEdge = rightFrontEdge.previousEdge;
       const newRightEdge = new Edge( previousEdge.startVertex, middleVertex );
@@ -277,7 +279,7 @@ class DelaunayTriangulation {
       rightFrontEdge = newRightEdge;
     }
     while ( leftFrontEdge.nextEdge &&
-            Utils.triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 &&
+            triangleAreaSigned( middleVertex.point, leftFrontEdge.nextEdge.endVertex.point, leftFrontEdge.endVertex.point ) > 0 &&
             ( middleVertex.point.minus( leftFrontEdge.endVertex.point ) ).angleBetween( leftFrontEdge.nextEdge.endVertex.point.minus( leftFrontEdge.endVertex.point ) ) < Math.PI / 2 ) {
       const nextEdge = leftFrontEdge.nextEdge;
       const newLeftEdge = new Edge( middleVertex, nextEdge.endVertex );
@@ -465,7 +467,7 @@ class DelaunayTriangulation {
         const startVertex = edge.getOtherVertex( sharedVertex );
         const endVertex = nextEdge.getOtherVertex( sharedVertex );
 
-        if ( Utils.triangleAreaSigned( startVertex.point, sharedVertex.point, endVertex.point ) <= 0 ) {
+        if ( triangleAreaSigned( startVertex.point, sharedVertex.point, endVertex.point ) <= 0 ) {
           continue;
         }
 
@@ -554,7 +556,7 @@ class DelaunayTriangulation {
     for ( let i = 0; i < frontEdges.length - 1; i++ ) {
       const firstEdge = frontEdges[ i ];
       const secondEdge = frontEdges[ i + 1 ];
-      if ( Utils.triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
+      if ( triangleAreaSigned( secondEdge.endVertex.point, firstEdge.endVertex.point, firstEdge.startVertex.point ) > 1e-10 ) {
         const newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstEdge.startVertex, firstEdge.endVertex, secondEdge.endVertex );
         frontEdges.splice( i, 2, newEdge );
         // start scanning from behind where we were previously (if possible)
@@ -610,7 +612,7 @@ class DelaunayTriangulation {
       const sharedVertex = firstEdge.getSharedVertex( secondEdge );
       const firstVertex = firstEdge.getOtherVertex( sharedVertex );
       const secondVertex = secondEdge.getOtherVertex( sharedVertex );
-      if ( Utils.triangleAreaSigned( secondVertex.point, sharedVertex.point, firstVertex.point ) > 1e-10 ) {
+      if ( triangleAreaSigned( secondVertex.point, sharedVertex.point, firstVertex.point ) > 1e-10 ) {
         const newEdge = this.fillBorderTriangle( firstEdge, secondEdge, firstVertex, sharedVertex, secondVertex );
         backEdges.splice( i, 2, newEdge );
         // start scanning from behind where we were previously (if possible)
@@ -650,8 +652,8 @@ class DelaunayTriangulation {
     const farVertex1 = triangle1.getVertexOppositeFromEdge( edge );
     const farVertex2 = triangle2.getVertexOppositeFromEdge( edge );
 
-    if ( Utils.pointInCircleFromPoints( triangle1.aVertex.point, triangle1.bVertex.point, triangle1.cVertex.point, farVertex2.point ) ||
-         Utils.pointInCircleFromPoints( triangle2.aVertex.point, triangle2.bVertex.point, triangle2.cVertex.point, farVertex1.point ) ) {
+    if ( pointInCircleFromPoints( triangle1.aVertex.point, triangle1.bVertex.point, triangle1.cVertex.point, farVertex2.point ) ||
+         pointInCircleFromPoints( triangle2.aVertex.point, triangle2.bVertex.point, triangle2.cVertex.point, farVertex1.point ) ) {
       // TODO: better helper functions for adding/removing triangles (takes care of the edge stuff) https://github.com/phetsims/dot/issues/96
       triangle1.remove();
       triangle2.remove();
@@ -945,7 +947,7 @@ class Edge {
    * @returns {boolean}
    */
   intersectsConstrainedEdge( vertex, bottomVertex ) {
-    return Utils.lineSegmentIntersection( vertex.point.x, vertex.point.y, bottomVertex.point.x, bottomVertex.point.y,
+    return lineSegmentIntersection( vertex.point.x, vertex.point.y, bottomVertex.point.x, bottomVertex.point.y,
       this.startVertex.point.x, this.startVertex.point.y,
       this.endVertex.point.x, this.endVertex.point.y );
   }
@@ -985,7 +987,7 @@ class Triangle {
     assert && assert( cVertex === aEdge.startVertex || cVertex === aEdge.endVertex, 'cVertex should be in aEdge' );
     assert && assert( cVertex === bEdge.startVertex || cVertex === bEdge.endVertex, 'cVertex should be in bEdge' );
 
-    assert && assert( Utils.triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
+    assert && assert( triangleAreaSigned( aVertex.point, bVertex.point, cVertex.point ) > 0,
       'Should be counterclockwise' );
 
     // @public {Vertex}
