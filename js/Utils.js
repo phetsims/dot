@@ -8,16 +8,28 @@
 
 import Big from '../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line phet/default-import-match-filename
 import dot from './dot.js';
+import { circleCenterFromPoints } from './util/circleCenterFromPoints.js';
 import { clamp } from './util/clamp.js';
+import { cubeRoot } from './util/cubeRoot.js';
+import { gcd } from './util/gcd.js';
+import { lcm } from './util/lcm.js';
+import { lineLineIntersection } from './util/lineLineIntersection.js';
+import { mod } from './util/mod.js';
 import { moduloBetweenDown } from './util/moduloBetweenDown.js';
 import { moduloBetweenUp } from './util/moduloBetweenUp.js';
+import { pointInCircleFromPoints } from './util/pointInCircleFromPoints.js';
 import { rangeExclusive } from './util/rangeExclusive.js';
 import { rangeInclusive } from './util/rangeInclusive.js';
 import { roundSymmetric } from './util/roundSymmetric.js';
+import { solveCubicRootsReal } from './util/solveCubicRootsReal.js';
+import { solveLinearRootsReal } from './util/solveLinearRootsReal.js';
+import { solveQuadraticRootsReal } from './util/solveQuadraticRootsReal.js';
+import { sphereRayIntersection } from './util/sphereRayIntersection.js';
 import { toDegrees } from './util/toDegrees.js';
 import { toRadians } from './util/toRadians.js';
+import { triangleArea } from './util/triangleArea.js';
+import { triangleAreaSigned } from './util/triangleAreaSigned.js';
 import Vector2 from './Vector2.js';
-import Vector3 from './Vector3.js';
 
 // constants
 const EPSILON = Number.MIN_VALUE;
@@ -142,14 +154,11 @@ const Utils = {
    * @param {number} a
    * @param {number} b
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/mod.ts
    */
   mod( a, b ) {
-    if ( a / b % 1 === 0 ) {
-      return 0; // a is a multiple of b
-    }
-    else {
-      return a % b;
-    }
+    return mod( a, b );
   },
 
   /**
@@ -160,9 +169,11 @@ const Utils = {
    * @param {number} a
    * @param {number} b
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/gcd.ts
    */
   gcd( a, b ) {
-    return Math.abs( b === 0 ? a : this.gcd( b, Utils.mod( a, b ) ) );
+    return gcd( a, b );
   },
 
   /**
@@ -172,9 +183,11 @@ const Utils = {
    * @param {number} a
    * @param {number} b
    * @returns {number} lcm, an integer
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/lcm.ts
    */
   lcm( a, b ) {
-    return roundSymmetric( Math.abs( a * b ) / Utils.gcd( a, b ) );
+    return lcm( a, b );
   },
 
   /**
@@ -188,37 +201,11 @@ const Utils = {
    * @param {Vector2} p3
    * @param {Vector2} p4
    * @returns {Vector2|null}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/lineLineIntersection.ts
    */
   lineLineIntersection( p1, p2, p3, p4 ) {
-    const epsilon = 1e-10;
-
-    // If the endpoints are the same, they don't properly define a line
-    if ( p1.equalsEpsilon( p2, epsilon ) || p3.equalsEpsilon( p4, epsilon ) ) {
-      return null;
-    }
-
-    // Taken from an answer in
-    // http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
-    const x12 = p1.x - p2.x;
-    const x34 = p3.x - p4.x;
-    const y12 = p1.y - p2.y;
-    const y34 = p3.y - p4.y;
-
-    const denom = x12 * y34 - y12 * x34;
-
-    // If the denominator is 0, lines are parallel or coincident
-    if ( Math.abs( denom ) < epsilon ) {
-      return null;
-    }
-
-    // define intersection using determinants, see https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
-    const a = p1.x * p2.y - p1.y * p2.x;
-    const b = p3.x * p4.y - p3.y * p4.x;
-
-    return new Vector2(
-      ( a * x34 - x12 * b ) / denom,
-      ( a * y34 - y12 * b ) / denom
-    );
+    return lineLineIntersection( p1, p2, p3, p4 );
   },
 
   /**
@@ -229,19 +216,11 @@ const Utils = {
    * @param {Vector2} p2
    * @param {Vector2} p3
    * @returns {Vector2|null}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/circleCenterFromPoints.ts
    */
   circleCenterFromPoints( p1, p2, p3 ) {
-    // TODO: Can we make scratch vectors here, avoiding the circular reference? https://github.com/phetsims/dot/issues/96
-
-    // midpoints between p1-p2 and p2-p3
-    const p12 = new Vector2( ( p1.x + p2.x ) / 2, ( p1.y + p2.y ) / 2 );
-    const p23 = new Vector2( ( p2.x + p3.x ) / 2, ( p2.y + p3.y ) / 2 );
-
-    // perpendicular points from the minpoints
-    const p12x = new Vector2( p12.x + ( p2.y - p1.y ), p12.y - ( p2.x - p1.x ) );
-    const p23x = new Vector2( p23.x + ( p3.y - p2.y ), p23.y - ( p3.x - p2.x ) );
-
-    return Utils.lineLineIntersection( p12, p12x, p23, p23x );
+    return circleCenterFromPoints( p1, p2, p3 );
   },
 
   /**
@@ -258,23 +237,11 @@ const Utils = {
    * @param {Vector2} p3
    * @param {Vector2} p
    * @returns {boolean}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/pointInCircleFromPoints.ts
    */
   pointInCircleFromPoints( p1, p2, p3, p ) {
-    assert && assert( Utils.triangleAreaSigned( p1, p2, p3 ) > 0,
-      'Defined points should be in a counterclockwise order' );
-
-    const m00 = p1.x - p.x;
-    const m01 = p1.y - p.y;
-    const m02 = ( p1.x - p.x ) * ( p1.x - p.x ) + ( p1.y - p.y ) * ( p1.y - p.y );
-    const m10 = p2.x - p.x;
-    const m11 = p2.y - p.y;
-    const m12 = ( p2.x - p.x ) * ( p2.x - p.x ) + ( p2.y - p.y ) * ( p2.y - p.y );
-    const m20 = p3.x - p.x;
-    const m21 = p3.y - p.y;
-    const m22 = ( p3.x - p.x ) * ( p3.x - p.x ) + ( p3.y - p.y ) * ( p3.y - p.y );
-
-    const determinant = m00 * m11 * m22 + m01 * m12 * m20 + m02 * m10 * m21 - m02 * m11 * m20 - m01 * m10 * m22 - m00 * m12 * m21;
-    return determinant > 0;
+    return pointInCircleFromPoints( p1, p2, p3, p );
   },
 
   /**
@@ -296,67 +263,12 @@ const Utils = {
    * @param {Ray3} ray
    * @param {number} epsilon
    * @returns {Object}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/sphereRayIntersection.ts
    */
   // assumes a sphere with the specified radius, centered at the origin
   sphereRayIntersection( radius, ray, epsilon ) {
-    epsilon = epsilon === undefined ? 1e-5 : epsilon;
-
-    // center is the origin for now, but leaving in computations so that we can change that in the future. optimize away if needed
-    const center = new Vector3( 0, 0, 0 );
-
-    const rayDir = ray.direction;
-    const pos = ray.position;
-    const centerToRay = pos.minus( center );
-
-    // basically, we can use the quadratic equation to solve for both possible hit points (both +- roots are the hit points)
-    const tmp = rayDir.dot( centerToRay );
-    const centerToRayDistSq = centerToRay.magnitudeSquared;
-    const det = 4 * tmp * tmp - 4 * ( centerToRayDistSq - radius * radius );
-    if ( det < epsilon ) {
-      // ray misses sphere entirely
-      return null;
-    }
-
-    const base = rayDir.dot( center ) - rayDir.dot( pos );
-    const sqt = Math.sqrt( det ) / 2;
-
-    // the "first" entry point distance into the sphere. if we are inside the sphere, it is behind us
-    const ta = base - sqt;
-
-    // the "second" entry point distance
-    const tb = base + sqt;
-
-    if ( tb < epsilon ) {
-      // sphere is behind ray, so don't return an intersection
-      return null;
-    }
-
-    const hitPositionB = ray.pointAtDistance( tb );
-    const normalB = hitPositionB.minus( center ).normalized();
-
-    if ( ta < epsilon ) {
-      // we are inside the sphere
-      // in => out
-      return {
-        distance: tb,
-        hitPoint: hitPositionB,
-        normal: normalB.negated(),
-        fromOutside: false
-      };
-    }
-    else {
-      // two possible hits
-      const hitPositionA = ray.pointAtDistance( ta );
-      const normalA = hitPositionA.minus( center ).normalized();
-
-      // close hit, we have out => in
-      return {
-        distance: ta,
-        hitPoint: hitPositionA,
-        normal: normalA,
-        fromOutside: true
-      };
-    }
+    return sphereRayIntersection( radius, ray, epsilon );
   },
 
   /**
@@ -367,19 +279,11 @@ const Utils = {
    * @param {number} b
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/solveLinearRootsReal.ts
    */
   solveLinearRootsReal( a, b ) {
-    if ( a === 0 ) {
-      if ( b === 0 ) {
-        return null;
-      }
-      else {
-        return [];
-      }
-    }
-    else {
-      return [ -b / a ];
-    }
+    return solveLinearRootsReal( a, b );
   },
 
   /**
@@ -392,26 +296,11 @@ const Utils = {
    * @param {number} c
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/solveQuadraticRootsReal.ts
    */
   solveQuadraticRootsReal( a, b, c ) {
-    // Check for a degenerate case where we don't have a quadratic, or if the order of magnitude is such where the
-    // linear solution would be expected
-    const epsilon = 1E7;
-    if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon ) {
-      return Utils.solveLinearRootsReal( b, c );
-    }
-
-    const discriminant = b * b - 4 * a * c;
-    if ( discriminant < 0 ) {
-      return [];
-    }
-    const sqrt = Math.sqrt( discriminant );
-    // TODO: how to handle if discriminant is 0? give unique root or double it? https://github.com/phetsims/dot/issues/96
-    // TODO: probably just use Complex for the future https://github.com/phetsims/dot/issues/96
-    return [
-      ( -b - sqrt ) / ( 2 * a ),
-      ( -b + sqrt ) / ( 2 * a )
-    ];
+    return solveQuadraticRootsReal( a, b, c );
   },
 
   /**
@@ -426,67 +315,11 @@ const Utils = {
    * @param {number} [discriminantThreshold] - for determining whether we have a single real root
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/solveCubicRootsReal.ts
    */
-  solveCubicRootsReal( a, b, c, d, discriminantThreshold = 1e-7 ) {
-
-    let roots;
-
-    // TODO: a Complex type! https://github.com/phetsims/dot/issues/96
-
-    // Check for a degenerate case where we don't have a cubic
-    if ( a === 0 ) {
-      roots = Utils.solveQuadraticRootsReal( b, c, d );
-    }
-    else {
-      //We need to test whether a is several orders of magnitude less than b, c, d
-      const epsilon = 1E7;
-
-      if ( a === 0 || Math.abs( b / a ) > epsilon || Math.abs( c / a ) > epsilon || Math.abs( d / a ) > epsilon ) {
-        roots = Utils.solveQuadraticRootsReal( b, c, d );
-      }
-      else {
-        if ( d === 0 || Math.abs( a / d ) > epsilon || Math.abs( b / d ) > epsilon || Math.abs( c / d ) > epsilon ) {
-          roots = [ 0 ].concat( Utils.solveQuadraticRootsReal( a, b, c ) );
-        }
-        else {
-          b /= a;
-          c /= a;
-          d /= a;
-
-          const q = ( 3.0 * c - ( b * b ) ) / 9;
-          const r = ( -( 27 * d ) + b * ( 9 * c - 2 * ( b * b ) ) ) / 54;
-          const discriminant = q * q * q + r * r;
-          const b3 = b / 3;
-
-          if ( discriminant > discriminantThreshold ) {
-            // a single real root
-            const dsqrt = Math.sqrt( discriminant );
-            roots = [ Utils.cubeRoot( r + dsqrt ) + Utils.cubeRoot( r - dsqrt ) - b3 ];
-          }
-          else if ( discriminant > -discriminantThreshold ) { // would truly be discriminant==0, but floating-point error
-            // contains a double root (but with three roots)
-            const rsqrt = Utils.cubeRoot( r );
-            const doubleRoot = -b3 - rsqrt;
-            roots = [ -b3 + 2 * rsqrt, doubleRoot, doubleRoot ];
-          }
-          else {
-            // all unique (three roots)
-            let qX = -q * q * q;
-            qX = Math.acos( r / Math.sqrt( qX ) );
-            const rr = 2 * Math.sqrt( -q );
-            roots = [
-              -b3 + rr * Math.cos( qX / 3 ),
-              -b3 + rr * Math.cos( ( qX + 2 * Math.PI ) / 3 ),
-              -b3 + rr * Math.cos( ( qX + 4 * Math.PI ) / 3 )
-            ];
-          }
-        }
-      }
-    }
-
-    assert && roots && roots.forEach( root => assert( isFinite( root ), 'All returned solveCubicRootsReal roots should be finite' ) );
-
-    return roots;
+  solveCubicRootsReal( a, b, c, d, discriminantThreshold ) {
+    return solveCubicRootsReal( a, b, c, d, discriminantThreshold );
   },
 
   /**
@@ -495,9 +328,11 @@ const Utils = {
    *
    * @param {number} x
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/cubeRoot.ts
    */
   cubeRoot( x ) {
-    return x >= 0 ? Math.pow( x, 1 / 3 ) : -Math.pow( -x, 1 / 3 );
+    return cubeRoot( x );
   },
 
   /**
@@ -724,9 +559,11 @@ const Utils = {
    * @param {Vector2} b
    * @param {Vector2} c
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/triangleArea.ts
    */
   triangleArea( a, b, c ) {
-    return Math.abs( Utils.triangleAreaSigned( a, b, c ) );
+    return triangleArea( a, b, c );
   },
 
   /**
@@ -741,9 +578,11 @@ const Utils = {
    * @param {Vector2} b
    * @param {Vector2} c
    * @returns {number}
+   *
+   * NOTE: this function is deprecated - please use the separate file function directly, js/util/triangleAreaSigned.ts
    */
   triangleAreaSigned( a, b, c ) {
-    return a.x * ( b.y - c.y ) + b.x * ( c.y - a.y ) + c.x * ( a.y - b.y );
+    return triangleAreaSigned( a, b, c );
   },
 
   /**
