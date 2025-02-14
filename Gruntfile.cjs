@@ -1,13 +1,5 @@
-// Copyright 2013-2016, University of Colorado Boulder
+// Copyright 2013-2025, University of Colorado Boulder
 
-const Gruntfile = require( '../chipper/Gruntfile.cjs' );
-const registerTasks = require( '../perennial-alias/js/grunt/commonjs/registerTasks.js' );
 
-/**
- * Dot grunt tasks
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
- */
-module.exports = function( grunt ) {
-  Gruntfile( grunt ); // use chipper's gruntfile
-  registerTasks( grunt, `${__dirname}/js/grunt/tasks/` );
-};
+// use chipper's gruntfile
+module.exports = require( '../chipper/js/grunt/commonjs/gruntMain.js' );
