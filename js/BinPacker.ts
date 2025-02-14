@@ -5,24 +5,21 @@
  * together inside the area and do not overlap. Optimized more for runtime CPU usage than space currently.
  *
  * For example:
- * #begin canvasExample binPacker 256x256
- * #on
- * var binPacker = new phet.dot.BinPacker( new dot.Bounds2( 0, 0, 256, 256 ) );
- * var bins = [];
- * for ( var i = 0; i < 100; i++ ) {
- *   var bin = binPacker.allocate( Math.random() * 64, Math.random() * 64 );
+ *
+ * #begin sandbox
+ * const binPacker = new BinPacker( new Bounds2( 0, 0, 256, 256 ) );
+ * const bins = [];
+ * for ( let i = 0; i < 100; i++ ) {
+ *   const bin = binPacker.allocate( Math.random() * 64, Math.random() * 64 );
  *   if ( bin ) {
  *     bins.push( bin );
  *   }
  * }
  * #off
- *
- * context.strokeStyle = '#000';
- * bins.forEach( function( bin ) {
- *   var bounds = bin.bounds;
- *   context.strokeRect( bounds.x, bounds.y, bounds.width, bounds.height );
+ * const content = new Node( {
+ *   children: bins.map( bin => Rectangle.bounds( bin.bounds, { stroke: 'black' } ) )
  * } );
- * #end canvasExample
+ * #end sandbox
  *
  * @author Sharfudeen Ashraf
  * @author Jonathan Olson <jonathan.olson@colorado.edu>
