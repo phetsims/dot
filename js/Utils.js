@@ -44,6 +44,9 @@ import { toRadians } from './util/toRadians.js';
 import { triangleArea } from './util/triangleArea.js';
 import { triangleAreaSigned } from './util/triangleAreaSigned.js';
 
+/**
+ * @deprecated - please use individual file functions in js/util/*
+ */
 const Utils = {
   /**
    * Returns the original value if it is inclusively within the [max,min] range. If it's below the range, min is
@@ -55,7 +58,7 @@ const Utils = {
    * @param {number} max
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/clamp.ts
+   * @deprecated - please use the separate file function directly, js/util/clamp.ts
    */
   clamp( value, min, max ) {
     return clamp( value, min, max );
@@ -73,7 +76,7 @@ const Utils = {
    * @param {number} max
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/moduloBetweenDown.ts
+   * @deprecated - please use the separate file function directly, js/util/moduloBetweenDown.ts
    */
   moduloBetweenDown( value, min, max ) {
     return moduloBetweenDown( value, min, max );
@@ -91,7 +94,7 @@ const Utils = {
    * @param {number} max
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/moduloBetweenUp.ts
+   * @deprecated - please use the separate file function directly, js/util/moduloBetweenUp.ts
    */
   moduloBetweenUp( value, min, max ) {
     return moduloBetweenUp( value, min, max );
@@ -105,7 +108,7 @@ const Utils = {
    * @param {number} b
    * @returns {Array.<number>}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/rangeInclusive.ts
+   * @deprecated - please use the separate file function directly, js/util/rangeInclusive.ts
    */
   rangeInclusive( a, b ) {
     return rangeInclusive( a, b );
@@ -119,7 +122,7 @@ const Utils = {
    * @param {number} b
    * @returns {Array.<number>}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/rangeExclusive.ts
+   * @deprecated - please use the separate file function directly, js/util/rangeExclusive.ts
    */
   rangeExclusive( a, b ) {
     return rangeExclusive( a, b );
@@ -132,7 +135,7 @@ const Utils = {
    * @param {number} degrees
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toRadians.ts
+   * @deprecated - please use the separate file function directly, js/util/toRadians.ts
    */
   toRadians( degrees ) {
     return toRadians( degrees );
@@ -145,7 +148,7 @@ const Utils = {
    * @param {number} radians
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toDegrees.ts
+   * @deprecated - please use the separate file function directly, js/util/toDegrees.ts
    */
   toDegrees( radians ) {
     return toDegrees( radians );
@@ -159,7 +162,7 @@ const Utils = {
    * @param {number} b
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/mod.ts
+   * @deprecated - please use the separate file function directly, js/util/mod.ts
    */
   mod( a, b ) {
     return mod( a, b );
@@ -174,7 +177,7 @@ const Utils = {
    * @param {number} b
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/gcd.ts
+   * @deprecated - please use the separate file function directly, js/util/gcd.ts
    */
   gcd( a, b ) {
     return gcd( a, b );
@@ -188,7 +191,7 @@ const Utils = {
    * @param {number} b
    * @returns {number} lcm, an integer
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/lcm.ts
+   * @deprecated - please use the separate file function directly, js/util/lcm.ts
    */
   lcm( a, b ) {
     return lcm( a, b );
@@ -206,7 +209,7 @@ const Utils = {
    * @param {Vector2} p4
    * @returns {Vector2|null}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/lineLineIntersection.ts
+   * @deprecated - please use the separate file function directly, js/util/lineLineIntersection.ts
    */
   lineLineIntersection( p1, p2, p3, p4 ) {
     return lineLineIntersection( p1, p2, p3, p4 );
@@ -221,7 +224,7 @@ const Utils = {
    * @param {Vector2} p3
    * @returns {Vector2|null}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/circleCenterFromPoints.ts
+   * @deprecated - please use the separate file function directly, js/util/circleCenterFromPoints.ts
    */
   circleCenterFromPoints( p1, p2, p3 ) {
     return circleCenterFromPoints( p1, p2, p3 );
@@ -242,7 +245,7 @@ const Utils = {
    * @param {Vector2} p
    * @returns {boolean}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/pointInCircleFromPoints.ts
+   * @deprecated - please use the separate file function directly, js/util/pointInCircleFromPoints.ts
    */
   pointInCircleFromPoints( p1, p2, p3, p ) {
     return pointInCircleFromPoints( p1, p2, p3, p );
@@ -268,7 +271,7 @@ const Utils = {
    * @param {number} epsilon
    * @returns {Object}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/sphereRayIntersection.ts
+   * @deprecated - please use the separate file function directly, js/util/sphereRayIntersection.ts
    */
   // assumes a sphere with the specified radius, centered at the origin
   sphereRayIntersection( radius, ray, epsilon ) {
@@ -284,7 +287,7 @@ const Utils = {
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/solveLinearRootsReal.ts
+   * @deprecated - please use the separate file function directly, js/util/solveLinearRootsReal.ts
    */
   solveLinearRootsReal( a, b ) {
     return solveLinearRootsReal( a, b );
@@ -301,7 +304,7 @@ const Utils = {
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/solveQuadraticRootsReal.ts
+   * @deprecated - please use the separate file function directly, js/util/solveQuadraticRootsReal.ts
    */
   solveQuadraticRootsReal( a, b, c ) {
     return solveQuadraticRootsReal( a, b, c );
@@ -320,7 +323,7 @@ const Utils = {
    * @returns {Array.<number>|null} - The real roots of the equation, or null if all values are roots. If the root has
    *                                  a multiplicity larger than 1, it will be repeated that many times.
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/solveCubicRootsReal.ts
+   * @deprecated - please use the separate file function directly, js/util/solveCubicRootsReal.ts
    */
   solveCubicRootsReal( a, b, c, d, discriminantThreshold ) {
     return solveCubicRootsReal( a, b, c, d, discriminantThreshold );
@@ -333,7 +336,7 @@ const Utils = {
    * @param {number} x
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/cubeRoot.ts
+   * @deprecated - please use the separate file function directly, js/util/cubeRoot.ts
    */
   cubeRoot( x ) {
     return cubeRoot( x );
@@ -351,7 +354,7 @@ const Utils = {
    * @param {number} a3
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/linear.ts
+   * @deprecated - please use the separate file function directly, js/util/linear.ts
    */
   linear( a1, a2, b1, b2, a3 ) {
     return linear( a1, a2, b1, b2, a3 );
@@ -363,7 +366,7 @@ const Utils = {
    * @param {number} value                               `
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/roundSymmetric.ts
+   * @deprecated - please use the separate file function directly, js/util/roundSymmetric.ts
    */
   roundSymmetric( value ) {
     return roundSymmetric( value );
@@ -381,7 +384,7 @@ const Utils = {
    * @param {number} decimalPlaces
    * @returns {string}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toFixed.ts
+   * @deprecated - please use the separate file function directly, js/util/toFixed.ts
    */
   toFixed( value, decimalPlaces ) {
     return toFixed( value, decimalPlaces );
@@ -399,7 +402,7 @@ const Utils = {
    * @param {number} decimalPlaces
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/toFixed.ts
+   * @deprecated - please use the separate file function directly, js/util/toFixed.ts
    */
   toFixedNumber( value, decimalPlaces ) {
     return toFixedNumber( value, decimalPlaces );
@@ -413,7 +416,7 @@ const Utils = {
    * @param {number} epsilon
    * @returns {boolean}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/equalsEpsilon.ts
+   * @deprecated - please use the separate file function directly, js/util/equalsEpsilon.ts
    */
   equalsEpsilon( a, b, epsilon ) {
     return equalsEpsilon( a, b, epsilon );
@@ -434,7 +437,7 @@ const Utils = {
    * @param {number} y4
    * @returns {Vector2|null}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/lineSegmentIntersection.ts
+   * @deprecated - please use the separate file function directly, js/util/lineSegmentIntersection.ts
    */
   lineSegmentIntersection( x1, y1, x2, y2, x3, y3, x4, y4 ) {
     return lineSegmentIntersection( x1, y1, x2, y2, x3, y3, x4, y4 );
@@ -451,7 +454,7 @@ const Utils = {
    * @param {Vector2} b - Ending point of the line segment
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/distToSegmentSquared.ts
+   * @deprecated - please use the separate file function directly, js/util/distToSegmentSquared.ts
    */
   distToSegmentSquared( point, a, b ) {
     return distToSegmentSquared( point, a, b );
@@ -466,7 +469,7 @@ const Utils = {
    * @param {Vector2} b - Ending point of the line segment
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/distToSegmentSquared.ts
+   * @deprecated - please use the separate file function directly, js/util/distToSegmentSquared.ts
    */
   distToSegment( point, a, b ) {
     return distToSegment( point, a, b );
@@ -482,7 +485,7 @@ const Utils = {
    * @param {number} [epsilon]
    * @returns {boolean}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/arePointsCollinear.ts
+   * @deprecated - please use the separate file function directly, js/util/arePointsCollinear.ts
    */
   arePointsCollinear( a, b, c, epsilon ) {
     return arePointsCollinear( a, b, c, epsilon );
@@ -497,7 +500,7 @@ const Utils = {
    * @param {Vector2} c
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/triangleArea.ts
+   * @deprecated - please use the separate file function directly, js/util/triangleArea.ts
    */
   triangleArea( a, b, c ) {
     return triangleArea( a, b, c );
@@ -516,7 +519,7 @@ const Utils = {
    * @param {Vector2} c
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/triangleAreaSigned.ts
+   * @deprecated - please use the separate file function directly, js/util/triangleAreaSigned.ts
    */
   triangleAreaSigned( a, b, c ) {
     return triangleAreaSigned( a, b, c );
@@ -530,7 +533,7 @@ const Utils = {
    * @param {Array.<Vector2>} vertices
    * @returns {Vector2}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/centroidOfPolygon.ts
+   * @deprecated - please use the separate file function directly, js/util/centroidOfPolygon.ts
    */
   centroidOfPolygon( vertices ) {
     return centroidOfPolygon( vertices );
@@ -543,7 +546,7 @@ const Utils = {
    * @param {number} value
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/cosh.ts
+   * @deprecated - please use the separate file function directly, js/util/cosh.ts
    */
   cosh( value ) {
     return cosh( value );
@@ -556,7 +559,7 @@ const Utils = {
    * @param {number} value
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/sinh.ts
+   * @deprecated - please use the separate file function directly, js/util/sinh.ts
    */
   sinh( value ) {
     return sinh( value );
@@ -569,7 +572,7 @@ const Utils = {
    * @param {number} val
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/log10.ts
+   * @deprecated - please use the separate file function directly, js/util/log10.ts
    */
   log10( val ) {
     return log10( val );
@@ -588,7 +591,7 @@ const Utils = {
    * @param {Random} random - the source of randomness
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/boxMullerTransform.ts
+   * @deprecated - please use the separate file function directly, js/util/boxMullerTransform.ts
    */
   boxMullerTransform( mu, sigma, random ) {
     return boxMullerTransform( mu, sigma, random );
@@ -601,7 +604,7 @@ const Utils = {
    * @param {number} value - a finite number, scientific notation is not supported for decimal numbers
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/numberOfDecimalPlaces.ts
+   * @deprecated - please use the separate file function directly, js/util/numberOfDecimalPlaces.ts
    */
   numberOfDecimalPlaces( value ) {
     return numberOfDecimalPlaces( value );
@@ -618,7 +621,7 @@ const Utils = {
    * @param {number} interval
    * @returns {number}
    *
-   * NOTE: this function is deprecated - please use the separate file function directly, js/util/roundToInterval.ts
+   * @deprecated - please use the separate file function directly, js/util/roundToInterval.ts
    */
   roundToInterval( value, interval ) {
     return roundToInterval( value, interval );
