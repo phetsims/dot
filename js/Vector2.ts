@@ -740,17 +740,17 @@ export default class Vector2 implements TPoolable {
   /**
    * ImmutableVector2 zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$
    */
-  public static ZERO: Vector2; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static ZERO: Vector2 = new Vector2( 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
 
   /**
    * ImmutableVector2 vector: $\begin{bmatrix} 1\\0 \end{bmatrix}$
    */
-  public static X_UNIT: Vector2; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static X_UNIT: Vector2 = new Vector2( 1, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
 
   /**
    * ImmutableVector2 vector: $\begin{bmatrix} 0\\1 \end{bmatrix}$
    */
-  public static Y_UNIT: Vector2; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Y_UNIT: Vector2 = new Vector2( 0, 1 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
 
   public static Vector2IO: IOType;
 }
@@ -779,9 +779,11 @@ ImmutableVector2.mutableOverrideHelper( 'setXY' );
 ImmutableVector2.mutableOverrideHelper( 'setX' );
 ImmutableVector2.mutableOverrideHelper( 'setY' );
 
-Vector2.ZERO = assert ? new ImmutableVector2( 0, 0 ) : new Vector2( 0, 0 );
-Vector2.X_UNIT = assert ? new ImmutableVector2( 1, 0 ) : new Vector2( 1, 0 );
-Vector2.Y_UNIT = assert ? new ImmutableVector2( 0, 1 ) : new Vector2( 0, 1 );
+if ( assert ) {
+  Vector2.ZERO = new ImmutableVector2( 0, 0 );
+  Vector2.X_UNIT = new ImmutableVector2( 1, 0 );
+  Vector2.Y_UNIT = new ImmutableVector2( 0, 1 );
+}
 
 const STATE_SCHEMA = {
   x: NumberIO,

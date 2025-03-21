@@ -603,11 +603,11 @@ export default class Vector4 implements TPoolable {
 
   public isVector4!: boolean;
   public dimension!: number;
-  public static ZERO: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static X_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static Y_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static Z_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static W_UNIT: Vector4; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static ZERO: Vector4 = new Vector4( 0, 0, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static X_UNIT: Vector4 = new Vector4( 1, 0, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Y_UNIT: Vector4 = new Vector4( 0, 1, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Z_UNIT: Vector4 = new Vector4( 0, 0, 1, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static W_UNIT: Vector4 = new Vector4( 0, 0, 0, 1 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
 }
 
 // (read-only) - Helps to identify the dimension of the vector
@@ -636,10 +636,12 @@ ImmutableVector4.mutableOverrideHelper( 'setY' );
 ImmutableVector4.mutableOverrideHelper( 'setZ' );
 ImmutableVector4.mutableOverrideHelper( 'setW' );
 
-Vector4.ZERO = assert ? new ImmutableVector4( 0, 0, 0, 0 ) : new Vector4( 0, 0, 0, 0 );
-Vector4.X_UNIT = assert ? new ImmutableVector4( 1, 0, 0, 0 ) : new Vector4( 1, 0, 0, 0 );
-Vector4.Y_UNIT = assert ? new ImmutableVector4( 0, 1, 0, 0 ) : new Vector4( 0, 1, 0, 0 );
-Vector4.Z_UNIT = assert ? new ImmutableVector4( 0, 0, 1, 0 ) : new Vector4( 0, 0, 1, 0 );
-Vector4.W_UNIT = assert ? new ImmutableVector4( 0, 0, 0, 1 ) : new Vector4( 0, 0, 0, 1 );
+if ( assert ) {
+  Vector4.ZERO = new ImmutableVector4( 0, 0, 0, 0 );
+  Vector4.X_UNIT = new ImmutableVector4( 1, 0, 0, 0 );
+  Vector4.Y_UNIT = new ImmutableVector4( 0, 1, 0, 0 );
+  Vector4.Z_UNIT = new ImmutableVector4( 0, 0, 1, 0 );
+  Vector4.W_UNIT = new ImmutableVector4( 0, 0, 0, 1 );
+}
 
 export { v4 };

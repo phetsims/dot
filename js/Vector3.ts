@@ -640,10 +640,10 @@ export default class Vector3 implements TPoolable {
 
   public isVector3!: boolean;
   public dimension!: number;
-  public static ZERO: Vector3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static X_UNIT: Vector3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static Y_UNIT: Vector3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static Z_UNIT: Vector3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static ZERO: Vector3 = new Vector3( 0, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static X_UNIT: Vector3 = new Vector3( 1, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Y_UNIT: Vector3 = new Vector3( 0, 1, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
+  public static Z_UNIT: Vector3 = new Vector3( 0, 0, 1 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static Vector3IO: IOType;
 }
 
@@ -672,10 +672,12 @@ ImmutableVector3.mutableOverrideHelper( 'setX' );
 ImmutableVector3.mutableOverrideHelper( 'setY' );
 ImmutableVector3.mutableOverrideHelper( 'setZ' );
 
-Vector3.ZERO = assert ? new ImmutableVector3( 0, 0, 0 ) : new Vector3( 0, 0, 0 );
-Vector3.X_UNIT = assert ? new ImmutableVector3( 1, 0, 0 ) : new Vector3( 1, 0, 0 );
-Vector3.Y_UNIT = assert ? new ImmutableVector3( 0, 1, 0 ) : new Vector3( 0, 1, 0 );
-Vector3.Z_UNIT = assert ? new ImmutableVector3( 0, 0, 1 ) : new Vector3( 0, 0, 1 );
+if ( assert ) {
+  Vector3.ZERO = new ImmutableVector3( 0, 0, 0 );
+  Vector3.X_UNIT = new ImmutableVector3( 1, 0, 0 );
+  Vector3.Y_UNIT = new ImmutableVector3( 0, 1, 0 );
+  Vector3.Z_UNIT = new ImmutableVector3( 0, 0, 1 );
+}
 
 Vector3.Vector3IO = new IOType( 'Vector3IO', {
   valueType: Vector3,
