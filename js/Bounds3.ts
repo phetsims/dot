@@ -14,6 +14,7 @@
  */
 
 import Poolable from '../../phet-core/js/Poolable.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import IOType from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
@@ -1118,7 +1119,7 @@ class Bounds3 {
    */
   public static readonly EVERYTHING = new Bounds3( Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY );
 
-  public static readonly Bounds3IO = new IOType( 'Bounds3IO', {
+  public static readonly Bounds3IO = new IOType<IntentionalAny, IntentionalAny>( 'Bounds3IO', {
     valueType: Bounds3,
     documentation: 'a 3-dimensional bounds (bounding box)',
     stateSchema: {

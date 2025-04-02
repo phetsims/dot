@@ -7,7 +7,8 @@
  */
 
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
-import IOType from '../../tandem/js/types/IOType.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
+import IOType, { AnyIOType } from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import { clamp } from './util/clamp.js';
@@ -644,7 +645,7 @@ export default class Vector3 implements TPoolable {
   public static X_UNIT: Vector3 = new Vector3( 1, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static Y_UNIT: Vector3 = new Vector3( 0, 1, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static Z_UNIT: Vector3 = new Vector3( 0, 0, 1 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static Vector3IO: IOType;
+  public static Vector3IO: AnyIOType;
 }
 
 // (read-only) - Helps to identify the dimension of the vector
@@ -679,7 +680,7 @@ if ( assert ) {
   Vector3.Z_UNIT = new ImmutableVector3( 0, 0, 1 );
 }
 
-Vector3.Vector3IO = new IOType( 'Vector3IO', {
+Vector3.Vector3IO = new IOType<IntentionalAny, IntentionalAny>( 'Vector3IO', {
   valueType: Vector3,
   documentation: 'Basic 3-dimensional vector, represented as (x,y,z)',
   toStateObject: ( vector3: Vector3 ) => vector3.toStateObject(),

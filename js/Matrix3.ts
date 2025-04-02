@@ -9,9 +9,10 @@
 import Enumeration from '../../phet-core/js/Enumeration.js';
 import EnumerationValue from '../../phet-core/js/EnumerationValue.js';
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
+import IntentionalAny from '../../phet-core/js/types/IntentionalAny.js';
 import ArrayIO from '../../tandem/js/types/ArrayIO.js';
 import EnumerationIO from '../../tandem/js/types/EnumerationIO.js';
-import IOType from '../../tandem/js/types/IOType.js';
+import IOType, { AnyIOType } from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import dot from './dot.js';
 import Matrix4 from './Matrix4.js';
@@ -1521,7 +1522,7 @@ export default class Matrix3 implements TPoolable {
   public static IDENTITY: Matrix3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static X_REFLECTION: Matrix3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static Y_REFLECTION: Matrix3; // eslint-disable-line phet/uppercase-statics-should-be-readonly
-  public static Matrix3IO: IOType;
+  public static Matrix3IO: AnyIOType;
 }
 
 dot.register( 'Matrix3', Matrix3 );
@@ -1548,7 +1549,7 @@ Matrix3.Y_REFLECTION = m3(
   Matrix3Type.AFFINE
 ).makeImmutable();
 
-Matrix3.Matrix3IO = new IOType( 'Matrix3IO', {
+Matrix3.Matrix3IO = new IOType<IntentionalAny, IntentionalAny>( 'Matrix3IO', {
   valueType: Matrix3,
   documentation: 'A 3x3 matrix often used for holding transform data.',
   toStateObject: ( matrix3: Matrix3 ) => Matrix3.toStateObject( matrix3 ),

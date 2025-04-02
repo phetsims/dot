@@ -7,7 +7,7 @@
  */
 
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';
-import IOType from '../../tandem/js/types/IOType.js';
+import IOType, { AnyIOType } from '../../tandem/js/types/IOType.js';
 import NumberIO from '../../tandem/js/types/NumberIO.js';
 import { StateObject } from '../../tandem/js/types/StateSchema.js';
 import dot from './dot.js';
@@ -752,7 +752,7 @@ export default class Vector2 implements TPoolable {
    */
   public static Y_UNIT: Vector2 = new Vector2( 0, 1 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
 
-  public static Vector2IO: IOType;
+  public static Vector2IO: AnyIOType;
 }
 
 // (read-only) - Helps to identify the dimension of the vector
