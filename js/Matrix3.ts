@@ -36,7 +36,7 @@ type NineNumbers = [
 ];
 
 export type Matrix3StateObject = {
-  entries: NineNumbers;
+  entries: number[];
   type: string;
 };
 
@@ -1503,7 +1503,7 @@ export default class Matrix3 implements TPoolable {
    */
   public static toStateObject( matrix3: Matrix3 ): Matrix3StateObject {
     return {
-      entries: matrix3.entries,
+      entries: Array.from( matrix3.entries ),
       type: matrix3.type.name
     };
   }
@@ -1513,7 +1513,8 @@ export default class Matrix3 implements TPoolable {
    */
   public static fromStateObject( stateObject: Matrix3StateObject ): Matrix3 {
     const matrix = Matrix3.identity();
-    matrix.entries = stateObject.entries;
+    assert && assert( stateObject.entries.length === 9, 'matrix3 needs nine number' );
+    matrix.entries = stateObject.entries as NineNumbers;
     matrix.type = Matrix3Type.enumeration.getValue( stateObject.type );
     return matrix;
   }
