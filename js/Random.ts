@@ -43,15 +43,6 @@ export default class Random {
     }, providedOptions );
 
     this.setSeed( options.seed );
-
-    Random.allRandomInstances.add( this );
-  }
-
-  /**
-   * Clears out this instance from all the Random instances.
-   */
-  public dispose(): void {
-    Random.allRandomInstances.delete( this );
   }
 
   /**
@@ -219,8 +210,6 @@ export default class Random {
     assert && assert( weights[ weights.length - 1 ] !== 0, 'if last weight is zero, should have selected something beforehand' );
     return weights.length - 1;
   }
-
-  public static allRandomInstances = new Set<Random>();
 }
 
 dot.register( 'Random', Random );
