@@ -19,32 +19,48 @@ import Vector4 from './Vector4.js';
 
 const Float32Array = window.Float32Array || Array;
 
-class Matrix4 {
-  /**
-   * @param {number} [v00]
-   * @param {number} [v01]
-   * @param {number} [v02]
-   * @param {number} [v03]
-   * @param {number} [v10]
-   * @param {number} [v11]
-   * @param {number} [v12]
-   * @param {number} [v13]
-   * @param {number} [v20]
-   * @param {number} [v21]
-   * @param {number} [v22]
-   * @param {number} [v23]
-   * @param {number} [v30]
-   * @param {number} [v31]
-   * @param {number} [v32]
-   * @param {number} [v33]
-   * @param {Matrix4.Types|undefined} [type]
-   */
-  constructor( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
+export class Types extends EnumerationValue {
+  public static readonly OTHER = new Types();
+  public static readonly IDENTITY = new Types();
+  public static readonly TRANSLATION_3D = new Types();
+  public static readonly SCALING = new Types();
+  public static readonly AFFINE = new Types();
 
-    // @public {Float32Array} - entries stored in column-major format
+  public static readonly enumeration = new Enumeration( Types );
+}
+
+export default class Matrix4 {
+
+  // Entries stored in column-major format
+  public entries: Float32Array;
+
+  public type: Types;
+
+  /**
+   * @param v00
+   * @param v01
+   * @param v02
+   * @param v03
+   * @param v10
+   * @param v11
+   * @param v12
+   * @param v13
+   * @param v20
+   * @param v21
+   * @param v22
+   * @param v23
+   * @param v30
+   * @param v31
+   * @param v32
+   * @param v33
+   * @param type
+   */
+  public constructor( v00?: number, v01?: number, v02?: number, v03?: number, v10?: number, v11?: number, v12?: number, v13?: number,
+                      v20?: number, v21?: number, v22?: number, v23?: number, v30?: number, v31?: number, v32?: number, v33?: number,
+                      type?: Types ) {
+
     this.entries = new Float32Array( 16 );
 
-    // @public {Matrix4.Types}
     this.type = Types.OTHER; // will be set by rowMajor
 
     this.rowMajor(
@@ -57,28 +73,31 @@ class Matrix4 {
 
   /**
    * Sets all entries of the matrix in row-major order.
-   * @public
    *
-   * @param {number} v00
-   * @param {number} v01
-   * @param {number} v02
-   * @param {number} v03
-   * @param {number} v10
-   * @param {number} v11
-   * @param {number} v12
-   * @param {number} v13
-   * @param {number} v20
-   * @param {number} v21
-   * @param {number} v22
-   * @param {number} v23
-   * @param {number} v30
-   * @param {number} v31
-   * @param {number} v32
-   * @param {number} v33
-   * @param {Matrix4.Types|undefined} [type]
-   * @returns {Matrix4} - Self reference
+   * @param v00
+   * @param v01
+   * @param v02
+   * @param v03
+   * @param v10
+   * @param v11
+   * @param v12
+   * @param v13
+   * @param v20
+   * @param v21
+   * @param v22
+   * @param v23
+   * @param v30
+   * @param v31
+   * @param v32
+   * @param v33
+   * @param type
+   * @returns - Self reference
    */
-  rowMajor( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type ) {
+  public rowMajor( v00: number, v01: number, v02: number, v03: number,
+                   v10: number, v11: number, v12: number, v13: number,
+                   v20: number, v21: number, v22: number, v23: number,
+                   v30: number, v31: number, v32: number, v33: number,
+                   type?: Types ): this {
     this.entries[ 0 ] = v00;
     this.entries[ 1 ] = v10;
     this.entries[ 2 ] = v20;
@@ -103,39 +122,41 @@ class Matrix4 {
 
   /**
    * Sets all entries of the matrix in column-major order.
-   * @public
    *
-   * @param {*} v00
-   * @param {*} v10
-   * @param {*} v20
-   * @param {*} v30
-   * @param {*} v01
-   * @param {*} v11
-   * @param {*} v21
-   * @param {*} v31
-   * @param {*} v02
-   * @param {*} v12
-   * @param {*} v22
-   * @param {*} v32
-   * @param {*} v03
-   * @param {*} v13
-   * @param {*} v23
-   * @param {*} v33
-   * @param {Matrix4.Types|undefined} [type]
-   * @returns {Matrix4} - Self reference
+   * @param v00
+   * @param v10
+   * @param v20
+   * @param v30
+   * @param v01
+   * @param v11
+   * @param v21
+   * @param v31
+   * @param v02
+   * @param v12
+   * @param v22
+   * @param v32
+   * @param v03
+   * @param v13
+   * @param v23
+   * @param v33
+   * @param type
+   * @returns - Self reference
    */
-  columnMajor( v00, v10, v20, v30, v01, v11, v21, v31, v02, v12, v22, v32, v03, v13, v23, v33, type ) {
+  public columnMajor( v00: number, v10: number, v20: number, v30: number,
+                      v01: number, v11: number, v21: number, v31: number,
+                      v02: number, v12: number, v22: number, v32: number,
+                      v03: number, v13: number, v23: number, v33: number,
+                      type?: Types ): this {
     return this.rowMajor( v00, v01, v02, v03, v10, v11, v12, v13, v20, v21, v22, v23, v30, v31, v32, v33, type );
   }
 
   /**
    * Sets this matrix to the value of the passed-in matrix.
-   * @public
    *
-   * @param {Matrix4} matrix
-   * @returns {Matrix4} - Self reference
+   * @param matrix
+   * @returns - Self reference
    */
-  set( matrix ) {
+  public set( matrix: Matrix4 ): this {
     return this.rowMajor(
       matrix.m00(), matrix.m01(), matrix.m02(), matrix.m03(),
       matrix.m10(), matrix.m11(), matrix.m12(), matrix.m13(),
@@ -146,181 +167,127 @@ class Matrix4 {
 
   /**
    * Returns the 0,0 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m00() {
+  public m00(): number {
     return this.entries[ 0 ];
   }
 
   /**
    * Returns the 0,1 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m01() {
+  public m01(): number {
     return this.entries[ 4 ];
   }
 
   /**
    * Returns the 0,2 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m02() {
+  public m02(): number {
     return this.entries[ 8 ];
   }
 
   /**
    * Returns the 0,3 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m03() {
+  public m03(): number {
     return this.entries[ 12 ];
   }
 
   /**
    * Returns the 1,0 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m10() {
+  public m10(): number {
     return this.entries[ 1 ];
   }
 
   /**
    * Returns the 1,1 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m11() {
+  public m11(): number {
     return this.entries[ 5 ];
   }
 
   /**
    * Returns the 1,2 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m12() {
+  public m12(): number {
     return this.entries[ 9 ];
   }
 
   /**
    * Returns the 1,3 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m13() {
+  public m13(): number {
     return this.entries[ 13 ];
   }
 
   /**
    * Returns the 2,0 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m20() {
+  public m20(): number {
     return this.entries[ 2 ];
   }
 
   /**
    * Returns the 2,1 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m21() {
+  public m21(): number {
     return this.entries[ 6 ];
   }
 
   /**
    * Returns the 2,2 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m22() {
+  public m22(): number {
     return this.entries[ 10 ];
   }
 
   /**
    * Returns the 2,3 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m23() {
+  public m23(): number {
     return this.entries[ 14 ];
   }
 
   /**
    * Returns the 3,0 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m30() {
+  public m30(): number {
     return this.entries[ 3 ];
   }
 
   /**
    * Returns the 3,1 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m31() {
+  public m31(): number {
     return this.entries[ 7 ];
   }
 
   /**
    * Returns the 3,2 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m32() {
+  public m32(): number {
     return this.entries[ 11 ];
   }
 
   /**
    * Returns the 3,3 entry of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  m33() {
+  public m33(): number {
     return this.entries[ 15 ];
   }
 
   /**
    * Returns whether this matrix is an identity matrix.
-   * @public
-   *
-   * @returns {boolean}
    */
-  isIdentity() {
+  public isIdentity(): boolean {
     return this.type === Types.IDENTITY || this.equals( Matrix4.IDENTITY );
   }
 
   /**
    * Returns whether all of this matrix's entries are finite (non-infinite and non-NaN).
-   * @public
-   *
-   * @returns {boolean}
    */
-  isFinite() {
+  public isFinite(): boolean {
     return isFinite( this.m00() ) &&
            isFinite( this.m01() ) &&
            isFinite( this.m02() ) &&
@@ -341,24 +308,18 @@ class Matrix4 {
 
   /**
    * Returns the 3D translation, assuming multiplication with a homogeneous vector.
-   * @public
-   *
-   * @returns {Vector3}
    */
-  getTranslation() {
+  public getTranslation(): Vector3 {
     return new Vector3( this.m03(), this.m13(), this.m23() );
   }
 
-  get translation() { return this.getTranslation(); }
+  public get translation(): Vector3 { return this.getTranslation(); }
 
   /**
    * Returns a vector that is equivalent to ( T(1,0,0).magnitude, T(0,1,0).magnitude, T(0,0,1).magnitude )
    * where T is a relative transform.
-   * @public
-   *
-   * @returns {Vector3}
    */
-  getScaleVector() {
+  public getScaleVector(): Vector3 {
     const m0003 = this.m00() + this.m03();
     const m1013 = this.m10() + this.m13();
     const m2023 = this.m20() + this.m23();
@@ -377,15 +338,12 @@ class Matrix4 {
       Math.sqrt( m0203 * m0203 + m1213 * m1213 + m2223 * m2223 + m3233 * m3233 ) );
   }
 
-  get scaleVector() { return this.getScaleVector(); }
+  public get scaleVector(): Vector3 { return this.getScaleVector(); }
 
   /**
    * Returns the CSS transform string for the associated homogeneous 3d transformation.
-   * @public
-   *
-   * @returns {string}
    */
-  getCSSTransform() {
+  public getCSSTransform(): string {
     // See http://www.w3.org/TR/css3-transforms/, particularly Section 13 that discusses the SVG compatibility
 
     // the inner part of a CSS3 transform, but remember to add the browser-specific parts!
@@ -409,16 +367,14 @@ class Matrix4 {
       this.entries[ 15 ].toFixed( 20 )})`;
   }
 
-  get cssTransform() { return this.getCSSTransform(); }
+  public get cssTransform(): string { return this.getCSSTransform(); }
 
   /**
    * Returns exact equality with another matrix
-   * @public
    *
-   * @param {Matrix4} matrix
-   * @returns {boolean}
+   * @param matrix
    */
-  equals( matrix ) {
+  public equals( matrix: Matrix4 ): boolean {
     return this.m00() === matrix.m00() && this.m01() === matrix.m01() && this.m02() === matrix.m02() && this.m03() === matrix.m03() &&
            this.m10() === matrix.m10() && this.m11() === matrix.m11() && this.m12() === matrix.m12() && this.m13() === matrix.m13() &&
            this.m20() === matrix.m20() && this.m21() === matrix.m21() && this.m22() === matrix.m22() && this.m23() === matrix.m23() &&
@@ -427,13 +383,11 @@ class Matrix4 {
 
   /**
    * Returns equality within a margin of error with another matrix
-   * @public
    *
-   * @param {Matrix4} matrix
-   * @param {number} epsilon
-   * @returns {boolean}
+   * @param matrix
+   * @param epsilon
    */
-  equalsEpsilon( matrix, epsilon ) {
+  public equalsEpsilon( matrix: Matrix4, epsilon: number ): boolean {
     return Math.abs( this.m00() - matrix.m00() ) < epsilon &&
            Math.abs( this.m01() - matrix.m01() ) < epsilon &&
            Math.abs( this.m02() - matrix.m02() ) < epsilon &&
@@ -458,11 +412,8 @@ class Matrix4 {
 
   /**
    * Returns a copy of this matrix
-   * @public
-   *
-   * @returns {Matrix4}
    */
-  copy() {
+  public copy(): Matrix4 {
     return new Matrix4(
       this.m00(), this.m01(), this.m02(), this.m03(),
       this.m10(), this.m11(), this.m12(), this.m13(),
@@ -474,12 +425,10 @@ class Matrix4 {
 
   /**
    * Returns a new matrix, defined by this matrix plus the provided matrix
-   * @public
    *
-   * @param {Matrix4} matrix
-   * @returns {Matrix4}
+   * @param matrix
    */
-  plus( matrix ) {
+  public plus( matrix: Matrix4 ): Matrix4 {
     return new Matrix4(
       this.m00() + matrix.m00(), this.m01() + matrix.m01(), this.m02() + matrix.m02(), this.m03() + matrix.m03(),
       this.m10() + matrix.m10(), this.m11() + matrix.m11(), this.m12() + matrix.m12(), this.m13() + matrix.m13(),
@@ -490,12 +439,10 @@ class Matrix4 {
 
   /**
    * Returns a new matrix, defined by this matrix plus the provided matrix
-   * @public
    *
-   * @param {Matrix4} matrix
-   * @returns {Matrix4}
+   * @param matrix
    */
-  minus( matrix ) {
+  public minus( matrix: Matrix4 ): Matrix4 {
     return new Matrix4(
       this.m00() - matrix.m00(), this.m01() - matrix.m01(), this.m02() - matrix.m02(), this.m03() - matrix.m03(),
       this.m10() - matrix.m10(), this.m11() - matrix.m11(), this.m12() - matrix.m12(), this.m13() - matrix.m13(),
@@ -506,11 +453,8 @@ class Matrix4 {
 
   /**
    * Returns a transposed copy of this matrix
-   * @public
-   *
-   * @returns {Matrix4}
    */
-  transposed() {
+  public transposed(): Matrix4 {
     return new Matrix4(
       this.m00(), this.m10(), this.m20(), this.m30(),
       this.m01(), this.m11(), this.m21(), this.m31(),
@@ -520,11 +464,8 @@ class Matrix4 {
 
   /**
    * Returns a negated copy of this matrix
-   * @public
-   *
-   * @returns {Matrix3}
    */
-  negated() {
+  public negated(): Matrix4 {
     return new Matrix4(
       -this.m00(), -this.m01(), -this.m02(), -this.m03(),
       -this.m10(), -this.m11(), -this.m12(), -this.m13(),
@@ -534,11 +475,8 @@ class Matrix4 {
 
   /**
    * Returns an inverted copy of this matrix
-   * @public
-   *
-   * @returns {Matrix3}
    */
-  inverted() {
+  public inverted(): Matrix4 {
     let det;
     switch( this.type ) {
       case Types.IDENTITY:
@@ -588,12 +526,11 @@ class Matrix4 {
 
   /**
    * Returns a matrix, defined by the multiplication of this * matrix.
-   * @public
    *
-   * @param {Matrix4} matrix
-   * @returns {Matrix4} - NOTE: this may be the same matrix!
+   * @param matrix
+   * @returns - NOTE: this may be the same matrix!
    */
-  timesMatrix( matrix ) {
+  public timesMatrix( matrix: Matrix4 ): Matrix4 {
     // I * M === M * I === I (the identity)
     if ( this.type === Types.IDENTITY || matrix.type === Types.IDENTITY ) {
       return this.type === Types.IDENTITY ? matrix : this;
@@ -661,12 +598,10 @@ class Matrix4 {
 
   /**
    * Returns the multiplication of this matrix times the provided vector
-   * @public
    *
-   * @param {Vector4} vector4
-   * @returns {Vector4}
+   * @param vector4
    */
-  timesVector4( vector4 ) {
+  public timesVector4( vector4: Vector4 ): Vector4 {
     const x = this.m00() * vector4.x + this.m01() * vector4.y + this.m02() * vector4.z + this.m03() * vector4.w;
     const y = this.m10() * vector4.x + this.m11() * vector4.y + this.m12() * vector4.z + this.m13() * vector4.w;
     const z = this.m20() * vector4.x + this.m21() * vector4.y + this.m22() * vector4.z + this.m23() * vector4.w;
@@ -677,23 +612,19 @@ class Matrix4 {
   /**
    * Returns the multiplication of this matrix times the provided vector (treating this matrix as homogeneous, so that
    * it is the technical multiplication of (x,y,z,1)).
-   * @public
    *
-   * @param {Vector3} vector3
-   * @returns {Vector3}
+   * @param vector3
    */
-  timesVector3( vector3 ) {
+  public timesVector3( vector3: Vector3 ): Vector3 {
     return Vector3.from( this.timesVector4( Vector4.from( vector3 ) ) );
   }
 
   /**
    * Returns the multiplication of this matrix's transpose times the provided vector
-   * @public
    *
-   * @param {Vector4} vector4
-   * @returns {Vector4}
+   * @param vector4
    */
-  timesTransposeVector4( vector4 ) {
+  public timesTransposeVector4( vector4: Vector4 ): Vector4 {
     const x = this.m00() * vector4.x + this.m10() * vector4.y + this.m20() * vector4.z + this.m30() * vector4.w;
     const y = this.m01() * vector4.x + this.m11() * vector4.y + this.m21() * vector4.z + this.m31() * vector4.w;
     const z = this.m02() * vector4.x + this.m12() * vector4.y + this.m22() * vector4.z + this.m32() * vector4.w;
@@ -703,23 +634,19 @@ class Matrix4 {
 
   /**
    * Returns the multiplication of this matrix's transpose times the provided vector (homogeneous).
-   * @public
    *
-   * @param {Vector3} vector3
-   * @returns {Vector3}
+   * @param vector3
    */
-  timesTransposeVector3( vector3 ) {
+  public timesTransposeVector3( vector3: Vector3 ): Vector3 {
     return Vector3.from( this.timesTransposeVector4( Vector4.from( vector3 ) ) );
   }
 
   /**
    * Equivalent to the multiplication of (x,y,z,0), ignoring the homogeneous part.
-   * @public
    *
-   * @param {Vector3} vector3
-   * @returns {Vector3}
+   * @param vector3
    */
-  timesRelativeVector3( vector3 ) {
+  public timesRelativeVector3( vector3: Vector3 ): Vector3 {
     const x = this.m00() * vector3.x + this.m10() * vector3.y + this.m20() * vector3.z;
     const y = this.m01() * vector3.y + this.m11() * vector3.y + this.m21() * vector3.z;
     const z = this.m02() * vector3.z + this.m12() * vector3.y + this.m22() * vector3.z;
@@ -728,11 +655,8 @@ class Matrix4 {
 
   /**
    * Returns the determinant of this matrix.
-   * @public
-   *
-   * @returns {number}
    */
-  getDeterminant() {
+  public getDeterminant(): number {
     return this.m03() * this.m12() * this.m21() * this.m30() -
            this.m02() * this.m13() * this.m21() * this.m30() -
            this.m03() * this.m11() * this.m22() * this.m30() +
@@ -759,15 +683,12 @@ class Matrix4 {
            this.m00() * this.m11() * this.m22() * this.m33();
   }
 
-  get determinant() { return this.getDeterminant(); }
+  public get determinant(): number { return this.getDeterminant(); }
 
   /**
    * Returns a string form of this object
-   * @public
-   *
-   * @returns {string}
    */
-  toString() {
+  public toString(): string {
     return `${this.m00()} ${this.m01()} ${this.m02()} ${this.m03()}\n${
       this.m10()} ${this.m11()} ${this.m12()} ${this.m13()}\n${
       this.m20()} ${this.m21()} ${this.m22()} ${this.m23()}\n${
@@ -776,11 +697,10 @@ class Matrix4 {
 
   /**
    * Makes this matrix effectively immutable to the normal methods (except direct setters?)
-   * @public
    *
-   * @returns {Matrix3} - Self reference
+   * @returns - Self reference
    */
-  makeImmutable() {
+  public makeImmutable(): this {
     if ( assert ) {
       this.rowMajor = () => {
         throw new Error( 'Cannot modify immutable matrix' );
@@ -791,12 +711,11 @@ class Matrix4 {
 
   /**
    * Copies the entries of this matrix over to an arbitrary array (typed or normal).
-   * @public
    *
-   * @param {Array|Float32Array|Float64Array} array
-   * @returns {Array|Float32Array|Float64Array} - Returned for chaining
+   * @param array
+   * @returns - Returned for chaining
    */
-  copyToArray( array ) {
+  public copyToArray( array: number[] | Float32Array | Float64Array ): number[] | Float32Array | Float64Array {
     array[ 0 ] = this.m00();
     array[ 1 ] = this.m10();
     array[ 2 ] = this.m20();
@@ -818,11 +737,8 @@ class Matrix4 {
 
   /**
    * Returns an identity matrix.
-   * @public
-   *
-   * @returns {Matrix4}
    */
-  static identity() {
+  public static identity(): Matrix4 {
     return new Matrix4(
       1, 0, 0, 0,
       0, 1, 0, 0,
@@ -833,14 +749,12 @@ class Matrix4 {
 
   /**
    * Returns a translation matrix.
-   * @public
    *
-   * @param {number} x
-   * @param {number} y
-   * @param {number} z
-   * @returns {Matrix4}
+   * @param x
+   * @param y
+   * @param z
    */
-  static translation( x, y, z ) {
+  public static translation( x: number, y: number, z: number ): Matrix4 {
     return new Matrix4(
       1, 0, 0, x,
       0, 1, 0, y,
@@ -851,25 +765,21 @@ class Matrix4 {
 
   /**
    * Returns a translation matrix computed from a vector.
-   * @public
    *
-   * @param {Vector3|Vector4} vector
-   * @returns {Matrix4}
+   * @param vector
    */
-  static translationFromVector( vector ) {
+  public static translationFromVector( vector: Vector3 | Vector4 ): Matrix4 {
     return Matrix4.translation( vector.x, vector.y, vector.z );
   }
 
   /**
    * Returns a matrix that scales things in each dimension.
-   * @public
    *
-   * @param {number} x
-   * @param {number} y
-   * @param {number} z
-   * @returns {Matrix4}
+   * @param x
+   * @param y
+   * @param z
    */
-  static scaling( x, y, z ) {
+  public static scaling( x: number, y?: number, z?: number ): Matrix4 {
     // allow using one parameter to scale everything
     y = y === undefined ? x : y;
     z = z === undefined ? x : z;
@@ -884,13 +794,11 @@ class Matrix4 {
 
   /**
    * Returns a homogeneous matrix rotation defined by a rotation of the specified angle around the given unit axis.
-   * @public
    *
-   * @param {Vector3} axis - normalized
-   * @param {number} angle - in radians
-   * @returns {Matrix4}
+   * @param axis - normalized
+   * @param angle - in radians
    */
-  static rotationAxisAngle( axis, angle ) {
+  public static rotationAxisAngle( axis: Vector3, angle: number ): Matrix4 {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
     const C = 1 - c;
@@ -908,12 +816,10 @@ class Matrix4 {
 
   /**
    * Returns a rotation matrix in the yz plane.
-   * @public
    *
-   * @param {number} angle - in radians
-   * @returns {Matrix4}
+   * @param angle - in radians
    */
-  static rotationX( angle ) {
+  public static rotationX( angle: number ): Matrix4 {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -927,12 +833,10 @@ class Matrix4 {
 
   /**
    * Returns a rotation matrix in the xz plane.
-   * @public
    *
-   * @param {number} angle - in radians
-   * @returns {Matrix4}
+   * @param angle - in radians
    */
-  static rotationY( angle ) {
+  public static rotationY( angle: number ): Matrix4 {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -946,12 +850,10 @@ class Matrix4 {
 
   /**
    * Returns a rotation matrix in the xy plane.
-   * @public
    *
-   * @param {number} angle - in radians
-   * @returns {Matrix4}
+   * @param angle - in radians
    */
-  static rotationZ( angle ) {
+  public static rotationZ( angle: number ): Matrix4 {
     const c = Math.cos( angle );
     const s = Math.sin( angle );
 
@@ -965,15 +867,13 @@ class Matrix4 {
 
   /**
    * Returns the specific perspective matrix needed for certain WebGL contexts.
-   * @public
    *
-   * @param {number} fovYRadians
-   * @param {number} aspect - aspect === width / height
-   * @param {number} zNear
-   * @param {number} zFar
-   * @returns {Matrix4}
+   * @param fovYRadians
+   * @param aspect - aspect === width / height
+   * @param zNear
+   * @param zFar
    */
-  static gluPerspective( fovYRadians, aspect, zNear, zFar ) {
+  public static gluPerspective( fovYRadians: number, aspect: number, zNear: number, zFar: number ): Matrix4 {
     const cotangent = Math.cos( fovYRadians ) / Math.sin( fovYRadians );
 
     return new Matrix4(
@@ -982,23 +882,10 @@ class Matrix4 {
       0, 0, ( zFar + zNear ) / ( zNear - zFar ), ( 2 * zFar * zNear ) / ( zNear - zFar ),
       0, 0, -1, 0 );
   }
+
+  public static readonly IDENTITY: Matrix4 = new Matrix4().makeImmutable();
+
+  public static readonly Types = Types;
 }
 
 dot.register( 'Matrix4', Matrix4 );
-
-class Types extends EnumerationValue {
-  static OTHER = new Types();
-  static IDENTITY = new Types();
-  static TRANSLATION_3D = new Types();
-  static SCALING = new Types();
-  static AFFINE = new Types();
-  static enumeration = new Enumeration( Types );
-}
-
-// @public {Enumeration}
-Matrix4.Types = Types;
-
-// @public {Matrix4}
-Matrix4.IDENTITY = new Matrix4().makeImmutable();
-
-export default Matrix4;
