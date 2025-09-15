@@ -601,8 +601,8 @@ export default class Vector4 implements TPoolable {
     );
   }
 
-  public isVector4!: boolean;
-  public dimension!: number;
+  declare public isVector4: boolean;
+  declare public dimension: number;
   public static ZERO: Vector4 = new Vector4( 0, 0, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static X_UNIT: Vector4 = new Vector4( 1, 0, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static Y_UNIT: Vector4 = new Vector4( 0, 1, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly

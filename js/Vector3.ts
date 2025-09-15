@@ -639,8 +639,8 @@ export default class Vector3 implements TPoolable {
     );
   }
 
-  public isVector3!: boolean;
-  public dimension!: number;
+  declare public isVector3: boolean;
+  declare public dimension: number;
   public static ZERO: Vector3 = new Vector3( 0, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static X_UNIT: Vector3 = new Vector3( 1, 0, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly
   public static Y_UNIT: Vector3 = new Vector3( 0, 1, 0 ); // eslint-disable-line phet/uppercase-statics-should-be-readonly

@@ -734,8 +734,8 @@ export default class Vector2 implements TPoolable {
     return Math.sqrt( dx * dx + dy * dy );
   }
 
-  public isVector2!: boolean;
-  public dimension!: number;
+  declare public isVector2: boolean;
+  declare public dimension: number;
 
   /**
    * ImmutableVector2 zero vector: $\begin{bmatrix} 0\\0 \end{bmatrix}$

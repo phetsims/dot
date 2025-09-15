@@ -1245,7 +1245,7 @@ export default class Bounds2 implements TPoolable {
   }
 
   // Helps to identify the dimension of the bounds
-  public isBounds!: boolean;
+  declare public isBounds: boolean;
   public dimension?: number;
 
   /**
