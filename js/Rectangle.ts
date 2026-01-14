@@ -10,19 +10,11 @@
 import Bounds2 from './Bounds2.js';
 import dot from './dot.js';
 
-class Rectangle extends Bounds2 {
-  /**
-   * @param {number} x
-   * @param {number} y
-   * @param {number} width
-   * @param {number} height
-   */
-  constructor( x, y, width, height ) {
-    assert && assert( height !== undefined, 'Rectangle requires 4 parameters' );
+export default class Rectangle extends Bounds2 {
+
+  public constructor( x: number, y: number, width: number, height: number ) {
     super( x, y, x + width, y + height );
   }
 }
 
 dot.register( 'Rectangle', Rectangle );
-
-export default Rectangle;
