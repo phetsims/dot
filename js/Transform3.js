@@ -25,7 +25,7 @@ class Transform3 {
    * @param {Matrix3} [matrix]
    */
   constructor( matrix ) {
-    // @private {Matrix3} - The primary matrix used for the transform
+    // @public {Matrix3} - The primary matrix used for the transform
     this.matrix = Matrix3.IDENTITY.copy();
 
     // @private {Matrix3} - The inverse of the primary matrix, computed lazily

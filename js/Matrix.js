@@ -24,6 +24,8 @@ export default class Matrix {
   constructor( m, n, filler, fast ) {
     // @public {number}
     this.m = m;
+
+    // @public {number}
     this.n = n;
 
     const size = m * n;
