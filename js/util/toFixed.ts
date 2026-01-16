@@ -12,7 +12,10 @@
  */
 
 import dot from '../dot.js';
-// @ts-expect-error - Big import requires this for some reason, but it works
+
+// Use ignore for ts 5.9 and 7.0 compatibility
+// eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+// @ts-ignore - Big import requires this for some reason, but it works
 import Big from '../../../sherpa/lib/big-6.2.1.js'; // eslint-disable-line phet/default-import-match-filename
 
 export function toFixed( value: number, decimalPlaces: number ): string {

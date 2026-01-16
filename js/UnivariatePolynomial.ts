@@ -196,9 +196,14 @@ class UnivariatePolynomial {
 
       const decomp = new EigenvalueDecomposition( companionMatrix );
 
-      // @ts-expect-error - ml-matrix types may not match
+      // Use ignore for ts 5.9 and 7.0 compatibility
+      // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+      // @ts-ignore - ml-matrix types may not match
       const realValues: Float64Array = decomp.getRealEigenvalues();
-      // @ts-expect-error - ml-matrix types may not match
+
+      // Use ignore for ts 5.9 and 7.0 compatibility
+      // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+      // @ts-ignore - ml-matrix types may not match
       const imaginaryValues: Float64Array = decomp.getImagEigenvalues();
       const decompValues = _.range( 0, this.degree ).map( i => new Complex( realValues[ i ], imaginaryValues[ i ] ) );
 
