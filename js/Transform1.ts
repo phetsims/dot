@@ -7,60 +7,57 @@
  * @author Sam Reid (PhET Interactive Simulations)
  */
 
-import merge from '../../phet-core/js/merge.js';
+import affirm from '../../perennial-alias/js/browser-and-node/affirm.js';
+import optionize from '../../phet-core/js/optionize.js';
 import dot from './dot.js';
 import Range from './Range.js';
 
 // For assertions that the inverse is correct.
 const TOLERANCE = 1E-6;
-const approxEquals = ( a, b ) => Math.abs( a - b ) <= TOLERANCE;
+const approxEquals = ( a: number, b: number ) => Math.abs( a - b ) <= TOLERANCE;
+
+type Transform1Options = {
+  domain?: Range;
+  range?: Range;
+};
 
 class Transform1 {
+  private readonly domain: Range;
+  private readonly range: Range;
 
-  /**
-   * @param {function(number):number} evaluationFunction
-   * @param {function(number):number} inverseFunction
-   * @param {Object} [options]
-   */
-  constructor( evaluationFunction, inverseFunction, options ) {
+  public constructor(
+    private readonly evaluationFunction: ( x: number ) => number,
+    private readonly inverseFunction: ( x: number ) => number,
+    providedOptions?: Transform1Options ) {
 
-    options = merge( {
+    const options = optionize<Transform1Options>()( {
 
       // Used for asserting the inverse is correct, and that inputs are valid
       domain: new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY ),
       range: new Range( Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY )
-    }, options );
+    }, providedOptions );
 
-    // @private
-    this.evaluationFunction = evaluationFunction;
-    this.inverseFunction = inverseFunction;
     this.domain = options.domain;
     this.range = options.range;
   }
 
   /**
    * Evaluate the transform at the specified scalar.
-   * @param {number} x
-   * @returns {number}
-   * @public
    */
-  evaluate( x ) {
-    assert && assert( this.domain.contains( x ), 'Value out of domain' );
+  public evaluate( x: number ): number {
+    affirm( this.domain.contains( x ), 'Value out of domain' );
     const result = this.evaluationFunction( x );
-    assert && assert( approxEquals( this.inverseFunction( result ), x ) );
+    affirm( approxEquals( this.inverseFunction( result ), x ) );
     return result;
   }
 
   /**
    * Evaluate the inverse at the specified scalar.
-   * @param {number} x
-   * @returns {number}
-   * @public
    */
-  inverse( x ) {
-    assert && assert( this.range.contains( x ), 'Value out of range' );
+  public inverse( x: number ): number {
+    affirm( this.range.contains( x ), 'Value out of range' );
     const result = this.inverseFunction( x );
-    assert && assert( approxEquals( this.evaluationFunction( result ), x ) );
+    affirm( approxEquals( this.evaluationFunction( result ), x ) );
     return result;
   }
 }
