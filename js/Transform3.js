@@ -18,6 +18,13 @@ import Vector2 from './Vector2.js';
 const scratchMatrix = new Matrix3();
 
 class Transform3 {
+
+  /**
+   * @public
+   * @type {Matrix3}
+   */
+  matrix;
+
   /**
    * Creates a transform based around an initial matrix.
    * @public
