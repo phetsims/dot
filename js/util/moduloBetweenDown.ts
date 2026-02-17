@@ -6,7 +6,7 @@
  *
  * The 'down' indicates that if the value is equal to min or max, the max is returned.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

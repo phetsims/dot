@@ -8,7 +8,7 @@
  * @param a - Starting point of the line segment
  * @param b - Ending point of the line segment
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Martin Veillette (Berea College)
  */
 

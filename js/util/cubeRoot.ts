@@ -3,7 +3,7 @@
 /**
  * Returns the unique real cube root of x, such that $y^3=x$.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

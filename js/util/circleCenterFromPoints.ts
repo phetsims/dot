@@ -3,7 +3,7 @@
 /**
  * Returns the center of a circle that will lie on 3 points (if it exists), otherwise null (if collinear).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

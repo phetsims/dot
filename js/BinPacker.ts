@@ -22,7 +22,7 @@
  * #end sandbox
  *
  * @author Sharfudeen Ashraf
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds2 from './Bounds2.js';

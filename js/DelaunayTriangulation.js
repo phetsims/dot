@@ -10,7 +10,7 @@
  * TODO: Check number of triangles/edges/vertices with Euler's Formula
  * TODO: Handle "outside" cases (and changing the front edges) for constrained edges
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import arrayRemove from '../../phet-core/js/arrayRemove.js';

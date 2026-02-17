@@ -3,7 +3,7 @@
 /**
  * A complex number with mutable and immutable methods.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  * @author Matt Pennington (PhET Interactive Simulations)
  * @author Sam Reid (PhET Interactive Simulations)

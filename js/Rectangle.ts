@@ -4,7 +4,7 @@
  * A 2D rectangle-shaped bounded area, with a convenience name and constructor. Totally functionally
  * equivalent to Bounds2, but with a different constructor.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Bounds2 from './Bounds2.js';

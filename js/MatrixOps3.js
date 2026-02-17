@@ -4,7 +4,7 @@
  * Fast 3x3 matrix computations at the lower level, including an SVD implementation that is fully stable.
  * Overall, it uses a heavily mutable style, passing in the object where the result(s) will be stored.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from './dot.js';

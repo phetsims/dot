@@ -3,7 +3,7 @@
 /**
  * Basic 3-dimensional vector, represented as (x,y,z).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Pool, { TPoolable } from '../../phet-core/js/Pool.js';

@@ -6,7 +6,7 @@
  *
  * The 'up' indicates that if the value is equal to min or max, the min is returned.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import { moduloBetweenDown } from './moduloBetweenDown.js';

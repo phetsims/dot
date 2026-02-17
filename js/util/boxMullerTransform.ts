@@ -10,7 +10,7 @@
  * @param mu - The mean of the Gaussian
  * @param sigma - The standard deviation of the Gaussian
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

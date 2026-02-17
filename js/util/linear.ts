@@ -4,7 +4,7 @@
  * Defines and evaluates a linear mapping. The mapping is defined so that $f(a_1)=b_1$ and $f(a_2)=b_2$, and other
  * values are interpolated along the linear equation. The returned value is $f(a_3)$.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

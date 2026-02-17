@@ -3,7 +3,7 @@
 /**
  * Dimension3 is a basic width, height, and depth, like a Bounds3 but without the position defined.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
  */
 

@@ -4,7 +4,7 @@
  * A mathematical plane in 3 dimensions determined by a normal vector to the plane and the distance to the closest
  * point on the plane to the origin
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from './dot.js';

@@ -5,7 +5,7 @@
  * lines are not properly defined, null is returned. If there are no intersections or infinitely many,
  * e.g. parallel lines, null is returned.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  * @author Andrea Lin
  * @author Martin Veillette (Berea College)
  */

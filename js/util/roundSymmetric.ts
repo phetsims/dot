@@ -10,7 +10,7 @@
  *
  * Note that -0 is rounded to 0, since we typically do not want to display -0 in sims.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

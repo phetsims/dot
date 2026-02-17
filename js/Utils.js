@@ -3,7 +3,7 @@
 /**
  * Utility functions for Dot, placed into the phet.dot.X namespace.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from './dot.js';

@@ -5,7 +5,7 @@
  *
  * TODO #96 convert from JME-style parametrization into classical mathematical description?
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Poolable from '../../phet-core/js/Poolable.js';

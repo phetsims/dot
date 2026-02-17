@@ -3,7 +3,7 @@
 /**
  * Dimension2 is a basic width and height, like a Bounds2 but without the position defined.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import InfiniteNumberIO from '../../tandem/js/types/InfiniteNumberIO.js';

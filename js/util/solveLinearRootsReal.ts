@@ -6,7 +6,7 @@
  * @returns The real roots of the equation, or null if all values are roots. If the root has
  *          a multiplicity larger than 1, it will be repeated that many times.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

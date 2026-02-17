@@ -3,7 +3,7 @@
 /**
  * A sphere in 3 dimensions (NOT a 3-sphere).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from './dot.js';

@@ -7,7 +7,7 @@
  * If the vertices are counterclockwise (in a right-handed coordinate system), then the signed area will be
  * positive.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

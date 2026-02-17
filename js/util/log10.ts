@@ -3,7 +3,7 @@
 /**
  * Log base-10, since it wasn't included in every supported browser.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

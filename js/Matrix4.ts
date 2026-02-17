@@ -6,7 +6,7 @@
  * TODO: consider adding affine flag if it will help performance (a la Matrix3) https://github.com/phetsims/dot/issues/96
  * TODO: get rotation angles
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 /* eslint-disable phet/bad-sim-text */

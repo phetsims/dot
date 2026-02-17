@@ -3,7 +3,7 @@
 /**
  * An immutable combination that represents a subset of a set
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from './dot.js';

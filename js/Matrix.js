@@ -3,7 +3,7 @@
 /**
  * Arbitrary-dimensional matrix, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import isArray from '../../phet-core/js/isArray.js';
@@ -939,7 +939,7 @@ dot.register( 'Matrix', Matrix );
  * conditioned, or even singular, so the validity of the equation
  * A = V*D*inverse(V) depends upon V.cond().
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 export class EigenvalueDecomposition {
@@ -1936,7 +1936,7 @@ dot.register( 'EigenvalueDecomposition', EigenvalueDecomposition );
  * LU decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/).  Please note the arbitrary-precision
  * copy LUDecompositionDecimal which should be maintained with this file.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 export class LUDecomposition {
@@ -2168,7 +2168,7 @@ dot.register( 'LUDecomposition', LUDecomposition );
 /**
  * QR decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 export class QRDecomposition {
@@ -2371,7 +2371,7 @@ dot.register( 'QRDecomposition', QRDecomposition );
 /**
  * SVD decomposition, based on Jama (http://math.nist.gov/javanumerics/jama/)
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 export class SingularValueDecomposition {

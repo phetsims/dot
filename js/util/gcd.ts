@@ -4,7 +4,7 @@
  * Greatest Common Divisor, using https://en.wikipedia.org/wiki/Euclidean_algorithm. See
  * https://en.wikipedia.org/wiki/Greatest_common_divisor
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

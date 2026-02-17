@@ -8,7 +8,7 @@
  *
  * Generally, this means transform.inverseThing( transform.transformThing( thing ) ).equals( thing ).
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import TinyEmitter from '../../axon/js/TinyEmitter.js';

@@ -3,7 +3,7 @@
 /**
  * An immutable permutation that can permute an array
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from './dot.js';

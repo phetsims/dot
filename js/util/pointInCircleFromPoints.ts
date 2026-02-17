@@ -8,7 +8,7 @@
  *
  * See notes in https://en.wikipedia.org/wiki/Delaunay_triangulation.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

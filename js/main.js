@@ -1,7 +1,7 @@
 // Copyright 2013-2024, University of Colorado Boulder
 
 /**
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import './BinPacker.js';

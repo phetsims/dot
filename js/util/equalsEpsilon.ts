@@ -3,7 +3,7 @@
 /**
  * Returns true if two numbers are within epsilon of each other.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';

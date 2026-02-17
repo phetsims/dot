@@ -3,7 +3,7 @@
 /**
  * Handles a univariate polynomial (a polynomial with one variable), like 2x^2 + 6x + 4.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Complex from './Complex.js';

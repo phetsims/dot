@@ -3,7 +3,7 @@
 /**
  * 3-dimensional Matrix
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import Enumeration from '../../phet-core/js/Enumeration.js';

@@ -3,7 +3,7 @@
 /**
  * Determines whether the three points are approximately collinear.
  *
- * @author Jonathan Olson <jonathan.olson@colorado.edu>
+ * @author Jonathan Olson (PhET Interactive Simulations)
  */
 
 import dot from '../dot.js';
