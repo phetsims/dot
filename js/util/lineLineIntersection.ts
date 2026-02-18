@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2025-2026, University of Colorado Boulder
 
 /**
  * Intersection point between the lines defined by the line segments p1-p2 and p3-p4. If the

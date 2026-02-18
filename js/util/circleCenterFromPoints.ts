@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2025-2026, University of Colorado Boulder
 
 /**
  * Returns the center of a circle that will lie on 3 points (if it exists), otherwise null (if collinear).

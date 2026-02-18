@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2026, University of Colorado Boulder
 
 /**
  * An immutable combination that represents a subset of a set

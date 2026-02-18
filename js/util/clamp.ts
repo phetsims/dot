@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2025-2026, University of Colorado Boulder
 
 /**
  * Returns the original value if it is inclusively within the [max,min] range. If it's below the range, min is

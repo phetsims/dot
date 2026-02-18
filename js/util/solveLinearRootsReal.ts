@@ -1,4 +1,4 @@
-// Copyright 2025, University of Colorado Boulder
+// Copyright 2025-2026, University of Colorado Boulder
 
 /**
  * Returns an array of the real roots of the quadratic equation $ax + b=0$, or null if every value is a solution.
