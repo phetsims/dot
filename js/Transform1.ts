@@ -45,7 +45,7 @@ class Transform1 {
    * Evaluate the transform at the specified scalar.
    */
   public evaluate( x: number ): number {
-    affirm( this.domain.contains( x ), `Value out of domain for x=${x}` );
+    affirm( this.domain.contains( x ), `Value out of domain: x=${x}` );
     const result = this.evaluationFunction( x );
     affirm( approxEquals( this.inverseFunction( result ), x ), `Incorrect inverse for x=${x}` );
     return result;
@@ -55,9 +55,9 @@ class Transform1 {
    * Evaluate the inverse at the specified scalar.
    */
   public inverse( x: number ): number {
-    affirm( this.range.contains( x ), `Value out of range for x=${x}` );
+    affirm( this.range.contains( x ), `Value out of range: x=${x}` );
     const result = this.inverseFunction( x );
-    affirm( approxEquals( this.evaluationFunction( result ), x ), `Incorrect inverse for x=${x}` );
+    affirm( approxEquals( this.evaluationFunction( result ), x ), `Incorrect evaluation for x=${x}` );
     return result;
   }
 }
