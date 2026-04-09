@@ -234,6 +234,14 @@ class Range implements TRange {
   }
 
   /**
+   * Returns a new Range that is the same as this Range, but dilated by the specified amount.
+   * A positive delta will expand the range, a negative delta will contract it.
+   */
+  public dilated( delta: number ): Range {
+    return new Range( this.min - delta, this.max + delta );
+  }
+
+  /**
    * Converts the attributes of this range to a string
    */
   public toString(): string {
