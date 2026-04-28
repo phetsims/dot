@@ -138,6 +138,14 @@ export default class Complex {
   }
 
   /**
+   * Scalar multiplication.
+   * Immutable version of multiplyScalar.
+   */
+  public timesScalar( scalar: number ): Complex {
+    return new Complex( this.real * scalar, this.imaginary * scalar );
+  }
+
+  /**
    * Complex division.
    * Immutable version of divide
    */
@@ -306,6 +314,13 @@ export default class Complex {
     return this.setRealImaginary(
       this.real * c.real - this.imaginary * c.imaginary,
       this.real * c.imaginary + this.imaginary * c.real );
+  }
+
+  /**
+   * Mutable scalar multiplication.
+   */
+  public multiplyScalar( scalar: number ): Complex {
+    return this.setRealImaginary( this.real * scalar, this.imaginary * scalar );
   }
 
   /**

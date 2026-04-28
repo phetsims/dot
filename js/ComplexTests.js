@@ -28,6 +28,13 @@ QUnit.test( 'Multiplication', assert => {
   approximateComplexEquals( assert, new Complex( 2, 3 ).times( new Complex( 7, -13 ) ), new Complex( 53, -5 ), 'Multiplication' );
 } );
 
+QUnit.test( 'Scalar multiplication', assert => {
+  const c = new Complex( 2, -3 );
+  approximateComplexEquals( assert, c.timesScalar( 4 ), new Complex( 8, -12 ), 'Immutable scalar multiplication' );
+  approximateComplexEquals( assert, c, new Complex( 2, -3 ), 'Immutable scalar multiplication does not mutate' );
+  approximateComplexEquals( assert, c.multiplyScalar( -2 ), new Complex( -4, 6 ), 'Mutable scalar multiplication' );
+} );
+
 QUnit.test( 'Division', assert => {
   approximateComplexEquals( assert, new Complex( 2, 3 ).dividedBy( new Complex( 7, -13 ) ), new Complex( -25 / 218, 47 / 218 ), 'Division' );
 } );
