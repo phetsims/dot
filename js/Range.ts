@@ -330,6 +330,15 @@ class Range implements TRange {
            delta;
   }
 
+  /**
+   * Given a value, clamp the value to make sure that it stays within the range.
+   */
+  public clampValue( value: number ): number {
+    return value < this.min ? this.min :
+           value > this.max ? this.max :
+           value;
+  }
+
   public static fromStateObject( stateObject: RangeStateObject ): Range {
     return new Range(
       InfiniteNumberIO.fromStateObject( stateObject.min ),
