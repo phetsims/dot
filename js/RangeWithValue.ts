@@ -84,6 +84,13 @@ class RangeWithValue extends Range {
            ( this._defaultValue === object.defaultValue ) &&
            super.equals( object );
   }
+
+  /**
+   * Creates a RangeWithValue from a Range.
+   */
+  public static fromRange( range: Range, defaultValue: number ): RangeWithValue {
+    return new RangeWithValue( range.min, range.max, defaultValue );
+  }
 }
 
 dot.register( 'RangeWithValue', RangeWithValue );
